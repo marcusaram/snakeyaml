@@ -17,24 +17,51 @@
 
   <patternset id="java.src.pattern">
     <include name="**/*.java"/>
+    <exclude name="test/**/*.java"/>
   </patternset>
 
   <target name="prepare" description="Creates the directories needed for building">
     <xmlproperty file="build-config.xml" keepRoot="false" collapseAttributes="true"/>
     <mkdir dir="${build.dir}"/>
+    <mkdir dir="${build.dir}/test"/>
     <mkdir dir="${classes.dir}"/>
     <mkdir dir="${jvyaml.classes.dir}"/>
   </target>
   
   <target name="compile" depends="prepare" description="Compile the source files for the project.">
-    <javac destdir="${jvyaml.classes.dir}" debug="true" source="${javac.version}">
+    <javac destdir="${jvyaml.classes.dir}" debug="true" source="${javac.version}" target="${javac.version}">
       <classpath refid="build.classpath"/>
       <src path="${src.dir}"/>
       <patternset refid="java.src.pattern"/>
     </javac>
   </target>
 
-  <target name="jar" depends="compile" description="Create the jvyaml.jar file">
+  <target name="compile-tests" depends="compile" description="Compile the test source files for the project.">
+    <javac destdir="${build.dir}/test" debug="true" source="${javac.version}" target="${javac.version}">
+      <classpath refid="build.classpath"/>
+      <classpath>
+        <pathelement location="${build.dir}/classes/jvyaml"/>
+      </classpath>
+      <src path="${src.dir}/test"/>
+    </javac>
+  </target>
+
+  <target name="test" depends="compile-tests" description="Runs all tests">
+    <junit haltonfailure="false">
+      <classpath>
+      	<pathelement location="${build.dir}/classes/jvyaml"/>
+      	<pathelement location="${build.dir}/test"/>
+      </classpath>
+      <formatter type="brief" usefile="false"/>
+      <batchtest>
+        <fileset dir="${src.dir}/test">
+          <include name="**/*Test.java"/>
+        </fileset>
+      </batchtest>
+    </junit>
+  </target>
+
+  <target name="jar" depends="test" description="Create the jvyaml.jar file">
     <jar destfile="${lib.dir}/jvyaml.jar">
       <fileset dir="${jvyaml.classes.dir}">
         <include name="**/*.class"/>

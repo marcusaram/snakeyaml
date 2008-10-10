@@ -19,7 +19,7 @@
  * SOFTWARE.
  */
 /**
- * $Id: ParserImpl.java,v 1.1 2006/06/06 19:19:12 olabini Exp $
+ * $Id: ParserImpl.java,v 1.2 2006/09/24 16:32:34 olabini Exp $
  */
 package org.jvyaml;
 
@@ -37,7 +37,7 @@ import org.jvyaml.tokens.*;
 
 /**
  * @author <a href="mailto:ola.bini@ki.se">Ola Bini</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class ParserImpl implements Parser {
     // Memnonics for the production table
@@ -100,12 +100,16 @@ public class ParserImpl implements Parser {
         private List anchors;
         private Map tagHandles;
         private int[] yamlVersion;
+        private int[] defaultYamlVersion;
 
-        public ProductionEnvironment() {
+        public ProductionEnvironment(final YAMLConfig cfg) {
             this.tags = new LinkedList();
             this.anchors = new LinkedList();
             this.tagHandles = new HashMap();
             this.yamlVersion = null;
+            this.defaultYamlVersion = new int[2];
+            this.defaultYamlVersion[0] = Integer.parseInt(cfg.version().substring(0,cfg.version().indexOf('.')));
+            this.defaultYamlVersion[1] = Integer.parseInt(cfg.version().substring(cfg.version().indexOf('.')+1));
         }
 
         public List getTags() {
@@ -124,6 +128,13 @@ public class ParserImpl implements Parser {
             return this.yamlVersion;
         }
 
+        public int[] getFinalYamlVersion() {
+            if(null == this.yamlVersion) {
+                return this.defaultYamlVersion;
+            }
+            return this.yamlVersion;
+        }
+
         public void setYamlVersion(final int[] yamlVersion) {
             this.yamlVersion = yamlVersion;
         }
@@ -135,10 +146,13 @@ public class ParserImpl implements Parser {
 
     private final static Production[] P_TABLE = new Production[46];
 
-    private final static Map DEFAULT_TAGS = new HashMap();
+    private final static Map DEFAULT_TAGS_1_0 = new HashMap();
+    private final static Map DEFAULT_TAGS_1_1 = new HashMap();
     static {
-        DEFAULT_TAGS.put("!","!");
-        DEFAULT_TAGS.put("!!","tag:yaml.org,2002:");
+        DEFAULT_TAGS_1_0.put("!","tag:yaml.org,2002:");
+
+        DEFAULT_TAGS_1_1.put("!","!");
+        DEFAULT_TAGS_1_1.put("!!","tag:yaml.org,2002:");
     }
 
     static {
@@ -679,23 +693,32 @@ public class ParserImpl implements Parser {
             }
         }
         Object[] value = new Object[2];
-        value[0] = env.getYamlVersion();
+        value[0] = env.getFinalYamlVersion();
+
         if(!env.getTagHandles().isEmpty()) {
             value[1] = new HashMap(env.getTagHandles());
         }
-        for(final Iterator iter = DEFAULT_TAGS.keySet().iterator();iter.hasNext();) {
+
+        final Map baseTags = ((int[])value[0])[1] == 0 ? DEFAULT_TAGS_1_0 : DEFAULT_TAGS_1_1;
+        for(final Iterator iter = baseTags.keySet().iterator();iter.hasNext();) {
             final Object key = iter.next();
             if(!env.getTagHandles().containsKey(key)) {
-                env.getTagHandles().put(key,DEFAULT_TAGS.get(key));
+                env.getTagHandles().put(key,baseTags.get(key));
             }
         }
         return value;
     }
 
     private Scanner scanner = null;
+    private YAMLConfig cfg = null;
 
     public ParserImpl(final Scanner scanner) {
+        this(scanner, YAML.config());
+    }
+
+    public ParserImpl(final Scanner scanner, final YAMLConfig cfg) {
         this.scanner = scanner;
+        this.cfg = cfg;
     }
 
     private Event currentEvent = null;
@@ -764,7 +787,7 @@ public class ParserImpl implements Parser {
         if(null == parseStack) {
             this.parseStack = new LinkedList();
             this.parseStack.add(0,P_TABLE[P_STREAM]);
-            this.pEnv = new ProductionEnvironment();
+            this.pEnv = new ProductionEnvironment(cfg);
         }
     }
 

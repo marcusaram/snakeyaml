@@ -19,18 +19,22 @@
  * SOFTWARE.
  */
 /**
- * $Id: DocumentEndEvent.java,v 1.1 2006/06/06 19:19:15 olabini Exp $
+ * $Id: DocumentEndEvent.java,v 1.2 2006/06/19 06:05:13 olabini Exp $
  */
 package org.jvyaml.events;
 
 /**
  * @author <a href="mailto:ola.bini@ki.se">Ola Bini</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class DocumentEndEvent extends Event {
     private boolean explicit;
 
     public DocumentEndEvent(final boolean explicit) {
         this.explicit = explicit;
+    }
+
+    public boolean getExplicit() {
+        return explicit;
     }
 }// DocumentEndEvent

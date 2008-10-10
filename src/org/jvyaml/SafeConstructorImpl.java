@@ -19,7 +19,7 @@
  * SOFTWARE.
  */
 /**
- * $Id: SafeConstructorImpl.java,v 1.1 2006/06/06 19:19:13 olabini Exp $
+ * $Id: SafeConstructorImpl.java,v 1.3 2006/09/24 16:32:35 olabini Exp $
  */
 package org.jvyaml;
 
@@ -40,7 +40,7 @@ import org.jvyaml.util.Base64Coder;
 
 /**
  * @author <a href="mailto:ola.bini@ki.se">Ola Bini</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.3 $
  */
 public class SafeConstructorImpl extends BaseConstructorImpl {
     private final static Map yamlConstructors = new HashMap();
@@ -91,8 +91,8 @@ public class SafeConstructorImpl extends BaseConstructorImpl {
 
     private final static Map BOOL_VALUES = new HashMap();
     static {
-        BOOL_VALUES.put("y",Boolean.TRUE);
-        BOOL_VALUES.put("n",Boolean.FALSE);
+        //        BOOL_VALUES.put("y",Boolean.TRUE);
+        //        BOOL_VALUES.put("n",Boolean.FALSE);
         BOOL_VALUES.put("yes",Boolean.TRUE);
         BOOL_VALUES.put("no",Boolean.FALSE);
         BOOL_VALUES.put("true",Boolean.TRUE);
@@ -140,8 +140,27 @@ public class SafeConstructorImpl extends BaseConstructorImpl {
     }
 
     private final static Pattern TIMESTAMP_REGEXP = Pattern.compile("^([0-9][0-9][0-9][0-9])-([0-9][0-9]?)-([0-9][0-9]?)(?:(?:[Tt]|[ \t]+)([0-9][0-9]?):([0-9][0-9]):([0-9][0-9])(?:\\.([0-9]*))?(?:[ \t]*(?:Z|([-+][0-9][0-9]?)(?::([0-9][0-9])?)?))?)?$");
+    private final static Pattern YMD_REGEXP = Pattern.compile("^([0-9][0-9][0-9][0-9])-([0-9][0-9]?)-([0-9][0-9]?)$");
     public static Object constructYamlTimestamp(final Constructor ctor, final Node node) {
-        final Matcher match = TIMESTAMP_REGEXP.matcher((String)node.getValue());
+        Matcher match = YMD_REGEXP.matcher((String)node.getValue());
+        if(match.matches()) {
+            final String year_s = match.group(1);
+            final String month_s = match.group(2);
+            final String day_s = match.group(3);
+            final Calendar cal = Calendar.getInstance();
+            cal.clear();
+            if(year_s != null) {
+                cal.set(Calendar.YEAR,Integer.parseInt(year_s));
+            }
+            if(month_s != null) {
+                cal.set(Calendar.MONTH,Integer.parseInt(month_s)-1); // Java's months are zero-based...
+            }
+            if(day_s != null) {
+                cal.set(Calendar.DAY_OF_MONTH,Integer.parseInt(day_s));
+            }
+            return cal.getTime();
+        }
+        match = TIMESTAMP_REGEXP.matcher((String)node.getValue());
         if(!match.matches()) {
             return ctor.constructPrivateType(node);
         }
@@ -169,7 +188,7 @@ public class SafeConstructorImpl extends BaseConstructorImpl {
             cal.set(Calendar.YEAR,Integer.parseInt(year_s));
         }
         if(month_s != null) {
-            cal.set(Calendar.MONTH,Integer.parseInt(month_s));
+            cal.set(Calendar.MONTH,Integer.parseInt(month_s)-1); // Java's months are zero-based...
         }
         if(day_s != null) {
             cal.set(Calendar.DAY_OF_MONTH,Integer.parseInt(day_s));
@@ -280,8 +299,76 @@ public class SafeConstructorImpl extends BaseConstructorImpl {
         return Base64Coder.decode(vals.toString());
     }
 
+    public static Object constructSpecializedSequence(final Constructor ctor, final String pref, final Node node) {
+        List outp = null;
+        try {
+            final Class seqClass = Class.forName(pref);
+            outp = (List)seqClass.newInstance();
+        } catch(final Exception e) {
+            throw new YAMLException("Can't construct a sequence from class " + pref + ": " + e.toString());
+        }
+        outp.addAll((List)ctor.constructSequence(node));
+        return outp;
+    }
+
+    public static Object constructSpecializedMap(final Constructor ctor, final String pref, final Node node) {
+        Map outp = null;
+        try {
+            final Class mapClass = Class.forName(pref);
+            outp = (Map)mapClass.newInstance();
+        } catch(final Exception e) {
+            throw new YAMLException("Can't construct a mapping from class " + pref + ": " + e.toString());
+        }
+        outp.putAll((Map)ctor.constructMapping(node));
+        return outp;
+    }
+
+    private static Object fixValue(final Object inp, final Class outp) {
+        if(inp == null) {
+            return null;
+        }
+        final Class inClass = inp.getClass();
+        if(outp.isAssignableFrom(inClass)) {
+            return inp;
+        }
+        if(inClass == Long.class && (outp == Integer.class || outp == Integer.TYPE)) {
+            return new Integer(((Long)inp).intValue());
+        }
+        if(inClass == Long.class && (outp == Short.class || outp == Short.TYPE)) {
+            return new Short((short)((Long)inp).intValue());
+        }
+        if(inClass == Long.class && (outp == Character.class || outp == Character.TYPE)) {
+            return new Character((char)((Long)inp).intValue());
+        }
+        if(inClass == Double.class && (outp == Float.class || outp == Float.TYPE)) {
+            return new Float(((Double)inp).floatValue());
+        }
+        return inp;
+    }
+
     public static Object constructJava(final Constructor ctor, final String pref, final Node node) {
-        throw new YAMLException("Sorry, I can't construct Java objects right now, for: " + pref);
+        Object outp = null;
+        try {
+            final Class cl = Class.forName(pref);
+            outp = cl.newInstance();
+            final Map values = (Map)ctor.constructMapping(node);
+            java.lang.reflect.Method[] ems = cl.getMethods();
+            for(final Iterator iter = values.keySet().iterator();iter.hasNext();) {
+                final Object key = iter.next();
+                final Object value = values.get(key);
+                final String keyName = key.toString();
+                final String mName = "set" + Character.toUpperCase(keyName.charAt(0)) + keyName.substring(1);
+                for(int i=0,j=ems.length;i<j;i++) {
+                    if(ems[i].getName().equals(mName) && ems[i].getParameterTypes().length == 1) {
+                        ems[i].invoke(outp, new Object[]{fixValue(value, ems[i].getParameterTypes()[0])});
+                        break;
+                    }
+                }
+            }
+        } catch(final Exception e) {
+            throw new YAMLException("Can't construct a java object from class " + pref + ": " + e.toString());
+        }
+        return outp;
     }
 
     static {
@@ -325,6 +412,11 @@ public class SafeConstructorImpl extends BaseConstructorImpl {
                     return constructYamlTimestamp(self,node);
                 }
             });
+        addConstructor("tag:yaml.org,2002:timestamp#ymd",new YamlConstructor() {
+                public Object call(final Constructor self, final Node node) {
+                    return constructYamlTimestamp(self,node);
+                }
+            });
         addConstructor("tag:yaml.org,2002:str",new YamlConstructor() {
                 public Object call(final Constructor self, final Node node) {
                     return constructYamlStr(self,node);
@@ -351,6 +443,16 @@ public class SafeConstructorImpl extends BaseConstructorImpl {
                 }
             });
 
+        addMultiConstructor("tag:yaml.org,2002:seq:",new YamlMultiConstructor() {
+                public Object call(final Constructor self, final String pref, final Node node) {
+                    return constructSpecializedSequence(self,pref,node);
+                }
+            });
+        addMultiConstructor("tag:yaml.org,2002:map:",new YamlMultiConstructor() {
+                public Object call(final Constructor self, final String pref, final Node node) {
+                    return constructSpecializedMap(self,pref,node);
+                }
+            });
         addMultiConstructor("!java/object:",new YamlMultiConstructor() {
                 public Object call(final Constructor self, final String pref, final Node node) {
                     return constructJava(self,pref,node);

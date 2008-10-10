@@ -19,7 +19,7 @@
  * SOFTWARE.
  */
 /**
- * $Id: DocumentStartEvent.java,v 1.1 2006/06/06 19:19:15 olabini Exp $
+ * $Id: DocumentStartEvent.java,v 1.2 2006/06/19 06:05:13 olabini Exp $
  */
 package org.jvyaml.events;
 
@@ -27,7 +27,7 @@ import java.util.Map;
 
 /**
  * @author <a href="mailto:ola.bini@ki.se">Ola Bini</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class DocumentStartEvent extends Event {
     private boolean explicit;
@@ -38,5 +38,17 @@ public class DocumentStartEvent extends Event {
         this.explicit = explicit;
         this.version = version;
         this.tags = tags;
+    }
+
+    public boolean getExplicit() {
+        return explicit;
+    }
+
+    public int[] getVersion() {
+        return version;
+    }
+
+    public Map getTags() {
+        return tags;
     }
 }// DocumentStartEvent

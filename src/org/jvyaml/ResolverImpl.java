@@ -19,7 +19,7 @@
  * SOFTWARE.
  */
 /**
- * $Id: ResolverImpl.java,v 1.1 2006/06/06 19:19:12 olabini Exp $
+ * $Id: ResolverImpl.java,v 1.2 2006/06/10 12:33:35 olabini Exp $
  */
 package org.jvyaml;
 
@@ -39,7 +39,7 @@ import org.jvyaml.nodes.SequenceNode;
 
 /**
  * @author <a href="mailto:ola.bini@ki.se">Ola Bini</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class ResolverImpl implements Resolver {
     private final static Map yamlImplicitResolvers = new HashMap();
@@ -228,11 +228,11 @@ public class ResolverImpl implements Resolver {
     } 
 
     static {
-        addImplicitResolver("tag:yaml.org,2002:bool",Pattern.compile("^(?:y|Y|yes|Yes|YES|n|N|no|No|NO|true|True|TRUE|false|False|FALSE|on|On|ON|off|Off|OFF)$"),"yYnNtTfFoO");
+        addImplicitResolver("tag:yaml.org,2002:bool",Pattern.compile("^(?:yes|Yes|YES|no|No|NO|true|True|TRUE|false|False|FALSE|on|On|ON|off|Off|OFF)$"),"yYnNtTfFoO");
         addImplicitResolver("tag:yaml.org,2002:float",Pattern.compile("^(?:[-+]?(?:[0-9][0-9_]*)\\.[0-9_]*(?:[eE][-+][0-9]+)?|[-+]?(?:[0-9][0-9_]*)?\\.[0-9_]+(?:[eE][-+][0-9]+)?|[-+]?[0-9][0-9_]*(?::[0-5]?[0-9])+\\.[0-9_]*|[-+]?\\.(?:inf|Inf|INF)|\\.(?:nan|NaN|NAN))$"),"-+0123456789.");
         addImplicitResolver("tag:yaml.org,2002:int",Pattern.compile("^(?:[-+]?0b[0-1_]+|[-+]?0[0-7_]+|[-+]?(?:0|[1-9][0-9_]*)|[-+]?0x[0-9a-fA-F_]+|[-+]?[1-9][0-9_]*(?::[0-5]?[0-9])+)$"),"-+0123456789");
         addImplicitResolver("tag:yaml.org,2002:merge",Pattern.compile("^(?:<<)$"),"<");
-        addImplicitResolver("tag:yaml.org,2002:null",Pattern.compile("^(?: ~|null|Null|NULL| )$"),"~nN\0");
+        addImplicitResolver("tag:yaml.org,2002:null",Pattern.compile("^(?:~|null|Null|NULL| )$"),"~nN\0");
         addImplicitResolver("tag:yaml.org,2002:timestamp",Pattern.compile("^(?:[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]|[0-9][0-9][0-9][0-9]-[0-9][0-9]?-[0-9][0-9]?(?:[Tt]|[ \t]+)[0-9][0-9]?:[0-9][0-9]:[0-9][0-9](?:\\.[0-9]*)?(?:[ \t]*(?:Z|[-+][0-9][0-9]?(?::[0-9][0-9])?))?)$"),"0123456789");
         addImplicitResolver("tag:yaml.org,2002:value",Pattern.compile("^(?:=)$"),"=");
       // The following implicit resolver is only for documentation purposes. It cannot work

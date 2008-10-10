@@ -19,18 +19,22 @@
  * SOFTWARE.
  */
 /**
- * $Id: ScalarNode.java,v 1.1 2006/06/06 19:19:17 olabini Exp $
+ * $Id: ScalarNode.java,v 1.2 2006/08/18 15:51:47 olabini Exp $
  */
 package org.jvyaml.nodes;
 
 /**
  * @author <a href="mailto:ola.bini@ki.se">Ola Bini</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class ScalarNode extends Node {
     private char style;
     public ScalarNode(final String tag, final String value, final char style) {
         super(tag,value);
         this.style = style;
+    }
+
+    public char getStyle() {
+        return style;
     }
 }// ScalarNode

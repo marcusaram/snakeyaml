@@ -19,7 +19,7 @@
  * SOFTWARE.
  */
 /**
- * $Id: BaseConstructorImpl.java,v 1.1 2006/06/06 19:19:10 olabini Exp $
+ * $Id: BaseConstructorImpl.java,v 1.2 2006/09/23 21:43:30 olabini Exp $
  */
 package org.jvyaml;
 
@@ -40,7 +40,7 @@ import org.jvyaml.nodes.MappingNode;
 
 /**
  * @author <a href="mailto:ola.bini@ki.se">Ola Bini</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class BaseConstructorImpl implements Constructor {
     private final static Map yamlConstructors = new HashMap();
@@ -85,7 +85,10 @@ public class BaseConstructorImpl implements Constructor {
 
     public Object getData() {
         if(composer.checkNode()) {
-            return constructDocument(composer.getNode());
+            Node node = composer.getNode();
+            if(null != node) {
+                return constructDocument(node);
+            }
         }
         return null;
     }

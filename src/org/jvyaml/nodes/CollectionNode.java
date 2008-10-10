@@ -19,18 +19,22 @@
  * SOFTWARE.
  */
 /**
- * $Id: CollectionNode.java,v 1.1 2006/06/06 19:19:17 olabini Exp $
+ * $Id: CollectionNode.java,v 1.2 2006/08/18 15:51:47 olabini Exp $
  */
 package org.jvyaml.nodes;
 
 /**
  * @author <a href="mailto:ola.bini@ki.se">Ola Bini</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class CollectionNode extends Node {
     private boolean flowStyle;
     public CollectionNode(final String tag, final Object value, final boolean flowStyle) {
         super(tag,value);
         this.flowStyle = flowStyle;
+    }
+
+    public boolean getFlowStyle() {
+        return flowStyle;
     }
 }// CollectionNode

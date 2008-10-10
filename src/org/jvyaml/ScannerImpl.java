@@ -19,7 +19,7 @@
  * SOFTWARE.
  */
 /**
- * $Id: ScannerImpl.java,v 1.1 2006/06/06 19:19:13 olabini Exp $
+ * $Id: ScannerImpl.java,v 1.5 2006/09/23 21:43:30 olabini Exp $
  */
 package org.jvyaml;
 
@@ -46,7 +46,7 @@ import org.jvyaml.tokens.*;
  * <p>A Java implementation of the RbYAML scanner.</p>
  *
  * @author <a href="mailto:ola.bini@ki.se">Ola Bini</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.5 $
  */
 public class ScannerImpl implements Scanner {
     private final static String LINEBR = "\n\u0085\u2028\u2029";
@@ -58,7 +58,7 @@ public class ScannerImpl implements Scanner {
     private final static String BLANK_OR_LINEBR = " \r\n\u0085";
     private final static String S4 = "\0 \t\r\n\u0028[]{}";    
     private final static String ALPHA = "abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ-_";
-    private final static String STRANGE_CHAR = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ][-';/?:@&=+$,.!~*()%";
+    private final static String STRANGE_CHAR = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789][-';/?:@&=+$,.!~*()%";
     private final static String RN = "\r\n";
     private final static String BLANK_T = " \t";
     private final static String SPACES_AND_STUFF = "'\"\\\0 \t\r\n\u0085";
@@ -115,6 +115,8 @@ public class ScannerImpl implements Scanner {
     private List tokens;
     private List indents;
     private Map possibleSimpleKeys;
+
+    private boolean docStart = false;
 
     public ScannerImpl(final Reader stream) {
         this.stream = stream;
@@ -327,9 +329,9 @@ public class ScannerImpl implements Scanner {
         case '"': return fetchDouble();
         case '?': if(this.flowLevel != 0 || NULL_OR_OTHER.indexOf(peek(1)) != -1) { return fetchKey(); } break;
         case ':': if(this.flowLevel != 0 || NULL_OR_OTHER.indexOf(peek(1)) != -1) { return fetchValue(); } break;
-        case '%': if(colz) {return fetchStreamEnd(); } break;
+        case '%': if(colz) {return fetchDirective(); } break;
         case '-': 
-            if(colz && ENDING.matcher(prefix(4)).matches()) {
+            if((colz || docStart) && ENDING.matcher(prefix(4)).matches()) {
                 return fetchDocumentStart(); 
             } else if(NULL_OR_OTHER.indexOf(peek(1)) != -1) {
                 return fetchBlockEntry(); 
@@ -394,6 +396,7 @@ public class ScannerImpl implements Scanner {
     }
 
     private Token fetchStreamStart() {
+        this.docStart = true;
         this.tokens.add(Token.STREAM_START);
         return Token.STREAM_START;
     }
@@ -416,6 +419,7 @@ public class ScannerImpl implements Scanner {
     }
     
     private Token fetchDocumentStart() {
+        this.docStart = false;
         return fetchDocumentIndicator(Token.DOCUMENT_START);
     }
 
@@ -1098,7 +1102,11 @@ public class ScannerImpl implements Scanner {
                     }
                 }
             }            
-            chunks.append(lineBreak);
+            if(!lineBreak.equals("\n")) {
+                chunks.append(lineBreak);
+            } else if(breaks == null || breaks.toString().equals("")) {
+                chunks.append(" ");
+            }
             chunks.append(breaks);
         } else {
             chunks.append(whitespaces);

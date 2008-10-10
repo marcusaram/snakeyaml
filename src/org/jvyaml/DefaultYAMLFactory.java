@@ -20,15 +20,16 @@
  * SOFTWARE.
  */ 
 /**
- * $Id: DefaultYAMLFactory.java,v 1.1 2006/06/06 19:19:11 olabini Exp $
+ * $Id: DefaultYAMLFactory.java,v 1.2 2006/09/24 16:32:34 olabini Exp $
  */
 package org.jvyaml;
 
 import java.io.Reader;
+import java.io.Writer;
 
 /**
  * @author <a href="mailto:ola.bini@ki.se">Ola Bini</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class DefaultYAMLFactory implements YAMLFactory {
     public Scanner createScanner(final String io) {
@@ -40,6 +41,9 @@ public class DefaultYAMLFactory implements YAMLFactory {
     public Parser createParser(final Scanner scanner) {
         return new ParserImpl(scanner);
     }
+    public Parser createParser(final Scanner scanner, final YAMLConfig cfg) {
+        return new ParserImpl(scanner,cfg);
+    }
     public Resolver createResolver() {
         return new ResolverImpl();
     }
@@ -48,5 +52,14 @@ public class DefaultYAMLFactory implements YAMLFactory {
     }
     public Constructor createConstructor(final Composer composer) {
         return new ConstructorImpl(composer);
+    }
+    public Emitter createEmitter(final Writer output, final YAMLConfig cfg) {
+        return new EmitterImpl(output,cfg);
+    }
+    public Serializer createSerializer(final Emitter emitter, final Resolver resolver, final YAMLConfig cfg) {
+        return new SerializerImpl(emitter,resolver,cfg);
+    }
+    public Representer createRepresenter(final Serializer serializer, final YAMLConfig cfg) {
+        return new RepresenterImpl(serializer,cfg);
     }
 }// DefaultYAMLFactory

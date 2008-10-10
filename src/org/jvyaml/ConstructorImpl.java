@@ -19,7 +19,7 @@
  * SOFTWARE.
  */
 /**
- * $Id: ConstructorImpl.java,v 1.1 2006/06/06 19:19:11 olabini Exp $
+ * $Id: ConstructorImpl.java,v 1.2 2006/08/18 15:51:46 olabini Exp $
  */
 package org.jvyaml;
 
@@ -33,7 +33,7 @@ import java.util.regex.Pattern;;
 
 /**
  * @author <a href="mailto:ola.bini@ki.se">Ola Bini</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class ConstructorImpl extends SafeConstructorImpl {
     private final static Map yamlConstructors = new HashMap();
@@ -103,7 +103,7 @@ public class ConstructorImpl extends SafeConstructorImpl {
         for(int i=0;i<1;i++) {
             final Constructor ctor = new ConstructorImpl(new ComposerImpl(new ParserImpl(new ScannerImpl(str)),new ResolverImpl()));
             for(final Iterator iter = ctor.eachDocument();iter.hasNext();iter.next()) {
-                //                System.out.println(iter.next());
+                                System.out.println(iter.next());
             }
         }
         final long after = System.currentTimeMillis();
