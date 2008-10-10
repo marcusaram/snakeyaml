@@ -20,7 +20,7 @@
  * SOFTWARE.
  */
 /**
- * $Id: SerializerImpl.java,v 1.2 2006/09/24 16:32:35 olabini Exp $
+ * $Id: SerializerImpl.java,v 1.3 2006/09/30 14:13:35 olabini Exp $
  */
 package org.jvyaml;
 
@@ -54,7 +54,7 @@ import org.jvyaml.nodes.SequenceNode;
 
 /**
  * @author <a href="mailto:ola.bini@ki.se">Ola Bini</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class SerializerImpl implements Serializer {
     private Emitter emitter;
@@ -96,6 +96,10 @@ public class SerializerImpl implements Serializer {
         this.opened = false;
     }
 
+    protected boolean ignoreAnchor(final Node node) {
+        return false;
+    }
+
     public void open() throws IOException {
         if(!closed && !opened) {
             this.emitter.emit(new StreamStartEvent());
@@ -133,24 +137,26 @@ public class SerializerImpl implements Serializer {
     }
 
     private void anchorNode(final Node node) {
-        if(this.anchors.containsKey(node)) {
-            String anchor = (String)this.anchors.get(node);
-            if(null == anchor) {
-                anchor = generateAnchor(node);
-                this.anchors.put(node,anchor);
-            }
-        } else {
-            this.anchors.put(node,null);
-            if(node instanceof SequenceNode) {
-                for(final Iterator iter = ((List)node.getValue()).iterator();iter.hasNext();) {
-                    anchorNode((Node)iter.next());
+        if(!ignoreAnchor(node)) {
+            if(this.anchors.containsKey(node)) {
+                String anchor = (String)this.anchors.get(node);
+                if(null == anchor) {
+                    anchor = generateAnchor(node);
+                    this.anchors.put(node,anchor);
                 }
-            } else if(node instanceof MappingNode) {
-                final Map value = (Map)node.getValue();
-                for(final Iterator iter = value.keySet().iterator();iter.hasNext();) {
-                    final Node key = (Node)iter.next();
-                    anchorNode(key);
-                    anchorNode((Node)value.get(key));
+            } else {
+                this.anchors.put(node,null);
+                if(node instanceof SequenceNode) {
+                    for(final Iterator iter = ((List)node.getValue()).iterator();iter.hasNext();) {
+                        anchorNode((Node)iter.next());
+                    }
+                } else if(node instanceof MappingNode) {
+                    final Map value = (Map)node.getValue();
+                    for(final Iterator iter = value.keySet().iterator();iter.hasNext();) {
+                        final Node key = (Node)iter.next();
+                        anchorNode(key);
+                        anchorNode((Node)value.get(key));
+                    }
                 }
             }
         }
@@ -163,7 +169,7 @@ public class SerializerImpl implements Serializer {
 
     private void serializeNode(final Node node, final Node parent, final Object index) throws IOException {
         final String tAlias = (String)this.anchors.get(node);
-        if(this.serializedNodes.contains(node)) {
+        if(this.serializedNodes.contains(node) && tAlias != null) {
             this.emitter.emit(new AliasEvent(tAlias));
         } else {
             this.serializedNodes.add(node);

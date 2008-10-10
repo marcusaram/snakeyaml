@@ -19,7 +19,7 @@
  * SOFTWARE.
  */
 /**
- * $Id: ResolverImpl.java,v 1.2 2006/06/10 12:33:35 olabini Exp $
+ * $Id: ResolverImpl.java,v 1.3 2006/09/30 14:13:35 olabini Exp $
  */
 package org.jvyaml;
 
@@ -39,7 +39,7 @@ import org.jvyaml.nodes.SequenceNode;
 
 /**
  * @author <a href="mailto:ola.bini@ki.se">Ola Bini</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class ResolverImpl implements Resolver {
     private final static Map yamlImplicitResolvers = new HashMap();
@@ -49,16 +49,25 @@ public class ResolverImpl implements Resolver {
     private List resolverPrefixPaths = new LinkedList();
 
     public static void addImplicitResolver(final String tag, final Pattern regexp, final String first) {
-        final String firstVal = (null == first)?"":first;
-        final char[] chrs = firstVal.toCharArray();
-        for(int i=0,j=chrs.length;i<j;i++) {
-            final Character theC = new Character(chrs[i]);
-            List curr = (List)yamlImplicitResolvers.get(theC);
+        final String firstVal = first;
+        if(firstVal == null || "".equals("firstVal")) {
+            List curr = (List)yamlImplicitResolvers.get("");
             if(curr == null) {
                 curr = new LinkedList();
-                yamlImplicitResolvers.put(theC,curr);
+                yamlImplicitResolvers.put("",curr);
             }
             curr.add(new Object[]{tag,regexp});
+        } else {
+            final char[] chrs = firstVal.toCharArray();
+            for(int i=0,j=chrs.length;i<j;i++) {
+                final Character theC = new Character(chrs[i]);
+                List curr = (List)yamlImplicitResolvers.get(theC);
+                if(curr == null) {
+                    curr = new LinkedList();
+                    yamlImplicitResolvers.put(theC,curr);
+                }
+                curr.add(new Object[]{tag,regexp});
+            }
         }
     }
 
@@ -233,6 +242,7 @@ public class ResolverImpl implements Resolver {
         addImplicitResolver("tag:yaml.org,2002:int",Pattern.compile("^(?:[-+]?0b[0-1_]+|[-+]?0[0-7_]+|[-+]?(?:0|[1-9][0-9_]*)|[-+]?0x[0-9a-fA-F_]+|[-+]?[1-9][0-9_]*(?::[0-5]?[0-9])+)$"),"-+0123456789");
         addImplicitResolver("tag:yaml.org,2002:merge",Pattern.compile("^(?:<<)$"),"<");
         addImplicitResolver("tag:yaml.org,2002:null",Pattern.compile("^(?:~|null|Null|NULL| )$"),"~nN\0");
+        addImplicitResolver("tag:yaml.org,2002:null",Pattern.compile("^$"),null);
         addImplicitResolver("tag:yaml.org,2002:timestamp",Pattern.compile("^(?:[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]|[0-9][0-9][0-9][0-9]-[0-9][0-9]?-[0-9][0-9]?(?:[Tt]|[ \t]+)[0-9][0-9]?:[0-9][0-9]:[0-9][0-9](?:\\.[0-9]*)?(?:[ \t]*(?:Z|[-+][0-9][0-9]?(?::[0-9][0-9])?))?)$"),"0123456789");
         addImplicitResolver("tag:yaml.org,2002:value",Pattern.compile("^(?:=)$"),"=");
       // The following implicit resolver is only for documentation purposes. It cannot work

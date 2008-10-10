@@ -19,7 +19,7 @@
  * SOFTWARE.
  */
 /**
- * $Id: SafeConstructorImpl.java,v 1.3 2006/09/24 16:32:35 olabini Exp $
+ * $Id: SafeConstructorImpl.java,v 1.4 2006/09/30 14:13:35 olabini Exp $
  */
 package org.jvyaml;
 
@@ -40,7 +40,7 @@ import org.jvyaml.util.Base64Coder;
 
 /**
  * @author <a href="mailto:ola.bini@ki.se">Ola Bini</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class SafeConstructorImpl extends BaseConstructorImpl {
     private final static Map yamlConstructors = new HashMap();
@@ -294,7 +294,7 @@ public class SafeConstructorImpl extends BaseConstructorImpl {
         final String[] values = ctor.constructScalar(node).toString().split("[\n\u0085]|(?:\r[^\n])");
         final StringBuffer vals = new StringBuffer();
         for(int i=0,j=values.length;i<j;i++) {
-            vals.append(values[i]);
+            vals.append(values[i].trim());
         }
         return Base64Coder.decode(vals.toString());
     }

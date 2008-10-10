@@ -20,7 +20,7 @@
  * SOFTWARE.
  */
 /**
- * $Id: EmitterImpl.java,v 1.4 2006/09/24 16:32:34 olabini Exp $
+ * $Id: EmitterImpl.java,v 1.5 2006/09/30 14:13:35 olabini Exp $
  */
 package org.jvyaml;
 
@@ -56,7 +56,7 @@ import org.jvyaml.events.NodeEvent;
 
 /**
  * @author <a href="mailto:ola.bini@ki.se">Ola Bini</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class EmitterImpl implements Emitter {
     private static class ScalarAnalysis {
@@ -279,6 +279,8 @@ public class EmitterImpl implements Emitter {
 
         public String bestLineBreak = "\n";
 
+        public boolean isVersion10 = false;
+
         public boolean needMoreEvents() {
             if(events.isEmpty()) {
                 return true;
@@ -350,6 +352,7 @@ public class EmitterImpl implements Emitter {
                     }
 
                     if((null != ev.getVersion() && ev.getVersion()[1] == 0) || emitter.getOptions().version().equals("1.0")) {
+                        isVersion10 = true;
                         tagPrefixes = new HashMap(DEFAULT_TAG_PREFIXES_1_0);
                     } else {
                         tagPrefixes = new HashMap(DEFAULT_TAG_PREFIXES_1_1);
@@ -1199,6 +1202,9 @@ public class EmitterImpl implements Emitter {
             chunks.append(suffix.substring(start,ending));
         }
         String suffixText = chunks.toString();
+        if(tag.charAt(0) == '!' && env.isVersion10) {
+            return tag;
+        }
         if(handle != null) {
             return handle + suffixText;
         } else {
