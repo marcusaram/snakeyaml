@@ -1,7 +1,5 @@
-
-syntax: regexp
-^bin$
-syntax: regexp
-^build$
-syntax: regexp
-^lib$
+syntax: glob
+bin/*
+target/*
+.settings/*
+lib/*
