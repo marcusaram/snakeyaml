@@ -1,3 +1,6 @@
+/*
+ * See LICENSE file in distribution for copyright and licensing information.
+ */
 package net.sourceforge.yamlbeans.specification;
 
 import java.util.List;
