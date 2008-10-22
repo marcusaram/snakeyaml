@@ -1,7 +1,7 @@
 /*
  * See LICENSE file in distribution for copyright and licensing information.
  */
-package org.yaml.jyyaml;
+package org.yaml.snakeyaml;
 
 import java.util.List;
 import java.util.Map;

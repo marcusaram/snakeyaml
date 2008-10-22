@@ -1,7 +1,7 @@
 /*
  * See LICENSE file in distribution for copyright and licensing information.
  */
-package org.yaml.jyyaml;
+package org.yaml.snakeyaml;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;

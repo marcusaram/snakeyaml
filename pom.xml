@@ -1,12 +1,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>yamlport</groupId>
-	<artifactId>yamlport</artifactId>
+	<groupId>SnakeYAML</groupId>
+	<artifactId>SnakeYAML</artifactId>
 	<version>0.3-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>YAML 1.1 parser and emitter</name>
-	<description>Port of PyYAML without any dependencies</description>
+	<description>Port of PyYAML to Java without any dependencies</description>
 	<inceptionYear>2008</inceptionYear>
 	<url>http://yaml.org/</url>
 	<licenses>
