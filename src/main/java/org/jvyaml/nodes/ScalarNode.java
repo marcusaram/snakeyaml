@@ -8,8 +8,9 @@ package org.jvyaml.nodes;
  */
 public class ScalarNode extends Node {
     private char style;
+
     public ScalarNode(final String tag, final String value, final char style) {
-        super(tag,value);
+        super(tag, value);
         this.style = style;
     }
 

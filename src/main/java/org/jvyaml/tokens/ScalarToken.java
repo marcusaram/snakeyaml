@@ -12,7 +12,7 @@ public class ScalarToken extends Token {
     private char style;
 
     public ScalarToken(final String value, final boolean plain) {
-        this(value,plain,(char)0);
+        this(value, plain, (char) 0);
     }
 
     public ScalarToken(final String value, final boolean plain, final char style) {

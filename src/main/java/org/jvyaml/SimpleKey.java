@@ -13,7 +13,8 @@ class SimpleKey {
     private int line;
     private int column;
 
-    public SimpleKey(final int tokenNumber, final boolean required, final int index, final int line, final int column) {
+    public SimpleKey(final int tokenNumber, final boolean required, final int index,
+            final int line, final int column) {
         this.tokenNumber = tokenNumber;
         this.required = required;
         this.index = index;

@@ -8,6 +8,7 @@ package org.jvyaml.events;
  */
 public abstract class NodeEvent extends Event {
     private String anchor;
+
     public NodeEvent(final String anchor) {
         this.anchor = anchor;
     }

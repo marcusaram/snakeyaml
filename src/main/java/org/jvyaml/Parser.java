@@ -12,10 +12,16 @@ import org.jvyaml.events.Event;
  */
 public interface Parser {
     boolean checkEvent(final Class[] choices);
+
     Event peekEvent();
+
     Event getEvent();
+
     Iterator eachEvent();
+
     Iterator iterator();
+
     void parseStream();
+
     Event parseStreamNext();
 }

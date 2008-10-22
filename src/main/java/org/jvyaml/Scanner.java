@@ -12,8 +12,12 @@ import org.jvyaml.tokens.Token;
  */
 public interface Scanner {
     boolean checkToken(final Class[] choices);
+
     Token peekToken();
+
     Token getToken();
+
     Iterator eachToken();
+
     Iterator iterator();
 }

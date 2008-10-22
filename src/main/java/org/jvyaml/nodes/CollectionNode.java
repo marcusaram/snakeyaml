@@ -8,8 +8,9 @@ package org.jvyaml.nodes;
  */
 public class CollectionNode extends Node {
     private boolean flowStyle;
+
     public CollectionNode(final String tag, final Object value, final boolean flowStyle) {
-        super(tag,value);
+        super(tag, value);
         this.flowStyle = flowStyle;
     }
 

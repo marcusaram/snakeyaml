@@ -12,7 +12,10 @@ import org.jvyaml.nodes.Node;
  */
 public interface Composer {
     boolean checkNode();
+
     Node getNode();
+
     Iterator eachNode();
+
     Iterator iterator();
 }

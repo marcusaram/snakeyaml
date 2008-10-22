@@ -12,12 +12,13 @@ public class AnchorToken extends Token {
     public AnchorToken() {
         super();
     }
+
     public AnchorToken(final String value) {
         this.value = value;
     }
 
     public void setValue(final Object value) {
-        this.value = (String)value;
+        this.value = (String) value;
     }
 
     public String getValue() {

@@ -21,16 +21,16 @@ public class ConstructorException extends YAMLException {
     public ConstructorException(final Throwable thr) {
         super(thr);
     }
-    
+
     public String toString() {
         final StringBuffer lines = new StringBuffer();
-        if(this.when != null) {
+        if (this.when != null) {
             lines.append(this.when).append("\n");
         }
-        if(this.what != null) {
+        if (this.what != null) {
             lines.append(this.what).append("\n");
         }
-        if(this.note != null) {
+        if (this.note != null) {
             lines.append(this.note).append("\n");
         }
         lines.append(super.toString());

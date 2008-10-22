@@ -6,6 +6,9 @@
 	<body>
 		<release version="0.3-SNAPSHOT" date="in Mercurial" description="Package as library">
 			<action dev="py4fun" type="update">
+                Reformat the source files (2008-10-22)
+            </action>
+            <action dev="py4fun" type="update">
                 Apply LICENSE info to source files (2008-10-22)
             </action>
             <action dev="py4fun" type="update">

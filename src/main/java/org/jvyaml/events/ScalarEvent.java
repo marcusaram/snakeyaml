@@ -12,7 +12,8 @@ public class ScalarEvent extends NodeEvent {
     private String value;
     private boolean[] implicit;
 
-    public ScalarEvent(final String anchor, final String tag, final boolean[] implicit, final String value, final char style) {
+    public ScalarEvent(final String anchor, final String tag, final boolean[] implicit,
+            final String value, final char style) {
         super(anchor);
         this.tag = tag;
         this.implicit = implicit;

@@ -11,7 +11,8 @@ public abstract class CollectionStartEvent extends NodeEvent {
     private boolean implicit;
     private boolean flowStyle;
 
-    public CollectionStartEvent(final String anchor, final String tag, final boolean implicit, final boolean flowStyle) {
+    public CollectionStartEvent(final String anchor, final String tag, final boolean implicit,
+            final boolean flowStyle) {
         super(anchor);
         this.tag = tag;
         this.implicit = implicit;

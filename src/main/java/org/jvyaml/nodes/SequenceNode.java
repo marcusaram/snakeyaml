@@ -10,6 +10,6 @@ import java.util.List;
  */
 public class SequenceNode extends CollectionNode {
     public SequenceNode(final String tag, final List value, final boolean flowStyle) {
-        super(tag,value,flowStyle);
+        super(tag, value, flowStyle);
     }
 }

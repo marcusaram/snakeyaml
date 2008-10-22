@@ -15,7 +15,10 @@ import org.jvyaml.nodes.Node;
  */
 public interface Representer {
     void represent(final Object data) throws IOException;
+
     Node scalar(final String tag, final String value, char style) throws IOException;
+
     Node seq(final String tag, final List sequence, final boolean flowStyle) throws IOException;
+
     Node map(final String tag, final Map mapping, final boolean flowStyle) throws IOException;
 }

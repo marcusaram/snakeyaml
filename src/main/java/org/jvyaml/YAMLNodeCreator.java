@@ -12,5 +12,6 @@ import org.jvyaml.nodes.Node;
  */
 public interface YAMLNodeCreator {
     String taguri();
+
     Node toYamlNode(Representer representer) throws IOException;
 }

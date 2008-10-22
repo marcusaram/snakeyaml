@@ -12,12 +12,13 @@ public class AliasToken extends Token {
     public AliasToken() {
         super();
     }
+
     public AliasToken(final String value) {
         this.value = value;
     }
 
     public void setValue(final Object value) {
-        this.value = (String)value;
+        this.value = (String) value;
     }
 
     public String getValue() {

@@ -25,24 +25,25 @@ public abstract class Node {
     }
 
     public int hashCode() {
-        if(hash == -1) {
+        if (hash == -1) {
             hash = 3;
-            hash += (null == tag) ? 0 : 3*tag.hashCode();
-            hash += (null == value) ? 0 : 3*value.hashCode();
+            hash += (null == tag) ? 0 : 3 * tag.hashCode();
+            hash += (null == value) ? 0 : 3 * value.hashCode();
         }
         return hash;
     }
 
     public boolean equals(final Object oth) {
-        if(oth instanceof Node) {
-            final Node nod = (Node)oth;
-            return ((this.tag != null) ? this.tag.equals(nod.tag) : nod.tag == null) && 
-                ((this.value != null) ? this.value.equals(nod.value) : nod.value == null);
+        if (oth instanceof Node) {
+            final Node nod = (Node) oth;
+            return ((this.tag != null) ? this.tag.equals(nod.tag) : nod.tag == null)
+                    && ((this.value != null) ? this.value.equals(nod.value) : nod.value == null);
         }
         return false;
     }
 
     public String toString() {
-        return "#<" + this.getClass().getName() + " (tag=" + getTag() + ", value=" + getValue()+")>";
+        return "#<" + this.getClass().getName() + " (tag=" + getTag() + ", value=" + getValue()
+                + ")>";
     }
 }

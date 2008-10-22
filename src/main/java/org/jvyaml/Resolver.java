@@ -12,7 +12,11 @@ import org.jvyaml.nodes.Node;
  */
 public interface Resolver {
     void descendResolver(final Node currentNode, final Object currentIndex);
+
     void ascendResolver();
-    boolean checkResolverPrefix(final int depth, final List path, final Class kind, final Node currentNode, final Object currentIndex);
+
+    boolean checkResolverPrefix(final int depth, final List path, final Class kind,
+            final Node currentNode, final Object currentIndex);
+
     String resolve(final Class kind, final String value, final boolean[] implicit);
 }
