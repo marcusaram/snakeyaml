@@ -8,8 +8,7 @@ import java.util.Iterator;
 import org.jvyaml.events.Event;
 
 /**
- * @author <a href="mailto:ola.bini@ki.se">Ola Bini</a>
- * @version $Revision: 1.1 $
+ * @see PyYAML for more information
  */
 public interface Parser {
     boolean checkEvent(final Class[] choices);

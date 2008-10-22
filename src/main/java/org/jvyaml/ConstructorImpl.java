@@ -12,8 +12,7 @@ import java.util.Set;
 import java.util.regex.Pattern;;
 
 /**
- * @author <a href="mailto:ola.bini@ki.se">Ola Bini</a>
- * @version $Revision: 1.2 $
+ * @see PyYAML for more information
  */
 public class ConstructorImpl extends SafeConstructorImpl {
     private final static Map yamlConstructors = new HashMap();

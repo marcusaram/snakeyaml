@@ -29,8 +29,7 @@ import org.jvyaml.nodes.SequenceNode;
 import org.jvyaml.nodes.MappingNode;
 
 /**
- * @author <a href="mailto:ola.bini@ki.se">Ola Bini</a>
- * @version $Revision: 1.1 $
+ * @see PyYAML for more information
  */
 public class ComposerImpl implements Composer {
     private Parser parser;

@@ -8,8 +8,7 @@ import java.util.List;
 import org.jvyaml.nodes.Node;
 
 /**
- * @author <a href="mailto:ola.bini@ki.se">Ola Bini</a>
- * @version $Revision: 1.1 $
+ * @see PyYAML for more information
  */
 public interface Resolver {
     void descendResolver(final Node currentNode, final Object currentIndex);

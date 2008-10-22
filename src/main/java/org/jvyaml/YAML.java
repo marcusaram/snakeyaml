@@ -16,8 +16,8 @@ import java.util.ArrayList;
 /**
  * The combinatorial explosion class.
  *
- * @author <a href="mailto:ola.bini@ki.se">Ola Bini</a>
- * @version $Revision: 1.5 $
+
+
  */
 public class YAML {
     public static final String DEFAULT_SCALAR_TAG = "tag:yaml.org,2002:str";

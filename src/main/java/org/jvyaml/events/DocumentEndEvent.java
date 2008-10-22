@@ -4,8 +4,7 @@
 package org.jvyaml.events;
 
 /**
- * @author <a href="mailto:ola.bini@ki.se">Ola Bini</a>
- * @version $Revision: 1.2 $
+ * @see PyYAML for more information
  */
 public class DocumentEndEvent extends Event {
     private boolean explicit;

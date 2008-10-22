@@ -18,8 +18,7 @@ import org.jvyaml.nodes.ScalarNode;
 import org.jvyaml.nodes.SequenceNode;
 
 /**
- * @author <a href="mailto:ola.bini@ki.se">Ola Bini</a>
- * @version $Revision: 1.3 $
+ * @see PyYAML for more information
  */
 public class ResolverImpl implements Resolver {
     private final static Map yamlImplicitResolvers = new HashMap();

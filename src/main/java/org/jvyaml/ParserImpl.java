@@ -16,8 +16,7 @@ import org.jvyaml.events.*;
 import org.jvyaml.tokens.*;
 
 /**
- * @author <a href="mailto:ola.bini@ki.se">Ola Bini</a>
- * @version $Revision: 1.2 $
+ * @see PyYAML for more information
  */
 public class ParserImpl implements Parser {
     // Memnonics for the production table

@@ -4,8 +4,7 @@
 package org.jvyaml;
 
 /**
- * @author <a href="mailto:ola.bini@ki.se">Ola Bini</a>
- * @version $Revision: 1.1 $
+ * @see PyYAML for more information
  */
 public class ResolverException extends YAMLException {
     public ResolverException(final String msg) {

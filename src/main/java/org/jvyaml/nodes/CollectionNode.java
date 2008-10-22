@@ -4,8 +4,7 @@
 package org.jvyaml.nodes;
 
 /**
- * @author <a href="mailto:ola.bini@ki.se">Ola Bini</a>
- * @version $Revision: 1.2 $
+ * @see PyYAML for more information
  */
 public class CollectionNode extends Node {
     private boolean flowStyle;

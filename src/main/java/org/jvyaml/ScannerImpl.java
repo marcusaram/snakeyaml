@@ -25,8 +25,8 @@ import org.jvyaml.tokens.*;
 /**
  * <p>A Java implementation of the RbYAML scanner.</p>
  *
- * @author <a href="mailto:ola.bini@ki.se">Ola Bini</a>
- * @version $Revision: 1.5 $
+
+
  */
 public class ScannerImpl implements Scanner {
     private final static String LINEBR = "\n\u0085\u2028\u2029";

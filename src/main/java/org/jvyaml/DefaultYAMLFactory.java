@@ -7,8 +7,7 @@ import java.io.Reader;
 import java.io.Writer;
 
 /**
- * @author <a href="mailto:ola.bini@ki.se">Ola Bini</a>
- * @version $Revision: 1.2 $
+ * @see PyYAML for more information
  */
 public class DefaultYAMLFactory implements YAMLFactory {
     public Scanner createScanner(final String io) {

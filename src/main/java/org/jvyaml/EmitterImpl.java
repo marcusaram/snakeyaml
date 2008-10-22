@@ -34,8 +34,7 @@ import org.jvyaml.events.ScalarEvent;
 import org.jvyaml.events.NodeEvent;
 
 /**
- * @author <a href="mailto:ola.bini@ki.se">Ola Bini</a>
- * @version $Revision: 1.5 $
+ * @see PyYAML for more information
  */
 public class EmitterImpl implements Emitter {
     private static class ScalarAnalysis {

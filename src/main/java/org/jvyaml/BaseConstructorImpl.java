@@ -19,8 +19,7 @@ import org.jvyaml.nodes.SequenceNode;
 import org.jvyaml.nodes.MappingNode;
 
 /**
- * @author <a href="mailto:ola.bini@ki.se">Ola Bini</a>
- * @version $Revision: 1.2 $
+ * @see PyYAML for more information
  */
 public class BaseConstructorImpl implements Constructor {
     private final static Map yamlConstructors = new HashMap();

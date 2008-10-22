@@ -8,8 +8,7 @@ import java.util.Iterator;
 import org.jvyaml.nodes.Node;
 
 /**
- * @author <a href="mailto:ola.bini@ki.se">Ola Bini</a>
- * @version $Revision: 1.1 $
+ * @see PyYAML for more information
  */
 public interface Composer {
     boolean checkNode();

@@ -6,8 +6,7 @@ package org.jvyaml.nodes;
 import java.util.List;
 
 /**
- * @author <a href="mailto:ola.bini@ki.se">Ola Bini</a>
- * @version $Revision: 1.1 $
+ * @see PyYAML for more information
  */
 public class SequenceNode extends CollectionNode {
     public SequenceNode(final String tag, final List value, final boolean flowStyle) {
