@@ -1,6 +1,6 @@
 <projectDescription>
-  <name>yamlport</name>
-  <comment>Port of PyYAML without any dependencies</comment>
+  <name>SnakeYAML</name>
+  <comment>Port of PyYAML to Java without any dependencies</comment>
   <projects/>
   <buildSpec>
     <buildCommand>
