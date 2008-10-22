@@ -14,4 +14,4 @@ public interface Serializer {
     void open() throws IOException;
     void close() throws IOException;
     void serialize(final Node node) throws IOException;
-}// Serializer
+}

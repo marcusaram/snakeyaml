@@ -27,4 +27,4 @@ public class AliasToken extends Token {
     public String toString() {
         return "#<" + this.getClass().getName() + " value=\"" + value + "\">";
     }
-}// AliasToken
+}

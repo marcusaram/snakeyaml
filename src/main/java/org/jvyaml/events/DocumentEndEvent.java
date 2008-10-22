@@ -16,4 +16,4 @@ public class DocumentEndEvent extends Event {
     public boolean getExplicit() {
         return explicit;
     }
-}// DocumentEndEvent
+}

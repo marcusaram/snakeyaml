@@ -15,4 +15,4 @@ public interface Composer {
     Node getNode();
     Iterator eachNode();
     Iterator iterator();
-}// Composer
+}

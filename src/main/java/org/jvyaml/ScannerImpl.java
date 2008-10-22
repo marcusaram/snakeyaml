@@ -1260,4 +1260,4 @@ public class ScannerImpl implements Scanner {
         System.out.println("Walking through the tokens for the file: " + filename + " took " + time + "ms, or " + timeS + " seconds"); 
     }
 
-}// Scanner
+}

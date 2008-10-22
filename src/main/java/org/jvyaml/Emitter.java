@@ -12,4 +12,4 @@ import org.jvyaml.events.Event;
  */
 public interface Emitter {
     void emit(final Event event) throws IOException;
-}// Emitter
+}

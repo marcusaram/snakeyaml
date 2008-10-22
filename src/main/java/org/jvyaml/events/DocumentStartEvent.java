@@ -30,4 +30,4 @@ public class DocumentStartEvent extends Event {
     public Map getTags() {
         return tags;
     }
-}// DocumentStartEvent
+}

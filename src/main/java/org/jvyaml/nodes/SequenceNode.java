@@ -12,4 +12,4 @@ public class SequenceNode extends CollectionNode {
     public SequenceNode(final String tag, final List value, final boolean flowStyle) {
         super(tag,value,flowStyle);
     }
-}// SequenceNode
+}

@@ -40,4 +40,4 @@ public class DefaultYAMLFactory implements YAMLFactory {
     public Representer createRepresenter(final Serializer serializer, final YAMLConfig cfg) {
         return new RepresenterImpl(serializer,cfg);
     }
-}// DefaultYAMLFactory
+}

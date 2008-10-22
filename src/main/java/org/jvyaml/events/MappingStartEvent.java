@@ -10,4 +10,4 @@ public class MappingStartEvent extends CollectionStartEvent {
     public MappingStartEvent(final String anchor, final String tag, final boolean implicit, final boolean flowStyle) {
         super(anchor,tag,implicit,flowStyle);
     }
-}// MappingStartEvent
+}

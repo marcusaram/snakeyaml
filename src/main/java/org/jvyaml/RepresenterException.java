@@ -14,4 +14,4 @@ public class RepresenterException extends YAMLException {
     public RepresenterException(final Throwable thr) {
         super(thr);
     }
-}// RepresenterException
+}

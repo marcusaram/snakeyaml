@@ -14,4 +14,4 @@ public class ResolverException extends YAMLException {
     public ResolverException(final Throwable thr) {
         super(thr);
     }
-}// ResolverException
+}

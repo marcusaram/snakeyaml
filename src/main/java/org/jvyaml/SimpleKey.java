@@ -28,4 +28,4 @@ class SimpleKey {
     public int getColumn() {
         return this.column;
     }
-}// SimpleKey
+}

@@ -14,4 +14,4 @@ public class SerializerException extends YAMLException {
     public SerializerException(final Throwable thr) {
         super(thr);
     }
-}// SerializerException
+}

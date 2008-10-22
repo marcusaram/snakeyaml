@@ -22,4 +22,4 @@ public class DirectiveToken extends Token {
     public String[] getValue() {
         return this.value;
     }
-}// DirectiveToken
+}

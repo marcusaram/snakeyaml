@@ -16,4 +16,4 @@ public class ScalarNode extends Node {
     public char getStyle() {
         return style;
     }
-}// ScalarNode
+}

@@ -311,4 +311,4 @@ public class BaseConstructorImpl implements Constructor {
             //        final double timeS = (after-before)/1000.0;
             //        System.out.println("Walking through the nodes for the file: " + filename + " took " + time + "ms, or " + timeS + " seconds"); 
     }
-}// BaseConstructorImpl
+}

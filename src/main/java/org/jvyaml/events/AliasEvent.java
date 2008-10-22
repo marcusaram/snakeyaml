@@ -10,4 +10,4 @@ public class AliasEvent extends NodeEvent {
     public AliasEvent(final String anchor) {
         super(anchor);
     }
-}// AliasEvent
+}

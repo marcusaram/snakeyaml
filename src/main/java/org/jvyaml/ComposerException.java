@@ -36,4 +36,4 @@ public class ComposerException extends YAMLException {
         lines.append(super.toString());
         return lines.toString();
     }
-}// ComposerException
+}

@@ -16,4 +16,4 @@ public interface Scanner {
     Token getToken();
     Iterator eachToken();
     Iterator iterator();
-}// RbYAMLScanner
+}

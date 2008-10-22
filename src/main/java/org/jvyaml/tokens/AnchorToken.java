@@ -23,4 +23,4 @@ public class AnchorToken extends Token {
     public String getValue() {
         return this.value;
     }
-}// AnchorToken
+}

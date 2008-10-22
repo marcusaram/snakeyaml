@@ -14,4 +14,4 @@ public class SafeRepresenterImpl extends RepresenterImpl {
     protected boolean ignoreAliases(final Object data) {
         return data == null || data instanceof String || data instanceof Boolean || data instanceof Integer || data instanceof Float || data instanceof Double;
     }
-}// SafeRepresenterImpl
+}

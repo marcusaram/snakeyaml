@@ -15,4 +15,4 @@ public interface Resolver {
     void ascendResolver();
     boolean checkResolverPrefix(final int depth, final List path, final Class kind, final Node currentNode, final Object currentIndex);
     String resolve(final Class kind, final String value, final boolean[] implicit);
-}// Resolver
+}

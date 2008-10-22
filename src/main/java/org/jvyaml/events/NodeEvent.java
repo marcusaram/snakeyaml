@@ -15,4 +15,4 @@ public abstract class NodeEvent extends Event {
     public String getAnchor() {
         return this.anchor;
     }
-}// NodeEvent
+}

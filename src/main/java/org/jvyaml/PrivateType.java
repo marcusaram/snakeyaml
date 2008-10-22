@@ -18,4 +18,4 @@ public class PrivateType {
     public String toString() {
         return "#<PrivateType tag: " + tag + " value: " + value + ">";
     }
-}// PrivateType
+}

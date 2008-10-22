@@ -36,4 +36,4 @@ public class ScannerException extends YAMLException {
         lines.append(super.toString());
         return lines.toString();
     }
-}// ScannerException
+}

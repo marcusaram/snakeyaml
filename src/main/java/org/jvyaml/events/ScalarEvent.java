@@ -39,4 +39,4 @@ public class ScalarEvent extends NodeEvent {
     public String toString() {
         return "#<" + this.getClass().getName() + " value=\"" + value + "\">";
     }
-}// ScalarEvent
+}

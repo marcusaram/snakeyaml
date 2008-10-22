@@ -36,4 +36,4 @@ public class ScalarToken extends Token {
     public String toString() {
         return "#<" + this.getClass().getName() + " value=\"" + value + "\">";
     }
-}// ScalarToken
+}

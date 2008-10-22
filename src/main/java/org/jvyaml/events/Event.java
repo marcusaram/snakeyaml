@@ -10,4 +10,4 @@ public abstract class Event {
     public String toString() {
         return "#<" + this.getClass().getName() + ">";
     }
-}// Event
+}

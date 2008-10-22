@@ -228,4 +228,4 @@ public class ResolverImpl implements Resolver {
       // because plain scalars cannot start with '!', '&', or '*'.
         addImplicitResolver("tag:yaml.org,2002:yaml",Pattern.compile("^(?:!|&|\\*)$"),"!&*");
     }
-}// ResolverImpl
+}

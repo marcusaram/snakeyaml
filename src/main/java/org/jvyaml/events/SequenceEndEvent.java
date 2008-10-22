@@ -7,4 +7,4 @@ package org.jvyaml.events;
  * @see PyYAML for more information
  */
 public class SequenceEndEvent extends CollectionEndEvent {
-}// SequenceEndEvent
+}

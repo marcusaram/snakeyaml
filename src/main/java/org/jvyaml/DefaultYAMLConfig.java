@@ -53,4 +53,4 @@ public class DefaultYAMLConfig implements YAMLConfig {
     public boolean useSingle() { return this.useSingle; }
     public YAMLConfig useDouble(final boolean useDouble) { this.useDouble = useDouble; return this; }
     public boolean useDouble() { return this.useDouble; }
-}// DefaultYAMLConfig
+}

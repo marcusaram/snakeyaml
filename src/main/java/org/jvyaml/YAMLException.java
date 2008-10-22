@@ -14,4 +14,4 @@ public class YAMLException extends RuntimeException {
     public YAMLException(final Throwable cause) {
         super(cause);
     }
-}// YAMLException
+}

@@ -36,4 +36,4 @@ public class ConstructorException extends YAMLException {
         lines.append(super.toString());
         return lines.toString();
     }
-}// ConstructorException
+}

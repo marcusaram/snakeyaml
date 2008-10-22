@@ -16,4 +16,4 @@ public class CollectionNode extends Node {
     public boolean getFlowStyle() {
         return flowStyle;
     }
-}// CollectionNode
+}

@@ -20,4 +20,4 @@ public interface YAMLFactory {
     Emitter createEmitter(final Writer output, final YAMLConfig cfg);
     Serializer createSerializer(final Emitter emitter, final Resolver resolver, final YAMLConfig cfg);
     Representer createRepresenter(final Serializer serializer, final YAMLConfig cfg);
-}// YAMLFactory
+}

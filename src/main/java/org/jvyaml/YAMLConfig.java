@@ -37,4 +37,4 @@ public interface YAMLConfig {
     boolean useSingle();
     YAMLConfig useDouble(final boolean useDouble);
     boolean useDouble();
-}// YAMLConfig
+}

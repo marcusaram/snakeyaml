@@ -7,4 +7,4 @@ package org.jvyaml.tokens;
  * @see PyYAML for more information
  */
 public class BlockMappingStartToken extends Token {
-}// BlockMappingStartToken
+}

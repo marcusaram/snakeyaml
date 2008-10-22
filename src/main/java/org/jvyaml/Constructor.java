@@ -30,4 +30,4 @@ public interface Constructor {
     interface YamlMultiConstructor {
         Object call(final Constructor self, final String pref, final Node node);
     }
-}// Constructor
+}

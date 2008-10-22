@@ -29,4 +29,4 @@ public abstract class CollectionStartEvent extends NodeEvent {
     public boolean getFlowStyle() {
         return this.flowStyle;
     }
-}// CollectionStartEvent
+}

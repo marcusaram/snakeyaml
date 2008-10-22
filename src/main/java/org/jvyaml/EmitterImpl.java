@@ -1403,4 +1403,4 @@ public class EmitterImpl implements Emitter {
             emitter.emit((Event)iter.next());
         }
     }
-}// EmitterImpl
+}

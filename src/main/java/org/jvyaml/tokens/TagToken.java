@@ -15,4 +15,4 @@ public class TagToken extends Token {
     public String[] getValue() {
         return this.value;
     }
-}// TagToken
+}

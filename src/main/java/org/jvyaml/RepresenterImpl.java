@@ -396,5 +396,5 @@ public class RepresenterImpl implements Representer {
             return this.val3;
         }
     }
-}// RepresenterImpl
+}
 

@@ -18,4 +18,4 @@ public interface Parser {
     Iterator iterator();
     void parseStream();
     Event parseStreamNext();
-}// Parser
+}
