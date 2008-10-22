@@ -1,7 +1,7 @@
 /*
  * See LICENSE file in distribution for copyright and licensing information.
  */
-package net.sourceforge.yamlbeans.specification;
+package org.yaml.jyyaml;
 
 import java.util.List;
 import java.util.Map;

@@ -1,7 +1,7 @@
 /*
  * See LICENSE file in distribution for copyright and licensing information.
  */
-package net.sourceforge.yamlbeans.specification;
+package org.yaml.jyyaml;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
