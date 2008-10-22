@@ -7,7 +7,6 @@ import java.util.Date;
 
 /**
  * @author <a href="mailto:ola.bini@ki.se">Ola Bini</a>
- * @version $Revision: 1.1 $
  */
 public class TestBean {
     private String name;
@@ -22,7 +21,7 @@ public class TestBean {
         this.age = age;
         this.born = born;
     }
-    
+
     public String getName() {
         return this.name;
     }
@@ -49,12 +48,11 @@ public class TestBean {
 
     public boolean equals(final Object other) {
         boolean ret = this == other;
-        if(!ret && other instanceof TestBean) {
-            TestBean o = (TestBean)other;
-            ret = 
-                this.name == null ? o.name == null : this.name.equals(o.name) &&
-                this.age == o.age &&
-                this.born == null ? o.born == null : this.born.equals(o.born);
+        if (!ret && other instanceof TestBean) {
+            TestBean o = (TestBean) other;
+            ret = this.name == null ? o.name == null : this.name.equals(o.name)
+                    && this.age == o.age && this.born == null ? o.born == null : this.born
+                    .equals(o.born);
         }
         return ret;
     }
@@ -70,4 +68,4 @@ public class TestBean {
     public String toString() {
         return "#<org.jvyaml.TestBean name=\"" + name + "\" age=" + age + " born=\"" + born + "\">";
     }
-}// TestBean
+}

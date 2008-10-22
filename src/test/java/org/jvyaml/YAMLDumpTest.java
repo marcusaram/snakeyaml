@@ -3,16 +3,15 @@
  */
 package org.jvyaml;
 
-import java.util.Map;
-import java.util.List;
-import java.util.HashMap;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import junit.framework.TestCase;
 
 /**
  * @author <a href="mailto:ola.bini@ki.se">Ola Bini</a>
- * @version $Revision: 1.2 $
  */
 public class YAMLDumpTest extends TestCase {
     public YAMLDumpTest(final String name) {
@@ -25,7 +24,7 @@ public class YAMLDumpTest extends TestCase {
 
     public void testBasicHashDump() {
         Map ex = new HashMap();
-        ex.put("a","b");
+        ex.put("a", "b");
         assertEquals("--- \na: b\n", YAML.dump(ex));
     }
 
@@ -38,8 +37,9 @@ public class YAMLDumpTest extends TestCase {
     }
 
     public void testVersionDumps() {
-        assertEquals("--- !!int 1\n", YAML.dump(new Integer(1),YAML.config().explicitTypes(true)));
-        assertEquals("--- !int 1\n", YAML.dump(new Integer(1),YAML.config().version("1.0").explicitTypes(true)));
+        assertEquals("--- !!int 1\n", YAML.dump(new Integer(1), YAML.config().explicitTypes(true)));
+        assertEquals("--- !int 1\n", YAML.dump(new Integer(1), YAML.config().version("1.0")
+                .explicitTypes(true)));
     }
 
     public void testMoreScalars() {
@@ -49,10 +49,12 @@ public class YAMLDumpTest extends TestCase {
     public void testDumpJavaBean() {
         final java.util.Calendar cal = java.util.Calendar.getInstance();
         cal.clear();
-        cal.set(1982,5-1,3); // Java's months are zero-based...
-        
+        cal.set(1982, 5 - 1, 3); // Java's months are zero-based...
+
         final TestBean toDump = new TestBean("Ola Bini", 24, cal.getTime());
-        assertEquals("--- !java/object:org.jvyaml.TestBean\nname: Ola Bini\nage: 24\nborn: 1982-05-03 00:00:00 +02:00\n", YAML.dump(toDump));
-       
+        assertEquals(
+                "--- !java/object:org.jvyaml.TestBean\nname: Ola Bini\nage: 24\nborn: 1982-05-03 00:00:00 +02:00\n",
+                YAML.dump(toDump));
+
     }
-}// YAMLDumpTest
+}
