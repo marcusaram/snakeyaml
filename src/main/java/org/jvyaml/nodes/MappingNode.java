@@ -14,4 +14,9 @@ public class MappingNode extends CollectionNode {
     public MappingNode(final String tag, final Map value, final boolean flowStyle) {
         super(tag, value, flowStyle);
     }
+
+    @Override
+    public String getNodeId() {
+        return id;
+    }
 }

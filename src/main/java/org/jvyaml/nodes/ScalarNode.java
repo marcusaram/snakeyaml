@@ -18,4 +18,9 @@ public class ScalarNode extends Node {
     public char getStyle() {
         return style;
     }
+
+    @Override
+    public String getNodeId() {
+        return id;
+    }
 }

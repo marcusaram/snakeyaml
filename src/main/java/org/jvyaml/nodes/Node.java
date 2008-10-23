@@ -46,4 +46,12 @@ public abstract class Node {
         return "#<" + this.getClass().getName() + " (tag=" + getTag() + ", value=" + getValue()
                 + ")>";
     }
+
+    /**
+     * For error reporting.
+     * 
+     * @see class variable 'id' in PyYAML
+     * @return scalar, sequence, mapping
+     */
+    public abstract String getNodeId();
 }
