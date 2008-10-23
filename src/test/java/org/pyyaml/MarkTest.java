@@ -2,6 +2,9 @@ package org.pyyaml;
 
 import org.jvyaml.Mark;
 
+/**
+ * @see imported from PyYAML
+ */
 public class MarkTest extends PyImportTest {
 
     protected void setUp() throws Exception {
