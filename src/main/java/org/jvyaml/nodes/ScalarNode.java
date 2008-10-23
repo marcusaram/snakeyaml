@@ -7,6 +7,7 @@ package org.jvyaml.nodes;
  * @see PyYAML for more information
  */
 public class ScalarNode extends Node {
+    public static final String id = "scalar";
     private char style;
 
     public ScalarNode(final String tag, final String value, final char style) {
