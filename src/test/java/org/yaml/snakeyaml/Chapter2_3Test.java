@@ -75,7 +75,8 @@ public class Chapter2_3Test extends TestCase {
             assertEquals(" # not a 'comment'.", map.get("quoted"));
             assertEquals("|\\-*-/|", map.get("tie-fighter"));
         } catch (RuntimeException e) {
-            fail("Scalars cannot be parsed: " + YamlDocument.getLocalResource("example2_17.yaml"));
+            fail("Scalars cannot be parsed: "
+                    + Util.getLocalResource(YamlDocument.ROOT + "example2_17.yaml"));
         }
     }
 
