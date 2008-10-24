@@ -11,7 +11,7 @@ import junit.framework.TestCase;
 
 import org.jvyaml.YAML;
 
-public class StringTagTest extends TestCase {
+public class StrTagTest extends TestCase {
     @SuppressWarnings("unchecked")
     private Map<String, Object> getData(String data) {
         Map<String, Object> nativeData = (Map<String, Object>) YAML.load(data);
