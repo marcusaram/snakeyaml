@@ -3,11 +3,29 @@
  */
 package org.jvyaml.events;
 
+import org.jvyaml.Mark;
+
 /**
  * @see PyYAML for more information
  */
 public abstract class Event {
+    private Mark startMark;
+    private Mark endMark;
+
+    public Event(final Mark startMark, final Mark endMark) {
+        this.startMark = startMark;
+        this.endMark = endMark;
+    }
+
     public String toString() {
         return "#<" + this.getClass().getName() + ">";
+    }
+
+    public Mark getStartMark() {
+        return startMark;
+    }
+
+    public Mark getEndMark() {
+        return endMark;
     }
 }

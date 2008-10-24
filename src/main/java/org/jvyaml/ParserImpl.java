@@ -3,17 +3,45 @@
  */
 package org.jvyaml;
 
-import java.io.Reader;
 import java.io.FileReader;
-
+import java.io.Reader;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import org.jvyaml.events.*;
-import org.jvyaml.tokens.*;
+import org.jvyaml.events.AliasEvent;
+import org.jvyaml.events.DocumentEndEvent;
+import org.jvyaml.events.DocumentStartEvent;
+import org.jvyaml.events.Event;
+import org.jvyaml.events.MappingEndEvent;
+import org.jvyaml.events.MappingStartEvent;
+import org.jvyaml.events.ScalarEvent;
+import org.jvyaml.events.SequenceEndEvent;
+import org.jvyaml.events.SequenceStartEvent;
+import org.jvyaml.events.StreamEndEvent;
+import org.jvyaml.events.StreamStartEvent;
+import org.jvyaml.tokens.AliasToken;
+import org.jvyaml.tokens.AnchorToken;
+import org.jvyaml.tokens.BlockEndToken;
+import org.jvyaml.tokens.BlockEntryToken;
+import org.jvyaml.tokens.BlockMappingStartToken;
+import org.jvyaml.tokens.BlockSequenceStartToken;
+import org.jvyaml.tokens.DirectiveToken;
+import org.jvyaml.tokens.DocumentEndToken;
+import org.jvyaml.tokens.DocumentStartToken;
+import org.jvyaml.tokens.FlowEntryToken;
+import org.jvyaml.tokens.FlowMappingEndToken;
+import org.jvyaml.tokens.FlowMappingStartToken;
+import org.jvyaml.tokens.FlowSequenceEndToken;
+import org.jvyaml.tokens.FlowSequenceStartToken;
+import org.jvyaml.tokens.KeyToken;
+import org.jvyaml.tokens.ScalarToken;
+import org.jvyaml.tokens.StreamEndToken;
+import org.jvyaml.tokens.TagToken;
+import org.jvyaml.tokens.Token;
+import org.jvyaml.tokens.ValueToken;
 
 /**
  * @see PyYAML for more information
@@ -67,12 +95,12 @@ public class ParserImpl implements Parser {
     private final static int P_ALIAS = 44;
     private final static int P_EMPTY_SCALAR = 45;
 
-    private final static Event DOCUMENT_END_TRUE = new DocumentEndEvent(true);
-    private final static Event DOCUMENT_END_FALSE = new DocumentEndEvent(false);
+    private final static Event DOCUMENT_END_TRUE = new DocumentEndEvent(null, null, true);
+    private final static Event DOCUMENT_END_FALSE = new DocumentEndEvent(null, null, false);
     private final static Event MAPPING_END = new MappingEndEvent();
     private final static Event SEQUENCE_END = new SequenceEndEvent();
     private final static Event STREAM_END = new StreamEndEvent();
-    private final static Event STREAM_START = new StreamStartEvent();
+    private final static Event STREAM_START = new StreamStartEvent(null, null);
 
     private static class ProductionEnvironment {
         private List tags;
@@ -195,14 +223,16 @@ public class ParserImpl implements Parser {
                             + tok.getClass().getName(), null);
                 }
                 scanner.getToken();
-                return new DocumentStartEvent(true, (int[]) directives[0], (Map) directives[1]);
+                return new DocumentStartEvent(null, null, true, (int[]) directives[0],
+                        (Map) directives[1]);
             }
         };
         P_TABLE[P_DOCUMENT_START_IMPLICIT] = new Production() {
             public Event produce(final List parseStack, final ProductionEnvironment env,
                     final Scanner scanner) {
                 final Object[] directives = processDirectives(env, scanner);
-                return new DocumentStartEvent(false, (int[]) directives[0], (Map) directives[1]);
+                return new DocumentStartEvent(null, null, false, (int[]) directives[0],
+                        (Map) directives[1]);
             }
         };
         P_TABLE[P_DOCUMENT_END] = new Production() {
@@ -368,7 +398,7 @@ public class ParserImpl implements Parser {
                     implicit = new boolean[] { false, false };
                 }
                 return new ScalarEvent((String) env.getAnchors().get(0), (String) env.getTags()
-                        .get(0), implicit, tok.getValue(), tok.getStyle());
+                        .get(0), implicit, tok.getValue(), null, null, tok.getStyle());
             }
         };
         P_TABLE[P_BLOCK_SEQUENCE_ENTRY] = new Production() {
@@ -457,7 +487,7 @@ public class ParserImpl implements Parser {
                         || env.getTags().get(0).equals("!");
                 scanner.getToken();
                 return new SequenceStartEvent((String) env.getAnchors().get(0), (String) env
-                        .getTags().get(0), implicit, false);
+                        .getTags().get(0), implicit, null, null, false);
             }
         };
         P_TABLE[P_BLOCK_SEQUENCE_END] = new Production() {
@@ -480,7 +510,7 @@ public class ParserImpl implements Parser {
                         || env.getTags().get(0).equals("!");
                 scanner.getToken();
                 return new MappingStartEvent((String) env.getAnchors().get(0), (String) env
-                        .getTags().get(0), implicit, false);
+                        .getTags().get(0), implicit, null, null, false);
             }
         };
         P_TABLE[P_BLOCK_MAPPING_END] = new Production() {
@@ -511,7 +541,7 @@ public class ParserImpl implements Parser {
                 final boolean implicit = env.getTags().get(0) == null
                         || env.getTags().get(0).equals("!");
                 return new SequenceStartEvent((String) env.getAnchors().get(0), (String) env
-                        .getTags().get(0), implicit, false);
+                        .getTags().get(0), implicit, null, null, false);
             }
         };
         P_TABLE[P_INDENTLESS_BLOCK_SEQUENCE_ENTRY] = new Production() {
@@ -545,7 +575,7 @@ public class ParserImpl implements Parser {
                         || env.getTags().get(0).equals("!");
                 scanner.getToken();
                 return new SequenceStartEvent((String) env.getAnchors().get(0), (String) env
-                        .getTags().get(0), implicit, true);
+                        .getTags().get(0), implicit, null, null, true);
             }
         };
         P_TABLE[P_FLOW_SEQUENCE_ENTRY] = new Production() {
@@ -582,7 +612,7 @@ public class ParserImpl implements Parser {
                         || env.getTags().get(0).equals("!");
                 scanner.getToken();
                 return new MappingStartEvent((String) env.getAnchors().get(0), (String) env
-                        .getTags().get(0), implicit, true);
+                        .getTags().get(0), implicit, null, null, true);
             }
         };
         P_TABLE[P_FLOW_MAPPING_ENTRY] = new Production() {
@@ -614,7 +644,7 @@ public class ParserImpl implements Parser {
             public Event produce(final List parseStack, final ProductionEnvironment env,
                     final Scanner scanner) {
                 scanner.getToken();
-                return new MappingStartEvent(null, null, true, true);
+                return new MappingStartEvent(null, null, true, null, null, true);
             }
         };
         P_TABLE[P_FLOW_INTERNAL_CONTENT] = new Production() {
@@ -706,7 +736,7 @@ public class ParserImpl implements Parser {
             public Event produce(final List parseStack, final ProductionEnvironment env,
                     final Scanner scanner) {
                 final AliasToken tok = (AliasToken) scanner.getToken();
-                return new AliasEvent(tok.getValue());
+                return new AliasEvent(tok.getValue(), null, null);
             }
         };
         P_TABLE[P_EMPTY_SCALAR] = new Production() {
@@ -718,7 +748,7 @@ public class ParserImpl implements Parser {
     }
 
     private static Event processEmptyScalar() {
-        return new ScalarEvent(null, null, new boolean[] { true, false }, "", (char) 0);
+        return new ScalarEvent(null, null, new boolean[] { true, false }, "", null, null, (char) 0);
     }
 
     private static Object[] processDirectives(final ProductionEnvironment env, final Scanner scanner) {

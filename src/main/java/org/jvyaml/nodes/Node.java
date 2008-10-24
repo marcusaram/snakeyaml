@@ -3,6 +3,8 @@
  */
 package org.jvyaml.nodes;
 
+import org.jvyaml.Mark;
+
 /**
  * @see PyYAML for more information
  */
@@ -10,10 +12,14 @@ public abstract class Node {
     private String tag;
     private Object value;
     private int hash = -1;
+    private Mark startMark;
+    private Mark endMark;
 
-    public Node(final String tag, final Object value) {
+    public Node(final String tag, final Object value, final Mark startMark, final Mark endMark) {
         this.tag = tag;
         this.value = value;
+        this.startMark = startMark;
+        this.endMark = endMark;
     }
 
     public String getTag() {
@@ -54,4 +60,12 @@ public abstract class Node {
      * @return scalar, sequence, mapping
      */
     public abstract String getNodeId();
+
+    public Mark getStartMark() {
+        return startMark;
+    }
+
+    public Mark getEndMark() {
+        return endMark;
+    }
 }

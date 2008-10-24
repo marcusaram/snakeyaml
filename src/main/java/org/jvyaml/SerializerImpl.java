@@ -4,30 +4,27 @@
 package org.jvyaml;
 
 import java.io.IOException;
-
 import java.text.MessageFormat;
-
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.HashMap;
 import java.util.Set;
-import java.util.HashSet;
 
 import org.jvyaml.events.AliasEvent;
 import org.jvyaml.events.DocumentEndEvent;
 import org.jvyaml.events.DocumentStartEvent;
-import org.jvyaml.events.ScalarEvent;
 import org.jvyaml.events.MappingEndEvent;
 import org.jvyaml.events.MappingStartEvent;
+import org.jvyaml.events.ScalarEvent;
 import org.jvyaml.events.SequenceEndEvent;
 import org.jvyaml.events.SequenceStartEvent;
 import org.jvyaml.events.StreamEndEvent;
 import org.jvyaml.events.StreamStartEvent;
-
-import org.jvyaml.nodes.Node;
 import org.jvyaml.nodes.CollectionNode;
 import org.jvyaml.nodes.MappingNode;
+import org.jvyaml.nodes.Node;
 import org.jvyaml.nodes.ScalarNode;
 import org.jvyaml.nodes.SequenceNode;
 
@@ -81,7 +78,7 @@ public class SerializerImpl implements Serializer {
 
     public void open() throws IOException {
         if (!closed && !opened) {
-            this.emitter.emit(new StreamStartEvent());
+            this.emitter.emit(new StreamStartEvent(null, null));
             this.opened = true;
         } else if (closed) {
             throw new SerializerException("serializer is closed");
@@ -106,10 +103,11 @@ public class SerializerImpl implements Serializer {
         } else if (this.closed) {
             throw new SerializerException("serializer is closed");
         }
-        this.emitter.emit(new DocumentStartEvent(this.useExplicitStart, this.useVersion, null));
+        this.emitter.emit(new DocumentStartEvent(null, null, this.useExplicitStart,
+                this.useVersion, null));
         anchorNode(node);
         serializeNode(node, null, null);
-        this.emitter.emit(new DocumentEndEvent(this.useExplicitEnd));
+        this.emitter.emit(new DocumentEndEvent(null, null, this.useExplicitEnd));
         this.serializedNodes = new HashSet();
         this.anchors = new HashMap();
         this.lastAnchorId = 0;
@@ -151,7 +149,7 @@ public class SerializerImpl implements Serializer {
             throws IOException {
         final String tAlias = (String) this.anchors.get(node);
         if (this.serializedNodes.contains(node) && tAlias != null) {
-            this.emitter.emit(new AliasEvent(tAlias));
+            this.emitter.emit(new AliasEvent(tAlias, null, null));
         } else {
             this.serializedNodes.add(node);
             this.resolver.descendResolver(parent, index);
@@ -166,13 +164,13 @@ public class SerializerImpl implements Serializer {
                     implicit[1] = node.getTag().equals(defaultTag);
                 }
                 this.emitter.emit(new ScalarEvent(tAlias, node.getTag(), implicit, (String) node
-                        .getValue(), ((ScalarNode) node).getStyle()));
+                        .getValue(), null, null, ((ScalarNode) node).getStyle()));
             } else if (node instanceof SequenceNode) {
                 final boolean implicit = !options.explicitTypes()
                         && (node.getTag().equals(this.resolver.resolve(SequenceNode.class, null,
                                 new boolean[] { true, true })));
-                this.emitter.emit(new SequenceStartEvent(tAlias, node.getTag(), implicit,
-                        ((CollectionNode) node).getFlowStyle()));
+                this.emitter.emit(new SequenceStartEvent(tAlias, node.getTag(), implicit, null,
+                        null, ((CollectionNode) node).getFlowStyle()));
                 int ix = 0;
                 for (final Iterator iter = ((List) node.getValue()).iterator(); iter.hasNext();) {
                     serializeNode((Node) iter.next(), node, new Integer(ix++));
@@ -182,8 +180,8 @@ public class SerializerImpl implements Serializer {
                 final boolean implicit = !options.explicitTypes()
                         && (node.getTag().equals(this.resolver.resolve(MappingNode.class, null,
                                 new boolean[] { true, true })));
-                this.emitter.emit(new MappingStartEvent(tAlias, node.getTag(), implicit,
-                        ((CollectionNode) node).getFlowStyle()));
+                this.emitter.emit(new MappingStartEvent(tAlias, node.getTag(), implicit, null,
+                        null, ((CollectionNode) node).getFlowStyle()));
                 final Map value = (Map) node.getValue();
                 for (final Iterator iter = value.keySet().iterator(); iter.hasNext();) {
                     final Node key = (Node) iter.next();

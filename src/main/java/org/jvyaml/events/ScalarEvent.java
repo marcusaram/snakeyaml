@@ -3,6 +3,8 @@
  */
 package org.jvyaml.events;
 
+import org.jvyaml.Mark;
+
 /**
  * @see PyYAML for more information
  */
@@ -13,8 +15,8 @@ public class ScalarEvent extends NodeEvent {
     private boolean[] implicit;
 
     public ScalarEvent(final String anchor, final String tag, final boolean[] implicit,
-            final String value, final char style) {
-        super(anchor);
+            final String value, final Mark startMark, final Mark endMark, final char style) {
+        super(anchor, startMark, endMark);
         this.tag = tag;
         this.implicit = implicit;
         this.value = value;

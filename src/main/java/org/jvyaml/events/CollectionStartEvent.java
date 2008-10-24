@@ -3,6 +3,8 @@
  */
 package org.jvyaml.events;
 
+import org.jvyaml.Mark;
+
 /**
  * @see PyYAML for more information
  */
@@ -12,8 +14,8 @@ public abstract class CollectionStartEvent extends NodeEvent {
     private boolean flowStyle;
 
     public CollectionStartEvent(final String anchor, final String tag, final boolean implicit,
-            final boolean flowStyle) {
-        super(anchor);
+            final Mark startMark, final Mark endMark, final boolean flowStyle) {
+        super(anchor, startMark, endMark);
         this.tag = tag;
         this.implicit = implicit;
         this.flowStyle = flowStyle;

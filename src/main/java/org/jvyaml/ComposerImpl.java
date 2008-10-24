@@ -5,28 +5,26 @@ package org.jvyaml;
 
 import java.io.FileReader;
 import java.io.Reader;
-
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.ArrayList;
 import java.util.Map;
 
 import org.jvyaml.events.AliasEvent;
 import org.jvyaml.events.Event;
-import org.jvyaml.events.NodeEvent;
 import org.jvyaml.events.MappingEndEvent;
 import org.jvyaml.events.MappingStartEvent;
+import org.jvyaml.events.NodeEvent;
 import org.jvyaml.events.ScalarEvent;
-import org.jvyaml.events.SequenceStartEvent;
 import org.jvyaml.events.SequenceEndEvent;
-import org.jvyaml.events.StreamStartEvent;
+import org.jvyaml.events.SequenceStartEvent;
 import org.jvyaml.events.StreamEndEvent;
-
+import org.jvyaml.events.StreamStartEvent;
+import org.jvyaml.nodes.MappingNode;
 import org.jvyaml.nodes.Node;
 import org.jvyaml.nodes.ScalarNode;
 import org.jvyaml.nodes.SequenceNode;
-import org.jvyaml.nodes.MappingNode;
 
 /**
  * @see PyYAML for more information
@@ -117,7 +115,8 @@ public class ComposerImpl implements Composer {
             if (tag == null || tag.equals("!")) {
                 tag = resolver.resolve(ScalarNode.class, ev.getValue(), ev.getImplicit());
             }
-            node = new ScalarNode(tag, ev.getValue(), ev.getStyle());
+            node = new ScalarNode(tag, ev.getValue(), ev.getStartMark(), ev.getEndMark(), ev
+                    .getStyle());
             if (null != anchor) {
                 anchors.put(anchor, node);
             }
@@ -127,7 +126,8 @@ public class ComposerImpl implements Composer {
             if (tag == null || tag.equals("!")) {
                 tag = resolver.resolve(SequenceNode.class, null, start.getImplicit() ? TRU : FALS);
             }
-            node = new SequenceNode(tag, new ArrayList(), start.getFlowStyle());
+            node = new SequenceNode(tag, new ArrayList(), event.getStartMark(), event.getEndMark(),
+                    start.getFlowStyle());
             if (null != anchor) {
                 anchors.put(anchor, node);
             }
@@ -142,7 +142,8 @@ public class ComposerImpl implements Composer {
             if (tag == null || tag.equals("!")) {
                 tag = resolver.resolve(MappingNode.class, null, start.getImplicit() ? TRU : FALS);
             }
-            node = new MappingNode(tag, new HashMap(), start.getFlowStyle());
+            node = new MappingNode(tag, new HashMap(), event.getStartMark(), event.getEndMark(),
+                    start.getFlowStyle());
             if (null != anchor) {
                 anchors.put(anchor, node);
             }
@@ -161,6 +162,7 @@ public class ComposerImpl implements Composer {
         return node;
     }
 
+    // TODO to be removed
     public static void main(final String[] args) throws Exception {
         final String filename = args[0];
         System.out.println("Reading of file: \"" + filename + "\"");

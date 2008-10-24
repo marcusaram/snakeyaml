@@ -7,4 +7,8 @@ package org.jvyaml.events;
  * @see PyYAML for more information
  */
 public class StreamEndEvent extends Event {
+
+    public StreamEndEvent() {
+        super(null, null);
+    }
 }

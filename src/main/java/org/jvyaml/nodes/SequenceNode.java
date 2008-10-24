@@ -3,7 +3,7 @@
  */
 package org.jvyaml.nodes;
 
-import java.util.List;
+import org.jvyaml.Mark;
 
 /**
  * @see PyYAML for more information
@@ -11,8 +11,9 @@ import java.util.List;
 public class SequenceNode extends CollectionNode {
     public static final String id = "sequence";
 
-    public SequenceNode(final String tag, final List value, final boolean flowStyle) {
-        super(tag, value, flowStyle);
+    public SequenceNode(final String tag, final Object value, final Mark startMark,
+            final Mark endMark, final boolean flowStyle) {
+        super(tag, value, startMark, endMark, flowStyle);
     }
 
     @Override

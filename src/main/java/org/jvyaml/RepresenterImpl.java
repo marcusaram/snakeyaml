@@ -72,7 +72,7 @@ public class RepresenterImpl implements Representer {
     public Node representScalar(final String tag, final String value, char style)
             throws IOException {
         char realStyle = style == 0 ? this.defaultStyle : style;
-        return new ScalarNode(tag, value, style);
+        return new ScalarNode(tag, value, null, null, style);
     }
 
     public Node seq(final String tag, final List sequence, final boolean flowStyle)
@@ -86,7 +86,7 @@ public class RepresenterImpl implements Representer {
         for (final Iterator iter = sequence.iterator(); iter.hasNext();) {
             value.add(representData(iter.next()));
         }
-        return new SequenceNode(tag, value, flowStyle);
+        return new SequenceNode(tag, value, null, null, flowStyle);
     }
 
     public Node map(final String tag, final Map mapping, final boolean flowStyle)
@@ -102,7 +102,7 @@ public class RepresenterImpl implements Representer {
             final Object itemValue = mapping.get(itemKey);
             value.put(representData(itemKey), representData(itemValue));
         }
-        return new MappingNode(tag, value, flowStyle);
+        return new MappingNode(tag, value, null, null, flowStyle);
     }
 
     public void represent(final Object data) throws IOException {

@@ -5,15 +5,19 @@ package org.jvyaml.events;
 
 import java.util.Map;
 
+import org.jvyaml.Mark;
+
 /**
  * @see PyYAML for more information
  */
 public class DocumentStartEvent extends Event {
     private boolean explicit;
     private int[] version;
-    private Map tags;
+    private Map<String, String> tags;
 
-    public DocumentStartEvent(final boolean explicit, final int[] version, final Map tags) {
+    public DocumentStartEvent(final Mark startMark, final Mark endMark, final boolean explicit,
+            final int[] version, final Map<String, String> tags) {
+        super(startMark, endMark);
         this.explicit = explicit;
         this.version = version;
         this.tags = tags;
@@ -27,7 +31,7 @@ public class DocumentStartEvent extends Event {
         return version;
     }
 
-    public Map getTags() {
+    public Map<String, String> getTags() {
         return tags;
     }
 }

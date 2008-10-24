@@ -3,11 +3,13 @@
  */
 package org.jvyaml.events;
 
+import org.jvyaml.Mark;
+
 /**
  * @see PyYAML for more information
  */
 public class AliasEvent extends NodeEvent {
-    public AliasEvent(final String anchor) {
-        super(anchor);
+    public AliasEvent(final String anchor, final Mark startMark, final Mark endMark) {
+        super(anchor, startMark, endMark);
     }
 }
