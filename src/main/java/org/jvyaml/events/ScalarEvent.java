@@ -39,7 +39,10 @@ public class ScalarEvent extends NodeEvent {
         return this.implicit;
     }
 
-    public String toString() {
-        return "#<" + this.getClass().getName() + " value=\"" + value + "\">";
+    @Override
+    protected String getArguments() {
+        return super.getArguments() + ", tag=" + tag + ", implicit=[" + implicit[0] + ", "
+                + implicit[1] + "], value=" + value;
     }
+
 }

@@ -32,4 +32,9 @@ public abstract class CollectionStartEvent extends NodeEvent {
     public boolean getFlowStyle() {
         return this.flowStyle;
     }
+
+    @Override
+    protected String getArguments() {
+        return super.getArguments() + ", tag=" + tag + ", implicit=" + implicit;
+    }
 }

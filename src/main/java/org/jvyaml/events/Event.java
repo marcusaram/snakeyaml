@@ -18,7 +18,7 @@ public abstract class Event {
     }
 
     public String toString() {
-        return "#<" + this.getClass().getName() + ">";
+        return "<" + this.getClass().getName() + "(" + getArguments() + ")>";
     }
 
     public Mark getStartMark() {
@@ -27,5 +27,12 @@ public abstract class Event {
 
     public Mark getEndMark() {
         return endMark;
+    }
+
+    /**
+     * @see __repr__ for Event in PyYAML
+     */
+    protected String getArguments() {
+        return "";
     }
 }
