@@ -49,7 +49,7 @@ public abstract class Node {
     }
 
     public String toString() {
-        return "#<" + this.getClass().getName() + " (tag=" + getTag() + ", value=" + getValue()
+        return "<" + this.getClass().getName() + " (tag=" + getTag() + ", value=" + getValue()
                 + ")>";
     }
 
