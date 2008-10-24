@@ -7,7 +7,7 @@ import java.io.Reader;
 import java.io.Writer;
 
 /**
- * @see PyYAML for more information
+ * @see PyYAML 3.06 for more information
  */
 public class DefaultYAMLFactory implements YAMLFactory {
     public Scanner createScanner(final String io) {

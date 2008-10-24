@@ -14,7 +14,7 @@ import java.util.regex.Pattern;
 ;
 
 /**
- * @see PyYAML for more information
+ * @see PyYAML 3.06 for more information
  */
 public class ConstructorImpl extends SafeConstructorImpl {
     private final static Map yamlConstructors = new HashMap();

@@ -44,7 +44,7 @@ import org.jvyaml.tokens.Token;
 import org.jvyaml.tokens.ValueToken;
 
 /**
- * @see PyYAML for more information
+ * @see PyYAML 3.06 for more information
  */
 public class ParserImpl implements Parser {
     // Memnonics for the production table

@@ -8,7 +8,7 @@ import java.util.List;
 import org.jvyaml.nodes.Node;
 
 /**
- * @see PyYAML for more information
+ * @see PyYAML 3.06 for more information
  */
 public interface Resolver {
     void descendResolver(final Node currentNode, final Object currentIndex);

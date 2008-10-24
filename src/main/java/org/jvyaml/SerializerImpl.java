@@ -29,7 +29,7 @@ import org.jvyaml.nodes.ScalarNode;
 import org.jvyaml.nodes.SequenceNode;
 
 /**
- * @see PyYAML for more information
+ * @see PyYAML 3.06 for more information
  */
 public class SerializerImpl implements Serializer {
     private Emitter emitter;

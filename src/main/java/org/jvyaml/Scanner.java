@@ -8,7 +8,7 @@ import java.util.Iterator;
 import org.jvyaml.tokens.Token;
 
 /**
- * @see PyYAML for more information
+ * @see PyYAML 3.06 for more information
  */
 public interface Scanner {
     boolean checkToken(final Class[] choices);

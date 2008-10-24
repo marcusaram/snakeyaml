@@ -4,7 +4,7 @@
 package org.jvyaml.util;
 
 /**
- * @see PyYAML for more information
+ * @see PyYAML 3.06 for more information
  */
 public class Base64Coder {
     // Mapping table from 6-bit nibbles to Base64 characters.

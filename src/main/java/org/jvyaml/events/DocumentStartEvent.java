@@ -8,7 +8,7 @@ import java.util.Map;
 import org.jvyaml.Mark;
 
 /**
- * @see PyYAML for more information
+ * @see PyYAML 3.06 for more information
  */
 public class DocumentStartEvent extends Event {
     private boolean explicit;

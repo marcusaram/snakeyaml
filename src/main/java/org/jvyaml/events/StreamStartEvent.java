@@ -6,7 +6,7 @@ package org.jvyaml.events;
 import org.jvyaml.Mark;
 
 /**
- * @see PyYAML for more information
+ * @see PyYAML 3.06 for more information
  */
 public class StreamStartEvent extends Event {
     public enum Encoding {

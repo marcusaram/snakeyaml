@@ -6,7 +6,7 @@ package org.jvyaml.events;
 import org.jvyaml.Mark;
 
 /**
- * @see PyYAML for more information
+ * @see PyYAML 3.06 for more information
  */
 public class MappingStartEvent extends CollectionStartEvent {
     public MappingStartEvent(final String anchor, final String tag, final boolean implicit,

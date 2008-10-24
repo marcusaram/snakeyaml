@@ -4,7 +4,7 @@
 package org.jvyaml;
 
 /**
- * @see PyYAML for more information
+ * @see PyYAML 3.06 for more information
  */
 public class RepresenterException extends YAMLException {
     public RepresenterException(final String msg) {

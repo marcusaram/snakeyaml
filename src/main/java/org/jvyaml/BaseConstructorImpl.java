@@ -19,7 +19,7 @@ import org.jvyaml.nodes.SequenceNode;
 import org.jvyaml.nodes.MappingNode;
 
 /**
- * @see PyYAML for more information
+ * @see PyYAML 3.06 for more information
  */
 public class BaseConstructorImpl implements Constructor {
     private final static Map yamlConstructors = new HashMap();

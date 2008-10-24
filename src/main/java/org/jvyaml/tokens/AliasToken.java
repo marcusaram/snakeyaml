@@ -4,7 +4,7 @@
 package org.jvyaml.tokens;
 
 /**
- * @see PyYAML for more information
+ * @see PyYAML 3.06 for more information
  */
 public class AliasToken extends Token {
     private String value;

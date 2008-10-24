@@ -8,7 +8,7 @@ import java.util.Iterator;
 import org.jvyaml.events.Event;
 
 /**
- * @see PyYAML for more information
+ * @see PyYAML 3.06 for more information
  */
 public interface Parser {
     boolean checkEvent(final Class[] choices);

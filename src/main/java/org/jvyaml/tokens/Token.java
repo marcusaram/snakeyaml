@@ -4,7 +4,7 @@
 package org.jvyaml.tokens;
 
 /**
- * @see PyYAML for more information
+ * @see PyYAML 3.06 for more information
  */
 public abstract class Token {
     public final static Token DOCUMENT_START = new DocumentStartToken();

@@ -34,7 +34,7 @@ import org.jvyaml.events.ScalarEvent;
 import org.jvyaml.events.NodeEvent;
 
 /**
- * @see PyYAML for more information
+ * @see PyYAML 3.06 for more information
  */
 public class EmitterImpl implements Emitter {
     private static class ScalarAnalysis {

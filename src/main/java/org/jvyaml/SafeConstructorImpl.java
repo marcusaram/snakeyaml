@@ -19,7 +19,7 @@ import org.jvyaml.nodes.Node;
 import org.jvyaml.util.Base64Coder;
 
 /**
- * @see PyYAML for more information
+ * @see PyYAML 3.06 for more information
  */
 public class SafeConstructorImpl extends BaseConstructorImpl {
     private final static Map yamlConstructors = new HashMap();

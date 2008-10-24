@@ -11,7 +11,7 @@ import java.util.Map;
 import org.jvyaml.nodes.Node;
 
 /**
- * @see PyYAML for more information
+ * @see PyYAML 3.06 for more information
  */
 public interface Representer {
     void represent(final Object data) throws IOException;

@@ -6,7 +6,7 @@ package org.jvyaml.events;
 import org.jvyaml.Mark;
 
 /**
- * @see PyYAML for more information
+ * @see PyYAML 3.06 for more information
  */
 public class SequenceStartEvent extends CollectionStartEvent {
     public SequenceStartEvent(final String anchor, final String tag, final boolean implicit,
