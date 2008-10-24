@@ -8,10 +8,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
-
 import java.util.regex.Pattern;
-
-;
 
 /**
  * @see PyYAML 3.06 for more information

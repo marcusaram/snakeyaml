@@ -3,20 +3,19 @@
  */
 package org.jvyaml;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
-import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import java.util.regex.Pattern;
 
+import org.jvyaml.nodes.MappingNode;
 import org.jvyaml.nodes.Node;
 import org.jvyaml.nodes.ScalarNode;
 import org.jvyaml.nodes.SequenceNode;
-import org.jvyaml.nodes.MappingNode;
 
 /**
  * @see PyYAML 3.06 for more information

@@ -4,23 +4,22 @@
 package org.jvyaml;
 
 import java.io.FileReader;
-import java.io.InputStream;
 import java.io.IOException;
 import java.io.Reader;
-
-import java.nio.CharBuffer;
-import java.nio.channels.Channels;
-
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.jvyaml.tokens.*;
+import org.jvyaml.tokens.AliasToken;
+import org.jvyaml.tokens.AnchorToken;
+import org.jvyaml.tokens.DirectiveToken;
+import org.jvyaml.tokens.ScalarToken;
+import org.jvyaml.tokens.TagToken;
+import org.jvyaml.tokens.Token;
 
 /**
  * <p>

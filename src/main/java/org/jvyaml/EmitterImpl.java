@@ -3,35 +3,33 @@
  */
 package org.jvyaml;
 
-import java.io.IOException;
-import java.io.Writer;
 import java.io.BufferedReader;
 import java.io.FileReader;
-
+import java.io.IOException;
+import java.io.Writer;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeSet;
-
 import java.util.regex.Pattern;
 
-import org.jvyaml.events.Event;
-import org.jvyaml.events.StreamStartEvent;
-import org.jvyaml.events.StreamEndEvent;
-import org.jvyaml.events.DocumentStartEvent;
-import org.jvyaml.events.DocumentEndEvent;
-import org.jvyaml.events.CollectionStartEvent;
-import org.jvyaml.events.CollectionEndEvent;
-import org.jvyaml.events.MappingStartEvent;
-import org.jvyaml.events.SequenceStartEvent;
-import org.jvyaml.events.MappingEndEvent;
-import org.jvyaml.events.SequenceEndEvent;
 import org.jvyaml.events.AliasEvent;
-import org.jvyaml.events.ScalarEvent;
+import org.jvyaml.events.CollectionEndEvent;
+import org.jvyaml.events.CollectionStartEvent;
+import org.jvyaml.events.DocumentEndEvent;
+import org.jvyaml.events.DocumentStartEvent;
+import org.jvyaml.events.Event;
+import org.jvyaml.events.MappingEndEvent;
+import org.jvyaml.events.MappingStartEvent;
 import org.jvyaml.events.NodeEvent;
+import org.jvyaml.events.ScalarEvent;
+import org.jvyaml.events.SequenceEndEvent;
+import org.jvyaml.events.SequenceStartEvent;
+import org.jvyaml.events.StreamEndEvent;
+import org.jvyaml.events.StreamStartEvent;
 
 /**
  * @see PyYAML 3.06 for more information

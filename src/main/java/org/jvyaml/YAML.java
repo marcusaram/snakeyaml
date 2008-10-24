@@ -4,14 +4,13 @@
 package org.jvyaml;
 
 import java.io.Reader;
-import java.io.Writer;
 import java.io.StringWriter;
-
-import java.util.Iterator;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.List;
+import java.io.Writer;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 /**
  * The combinatorial explosion class.
