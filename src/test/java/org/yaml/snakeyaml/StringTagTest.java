@@ -4,13 +4,14 @@
 package org.yaml.snakeyaml;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 
 import junit.framework.TestCase;
 
 import org.jvyaml.YAML;
 
-public class TypesTest extends TestCase {
+public class StringTagTest extends TestCase {
     @SuppressWarnings("unchecked")
     private Map<String, Object> getData(String data) {
         Map<String, Object> nativeData = (Map<String, Object>) YAML.load(data);
@@ -32,4 +33,10 @@ public class TypesTest extends TestCase {
         assertEquals("abcd", nativeData.get("string"));
     }
 
+    public void testStringOut() throws IOException {
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("number", "1");
+        String output = YAML.dump(map);
+        assertTrue(output.contains("number: !!str 1"));
+    }
 }
