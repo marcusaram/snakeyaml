@@ -3,6 +3,7 @@
  */
 package org.yaml.snakeyaml;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -28,27 +29,30 @@ public class Chapter2_5Test extends TestCase {
         List<Object> list = (List<Object>) resource.getNativeData();
         assertEquals(3, list.size());
         Map<String, Object> data0 = (Map<String, Object>) list.get(0);
-        assertEquals("2001-11-23 15:01:42 -5", data0.get("Time"));
+        Date date = (Date) data0.get("Time");
+        assertEquals("Date: " + date, 1006545702000L, date.getTime());
         assertEquals("ed", data0.get("User"));
         assertEquals("This is an error message for the log file", data0.get("Warning"));
         //
         Map<String, Object> data1 = (Map<String, Object>) list.get(1);
-        assertEquals("2001-11-23 15:02:31 -5", data1.get("Time"));
+        Date date1 = (Date) data1.get("Time");
+        assertTrue("Date: " + date1, date1.after(date));
         assertEquals("ed", data1.get("User"));
         assertEquals("A slightly different error message.", data1.get("Warning"));
         //
         Map<String, Object> data3 = (Map<String, Object>) list.get(2);
-        assertEquals("2001-11-23 15:03:17 -5", data3.get("Date"));
+        Date date3 = (Date) data3.get("Date");
+        assertTrue("Date: " + date3, date3.after(date1));
         assertEquals("ed", data3.get("User"));
         assertEquals("Unknown variable \"bar\"", data3.get("Fatal"));
         List<Map<String, String>> list3 = (List<Map<String, String>>) data3.get("Stack");
         Map<String, String> map1 = list3.get(0);
         assertEquals("TopClass.py", map1.get("file"));
-        assertEquals("23", map1.get("line").toString());
+        assertEquals(new Long(23), map1.get("line"));
         assertEquals("x = MoreObject(\"345\\n\")", map1.get("code"));
         Map<String, String> map2 = list3.get(1);
         assertEquals("MoreClass.py", map2.get("file"));
-        assertEquals("58", map2.get("line").toString());
-        assertEquals("-\nfoo = bar", map2.get("code"));
+        assertEquals(new Long(58), map2.get("line"));
+        assertEquals("foo = bar", map2.get("code"));
     }
 }
