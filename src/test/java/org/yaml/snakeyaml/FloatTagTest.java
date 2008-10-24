@@ -22,12 +22,15 @@ public class FloatTagTest extends TestCase {
     }
 
     public void testFloat() throws IOException {
-        assertEquals(new Double(6.8523015e+5), getData("number: 6.8523015e+5").get("number"));
-        assertEquals(new Double(6.8523015e+5), getData("number: 685.230_15e+03").get("number"));
-        assertEquals(new Double(6.8523015e+5), getData("number: 685_230.15").get("number"));
-        assertEquals(new Double(6.8523015e+5), getData("number: 190:20:30.15").get("number"));
-        assertEquals(Double.NEGATIVE_INFINITY, getData("number: -.inf").get("number"));
-        assertEquals(Double.NaN, getData("number: .NaN").get("number"));
+        assertEquals(new Double(6.8523015e+5), getData("canonical: 6.8523015e+5").get("canonical"));
+        assertEquals(new Double(6.8523015e+5), getData("exponentioal: 685.230_15e+03").get(
+                "exponentioal"));
+        assertEquals(new Double(6.8523015e+5), getData("fixed: 685_230.15").get("fixed"));
+        assertEquals(new Double(6.8523015e+5), getData("sexagesimal: 190:20:30.15").get(
+                "sexagesimal"));
+        assertEquals(Double.NEGATIVE_INFINITY, getData("negative infinity: -.inf").get(
+                "negative infinity"));
+        assertEquals(Double.NaN, getData("not a number: .NaN").get("not a number"));
     }
 
     public void testFloatShorthand() throws IOException {

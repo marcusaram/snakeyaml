@@ -22,15 +22,15 @@ public class IntTagTest extends TestCase {
     }
 
     public void testInt() throws IOException {
-        assertEquals(new Long(685230), getData("number: 685230").get("number"));
+        assertEquals(new Long(685230), getData("canonical: 685230").get("canonical"));
         assertEquals(new Long(685230), getData("number: 685_230").get("number"));
-        assertEquals(new Long(685230), getData("number: +685230").get("number"));
+        assertEquals(new Long(685230), getData("decimal: +685230").get("decimal"));
         assertEquals(new Long(-685230), getData("number: -685230").get("number"));
-        assertEquals(new Long(685230), getData("number: 02472256").get("number"));
-        assertEquals(new Long(685230), getData("number: 0x_0A_74_AE").get("number"));
-        assertEquals(new Long(685230), getData("number: 0b1010_0111_0100_1010_1110").get("number"));
+        assertEquals(new Long(685230), getData("octal: 02472256").get("octal"));
+        assertEquals(new Long(685230), getData("hexadecimal: 0x_0A_74_AE").get("hexadecimal"));
+        assertEquals(new Long(685230), getData("binary: 0b1010_0111_0100_1010_1110").get("binary"));
         // TODO it must be also Long
-        assertEquals(new Integer(685230), getData("number: 190:20:30").get("number"));
+        assertEquals(new Integer(685230), getData("sexagesimal: 190:20:30").get("sexagesimal"));
     }
 
     public void testIntShorthand() throws IOException {

@@ -49,4 +49,11 @@ public class StrTagTest extends TestCase {
         String output = YAML.dump(map);
         assertTrue(output.contains("number: !!str 1.1"));
     }
+
+    public void testStringBoolOut() throws IOException {
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("number", "True");
+        String output = YAML.dump(map);
+        assertTrue(output.contains("number: !!str True"));
+    }
 }
