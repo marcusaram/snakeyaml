@@ -11,6 +11,9 @@ import junit.framework.TestCase;
 
 import org.jvyaml.YAML;
 
+/**
+ * @see http://yaml.org/type/int.html
+ */
 public class IntTagTest extends TestCase {
     @SuppressWarnings("unchecked")
     private Map<String, Object> getData(String data) {
@@ -19,8 +22,15 @@ public class IntTagTest extends TestCase {
     }
 
     public void testInt() throws IOException {
-        Map<String, Object> nativeData = (Map<String, Object>) getData("number: 1");
-        assertEquals(new Long(1), nativeData.get("number"));
+        assertEquals(new Long(685230), getData("number: 685230").get("number"));
+        assertEquals(new Long(685230), getData("number: 685_230").get("number"));
+        assertEquals(new Long(685230), getData("number: +685230").get("number"));
+        assertEquals(new Long(-685230), getData("number: -685230").get("number"));
+        assertEquals(new Long(685230), getData("number: 02472256").get("number"));
+        assertEquals(new Long(685230), getData("number: 0x_0A_74_AE").get("number"));
+        assertEquals(new Long(685230), getData("number: 0b1010_0111_0100_1010_1110").get("number"));
+        // TODO it must be also Long
+        assertEquals(new Integer(685230), getData("number: 190:20:30").get("number"));
     }
 
     public void testIntShorthand() throws IOException {
