@@ -7,40 +7,36 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import junit.framework.TestCase;
-
 import org.jvyaml.YAML;
 
 /**
  * @see http://yaml.org/type/int.html
  */
-public class IntTagTest extends TestCase {
+public class IntTagTest extends AbstractTest {
     @SuppressWarnings("unchecked")
-    private Map<String, Object> getData(String data) {
-        Map<String, Object> nativeData = (Map<String, Object>) YAML.load(data);
-        return nativeData;
+    private Object getData(String data, String key) {
+        Map nativeData = getMap(data);
+        return nativeData.get(key);
     }
 
     public void testInt() throws IOException {
-        assertEquals(new Long(685230), getData("canonical: 685230").get("canonical"));
-        assertEquals(new Long(685230), getData("number: 685_230").get("number"));
-        assertEquals(new Long(685230), getData("decimal: +685230").get("decimal"));
-        assertEquals(new Long(-685230), getData("number: -685230").get("number"));
-        assertEquals(new Long(685230), getData("octal: 02472256").get("octal"));
-        assertEquals(new Long(685230), getData("hexadecimal: 0x_0A_74_AE").get("hexadecimal"));
-        assertEquals(new Long(685230), getData("binary: 0b1010_0111_0100_1010_1110").get("binary"));
+        assertEquals(new Long(685230), getData("canonical: 685230", "canonical"));
+        assertEquals(new Long(685230), getData("number: 685_230", "number"));
+        assertEquals(new Long(685230), getData("decimal: +685230", "decimal"));
+        assertEquals(new Long(-685230), getData("number: -685230", "number"));
+        assertEquals(new Long(685230), getData("octal: 02472256", "octal"));
+        assertEquals(new Long(685230), getData("hexadecimal: 0x_0A_74_AE", "hexadecimal"));
+        assertEquals(new Long(685230), getData("binary: 0b1010_0111_0100_1010_1110", "binary"));
         // TODO it must be also Long
-        assertEquals(new Integer(685230), getData("sexagesimal: 190:20:30").get("sexagesimal"));
+        assertEquals(new Integer(685230), getData("sexagesimal: 190:20:30", "sexagesimal"));
     }
 
     public void testIntShorthand() throws IOException {
-        Map<String, Object> nativeData = (Map<String, Object>) getData("number: !!int 1");
-        assertEquals(new Long(1), nativeData.get("number"));
+        assertEquals(new Long(1), getData("number: !!int 1", "number"));
     }
 
     public void testIntTag() throws IOException {
-        Map<String, Object> nativeData = (Map<String, Object>) getData("number: !<tag:yaml.org,2002:int> 1");
-        assertEquals(new Long(1), nativeData.get("number"));
+        assertEquals(new Long(1), getData("number: !<tag:yaml.org,2002:int> 1", "number"));
     }
 
     public void testIntOut() throws IOException {
