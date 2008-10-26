@@ -1,7 +1,7 @@
 /*
  * See LICENSE file in distribution for copyright and licensing information.
  */
-package org.yaml.snakeyaml;
+package org.yaml.snakeyaml.types;
 
 import java.io.IOException;
 import java.util.HashMap;
