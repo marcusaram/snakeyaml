@@ -15,4 +15,8 @@ public abstract class AbstractTest extends TestCase {
         Map<String, Object> nativeData = (Map<String, Object>) YAML.load(data);
         return nativeData;
     }
+
+    protected String dump(Object data) {
+        return YAML.dump(data);
+    }
 }

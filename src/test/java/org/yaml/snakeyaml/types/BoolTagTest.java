@@ -7,8 +7,6 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.jvyaml.YAML;
-
 /**
  * @see http://yaml.org/type/int.html
  */
@@ -62,7 +60,7 @@ public class BoolTagTest extends AbstractTest {
     public void testBoolOut() throws IOException {
         Map<String, Boolean> map = new HashMap<String, Boolean>();
         map.put("boolean", Boolean.TRUE);
-        String output = YAML.dump(map);
+        String output = dump(map);
         assertTrue(output.contains("boolean: true"));
     }
 

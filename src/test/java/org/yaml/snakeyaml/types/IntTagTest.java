@@ -7,8 +7,6 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.jvyaml.YAML;
-
 /**
  * @see http://yaml.org/type/int.html
  */
@@ -42,7 +40,7 @@ public class IntTagTest extends AbstractTest {
     public void testIntOut() throws IOException {
         Map<String, Long> map = new HashMap<String, Long>();
         map.put("number", new Long(1));
-        String output = YAML.dump(map);
+        String output = dump(map);
         assertTrue(output.contains("number: 1"));
     }
 
