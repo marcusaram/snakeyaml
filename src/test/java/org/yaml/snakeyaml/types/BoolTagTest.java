@@ -7,54 +7,56 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import junit.framework.TestCase;
-
 import org.jvyaml.YAML;
 
 /**
  * @see http://yaml.org/type/int.html
  */
-public class BoolTagTest extends TestCase {
+public class BoolTagTest extends AbstractTest {
     @SuppressWarnings("unchecked")
-    private Map<String, Boolean> getData(String data) {
-        Map<String, Boolean> nativeData = (Map<String, Boolean>) YAML.load(data);
-        return nativeData;
+    private Object getMapValue(String data, String key) {
+        Map nativeData = getMap(data);
+        return nativeData.get(key);
     }
 
     public void testBool() throws IOException {
-        assertEquals(Boolean.TRUE, getData("canonical: true").get("canonical"));
-        assertEquals(Boolean.FALSE, getData("answer: NO").get("answer"));
-        assertEquals(Boolean.TRUE, getData("logical: True").get("logical"));
-        assertEquals(Boolean.TRUE, getData("option: on").get("option"));
+        assertEquals(Boolean.TRUE, getMapValue("canonical: true", "canonical"));
+        assertEquals(Boolean.FALSE, getMapValue("answer: NO", "answer"));
+        assertEquals(Boolean.TRUE, getMapValue("logical: True", "logical"));
+        assertEquals(Boolean.TRUE, getMapValue("option: on", "option"));
     }
 
     public void testBoolCanonical() throws IOException {
-        assertEquals(Boolean.TRUE, getData("canonical: Yes").get("canonical"));
-        assertEquals(Boolean.TRUE, getData("canonical: yes").get("canonical"));
-        assertEquals(Boolean.TRUE, getData("canonical: YES").get("canonical"));
-        assertEquals("yES", getData("canonical: yES").get("canonical"));
-        assertEquals(Boolean.FALSE, getData("canonical: No").get("canonical"));
-        assertEquals(Boolean.FALSE, getData("canonical: NO").get("canonical"));
-        assertEquals(Boolean.FALSE, getData("canonical: no").get("canonical"));
-        assertEquals(Boolean.FALSE, getData("canonical: off").get("canonical"));
-        assertEquals(Boolean.FALSE, getData("canonical: Off").get("canonical"));
-        assertEquals(Boolean.FALSE, getData("canonical: OFF").get("canonical"));
-        assertEquals(Boolean.TRUE, getData("canonical: ON").get("canonical"));
-        assertEquals(Boolean.TRUE, getData("canonical: On").get("canonical"));
+        assertEquals(Boolean.TRUE, getMapValue("canonical: Yes", "canonical"));
+        assertEquals(Boolean.TRUE, getMapValue("canonical: yes", "canonical"));
+        assertEquals(Boolean.TRUE, getMapValue("canonical: YES", "canonical"));
+        assertEquals("yES", getMapValue("canonical: yES", "canonical"));
+        assertEquals(Boolean.FALSE, getMapValue("canonical: No", "canonical"));
+        assertEquals(Boolean.FALSE, getMapValue("canonical: NO", "canonical"));
+        assertEquals(Boolean.FALSE, getMapValue("canonical: no", "canonical"));
+        assertEquals(Boolean.FALSE, getMapValue("canonical: off", "canonical"));
+        assertEquals(Boolean.FALSE, getMapValue("canonical: Off", "canonical"));
+        assertEquals(Boolean.FALSE, getMapValue("canonical: OFF", "canonical"));
+        assertEquals(Boolean.TRUE, getMapValue("canonical: ON", "canonical"));
+        assertEquals(Boolean.TRUE, getMapValue("canonical: On", "canonical"));
+        assertEquals(Boolean.TRUE, getMapValue("canonical: on", "canonical"));
         // TODO assertEquals(Boolean.TRUE, getData("canonical:
         // Y").get("canonical"));
         // TODO assertEquals(Boolean.TRUE, getData("canonical:
         // y").get("canonical"));
+        // TODO assertEquals(Boolean.FALSE, getMapValue("canonical: n",
+        // "canonical"));
+        // TODO assertEquals(Boolean.FALSE, getMapValue("canonical: N",
+        // "canonical"));
     }
 
     public void testBoolShorthand() throws IOException {
-        Map<String, Boolean> nativeData = (Map<String, Boolean>) getData("boolean: !!bool true");
-        assertEquals(Boolean.TRUE, nativeData.get("boolean"));
+        assertEquals(Boolean.TRUE, getMapValue("boolean: !!bool true", "boolean"));
     }
 
     public void testBoolTag() throws IOException {
-        Map<String, Boolean> nativeData = (Map<String, Boolean>) getData("boolean: !<tag:yaml.org,2002:bool> true");
-        assertEquals(Boolean.TRUE, nativeData.get("boolean"));
+        assertEquals(Boolean.TRUE,
+                getMapValue("boolean: !<tag:yaml.org,2002:bool> true", "boolean"));
     }
 
     public void testBoolOut() throws IOException {
