@@ -16,7 +16,18 @@ public abstract class AbstractTest extends TestCase {
         return nativeData;
     }
 
+    protected Object load(String data) {
+        Object obj = YAML.load(data);
+        return obj;
+    }
+
     protected String dump(Object data) {
         return YAML.dump(data);
+    }
+
+    @SuppressWarnings("unchecked")
+    protected Object getMapValue(String data, String key) {
+        Map nativeData = getMap(data);
+        return nativeData.get(key);
     }
 }

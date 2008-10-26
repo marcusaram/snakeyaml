@@ -11,12 +11,6 @@ import java.util.Map;
  * @see http://yaml.org/type/int.html
  */
 public class BoolTagTest extends AbstractTest {
-    @SuppressWarnings("unchecked")
-    private Object getMapValue(String data, String key) {
-        Map nativeData = getMap(data);
-        return nativeData.get(key);
-    }
-
     public void testBool() throws IOException {
         assertEquals(Boolean.TRUE, getMapValue("canonical: true", "canonical"));
         assertEquals(Boolean.FALSE, getMapValue("answer: NO", "answer"));
