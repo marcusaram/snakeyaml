@@ -6,8 +6,6 @@ package org.jvyaml;
 import java.io.IOException;
 import java.io.Serializable;
 import java.lang.reflect.Method;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -17,6 +15,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TimeZone;
 
 import org.jvyaml.nodes.MappingNode;
 import org.jvyaml.nodes.Node;
@@ -142,30 +141,63 @@ public class RepresenterImpl implements Representer {
     }
 
     public static class DateYAMLNodeCreator implements YAMLNodeCreator {
-        private final Date data;
+        private final Calendar calendar;
 
         public DateYAMLNodeCreator(final Object data) {
-            this.data = (Date) data;
+            final Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+            cal.setTime((Date) data);
+            this.calendar = cal;
         }
 
         public String taguri() {
             return "tag:yaml.org,2002:timestamp";
         }
 
-        private static DateFormat dateOutput = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss Z");
-        private static DateFormat dateOutputUsec = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS Z");
-
         public Node toYamlNode(final Representer representer) throws IOException {
-            final Calendar c = Calendar.getInstance();
-            c.setTime(data);
-            String out = null;
-            if (c.get(Calendar.MILLISECOND) != 0) {
-                out = dateOutputUsec.format(data);
-            } else {
-                out = dateOutput.format(data);
+            int years = calendar.get(Calendar.YEAR);
+            int months = calendar.get(Calendar.MONTH) + 1; // 0..12
+            int days = calendar.get(Calendar.DAY_OF_MONTH); // 1..31
+            int hour24 = calendar.get(Calendar.HOUR_OF_DAY); // 0..24
+            int minutes = calendar.get(Calendar.MINUTE); // 0..59
+            int seconds = calendar.get(Calendar.SECOND); // 0..59
+            int millis = calendar.get(Calendar.MILLISECOND);
+            StringBuffer buffer = new StringBuffer(String.valueOf(years));
+            buffer.append("-");
+            if (months < 10) {
+                buffer.append("0");
             }
-            out = out.substring(0, 23) + ":" + out.substring(23);
-            return representer.scalar(taguri(), out, (char) 0);
+            buffer.append(String.valueOf(months));
+            buffer.append("-");
+            if (days < 10) {
+                buffer.append("0");
+            }
+            buffer.append(String.valueOf(days));
+            buffer.append("T");
+            if (hour24 < 10) {
+                buffer.append("0");
+            }
+            buffer.append(String.valueOf(hour24));
+            buffer.append(":");
+            if (minutes < 10) {
+                buffer.append("0");
+            }
+            buffer.append(String.valueOf(minutes));
+            buffer.append(":");
+            if (seconds < 10) {
+                buffer.append("0");
+            }
+            buffer.append(String.valueOf(seconds));
+            if (millis > 0) {
+                if (millis < 10) {
+                    buffer.append("00");
+                } else if (millis < 100) {
+                    buffer.append("0");
+                }
+                buffer.append(".");
+                buffer.append(String.valueOf(millis));
+            }
+            buffer.append("Z");
+            return representer.scalar(taguri(), buffer.toString(), (char) 0);
         }
     }
 

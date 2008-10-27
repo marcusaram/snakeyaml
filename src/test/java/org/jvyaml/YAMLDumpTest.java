@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 
 import junit.framework.TestCase;
 
@@ -47,13 +48,13 @@ public class YAMLDumpTest extends TestCase {
     }
 
     public void testDumpJavaBean() {
-        final java.util.Calendar cal = java.util.Calendar.getInstance();
+        final java.util.Calendar cal = java.util.Calendar.getInstance(TimeZone.getTimeZone("CET"));
         cal.clear();
         cal.set(1982, 5 - 1, 3); // Java's months are zero-based...
 
         final TestBean toDump = new TestBean("Ola Bini", 24, cal.getTime());
         assertEquals(
-                "--- !java/object:org.jvyaml.TestBean\nname: Ola Bini\nage: 24\nborn: 1982-05-03 00:00:00 +02:00\n",
+                "--- !java/object:org.jvyaml.TestBean\nname: Ola Bini\nage: 24\nborn: 1982-05-02T22:00:00Z\n",
                 YAML.dump(toDump));
 
     }

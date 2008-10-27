@@ -48,10 +48,6 @@ public class YamlStream {
         while (piterator.hasNext()) {
             Object obj1 = niterator.next();
             Object obj2 = piterator.next();
-            if (obj1.hashCode() != obj2.hashCode()) {
-                throw new AssertionFailedError("Hash: " + obj1.hashCode() + "; but was: "
-                        + obj2.hashCode());
-            }
             if (obj1 instanceof Map) {
                 Map map1 = (Map) obj1;
                 Map map2 = (Map) obj2;
