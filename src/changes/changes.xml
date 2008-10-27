@@ -5,8 +5,13 @@
 	</properties>
 	<body>
 		<release version="0.3-SNAPSHOT" date="in Mercurial" description="Package as library">
-			<action dev="py4fun" type="fix">
-                Fix https://jvyaml.dev.java.net/issues/show_bug.cgi?id=7 (2008-10-27)
+			<action dev="py4fun" type="add">
+                Binary data is represented as ByteBuffer (2008-10-27)
+            </action>
+            <action dev="py4fun" type="fix">
+                When parsed, a timestamp in the canonical form (i.e, 2001-12-15T02:59:43.1Z) is
+                interpreted as if it is in the default time zone.
+                Fix issue: https://jvyaml.dev.java.net/issues/show_bug.cgi?id=7 (2008-10-27)
             </action>
             <action dev="py4fun" type="add">
                 Add Mark from PyYAML. It is not used yet. The JUnit test is migrated from PyYAML (2008-10-23)

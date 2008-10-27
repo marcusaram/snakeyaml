@@ -3,6 +3,8 @@
  */
 package org.jvyaml;
 
+import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -282,13 +284,10 @@ public class SafeConstructorImpl extends BaseConstructorImpl {
     }
 
     public static Object constructYamlBinary(final Constructor ctor, final Node node) {
-        final String[] values = ctor.constructScalar(node).toString().split(
-                "[\n\u0085]|(?:\r[^\n])");
-        final StringBuffer vals = new StringBuffer();
-        for (int i = 0, j = values.length; i < j; i++) {
-            vals.append(values[i].trim());
-        }
-        return Base64Coder.decode(vals.toString());
+        String decoded = Base64Coder.decode(ctor.constructScalar(node).toString());
+        Charset charset = Charset.forName("ISO-8859-1");
+        ByteBuffer buffer = charset.encode(decoded);
+        return buffer;
     }
 
     public static Object constructSpecializedSequence(final Constructor ctor, final String pref,
