@@ -13,8 +13,7 @@ import java.util.Map;
 public class StrTagTest extends AbstractTest {
     @SuppressWarnings("unchecked")
     private String getData(String data, String key) {
-        Map nativeData = getMap(data);
-        return (String) nativeData.get(key);
+        return (String) getMapValue(data, key);
     }
 
     public void testString() throws IOException {
