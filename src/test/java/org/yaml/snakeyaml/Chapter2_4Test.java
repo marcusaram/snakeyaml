@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TimeZone;
 
 import junit.framework.TestCase;
 
@@ -74,7 +75,7 @@ public class Chapter2_4Test extends TestCase {
         assertEquals(4, map.size());
         assertEquals("Expect '2001-12-15T02:59:43.1Z' to be a Date.", Date.class, map.get(
                 "canonical").getClass());
-        Calendar cal = Calendar.getInstance();
+        Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
         cal.clear();
         cal.set(Calendar.YEAR, 2001);
         cal.set(Calendar.MONTH, 11); // Java's months are zero-based...

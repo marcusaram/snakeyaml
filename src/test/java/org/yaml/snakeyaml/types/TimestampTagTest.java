@@ -16,28 +16,29 @@ import java.util.TimeZone;
 public class TimestampTagTest extends AbstractTest {
 
     public void testTimestamp() throws IOException {
-        assertEquals("2001-12-15 at 2:59:43 CET", getText("canonical: 2001-12-15T02:59:43.1Z",
-                "canonical", TimeZone.getTimeZone("Europe/Amsterdam")));
-        assertEquals("2001-12-14 at 21:59:43 GMT-05:00", getText(
+        assertEquals("2001-12-15 at 3:59:43 (100) CET", getText(
+                "canonical: 2001-12-15T02:59:43.1Z", "canonical", TimeZone
+                        .getTimeZone("Europe/Amsterdam")));
+        assertEquals("2001-12-14 at 21:59:43 (100) GMT-05:00", getText(
                 "valid iso8601:    2001-12-14t21:59:43.10-05:00", "valid iso8601", TimeZone
                         .getTimeZone("GMT-5:00")));
-        assertEquals("2001-12-15 at 3:59:43 CET", getText(
+        assertEquals("2001-12-15 at 3:59:43 (100) CET", getText(
                 "valid iso8601:    2001-12-14t21:59:43.10-05:00", "valid iso8601", TimeZone
                         .getTimeZone("CET")));
-        assertEquals("2001-12-14 at 21:59:43 GMT-05:00", getText(
+        assertEquals("2001-12-14 at 21:59:43 (100) GMT-05:00", getText(
                 "space separated:  2001-12-14 21:59:43.10 -5", "space separated", TimeZone
                         .getTimeZone("GMT-5:00")));
-        assertEquals("Must be UTC time.", "2001-12-14 at 20:59:43 GMT-05:00", getText(
+        assertEquals("Must be UTC time.", "2001-12-15 at 2:59:43 (100) UTC", getText(
                 "no time zone (Z): 2001-12-15 2:59:43.10", "no time zone (Z)", TimeZone
-                        .getTimeZone("GMT-5:00")));
-        /*
-         * TODO assertEquals( "If the time zone is omitted, the timestamp is
-         * assumed to be specified in UTC.", "2001-12-15 at 2:59:43 UTC",
-         * getText("no time zone (Z): 2001-12-15 2:59:43.10", "no time zone
-         * (Z)", TimeZone.getTimeZone("UTC"))); assertEquals("2002-12-14 at
-         * 0:0:0 UTC", getText("date (00:00:00Z): 2002-12-14", "date
-         * (00:00:00Z)", TimeZone.getTimeZone("UTC")));
-         */
+                        .getTimeZone("UTC")));
+        assertEquals(
+                "If the time zone is omitted, the timestamp is assumed to be specified in UTC.",
+                "2001-12-15 at 2:59:43 (100) UTC", getText(
+                        "no time zone (Z): 2001-12-15 2:59:43.10", "no time zone (Z)", TimeZone
+                                .getTimeZone("UTC")));
+        assertEquals("2002-12-14 at 0:0:0 UTC", getText("date (00:00:00Z): 2002-12-14",
+                "date (00:00:00Z)", TimeZone.getTimeZone("UTC")));
+
     }
 
     public void testTimestampShorthand() throws IOException {
@@ -71,9 +72,14 @@ public class TimestampTagTest extends AbstractTest {
         int hour24 = cal.get(Calendar.HOUR_OF_DAY); // 0..24
         int minutes = cal.get(Calendar.MINUTE); // 0..59
         int seconds = cal.get(Calendar.SECOND); // 0..59
-        return String.valueOf(years) + "-" + String.valueOf(months) + "-" + String.valueOf(days)
-                + " at " + String.valueOf(hour24) + ":" + String.valueOf(minutes) + ":"
-                + String.valueOf(seconds) + " " + timezone.getDisplayName(false, TimeZone.SHORT);
+        int millis = cal.get(Calendar.MILLISECOND);
+        String beginning = String.valueOf(years) + "-" + String.valueOf(months) + "-"
+                + String.valueOf(days) + " at " + String.valueOf(hour24) + ":"
+                + String.valueOf(minutes) + ":" + String.valueOf(seconds);
+        if (millis > 0) {
+            beginning += " (" + String.valueOf(millis) + ")";
+        }
+        return beginning + " " + timezone.getDisplayName(false, TimeZone.SHORT);
     }
 
     public void testTimestampReadWrite() throws IOException {

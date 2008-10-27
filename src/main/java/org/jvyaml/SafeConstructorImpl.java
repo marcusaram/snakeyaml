@@ -10,6 +10,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -129,16 +130,16 @@ public class SafeConstructorImpl extends BaseConstructorImpl {
             final String year_s = match.group(1);
             final String month_s = match.group(2);
             final String day_s = match.group(3);
-            final Calendar cal = Calendar.getInstance();
+            final Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
             cal.clear();
             if (year_s != null) {
                 cal.set(Calendar.YEAR, Integer.parseInt(year_s));
             }
             if (month_s != null) {
                 cal.set(Calendar.MONTH, Integer.parseInt(month_s) - 1); // Java's
-                                                                        // months
-                                                                        // are
-                                                                        // zero-based...
+                // months
+                // are
+                // zero-based...
             }
             if (day_s != null) {
                 cal.set(Calendar.DAY_OF_MONTH, Integer.parseInt(day_s));
@@ -174,9 +175,9 @@ public class SafeConstructorImpl extends BaseConstructorImpl {
         }
         if (month_s != null) {
             cal.set(Calendar.MONTH, Integer.parseInt(month_s) - 1); // Java's
-                                                                    // months
-                                                                    // are
-                                                                    // zero-based...
+            // months
+            // are
+            // zero-based...
         }
         if (day_s != null) {
             cal.set(Calendar.DAY_OF_MONTH, Integer.parseInt(day_s));
@@ -204,6 +205,8 @@ public class SafeConstructorImpl extends BaseConstructorImpl {
                 zone += Integer.parseInt(timezonem_s) * 60000;
             }
             cal.set(Calendar.ZONE_OFFSET, sign * zone);
+        } else {
+            cal.setTimeZone(TimeZone.getTimeZone("UTC"));
         }
         return cal.getTime();
     }
