@@ -25,9 +25,6 @@ import org.jvyaml.tokens.Token;
  * <p>
  * A Java implementation of the RbYAML scanner.
  * </p>
- * 
- * 
- * 
  */
 public class ScannerImpl implements Scanner {
     private final static String LINEBR = "\n\u0085\u2028\u2029";
@@ -1021,7 +1018,8 @@ public class ScannerImpl implements Scanner {
                                         + " hexadecimal numbers, but found something else: " + val,
                                 null);
                     }
-                    chunks.append(Integer.parseInt(val, 16));
+                    char unicode = (char) Integer.parseInt(val, 16);
+                    chunks.append(unicode);
                     forward(length);
                 } else if (FULL_LINEBR.indexOf(ch) != -1) {
                     scanLineBreak();
