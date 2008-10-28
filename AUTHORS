@@ -10,7 +10,7 @@ people who have submitted patches, reported bugs, added translations, helped
 answer newbie questions, and generally made SnakeYAML that much better:
 
 Kirill Simonov <xi@resolvent.net> - for writing the original Python code.
-Ola Bini <ola@ologix.com> - for porting PyYAML into Java 	
+Ola Bini <ola@ologix.com> - for porting PyYAML to Java 	
 kirkz
 tailwaggers
 jberry
