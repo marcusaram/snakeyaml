@@ -3,6 +3,7 @@
  */
 package org.jvyaml;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -57,5 +58,11 @@ public class YAMLDumpTest extends TestCase {
                 "--- !java/object:org.jvyaml.TestBean\nname: Ola Bini\nage: 24\nborn: 1982-05-02T22:00:00Z\n",
                 YAML.dump(toDump));
 
+    }
+
+    public void testEmitLongString() throws IOException {
+        String str = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\n\n";
+        java.io.StringWriter w = new java.io.StringWriter();
+        new EmitterImpl(w, new DefaultYAMLConfig()).writeDoubleQuoted(str, true);
     }
 }

@@ -858,9 +858,16 @@ public class EmitterImpl implements Emitter {
             }
             if ((0 < ending && ending < (text.length() - 1)) && (ch == ' ' || start >= ending)
                     && (env.column + (ending - start)) > env.bestWidth && split) {
-                data = text.substring(start, ending) + "\\";
-                if (start < ending) {
-                    start = ending;
+                if (start <= ending) {
+                    data = text.substring(start, ending) + "\\";
+                    if (start < ending) {
+                        start = ending;
+                    }
+                    env.column += data.length();
+                    stream.write(data);
+                } else {
+                    data = "\\";
+                    stream.write(data);
                 }
                 env.column += data.length();
                 stream.write(data);
