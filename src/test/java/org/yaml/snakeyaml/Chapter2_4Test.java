@@ -4,6 +4,7 @@
 package org.yaml.snakeyaml;
 
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -107,17 +108,13 @@ public class Chapter2_4Test extends TestCase {
 
     @SuppressWarnings("unchecked")
     public void testExample_2_23_picture() throws Exception {
-        try {
-            YamlDocument document = new YamlDocument("example2_23_picture.yaml");
-            Map<String, Object> map = (Map<String, Object>) document.getNativeData();
-            assertEquals(1, map.size());
-            byte[] picture = (byte[]) map.get("picture");
-            assertEquals("R0lGODlhDAAMAIQAAP//9/X\n" + "17unp5WZmZgAAAOfn515eXv\n"
-                    + "Pz7Y6OjuDg4J+fn5OTk6enp\n" + "56enmleECcgggoBADs=", new String(picture,
-                    "UTF-8"));
-        } catch (RuntimeException e) {
-            fail("Cannot parse '!!binary': 'picture: !!binary |'");
-        }
+        YamlDocument document = new YamlDocument("example2_23_picture.yaml");
+        Map<String, Object> map = (Map<String, Object>) document.getNativeData();
+        assertEquals(1, map.size());
+        ByteBuffer picture = (ByteBuffer) map.get("picture");
+        byte[] gif = picture.array();
+        String str = new String(gif);
+        assertTrue(str.startsWith("GIF89"));
     }
 
     @SuppressWarnings("unchecked")
