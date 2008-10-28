@@ -5,6 +5,10 @@
 	</properties>
 	<body>
 		<release version="0.3-SNAPSHOT" date="in Mercurial" description="Package as library">
+		  <action dev="py4fun" type="fix">
+                Respect sign for float.
+                Fix issue: https://jvyaml.dev.java.net/issues/show_bug.cgi?id=13 (2008-10-28)
+            </action>
 			<action dev="py4fun" type="add">
                 Binary data is represented as ByteBuffer (2008-10-27)
             </action>

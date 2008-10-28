@@ -280,7 +280,8 @@ public class SafeConstructorImpl extends BaseConstructorImpl {
             }
             return new Double(sign * val);
         } else {
-            return Double.valueOf(value);
+            Double d = Double.valueOf(value);
+            return new Double(d.doubleValue() * sign);
         }
     }
 

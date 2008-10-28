@@ -39,4 +39,10 @@ public class FloatTagTest extends AbstractTest {
         assertTrue(output.contains("number: 1"));
     }
 
+    public void testBasicDoubleScalarLoad() {
+        assertEquals(new Double(47.0), load("47.0"));
+        assertEquals(new Double(0.0), load("0.0"));
+        assertEquals(new Double(-1.0), load("-1.0"));
+    }
+
 }
