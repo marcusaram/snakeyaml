@@ -158,6 +158,7 @@ public class RepresenterImpl implements Representer {
         }
 
         public Node toYamlNode(final Representer representer) throws IOException {
+            // because SimpleDateFormat ignores timezone we have to use Calendar
             int years = calendar.get(Calendar.YEAR);
             int months = calendar.get(Calendar.MONTH) + 1; // 0..12
             int days = calendar.get(Calendar.DAY_OF_MONTH); // 1..31
