@@ -50,6 +50,7 @@ public class StrTagTest extends AbstractTest {
     public void testUnicodeDump() throws IOException {
         assertEquals("--- \"\\xfc\"\n", dump("\u00fc"));
         assertEquals("--- \"\\u263a\"\n", dump("\u263a"));
+        assertEquals("The leading zero must be preserved.", "--- \"\\u063a\"\n", dump("\u063a"));
     }
 
     public void testStringIntOut() throws IOException {
