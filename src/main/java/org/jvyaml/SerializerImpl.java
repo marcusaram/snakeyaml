@@ -163,8 +163,9 @@ public class SerializerImpl implements Serializer {
                     implicit[0] = node.getTag().equals(detectedTag);
                     implicit[1] = node.getTag().equals(defaultTag);
                 }
-                this.emitter.emit(new ScalarEvent(tAlias, node.getTag(), implicit, (String) node
-                        .getValue(), null, null, ((ScalarNode) node).getStyle()));
+                ScalarEvent event = new ScalarEvent(tAlias, node.getTag(), implicit, (String) node
+                        .getValue(), null, null, ((ScalarNode) node).getStyle());
+                this.emitter.emit(event);
             } else if (node instanceof SequenceNode) {
                 final boolean implicit = !options.explicitTypes()
                         && (node.getTag().equals(this.resolver.resolve(SequenceNode.class, null,
