@@ -216,8 +216,10 @@ public class EmitterImpl implements Emitter {
     public void emit(final Event event) throws IOException {
         this.env.events.add(event);
         while (!this.env.needMoreEvents()) {
-            this.env.event = (Event) this.env.events.remove(0);
-            STATES[this.env.state].expect(env);
+            Event e = (Event) this.env.events.remove(0);
+            this.env.event = e;
+            EmitterState state = STATES[this.env.state];
+            state.expect(env);
             this.env.event = null;
         }
     }
@@ -843,11 +845,11 @@ public class EmitterImpl implements Emitter {
                     if (YAML.ESCAPE_REPLACEMENTS.containsKey(new Character(ch))) {
                         data = "\\" + YAML.ESCAPE_REPLACEMENTS.get(new Character(ch));
                     } else if (ch <= '\u00FF') {
-                        String str = Integer.toString(ch, 16);
-                        if (str.length() == 1) {
-                            str = "0" + str;
-                        }
-                        data = "\\x" + str;
+                        String s = "0" + Integer.toString(ch, 16);
+                        data = "\\x" + s.substring(s.length() - 2);
+                    } else {
+                        String s = "000" + Integer.toString(ch, 16);
+                        data = "\\u" + s.substring(s.length() - 4);
                     }
                     env.column += data.length();
                     stream.write(data);

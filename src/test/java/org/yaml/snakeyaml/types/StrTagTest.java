@@ -47,6 +47,11 @@ public class StrTagTest extends AbstractTest {
         assertEquals("\u2014", load("---\n\u2014"));
     }
 
+    public void testUnicodeDump() throws IOException {
+        assertEquals("--- \"\\xfc\"\n", dump("\u00fc"));
+        assertEquals("--- \"\\u263a\"\n", dump("\u263a"));
+    }
+
     public void testStringIntOut() throws IOException {
         Map<String, String> map = new HashMap<String, String>();
         map.put("number", "1");
