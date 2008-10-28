@@ -31,18 +31,6 @@ public class Base64Coder {
     }
 
     /**
-     * Encodes a string into Base64 format. No blanks or line breaks are
-     * inserted.
-     * 
-     * @param s
-     *            a String to be encoded.
-     * @return A String with the Base64 encoded data.
-     */
-    public static String encode(final String s) {
-        return new String(encode(s.getBytes()));
-    }
-
-    /**
      * Encodes a byte array into Base64 format. No blanks or line breaks are
      * inserted.
      * 
@@ -76,19 +64,6 @@ public class Base64Coder {
     }
 
     /**
-     * Decodes a Base64 string.
-     * 
-     * @param s
-     *            a Base64 String to be decoded.
-     * @return A String containing the decoded data.
-     * @throws IllegalArgumentException
-     *             if the input is not valid Base64 encoded data.
-     */
-    public static String decode(final String s) {
-        return new String(decode(s.toCharArray()));
-    }
-
-    /**
      * Decodes Base64 data. No blanks or line breaks are allowed within the
      * Base64 encoded data.
      * 
@@ -98,7 +73,7 @@ public class Base64Coder {
      * @throws IllegalArgumentException
      *             if the input is not valid Base64 encoded data.
      */
-    public static byte[] decode(final char[] in) {
+    public static char[] decode(final char[] in) {
         int iLen = in.length;
         if (iLen % 4 != 0)
             throw new IllegalArgumentException(
@@ -106,7 +81,7 @@ public class Base64Coder {
         while (iLen > 0 && in[iLen - 1] == '=')
             iLen--;
         int oLen = (iLen * 3) / 4;
-        byte[] out = new byte[oLen];
+        char[] out = new char[oLen];
         int ip = 0;
         int op = 0;
         while (ip < iLen) {
@@ -125,11 +100,11 @@ public class Base64Coder {
             int o0 = (b0 << 2) | (b1 >>> 4);
             int o1 = ((b1 & 0xf) << 4) | (b2 >>> 2);
             int o2 = ((b2 & 3) << 6) | b3;
-            out[op++] = (byte) o0;
+            out[op++] = (char) o0;
             if (op < oLen)
-                out[op++] = (byte) o1;
+                out[op++] = (char) o1;
             if (op < oLen)
-                out[op++] = (byte) o2;
+                out[op++] = (char) o2;
         }
         return out;
     }

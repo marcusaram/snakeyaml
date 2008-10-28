@@ -4,6 +4,7 @@
 package org.jvyaml;
 
 import java.nio.ByteBuffer;
+import java.nio.CharBuffer;
 import java.nio.charset.Charset;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -284,9 +285,9 @@ public class SafeConstructorImpl extends BaseConstructorImpl {
     }
 
     public static Object constructYamlBinary(final Constructor ctor, final Node node) {
-        String decoded = Base64Coder.decode(ctor.constructScalar(node).toString());
+        char[] decoded = Base64Coder.decode(ctor.constructScalar(node).toString().toCharArray());
         Charset charset = Charset.forName("ISO-8859-1");
-        ByteBuffer buffer = charset.encode(decoded);
+        ByteBuffer buffer = charset.encode(CharBuffer.wrap(decoded));
         return buffer;
     }
 

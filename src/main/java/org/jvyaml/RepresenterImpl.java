@@ -6,6 +6,7 @@ package org.jvyaml;
 import java.io.IOException;
 import java.io.Serializable;
 import java.lang.reflect.Method;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -21,6 +22,7 @@ import org.jvyaml.nodes.MappingNode;
 import org.jvyaml.nodes.Node;
 import org.jvyaml.nodes.ScalarNode;
 import org.jvyaml.nodes.SequenceNode;
+import org.jvyaml.util.Base64Coder;
 
 /**
  * @see PyYAML 3.06 for more information
@@ -135,6 +137,8 @@ public class RepresenterImpl implements Representer {
             return new ScalarYAMLNodeCreator("tag:yaml.org,2002:null", "");
         } else if (data.getClass().isArray()) {
             return new ArrayYAMLNodeCreator(data);
+        } else if (data instanceof ByteBuffer) {
+            return new BinaryYAMLNodeCreator(data);
         } else { // Fallback, handles JavaBeans and other
             return new JavaBeanYAMLNodeCreator(data);
         }
@@ -267,6 +271,25 @@ public class RepresenterImpl implements Representer {
             } else if (str.equals("NaN")) {
                 str = ".nan";
             }
+            return representer.scalar(taguri(), str, (char) 0);
+        }
+    }
+
+    public static class BinaryYAMLNodeCreator implements YAMLNodeCreator {
+        private final ByteBuffer data;
+
+        public BinaryYAMLNodeCreator(final Object data) {
+            this.data = (ByteBuffer) data;
+        }
+
+        public String taguri() {
+            return "tag:yaml.org,2002:binary";
+        }
+
+        public Node toYamlNode(Representer representer) throws IOException {
+            byte[] array = data.array();
+            char[] encoded = Base64Coder.encode(array);
+            String str = String.valueOf(encoded);
             return representer.scalar(taguri(), str, (char) 0);
         }
     }
