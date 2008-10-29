@@ -73,8 +73,8 @@ public class SafeConstructorImpl extends BaseConstructorImpl {
 
     private final static Map BOOL_VALUES = new HashMap();
     static {
-        // BOOL_VALUES.put("y",Boolean.TRUE);
-        // BOOL_VALUES.put("n",Boolean.FALSE);
+        BOOL_VALUES.put("y", Boolean.TRUE);
+        BOOL_VALUES.put("n", Boolean.FALSE);
         BOOL_VALUES.put("yes", Boolean.TRUE);
         BOOL_VALUES.put("no", Boolean.FALSE);
         BOOL_VALUES.put("true", Boolean.TRUE);

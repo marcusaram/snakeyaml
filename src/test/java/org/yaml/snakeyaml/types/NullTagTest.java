@@ -14,9 +14,15 @@ public class NullTagTest extends AbstractTest {
     public void testNull() throws IOException {
         assertNull(load("---\n"));
         assertNull(load("---\n..."));
+        assertNull(load("---\n...\n"));
         assertNull(load("\n"));
         assertNull(load(""));
         assertNull(load(" "));
+        assertNull(load("~"));
+        assertNull(load("---\n~"));
+        assertNull(load("null"));
+        assertNull(load("Null"));
+        assertNull(load("NULL"));
         assertNull(getMapValue("empty:\n", "empty"));
         assertNull(getMapValue("canonical: ~", "canonical"));
         assertNull(getMapValue("english: null", "english"));
