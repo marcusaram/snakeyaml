@@ -20,8 +20,7 @@ public class IntTagTest extends AbstractTest {
         assertEquals(new Long(685230), getMapValue("octal: 02472256", "octal"));
         assertEquals(new Long(685230), getMapValue("hexadecimal: 0x_0A_74_AE", "hexadecimal"));
         assertEquals(new Long(685230), getMapValue("binary: 0b1010_0111_0100_1010_1110", "binary"));
-        // TODO it must be also Long
-        assertEquals(new Integer(685230), getMapValue("sexagesimal: 190:20:30", "sexagesimal"));
+        assertEquals(new Long(685230), getMapValue("sexagesimal: 190:20:30", "sexagesimal"));
     }
 
     public void testIntShorthand() throws IOException {
