@@ -226,7 +226,7 @@ public class ResolverImpl implements Resolver {
         addImplicitResolver(
                 "tag:yaml.org,2002:bool",
                 Pattern
-                        .compile("^(?:yes|Yes|YES|no|No|NO|true|True|TRUE|false|False|FALSE|on|On|ON|off|Off|OFF)$"),
+                        .compile("^(?:yes|Yes|YES|y|Y|no|No|NO|n|N|true|True|TRUE|false|False|FALSE|on|On|ON|off|Off|OFF)$"),
                 "yYnNtTfFoO");
         addImplicitResolver(
                 "tag:yaml.org,2002:float",

@@ -56,11 +56,12 @@ public class Chapter2_4Test extends TestCase {
         YamlDocument document = new YamlDocument("example2_21.yaml");
         Map<String, Object> map = (Map<String, Object>) document.getNativeData();
         assertEquals(4, map.size());
-        assertNull("'~' must be parsed as 'null': " + map.get("null").toString(), map.get("null"));
-        assertEquals("Expect y to be a Boolean: '" + map.get("true") + "'.", Boolean.class, map
-                .get("true").getClass());
-        assertTrue((Boolean) map.get("true"));
-        assertFalse((Boolean) map.get("false"));
+        // TODO null can be a key in a map
+        // assertNull("'~' must be parsed as 'null': " + map.get("null"),
+        // map.get("null"));
+        assertNull("'~' must be parsed as 'null': " + map.get("null value"), map.get("null value"));
+        assertTrue((Boolean) map.get(Boolean.TRUE));
+        assertFalse((Boolean) map.get(Boolean.FALSE));
         assertEquals("12345", map.get("string"));
     }
 

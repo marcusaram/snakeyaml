@@ -45,6 +45,9 @@ public class YamlDocument {
     }
 
     public Object getNativeData() {
+        if (nativeData == null) {
+            throw new NullPointerException("No object is parsed.");
+        }
         return nativeData;
     }
 }
