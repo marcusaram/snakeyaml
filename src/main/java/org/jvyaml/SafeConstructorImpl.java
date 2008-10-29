@@ -244,7 +244,7 @@ public class SafeConstructorImpl extends BaseConstructorImpl {
                 val += (Long.parseLong(digits[(j - i) - 1]) * bes);
                 bes *= 60;
             }
-            return new Integer(sign * val);
+            return new Long(sign * val);
         } else {
             return new Long(sign * Long.parseLong(value));
         }

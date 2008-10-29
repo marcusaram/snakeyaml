@@ -28,17 +28,12 @@ public class Chapter2_4Test extends TestCase {
         YamlDocument document = new YamlDocument("example2_19.yaml");
         Map<String, Object> map = (Map<String, Object>) document.getNativeData();
         assertEquals(5, map.size());
-        assertEquals("Expect 12345 to be an Integer.", Integer.class, map.get("canonical")
-                .getClass());
-        assertEquals(new Integer(12345), map.get("canonical"));
-        assertEquals(new Integer(12345), map.get("decimal"));
-        assertEquals(new Integer(3 * 3600 + 25 * 60 + 45), map.get("sexagesimal"));
-        //
-        assertEquals(new Integer(014), new Integer(12));
-        assertEquals(new Integer(014), map.get("octal"));
-        //
-        assertEquals(new Integer(0xC), new Integer(12));
-        assertEquals(new Integer(0xC), map.get("hexadecimal"));
+        assertEquals("Expect 12345 to be an Integer.", Long.class, map.get("canonical").getClass());
+        assertEquals(new Long(12345), map.get("canonical"));
+        assertEquals(new Long(12345), map.get("decimal"));
+        assertEquals(new Long(3 * 3600 + 25 * 60 + 45), map.get("sexagesimal"));
+        assertEquals(new Long(014), map.get("octal"));
+        assertEquals(new Long(0xC), map.get("hexadecimal"));
     }
 
     @SuppressWarnings("unchecked")

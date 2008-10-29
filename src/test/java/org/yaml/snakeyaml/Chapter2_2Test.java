@@ -39,12 +39,12 @@ public class Chapter2_2Test extends TestCase {
         assertEquals(2, list.size());
         Map<String, String> map1 = (Map<String, String>) list.get(0);
         assertEquals(3, map1.size());
-        assertEquals("20:03:20", map1.get("time"));
+        assertEquals(new Long(72200), map1.get("time"));
         assertEquals("Sammy Sosa", map1.get("player"));
         assertEquals("strike (miss)", map1.get("action"));
         Map<String, String> map2 = (Map<String, String>) list.get(1);
         assertEquals(3, map2.size());
-        assertEquals("20:03:47", map2.get("time"));
+        assertEquals(new Long(72227), map2.get("time"));
         assertEquals("Sammy Sosa", map2.get("player"));
         assertEquals("grand slam", map2.get("action"));
     }
