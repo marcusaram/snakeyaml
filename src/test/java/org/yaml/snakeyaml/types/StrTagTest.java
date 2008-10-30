@@ -7,6 +7,10 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.jvyaml.ParserException;
+
+import com.sun.xml.internal.bind.v2.TODO;
+
 /**
  * @see http://yaml.org/type/str.html
  */
@@ -47,27 +51,40 @@ public class StrTagTest extends AbstractTest {
         assertEquals("\u2014", load("---\n\u2014"));
     }
 
-    public void testUnicodeDump() throws IOException {
+    /**
+     * @see TODO http://code.google.com/p/jvyamlb/issues/detail?id=6
+     */
+    @SuppressWarnings("unchecked")
+    public void testIssueId6() {
+        try {
+            Map<String, String> map = (Map<String, String>) load("---\n:test: |-\n\"Test\r\r(* error here)\"");
+            assertEquals("\"Test\r\r(* error here)\"", map.get("test"));
+        } catch (ParserException e) {
+            // TODO http://code.google.com/p/jvyamlb/issues/detail?id=6
+        }
+    }
+
+    public void testUnicodeDump() {
         assertEquals("--- \"\\xfc\"\n", dump("\u00fc"));
         assertEquals("--- \"\\u263a\"\n", dump("\u263a"));
         assertEquals("The leading zero must be preserved.", "--- \"\\u063a\"\n", dump("\u063a"));
     }
 
-    public void testStringIntOut() throws IOException {
+    public void testStringIntOut() {
         Map<String, String> map = new HashMap<String, String>();
         map.put("number", "1");
         String output = dump(map);
         assertTrue(output.contains("number: !!str 1"));
     }
 
-    public void testStringFloatOut() throws IOException {
+    public void testStringFloatOut() {
         Map<String, String> map = new HashMap<String, String>();
         map.put("number", "1.1");
         String output = dump(map);
         assertTrue(output.contains("number: !!str 1.1"));
     }
 
-    public void testStringBoolOut() throws IOException {
+    public void testStringBoolOut() {
         Map<String, String> map = new HashMap<String, String>();
         map.put("number", "True");
         String output = dump(map);
