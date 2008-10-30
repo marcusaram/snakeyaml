@@ -42,6 +42,9 @@ public class StrTagTest extends AbstractTest {
         // escaped 16-bit unicode character (em dash):
         assertEquals("\u2014", load("---\n\"\\u2014\""));
 
+        // UTF-32 encoding is explicitly not supported
+        assertEquals("\\U2014AAAA", load("\\U2014AAAA"));
+
         // (and I don't have a surrogate pair handy at the moment)
         // raw unicode characters in the stream (em dash)
         assertEquals("\u2014", load("---\n\u2014"));
