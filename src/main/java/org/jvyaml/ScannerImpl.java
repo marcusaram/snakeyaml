@@ -546,7 +546,7 @@ public class ScannerImpl implements Scanner {
     private Token fetchAlias() {
         savePossibleSimpleKey();
         this.allowSimpleKey = false;
-        final Token tok = scanAnchor(new AliasToken());
+        final Token tok = scanAnchor(false);
         this.tokens.add(tok);
         return tok;
     }
@@ -554,7 +554,7 @@ public class ScannerImpl implements Scanner {
     private Token fetchAnchor() {
         savePossibleSimpleKey();
         this.allowSimpleKey = false;
-        final Token tok = scanAnchor(new AnchorToken());
+        final Token tok = scanAnchor(true);
         this.tokens.add(tok);
         return tok;
     }
@@ -640,7 +640,7 @@ public class ScannerImpl implements Scanner {
             }
         }
         scanDirectiveIgnoredLine();
-        return new DirectiveToken(name, value);
+        return new DirectiveToken(name, value, null, null);
     }
 
     private String scanDirectiveName() {
@@ -750,7 +750,7 @@ public class ScannerImpl implements Scanner {
         return scanLineBreak();
     }
 
-    private Token scanAnchor(final Token tok) {
+    private Token scanAnchor(final boolean isAnchor) {
         final char indicator = peek();
         final String name = indicator == '*' ? "alias" : "anchor";
         forward();
@@ -777,7 +777,12 @@ public class ScannerImpl implements Scanner {
                             + ((int) peek()) + ")", null);
 
         }
-        tok.setValue(value);
+        Token tok;
+        if (isAnchor) {
+            tok = new AnchorToken(value, null, null);
+        } else {
+            tok = new AliasToken(value, null, null);
+        }
         return tok;
     }
 
@@ -820,7 +825,7 @@ public class ScannerImpl implements Scanner {
             throw new ScannerException("while scanning a tag", "expected ' ', but found " + peek()
                     + "(" + ((int) peek()) + ")", null);
         }
-        return new TagToken(new String[] { handle, suffix });
+        return new TagToken(new String[] { handle, suffix }, null, null);
     }
 
     private Token scanBlockScalar(final char style) {
@@ -883,7 +888,7 @@ public class ScannerImpl implements Scanner {
             chunks.append(breaks);
         }
 
-        return new ScalarToken(chunks.toString(), false, style);
+        return new ScalarToken(chunks.toString(), false, null, null, style);
     }
 
     private Object[] scanBlockScalarIndicators() {
@@ -981,7 +986,7 @@ public class ScannerImpl implements Scanner {
             chunks.append(scanFlowScalarNonSpaces(dbl));
         }
         forward();
-        return new ScalarToken(chunks.toString(), false, style);
+        return new ScalarToken(chunks.toString(), false, null, null, style);
     }
 
     private String scanFlowScalarNonSpaces(final boolean dbl) {
@@ -1124,7 +1129,7 @@ public class ScannerImpl implements Scanner {
                 break;
             }
         }
-        return new ScalarToken(chunks.toString(), true);
+        return new ScalarToken(chunks.toString(), null, null, true);
     }
 
     private String scanPlainSpaces(final int indent) {

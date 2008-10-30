@@ -3,6 +3,8 @@
  */
 package org.jvyaml.tokens;
 
+import org.jvyaml.Mark;
+
 /**
  * @see PyYAML 3.06 for more information
  */
@@ -11,11 +13,14 @@ public class ScalarToken extends Token {
     private boolean plain;
     private char style;
 
-    public ScalarToken(final String value, final boolean plain) {
-        this(value, plain, (char) 0);
+    public ScalarToken(final String value, final Mark startMark, final Mark endMark,
+            final boolean plain) {
+        this(value, plain, startMark, endMark, (char) 0);
     }
 
-    public ScalarToken(final String value, final boolean plain, final char style) {
+    public ScalarToken(final String value, final boolean plain, final Mark startMark,
+            final Mark endMark, final char style) {
+        super(startMark, endMark);
         this.value = value;
         this.plain = plain;
         this.style = style;
@@ -33,7 +38,13 @@ public class ScalarToken extends Token {
         return this.style;
     }
 
-    public String toString() {
-        return "#<" + this.getClass().getName() + " value=\"" + value + "\">";
+    @Override
+    protected String getArguments() {
+        return "value=" + value + ", plain=" + plain + ", style=" + style;
+    }
+
+    @Override
+    public String getTokenId() {
+        return "<scalar>";
     }
 }

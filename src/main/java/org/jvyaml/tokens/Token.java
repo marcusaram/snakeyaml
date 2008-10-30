@@ -3,33 +3,61 @@
  */
 package org.jvyaml.tokens;
 
+import org.jvyaml.Mark;
+import org.jvyaml.events.StreamStartEvent.Encoding;
+
 /**
  * @see PyYAML 3.06 for more information
  */
 public abstract class Token {
-    public final static Token DOCUMENT_START = new DocumentStartToken();
-    public final static Token DOCUMENT_END = new DocumentEndToken();
-    public final static Token BLOCK_MAPPING_START = new BlockMappingStartToken();
-    public final static Token BLOCK_SEQUENCE_START = new BlockSequenceStartToken();
-    public final static Token BLOCK_ENTRY = new BlockEntryToken();
-    public final static Token BLOCK_END = new BlockEndToken();
-    public final static Token FLOW_ENTRY = new FlowEntryToken();
-    public final static Token FLOW_MAPPING_END = new FlowMappingEndToken();
-    public final static Token FLOW_MAPPING_START = new FlowMappingStartToken();
-    public final static Token FLOW_SEQUENCE_END = new FlowSequenceEndToken();
-    public final static Token FLOW_SEQUENCE_START = new FlowSequenceStartToken();
-    public final static Token KEY = new KeyToken();
-    public final static Token VALUE = new ValueToken();
-    public final static Token STREAM_END = new StreamEndToken();
-    public final static Token STREAM_START = new StreamStartToken();
+    public final static Token DOCUMENT_START = new DocumentStartToken(null, null);
+    public final static Token DOCUMENT_END = new DocumentEndToken(null, null);
+    public final static Token BLOCK_MAPPING_START = new BlockMappingStartToken(null, null);
+    public final static Token BLOCK_SEQUENCE_START = new BlockSequenceStartToken(null, null);
+    public final static Token BLOCK_ENTRY = new BlockEntryToken(null, null);
+    public final static Token BLOCK_END = new BlockEndToken(null, null);
+    public final static Token FLOW_ENTRY = new FlowEntryToken(null, null);
+    public final static Token FLOW_MAPPING_END = new FlowMappingEndToken(null, null);
+    public final static Token FLOW_MAPPING_START = new FlowMappingStartToken(null, null);
+    public final static Token FLOW_SEQUENCE_END = new FlowSequenceEndToken(null, null);
+    public final static Token FLOW_SEQUENCE_START = new FlowSequenceStartToken(null, null);
+    public final static Token KEY = new KeyToken(null, null);
+    public final static Token VALUE = new ValueToken(null, null);
+    public final static Token STREAM_END = new StreamEndToken(null, null);
+    public final static Token STREAM_START = new StreamStartToken(null, null, Encoding.UTF8);
 
-    public Token() {
-    }
+    private Mark startMark;
+    private Mark endMark;
 
-    public void setValue(final Object value) {
+    public Token(final Mark startMark, final Mark endMark) {
+        this.startMark = null;
+        this.endMark = null;
     }
 
     public String toString() {
-        return "#<" + this.getClass().getName() + ">";
+        return "<" + this.getClass().getName() + "(" + getArguments() + ")>";
     }
+
+    public Mark getStartMark() {
+        return startMark;
+    }
+
+    public Mark getEndMark() {
+        return endMark;
+    }
+
+    /**
+     * @see __repr__ for Token in PyYAML
+     */
+    protected String getArguments() {
+        return "";
+    }
+
+    /**
+     * For error reporting.
+     * 
+     * @see class variable 'id' in PyYAML
+     */
+    public abstract String getTokenId();
+
 }

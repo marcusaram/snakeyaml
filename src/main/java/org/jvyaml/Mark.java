@@ -1,6 +1,9 @@
 package org.jvyaml;
 
 /**
+ * It's just a record and its only use is producing nice error messages. Parser
+ * does not use it for any other purposes.
+ * 
  * @see imported from PyYAML
  */
 public class Mark {

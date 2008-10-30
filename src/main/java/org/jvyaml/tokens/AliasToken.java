@@ -3,29 +3,30 @@
  */
 package org.jvyaml.tokens;
 
+import org.jvyaml.Mark;
+
 /**
  * @see PyYAML 3.06 for more information
  */
 public class AliasToken extends Token {
     private String value;
 
-    public AliasToken() {
-        super();
-    }
-
-    public AliasToken(final String value) {
+    public AliasToken(final String value, final Mark startMark, final Mark endMark) {
+        super(startMark, endMark);
         this.value = value;
-    }
-
-    public void setValue(final Object value) {
-        this.value = (String) value;
     }
 
     public String getValue() {
         return this.value;
     }
 
-    public String toString() {
-        return "#<" + this.getClass().getName() + " value=\"" + value + "\">";
+    @Override
+    protected String getArguments() {
+        return "value=" + value;
+    }
+
+    @Override
+    public String getTokenId() {
+        return "<alias>";
     }
 }
