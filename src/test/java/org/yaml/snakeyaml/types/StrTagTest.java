@@ -42,10 +42,6 @@ public class StrTagTest extends AbstractTest {
         // escaped 16-bit unicode character (em dash):
         assertEquals("\u2014", load("---\n\"\\u2014\""));
 
-        // No test of escaped 32-bit unicode 'cause I'm not sure what
-        // java does with unicode surrogate pairs
-        // TODO test 32-bit unicode
-
         // (and I don't have a surrogate pair handy at the moment)
         // raw unicode characters in the stream (em dash)
         assertEquals("\u2014", load("---\n\u2014"));
