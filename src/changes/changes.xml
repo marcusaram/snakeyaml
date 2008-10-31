@@ -4,7 +4,7 @@
 		<author email="py4fun@gmail.com">Andrey Somov</author>
 	</properties>
 	<body>
-		<release version="0.3-SNAPSHOT" date="in Mercurial" description="Package as library">
+		<release version="1.0-SNAPSHOT" date="in Mercurial" description="Package as library">
             <action dev="py4fun" type="update">
                 Migration from JvYAML is finished. Tag as v0.3 (2008-10-31)
             </action>
