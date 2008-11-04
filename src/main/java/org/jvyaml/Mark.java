@@ -8,7 +8,6 @@ package org.jvyaml;
  */
 public class Mark {
     private String name;
-    private int index;
     private int line;
     private int column;
     private String buffer;
@@ -17,7 +16,6 @@ public class Mark {
     public Mark(String name, int index, int line, int column, String buffer, int pointer) {
         super();
         this.name = name;
-        this.index = index;
         this.line = line;
         this.column = column;
         this.buffer = buffer;
