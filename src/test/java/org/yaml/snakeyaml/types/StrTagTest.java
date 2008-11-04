@@ -9,8 +9,6 @@ import java.util.Map;
 
 import org.jvyaml.ParserException;
 
-import com.sun.xml.internal.bind.v2.TODO;
-
 /**
  * @see http://yaml.org/type/str.html
  */
@@ -51,7 +49,7 @@ public class StrTagTest extends AbstractTest {
     }
 
     /**
-     * @see TODO http://code.google.com/p/jvyamlb/issues/detail?id=6
+     * @see http://code.google.com/p/jvyamlb/issues/detail?id=6
      */
     @SuppressWarnings("unchecked")
     public void testIssueId6() {
