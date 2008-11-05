@@ -34,8 +34,9 @@ public class SafeConstructorImplTest extends TestCase {
         final String str = input.toString();
         // final long before = System.currentTimeMillis();
         // for(int i=0;i<1;i++) {
-        final Constructor ctor = new SafeConstructorImpl(new ComposerImpl(new ParserImpl(
-                new ScannerImpl(str), new DefaultYAMLConfig()), new ResolverImpl()));
+        final Constructor ctor = new SafeConstructorImpl(new ComposerImpl(
+                new ParserImpl(new ScannerImpl(new org.yaml.snakeyaml.reader.Reader(str)),
+                        new DefaultYAMLConfig()), new ResolverImpl()));
         for (final Iterator iter = ctor.eachDocument(); iter.hasNext();) {
             System.out.println(iter.next());
         }

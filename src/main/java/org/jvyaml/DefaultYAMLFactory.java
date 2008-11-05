@@ -11,11 +11,11 @@ import java.io.Writer;
  */
 public class DefaultYAMLFactory implements YAMLFactory {
     public Scanner createScanner(final String io) {
-        return new ScannerImpl(io);
+        return new ScannerImpl(new org.yaml.snakeyaml.reader.Reader(io));
     }
 
     public Scanner createScanner(final InputStream io) {
-        return new ScannerImpl(io);
+        return new ScannerImpl(new org.yaml.snakeyaml.reader.Reader(io));
     }
 
     public Parser createParser(final Scanner scanner) {
