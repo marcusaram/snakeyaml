@@ -6,8 +6,8 @@ import java.nio.charset.Charset;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.jvyaml.Mark;
-import org.jvyaml.YAMLException;
+import org.yaml.snakeyaml.error.Mark;
+import org.yaml.snakeyaml.error.YAMLException;
 
 /**
  * Reader: determines the data encoding and converts it to unicode, checks if

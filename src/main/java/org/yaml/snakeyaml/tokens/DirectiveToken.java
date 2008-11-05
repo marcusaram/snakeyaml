@@ -3,8 +3,8 @@
  */
 package org.yaml.snakeyaml.tokens;
 
-import org.jvyaml.Mark;
-import org.jvyaml.YAMLException;
+import org.yaml.snakeyaml.error.Mark;
+import org.yaml.snakeyaml.error.YAMLException;
 
 /**
  * @see PyYAML 3.06 for more information

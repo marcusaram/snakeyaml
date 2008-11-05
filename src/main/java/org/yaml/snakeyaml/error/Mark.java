@@ -1,4 +1,4 @@
-package org.jvyaml;
+package org.yaml.snakeyaml.error;
 
 /**
  * It's just a record and its only use is producing nice error messages. Parser

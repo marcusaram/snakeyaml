@@ -1,6 +1,6 @@
 package org.pyyaml;
 
-import org.jvyaml.Mark;
+import org.yaml.snakeyaml.error.Mark;
 
 /**
  * @see imported from PyYAML

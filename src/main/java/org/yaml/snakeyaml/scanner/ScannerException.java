@@ -3,7 +3,7 @@
  */
 package org.yaml.snakeyaml.scanner;
 
-import org.jvyaml.YAMLException;
+import org.yaml.snakeyaml.error.YAMLException;
 
 /**
  * @see PyYAML 3.06 for more information

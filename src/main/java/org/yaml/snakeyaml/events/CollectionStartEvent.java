@@ -3,7 +3,7 @@
  */
 package org.yaml.snakeyaml.events;
 
-import org.jvyaml.Mark;
+import org.yaml.snakeyaml.error.Mark;
 
 /**
  * @see PyYAML 3.06 for more information
