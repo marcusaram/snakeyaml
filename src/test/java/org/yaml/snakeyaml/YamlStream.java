@@ -15,7 +15,7 @@ import java.util.Map;
 
 import junit.framework.AssertionFailedError;
 
-import org.jvyaml.YAML;
+import org.jvyaml.Yaml;
 
 public class YamlStream {
     private List<Object> nativeData = new ArrayList<Object>();
@@ -24,9 +24,10 @@ public class YamlStream {
     public YamlStream(String sourceName) {
         InputStream input = YamlDocument.class.getClassLoader().getResourceAsStream(
                 YamlDocument.ROOT + sourceName);
-        nativeData = YAML.loadAll(new InputStreamReader(input));
+        Yaml yaml = new Yaml();
+        nativeData = yaml.loadAll(new InputStreamReader(input));
         ByteArrayOutputStream output = new ByteArrayOutputStream();
-        YAML.dumpAll(nativeData, new OutputStreamWriter(output));
+        yaml.dumpAll(nativeData, new OutputStreamWriter(output));
         String presentation;
         try {
             presentation = output.toString("UTF-8");
@@ -36,7 +37,7 @@ public class YamlStream {
         // try to read generated presentation to prove that the presentation
         // is identical to the source
         List<Object> parsedNativeData = new ArrayList<Object>();
-        parsedNativeData = YAML.loadAll(presentation);
+        parsedNativeData = yaml.loadAll(presentation);
         if (nativeData.getClass() != parsedNativeData.getClass()) {
             throw new AssertionFailedError("Different class: " + parsedNativeData.getClass());
         }

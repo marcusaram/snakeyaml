@@ -213,11 +213,11 @@ public class ResolverImpl implements Resolver {
             return (String) exactPaths.get(null);
         }
         if (kind.equals(ScalarNode.class)) {
-            return YAML.DEFAULT_SCALAR_TAG;
+            return Yaml.DEFAULT_SCALAR_TAG;
         } else if (kind.equals(SequenceNode.class)) {
-            return YAML.DEFAULT_SEQUENCE_TAG;
+            return Yaml.DEFAULT_SEQUENCE_TAG;
         } else if (kind.equals(MappingNode.class)) {
-            return YAML.DEFAULT_MAPPING_TAG;
+            return Yaml.DEFAULT_MAPPING_TAG;
         }
         return null;
     }

@@ -460,35 +460,4 @@ public class SafeConstructorImpl extends BaseConstructorImpl {
         });
     }
 
-    public static void main(final String[] args) throws Exception {
-        final String filename = args[0];
-        System.out.println("Reading of file: \"" + filename + "\"");
-
-        final StringBuffer input = new StringBuffer();
-        final java.io.Reader reader = new java.io.FileReader(filename);
-        char[] buff = new char[1024];
-        int read = 0;
-        while (true) {
-            read = reader.read(buff);
-            input.append(buff, 0, read);
-            if (read < 1024) {
-                break;
-            }
-        }
-        reader.close();
-        final String str = input.toString();
-        // final long before = System.currentTimeMillis();
-        // for(int i=0;i<1;i++) {
-        final Constructor ctor = new SafeConstructorImpl(new ComposerImpl(new ParserImpl(
-                new ScannerImpl(str)), new ResolverImpl()));
-        for (final Iterator iter = ctor.eachDocument(); iter.hasNext();) {
-            System.out.println(iter.next());
-        }
-        // }
-        // final long after = System.currentTimeMillis();
-        // final long time = after-before;
-        // final double timeS = (after-before)/1000.0;
-        // System.out.println("Walking through the nodes for the file: " +
-        // filename + " took " + time + "ms, or " + timeS + " seconds");
-    }
 }

@@ -19,7 +19,7 @@ public class DefaultYAMLFactory implements YAMLFactory {
     }
 
     public Parser createParser(final Scanner scanner) {
-        return new ParserImpl(scanner);
+        return new ParserImpl(scanner, new DefaultYAMLConfig());
     }
 
     public Parser createParser(final Scanner scanner, final YAMLConfig cfg) {

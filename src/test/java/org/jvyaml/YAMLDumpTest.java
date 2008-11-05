@@ -16,18 +16,21 @@ import junit.framework.TestCase;
  * @author <a href="mailto:ola.bini@ki.se">Ola Bini</a>
  */
 public class YAMLDumpTest extends TestCase {
-    public YAMLDumpTest(final String name) {
-        super(name);
+    private Yaml yaml;
+
+    @Override
+    protected void setUp() throws Exception {
+        yaml = new Yaml();
     }
 
     public void testBasicStringDump() {
-        assertEquals("--- str\n", YAML.dump("str"));
+        assertEquals("--- str\n", yaml.dump("str"));
     }
 
     public void testBasicHashDump() {
         Map ex = new HashMap();
         ex.put("a", "b");
-        assertEquals("--- \na: b\n", YAML.dump(ex));
+        assertEquals("--- \na: b\n", yaml.dump(ex));
     }
 
     public void testBasicListDump() {
@@ -35,17 +38,18 @@ public class YAMLDumpTest extends TestCase {
         ex.add("a");
         ex.add("b");
         ex.add("c");
-        assertEquals("--- \n- a\n- b\n- c\n", YAML.dump(ex));
+        assertEquals("--- \n- a\n- b\n- c\n", yaml.dump(ex));
     }
 
     public void testVersionDumps() {
-        assertEquals("--- !!int 1\n", YAML.dump(new Integer(1), YAML.config().explicitTypes(true)));
-        assertEquals("--- !int 1\n", YAML.dump(new Integer(1), YAML.config().version("1.0")
-                .explicitTypes(true)));
+        Yaml yaml = new Yaml(new DefaultYAMLConfig().explicitTypes(true));
+        assertEquals("--- !!int 1\n", yaml.dump(new Integer(1)));
+        yaml = new Yaml(new DefaultYAMLConfig().version("1.0").explicitTypes(true));
+        assertEquals("--- !int 1\n", yaml.dump(new Integer(1)));
     }
 
     public void testMoreScalars() {
-        assertEquals("--- !!str 1.0\n", YAML.dump("1.0"));
+        assertEquals("--- !!str 1.0\n", yaml.dump("1.0"));
     }
 
     public void testDumpJavaBean() {
@@ -56,7 +60,7 @@ public class YAMLDumpTest extends TestCase {
         final TestBean toDump = new TestBean("Ola Bini", 24, cal.getTime());
         assertEquals(
                 "--- !java/object:org.jvyaml.TestBean\nname: Ola Bini\nage: 24\nborn: 1982-05-02T22:00:00Z\n",
-                YAML.dump(toDump));
+                yaml.dump(toDump));
 
     }
 
