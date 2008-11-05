@@ -23,7 +23,9 @@ import org.yaml.snakeyaml.tokens.DocumentEndToken;
 import org.yaml.snakeyaml.tokens.DocumentStartToken;
 import org.yaml.snakeyaml.tokens.FlowEntryToken;
 import org.yaml.snakeyaml.tokens.FlowMappingEndToken;
+import org.yaml.snakeyaml.tokens.FlowMappingStartToken;
 import org.yaml.snakeyaml.tokens.FlowSequenceEndToken;
+import org.yaml.snakeyaml.tokens.FlowSequenceStartToken;
 import org.yaml.snakeyaml.tokens.KeyToken;
 import org.yaml.snakeyaml.tokens.ScalarToken;
 import org.yaml.snakeyaml.tokens.TagToken;
@@ -451,20 +453,32 @@ public class ScannerImpl implements Scanner {
     }
 
     private Token fetchFlowSequenceStart() {
-        return fetchFlowCollectionStart(Token.FLOW_SEQUENCE_START);
+        return fetchFlowCollectionStart(false);
     }
 
     private Token fetchFlowMappingStart() {
-        return fetchFlowCollectionStart(Token.FLOW_MAPPING_START);
+        return fetchFlowCollectionStart(true);
     }
 
-    private Token fetchFlowCollectionStart(final Token tok) {
+    private Token fetchFlowCollectionStart(boolean isMappingStart) {
+        // '[' and '{' may start a simple key.
         savePossibleSimpleKey();
+        // Increase the flow level.
         this.flowLevel++;
+        // Simple keys are allowed after '[' and '{'.
         this.allowSimpleKey = true;
+        // Add FLOW-SEQUENCE-START or FLOW-MAPPING-START.
+        Mark startMark = reader.getMark();
         reader.forward(1);
-        this.tokens.add(tok);
-        return tok;
+        Mark endMark = reader.getMark();
+        Token token;
+        if (isMappingStart) {
+            token = new FlowMappingStartToken(startMark, endMark);
+        } else {
+            token = new FlowSequenceStartToken(startMark, endMark);
+        }
+        this.tokens.add(token);
+        return token;
     }
 
     private Token fetchFlowSequenceEnd() {
