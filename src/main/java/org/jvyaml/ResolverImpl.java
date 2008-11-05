@@ -11,10 +11,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-import org.jvyaml.nodes.MappingNode;
-import org.jvyaml.nodes.Node;
-import org.jvyaml.nodes.ScalarNode;
-import org.jvyaml.nodes.SequenceNode;
+import org.yaml.snakeyaml.nodes.MappingNode;
+import org.yaml.snakeyaml.nodes.Node;
+import org.yaml.snakeyaml.nodes.ScalarNode;
+import org.yaml.snakeyaml.nodes.SequenceNode;
 
 /**
  * @see PyYAML 3.06 for more information

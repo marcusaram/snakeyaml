@@ -5,7 +5,7 @@ package org.jvyaml;
 
 import java.util.Iterator;
 
-import org.jvyaml.nodes.Node;
+import org.yaml.snakeyaml.nodes.Node;
 
 /**
  * @see PyYAML 3.06 for more information

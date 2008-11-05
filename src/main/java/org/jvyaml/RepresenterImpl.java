@@ -16,11 +16,11 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TimeZone;
 
-import org.jvyaml.nodes.MappingNode;
-import org.jvyaml.nodes.Node;
-import org.jvyaml.nodes.ScalarNode;
-import org.jvyaml.nodes.SequenceNode;
-import org.jvyaml.util.Base64Coder;
+import org.yaml.snakeyaml.nodes.MappingNode;
+import org.yaml.snakeyaml.nodes.Node;
+import org.yaml.snakeyaml.nodes.ScalarNode;
+import org.yaml.snakeyaml.nodes.SequenceNode;
+import org.yaml.snakeyaml.util.Base64Coder;
 
 /**
  * @see PyYAML 3.06 for more information
@@ -30,7 +30,7 @@ public class RepresenterImpl implements Representer {
     private final char defaultStyle;
     private final Map representedObjects;
 
-    public RepresenterImpl(final Serializer serializer, final YAMLConfig opts) {
+    public RepresenterImpl(final Serializer serializer, final YamlConfig opts) {
         this.serializer = serializer;
         this.defaultStyle = opts.useDouble() ? '"' : (opts.useSingle() ? '\'' : 0);
         this.representedObjects = new HashMap();

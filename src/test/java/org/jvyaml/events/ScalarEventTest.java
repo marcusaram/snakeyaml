@@ -2,6 +2,8 @@ package org.jvyaml.events;
 
 import junit.framework.TestCase;
 
+import org.yaml.snakeyaml.events.ScalarEvent;
+
 public class ScalarEventTest extends TestCase {
 
     public void testToString() {
@@ -10,7 +12,7 @@ public class ScalarEventTest extends TestCase {
         implicit[1] = true;
         ScalarEvent event = new ScalarEvent("a2", "str", implicit, "text", null, null, '"');
         assertEquals(
-                "<org.jvyaml.events.ScalarEvent(anchor=a2, tag=str, implicit=[true, true], value=text)>",
+                "<org.yaml.snakeyaml.events.ScalarEvent(anchor=a2, tag=str, implicit=[true, true], value=text)>",
                 event.toString());
     }
 

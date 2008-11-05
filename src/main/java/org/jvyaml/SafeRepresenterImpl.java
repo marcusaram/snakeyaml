@@ -7,7 +7,7 @@ package org.jvyaml;
  * @see PyYAML 3.06 for more information
  */
 public class SafeRepresenterImpl extends RepresenterImpl {
-    public SafeRepresenterImpl(final Serializer serializer, final YAMLConfig opts) {
+    public SafeRepresenterImpl(final Serializer serializer, final YamlConfig opts) {
         super(serializer, opts);
     }
 

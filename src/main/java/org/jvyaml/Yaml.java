@@ -41,15 +41,15 @@ public class Yaml {
         ESCAPE_REPLACEMENTS.put(new Character('\u00A0'), "_");
     }
 
-    private YAMLConfig config;
+    private YamlConfig config;
     private YAMLFactory factory;
 
-    public Yaml(YAMLConfig config, YAMLFactory factory) {
+    public Yaml(YamlConfig config, YAMLFactory factory) {
         this.config = config;
         this.factory = factory;
     }
 
-    public Yaml(YAMLConfig config) {
+    public Yaml(YamlConfig config) {
         this(config, new DefaultYAMLFactory());
     }
 
@@ -61,7 +61,7 @@ public class Yaml {
         this(new DefaultYAMLConfig(), new DefaultYAMLFactory());
     }
 
-    public YAMLConfig getConfig() {
+    public YamlConfig getConfig() {
         return config;
     }
 

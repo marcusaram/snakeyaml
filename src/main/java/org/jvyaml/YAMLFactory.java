@@ -16,7 +16,7 @@ public interface YAMLFactory {
 
     Parser createParser(final Scanner scanner);
 
-    Parser createParser(final Scanner scanner, final YAMLConfig cfg);
+    Parser createParser(final Scanner scanner, final YamlConfig cfg);
 
     Resolver createResolver();
 
@@ -24,9 +24,9 @@ public interface YAMLFactory {
 
     Constructor createConstructor(final Composer composer);
 
-    Emitter createEmitter(final Writer output, final YAMLConfig cfg);
+    Emitter createEmitter(final Writer output, final YamlConfig cfg);
 
-    Serializer createSerializer(final Emitter emitter, final Resolver resolver, final YAMLConfig cfg);
+    Serializer createSerializer(final Emitter emitter, final Resolver resolver, final YamlConfig cfg);
 
-    Representer createRepresenter(final Serializer serializer, final YAMLConfig cfg);
+    Representer createRepresenter(final Serializer serializer, final YamlConfig cfg);
 }

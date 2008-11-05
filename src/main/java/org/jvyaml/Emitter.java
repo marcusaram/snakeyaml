@@ -5,7 +5,7 @@ package org.jvyaml;
 
 import java.io.IOException;
 
-import org.jvyaml.events.Event;
+import org.yaml.snakeyaml.events.Event;
 
 /**
  * @see PyYAML 3.06 for more information

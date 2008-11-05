@@ -14,20 +14,20 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.regex.Pattern;
 
-import org.jvyaml.events.AliasEvent;
-import org.jvyaml.events.CollectionEndEvent;
-import org.jvyaml.events.CollectionStartEvent;
-import org.jvyaml.events.DocumentEndEvent;
-import org.jvyaml.events.DocumentStartEvent;
-import org.jvyaml.events.Event;
-import org.jvyaml.events.MappingEndEvent;
-import org.jvyaml.events.MappingStartEvent;
-import org.jvyaml.events.NodeEvent;
-import org.jvyaml.events.ScalarEvent;
-import org.jvyaml.events.SequenceEndEvent;
-import org.jvyaml.events.SequenceStartEvent;
-import org.jvyaml.events.StreamEndEvent;
-import org.jvyaml.events.StreamStartEvent;
+import org.yaml.snakeyaml.events.AliasEvent;
+import org.yaml.snakeyaml.events.CollectionEndEvent;
+import org.yaml.snakeyaml.events.CollectionStartEvent;
+import org.yaml.snakeyaml.events.DocumentEndEvent;
+import org.yaml.snakeyaml.events.DocumentStartEvent;
+import org.yaml.snakeyaml.events.Event;
+import org.yaml.snakeyaml.events.MappingEndEvent;
+import org.yaml.snakeyaml.events.MappingStartEvent;
+import org.yaml.snakeyaml.events.NodeEvent;
+import org.yaml.snakeyaml.events.ScalarEvent;
+import org.yaml.snakeyaml.events.SequenceEndEvent;
+import org.yaml.snakeyaml.events.SequenceStartEvent;
+import org.yaml.snakeyaml.events.StreamEndEvent;
+import org.yaml.snakeyaml.events.StreamStartEvent;
 
 /**
  * @see PyYAML 3.06 for more information
@@ -188,10 +188,10 @@ public class EmitterImpl implements Emitter {
     }
 
     private Writer stream;
-    private YAMLConfig options;
+    private YamlConfig options;
     private EmitterEnvironment env;
 
-    public EmitterImpl(final Writer stream, final YAMLConfig opts) {
+    public EmitterImpl(final Writer stream, final YamlConfig opts) {
         this.stream = stream;
         this.options = opts;
         this.env = new EmitterEnvironment();
@@ -207,7 +207,7 @@ public class EmitterImpl implements Emitter {
         }
     }
 
-    public YAMLConfig getOptions() {
+    public YamlConfig getOptions() {
         return options;
     }
 

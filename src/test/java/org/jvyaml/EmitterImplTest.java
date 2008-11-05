@@ -8,7 +8,7 @@ import java.util.Iterator;
 
 import junit.framework.TestCase;
 
-import org.jvyaml.events.Event;
+import org.yaml.snakeyaml.events.Event;
 
 public class EmitterImplTest extends TestCase {
 

@@ -17,7 +17,7 @@ public class RepresenterImplTest extends TestCase {
     }
 
     public static void main(final String[] args) throws IOException {
-        final YAMLConfig cfg = new DefaultYAMLConfig();
+        final YamlConfig cfg = new DefaultYAMLConfig();
         final Serializer s = new SerializerImpl(new EmitterImpl(new java.io.OutputStreamWriter(
                 System.out), cfg), new ResolverImpl(), cfg);
         s.open();
