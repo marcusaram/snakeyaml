@@ -28,6 +28,7 @@ import org.yaml.snakeyaml.tokens.FlowSequenceEndToken;
 import org.yaml.snakeyaml.tokens.FlowSequenceStartToken;
 import org.yaml.snakeyaml.tokens.KeyToken;
 import org.yaml.snakeyaml.tokens.ScalarToken;
+import org.yaml.snakeyaml.tokens.StreamEndToken;
 import org.yaml.snakeyaml.tokens.TagToken;
 import org.yaml.snakeyaml.tokens.Token;
 import org.yaml.snakeyaml.tokens.ValueToken;
@@ -406,12 +407,19 @@ public class ScannerImpl implements Scanner {
     }
 
     private Token fetchStreamEnd() {
+        // Set the current intendation to -1.
         unwindIndent(-1);
+        // Reset everything (not really needed).
         this.allowSimpleKey = false;
         this.possibleSimpleKeys = new HashMap<Integer, SimpleKey>();
-        this.tokens.add(Token.STREAM_END);
+        // Read the token.
+        Mark mark = reader.getMark();
+        // Add STREAM-END.
+        Token token = new StreamEndToken(mark, mark);
+        this.tokens.add(token);
+        // The stream is finished.
         this.done = true;
-        return Token.STREAM_END;
+        return token;
     }
 
     private Token fetchDirective() {
