@@ -56,7 +56,6 @@ public class ScannerImpl implements Scanner {
     private final static Pattern R_FLOWZERO = Pattern
             .compile("[\0 \t\r\n\u0085]|(:[\0 \t\r\n\u0028])");
     private final static Pattern R_FLOWNONZERO = Pattern.compile("[\0 \t\r\n\u0085\\[\\]{},:?]");
-    private final static Pattern LINE_BR_REG = Pattern.compile("[\n\u0085]|(?:\r[^\n])");
     private final static Pattern END_OR_START = Pattern
             .compile("^(---|\\.\\.\\.)[\0 \t\r\n\u0085]$");
     private final static Pattern ENDING = Pattern.compile("^---[\0 \t\r\n\u0085]$");
@@ -64,8 +63,8 @@ public class ScannerImpl implements Scanner {
     private final static Pattern BEG = Pattern
             .compile("^([^\0 \t\r\n\u0085\\-?:,\\[\\]{}#&*!|>'\"%@]|([\\-?:][^\0 \t\r\n\u0085]))");
 
-    private final static Map ESCAPE_REPLACEMENTS = new HashMap();
-    private final static Map ESCAPE_CODES = new HashMap();
+    private final static Map<Character, String> ESCAPE_REPLACEMENTS = new HashMap<Character, String>();
+    private final static Map<Character, Integer> ESCAPE_CODES = new HashMap<Character, Integer>();
 
     static {
         ESCAPE_REPLACEMENTS.put(new Character('0'), "\0");
@@ -108,7 +107,7 @@ public class ScannerImpl implements Scanner {
     private int indent = -1;
 
     // Past indentation levels.
-    private List indents;
+    private List<Integer> indents;
 
     // Variables related to simple keys treatment. See PyYAML.
     private boolean allowSimpleKey = true;
@@ -120,15 +119,15 @@ public class ScannerImpl implements Scanner {
      * line, column, mark) A simple key may start with ALIAS, ANCHOR, TAG,
      * SCALAR(flow), '[', or '{' tokens.
      */
-    private Map possibleSimpleKeys;
+    private Map<Integer, SimpleKey> possibleSimpleKeys;
 
     private boolean docStart = false;// only JvYAML ???
 
     public ScannerImpl(org.yaml.snakeyaml.reader.Reader reader) {
         this.reader = reader;
         this.tokens = new LinkedList<Token>();
-        this.indents = new LinkedList();
-        this.possibleSimpleKeys = new HashMap();
+        this.indents = new LinkedList<Integer>();
+        this.possibleSimpleKeys = new HashMap<Integer, SimpleKey>();
         fetchStreamStart();// Add the STREAM-START token.
     }
 
@@ -308,8 +307,9 @@ public class ScannerImpl implements Scanner {
     }
 
     private int nextPossibleSimpleKey() {
-        for (final Iterator iter = this.possibleSimpleKeys.values().iterator(); iter.hasNext();) {
-            final SimpleKey key = (SimpleKey) iter.next();
+        for (final Iterator<SimpleKey> iter = this.possibleSimpleKeys.values().iterator(); iter
+                .hasNext();) {
+            final SimpleKey key = iter.next();
             if (key.getTokenNumber() > 0) {
                 return key.getTokenNumber();
             }
@@ -354,7 +354,7 @@ public class ScannerImpl implements Scanner {
     private Token fetchStreamEnd() {
         unwindIndent(-1);
         this.allowSimpleKey = false;
-        this.possibleSimpleKeys = new HashMap();
+        this.possibleSimpleKeys = new HashMap<Integer, SimpleKey>();
         this.tokens.add(Token.STREAM_END);
         this.done = true;
         return Token.STREAM_END;
