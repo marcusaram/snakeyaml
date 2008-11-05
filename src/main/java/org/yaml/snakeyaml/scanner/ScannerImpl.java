@@ -14,6 +14,7 @@ import java.util.regex.Pattern;
 import org.yaml.snakeyaml.error.Mark;
 import org.yaml.snakeyaml.tokens.AliasToken;
 import org.yaml.snakeyaml.tokens.AnchorToken;
+import org.yaml.snakeyaml.tokens.BlockEndToken;
 import org.yaml.snakeyaml.tokens.BlockEntryToken;
 import org.yaml.snakeyaml.tokens.BlockMappingStartToken;
 import org.yaml.snakeyaml.tokens.BlockSequenceStartToken;
@@ -368,8 +369,9 @@ public class ScannerImpl implements Scanner {
 
         // In block context, we may need to issue the BLOCK-END tokens.
         while (this.indent > col) {
+            Mark mark = reader.getMark();
             this.indent = ((Integer) (this.indents.remove(0))).intValue();
-            this.tokens.add(Token.BLOCK_END);
+            this.tokens.add(new BlockEndToken(mark, mark));
         }
     }
 
