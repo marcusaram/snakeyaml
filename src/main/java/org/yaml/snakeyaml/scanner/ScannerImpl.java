@@ -1,7 +1,7 @@
 /*
  * See LICENSE file in distribution for copyright and licensing information.
  */
-package org.jvyaml;
+package org.yaml.snakeyaml.scanner;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -19,9 +19,20 @@ import org.yaml.snakeyaml.tokens.TagToken;
 import org.yaml.snakeyaml.tokens.Token;
 
 /**
- * <p>
- * A Java implementation of the RbYAML scanner.
- * </p>
+ * Reader do the dirty work of checking for BOM and converting the input data to
+ * Unicode. It also adds NUL to the end.
+ * 
+ * Reader supports the following methods
+ * 
+ * <pre>
+ * reader.peek(i=0) # peek the next i-th character self.prefix(l=1)
+ * reader.peek the next l characters
+ * reader.forward(l=1) read the next l characters and move the pointer.
+ * </pre>
+ */
+/**
+ * @author as80418
+ * 
  */
 public class ScannerImpl implements Scanner {
 
@@ -79,29 +90,52 @@ public class ScannerImpl implements Scanner {
         ESCAPE_CODES.put(new Character('u'), new Integer(4));
         ESCAPE_CODES.put(new Character('U'), new Integer(8));
     }
-
-    private boolean done = false;
     private org.yaml.snakeyaml.reader.Reader reader;
+    // Had we reached the end of the stream?
+    private boolean done = false;
+
+    // The number of unclosed '{' and '['. `flow_level == 0` means block
+    // context.
     private int flowLevel = 0;
+
+    // List of processed tokens that are not yet emitted.
+    private List<Token> tokens;
+
+    // Number of tokens that were emitted through the `get_token` method.
     private int tokensTaken = 0;
+
+    // The current indentation level.
     private int indent = -1;
+
+    // Past indentation levels.
+    private List indents;
+
+    // Variables related to simple keys treatment. See PyYAML.
     private boolean allowSimpleKey = true;
 
-    private List tokens;
-    private List indents;
+    /*
+     * Keep track of possible simple keys. This is a dictionary. The key is
+     * `flow_level`; there can be no more that one possible simple key for each
+     * level. The value is a SimpleKey record: (token_number, required, index,
+     * line, column, mark) A simple key may start with ALIAS, ANCHOR, TAG,
+     * SCALAR(flow), '[', or '{' tokens.
+     */
     private Map possibleSimpleKeys;
 
-    private boolean docStart = false;
+    private boolean docStart = false;// only JvYAML ???
 
     public ScannerImpl(org.yaml.snakeyaml.reader.Reader reader) {
         this.reader = reader;
-        this.tokens = new LinkedList();
+        this.tokens = new LinkedList<Token>();
         this.indents = new LinkedList();
         this.possibleSimpleKeys = new HashMap();
-        fetchStreamStart();
+        fetchStreamStart();// Add the STREAM-START token.
     }
 
-    public boolean checkToken(final Class[] choices) {
+    /**
+     * Check if the next token is one of the given types.
+     */
+    public boolean checkToken(final Class<Token>[] choices) {
         while (needMoreTokens()) {
             fetchMoreTokens();
         }
@@ -109,7 +143,7 @@ public class ScannerImpl implements Scanner {
             if (choices.length == 0) {
                 return true;
             }
-            final Object first = this.tokens.get(0);
+            final Token first = this.tokens.get(0);
             for (int i = 0, j = choices.length; i < j; i++) {
                 if (choices[i].isInstance(first)) {
                     return true;
@@ -119,6 +153,9 @@ public class ScannerImpl implements Scanner {
         return false;
     }
 
+    /**
+     * Return the next token, but do not delete if from the queue.
+     */
     public Token peekToken() {
         while (needMoreTokens()) {
             fetchMoreTokens();
@@ -126,6 +163,9 @@ public class ScannerImpl implements Scanner {
         return (Token) (this.tokens.isEmpty() ? null : this.tokens.get(0));
     }
 
+    /**
+     * Return the next token.
+     */
     public Token getToken() {
         while (needMoreTokens()) {
             fetchMoreTokens();
@@ -137,12 +177,12 @@ public class ScannerImpl implements Scanner {
         return null;
     }
 
-    private class TokenIterator implements Iterator {
+    private class TokenIterator implements Iterator<Token> {
         public boolean hasNext() {
             return null != peekToken();
         }
 
-        public Object next() {
+        public Token next() {
             return getToken();
         }
 
@@ -150,49 +190,45 @@ public class ScannerImpl implements Scanner {
         }
     }
 
-    public Iterator eachToken() {
+    public Iterator<Token> eachToken() {
         return new TokenIterator();
-    }
-
-    public Iterator iterator() {
-        return eachToken();
     }
 
     private boolean needMoreTokens() {
         if (this.done) {
             return false;
         }
+        // TODO not implemented but present in PyYAML
+        // The current token may be a potential simple key, so we
+        // need to look further.
+        /* self.stale_possible_simple_keys() */
         return this.tokens.isEmpty() || nextPossibleSimpleKey() == this.tokensTaken;
     }
 
     private Token fetchMoreTokens() {
+        // Eat whitespaces and comments until we reach the next token.
         scanToNextToken();
+        // TODO not implemented but present in PyYAML
+        // Remove obsolete possible simple keys.
+        /* self.stale_possible_simple_keys() */
+        // Compare the current indentation and column. It may add some tokens
+        // and decrease the current indentation level.
         unwindIndent(reader.getColumn());
+        // Peek the next character.
         final char ch = reader.peek();
         final boolean colz = reader.getColumn() == 0;
         switch (ch) {
         case '\0':
+            // Is it the end of stream?
             return fetchStreamEnd();
-        case '\'':
-            return fetchSingle();
-        case '"':
-            return fetchDouble();
-        case '?':
-            if (this.flowLevel != 0 || NULL_OR_OTHER.indexOf(reader.peek(1)) != -1) {
-                return fetchKey();
-            }
-            break;
-        case ':':
-            if (this.flowLevel != 0 || NULL_OR_OTHER.indexOf(reader.peek(1)) != -1) {
-                return fetchValue();
-            }
-            break;
         case '%':
+            // Is it a directive?
             if (colz) {
                 return fetchDirective();
             }
             break;
         case '-':
+            // Is it the document start?
             if ((colz || docStart) && ENDING.matcher(reader.prefix(4)).matches()) {
                 return fetchDocumentStart();
             } else if (NULL_OR_OTHER.indexOf(reader.peek(1)) != -1) {
@@ -200,40 +236,73 @@ public class ScannerImpl implements Scanner {
             }
             break;
         case '.':
+            // Is it the document end?
             if (colz && START.matcher(reader.prefix(4)).matches()) {
                 return fetchDocumentEnd();
             }
             break;
+        // TODO support for BOM within a stream. (not implemented in PyYAML)
         case '[':
+            // Is it the flow sequence start indicator?
             return fetchFlowSequenceStart();
         case '{':
+            // Is it the flow mapping start indicator?
             return fetchFlowMappingStart();
         case ']':
+            // Is it the flow sequence end indicator?
             return fetchFlowSequenceEnd();
         case '}':
+            // Is it the flow mapping end indicator?
             return fetchFlowMappingEnd();
         case ',':
+            // Is it the flow entry indicator?
             return fetchFlowEntry();
+            // TODO missing block entry indicator from PyYAML
+        case '?':
+            // Is it the key indicator?
+            if (this.flowLevel != 0 || NULL_OR_OTHER.indexOf(reader.peek(1)) != -1) {
+                return fetchKey();
+            }
+            break;
+        case ':':
+            // Is it the value indicator?
+            if (this.flowLevel != 0 || NULL_OR_OTHER.indexOf(reader.peek(1)) != -1) {
+                return fetchValue();
+            }
+            break;
         case '*':
+            // Is it an alias?
             return fetchAlias();
         case '&':
+            // Is it an anchor?
             return fetchAnchor();
         case '!':
+            // Is it a tag?
             return fetchTag();
         case '|':
+            // Is it a literal scalar?
             if (this.flowLevel == 0) {
                 return fetchLiteral();
             }
             break;
         case '>':
+            // Is it a folded scalar?
             if (this.flowLevel == 0) {
                 return fetchFolded();
             }
             break;
+        case '\'':
+            // Is it a single quoted scalar?
+            return fetchSingle();
+        case '"':
+            // Is it a double quoted scalar?
+            return fetchDouble();
         }
+        // It must be a plain scalar then.
         if (BEG.matcher(reader.prefix(2)).find()) {
             return fetchPlain();
         }
+        // TODO implement Mark instead of null
         throw new ScannerException("while scanning for the next token", "found character " + ch
                 + "(" + ((int) ch) + " that cannot start any token", null);
     }

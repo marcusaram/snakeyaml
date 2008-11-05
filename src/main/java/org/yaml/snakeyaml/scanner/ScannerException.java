@@ -1,12 +1,15 @@
 /*
  * See LICENSE file in distribution for copyright and licensing information.
  */
-package org.jvyaml;
+package org.yaml.snakeyaml.scanner;
+
+import org.jvyaml.YAMLException;
 
 /**
  * @see PyYAML 3.06 for more information
  */
 public class ScannerException extends YAMLException {
+    private static final long serialVersionUID = -1166143510246254991L;
     private String when;
     private String what;
     private String note;
