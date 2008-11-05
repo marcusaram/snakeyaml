@@ -3,6 +3,8 @@
  */
 package org.jvyaml;
 
+import org.yaml.snakeyaml.YamlConfig;
+
 /**
  * @see PyYAML 3.06 for more information
  */

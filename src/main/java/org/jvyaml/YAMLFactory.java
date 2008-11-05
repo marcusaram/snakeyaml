@@ -6,6 +6,7 @@ package org.jvyaml;
 import java.io.InputStream;
 import java.io.Writer;
 
+import org.yaml.snakeyaml.YamlConfig;
 import org.yaml.snakeyaml.scanner.Scanner;
 
 /**

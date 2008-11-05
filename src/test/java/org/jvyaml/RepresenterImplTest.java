@@ -8,6 +8,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.yaml.snakeyaml.YamlConfig;
+
 import junit.framework.TestCase;
 
 public class RepresenterImplTest extends TestCase {
