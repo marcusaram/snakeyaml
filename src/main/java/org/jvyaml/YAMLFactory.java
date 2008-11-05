@@ -6,6 +6,8 @@ package org.jvyaml;
 import java.io.InputStream;
 import java.io.Writer;
 
+import org.yaml.snakeyaml.scanner.Scanner;
+
 /**
  * @see PyYAML 3.06 for more information
  */

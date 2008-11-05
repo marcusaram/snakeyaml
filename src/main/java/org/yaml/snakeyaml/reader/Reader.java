@@ -74,6 +74,11 @@ public class Reader {
         forward(1);
     }
 
+    /**
+     * read the next length characters and move the pointer.
+     * 
+     * @param length
+     */
     public void forward(final int length) {
         if (this.pointer + length + 1 >= this.buffer.length()) {
             update(length + 1);
@@ -97,6 +102,12 @@ public class Reader {
         return peek(0);
     }
 
+    /**
+     * Peek the next index-th character
+     * 
+     * @param index
+     * @return
+     */
     public char peek(final int index) {
         if (this.pointer + index + 1 > this.buffer.length()) {
             update(index + 1);
@@ -108,6 +119,12 @@ public class Reader {
         return prefix(1);
     }
 
+    /**
+     * peek the next length characters
+     * 
+     * @param length
+     * @return
+     */
     public String prefix(final int length) {
         if (this.pointer + length >= this.buffer.length()) {
             update(length);
