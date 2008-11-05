@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-import org.jvyaml.nodes.Node;
+import org.yaml.snakeyaml.nodes.Node;
 
 /**
  * @see PyYAML 3.06 for more information

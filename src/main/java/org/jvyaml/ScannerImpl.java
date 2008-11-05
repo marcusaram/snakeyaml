@@ -11,12 +11,12 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.jvyaml.tokens.AliasToken;
-import org.jvyaml.tokens.AnchorToken;
-import org.jvyaml.tokens.DirectiveToken;
-import org.jvyaml.tokens.ScalarToken;
-import org.jvyaml.tokens.TagToken;
-import org.jvyaml.tokens.Token;
+import org.yaml.snakeyaml.tokens.AliasToken;
+import org.yaml.snakeyaml.tokens.AnchorToken;
+import org.yaml.snakeyaml.tokens.DirectiveToken;
+import org.yaml.snakeyaml.tokens.ScalarToken;
+import org.yaml.snakeyaml.tokens.TagToken;
+import org.yaml.snakeyaml.tokens.Token;
 
 /**
  * <p>

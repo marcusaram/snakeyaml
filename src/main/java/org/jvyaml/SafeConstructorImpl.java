@@ -17,8 +17,8 @@ import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.jvyaml.nodes.Node;
-import org.jvyaml.util.Base64Coder;
+import org.yaml.snakeyaml.nodes.Node;
+import org.yaml.snakeyaml.util.Base64Coder;
 
 /**
  * @see PyYAML 3.06 for more information

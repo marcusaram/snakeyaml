@@ -6,7 +6,7 @@ import java.util.Iterator;
 
 import junit.framework.TestCase;
 
-import org.jvyaml.tokens.Token;
+import org.yaml.snakeyaml.tokens.Token;
 
 public class ScannerImplTest extends TestCase {
 

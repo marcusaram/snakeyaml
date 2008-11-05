@@ -6,7 +6,7 @@ package org.jvyaml;
 /**
  * @see PyYAML 3.06 for more information
  */
-public class DefaultYAMLConfig implements YAMLConfig {
+public class DefaultYAMLConfig implements YamlConfig {
     private int indent = 2;
     private boolean useHeader = false;
     private boolean useVersion = false;
@@ -23,7 +23,7 @@ public class DefaultYAMLConfig implements YAMLConfig {
     private boolean useSingle = false;
     private boolean useDouble = false;
 
-    public YAMLConfig indent(final int indent) {
+    public YamlConfig indent(final int indent) {
         this.indent = indent;
         return this;
     }
@@ -32,7 +32,7 @@ public class DefaultYAMLConfig implements YAMLConfig {
         return this.indent;
     }
 
-    public YAMLConfig useHeader(final boolean useHeader) {
+    public YamlConfig useHeader(final boolean useHeader) {
         this.useHeader = useHeader;
         return this;
     }
@@ -41,7 +41,7 @@ public class DefaultYAMLConfig implements YAMLConfig {
         return this.useHeader;
     }
 
-    public YAMLConfig useVersion(final boolean useVersion) {
+    public YamlConfig useVersion(final boolean useVersion) {
         this.useVersion = useVersion;
         return this;
     }
@@ -50,7 +50,7 @@ public class DefaultYAMLConfig implements YAMLConfig {
         return this.useVersion;
     }
 
-    public YAMLConfig version(final String version) {
+    public YamlConfig version(final String version) {
         this.version = version;
         return this;
     }
@@ -59,7 +59,7 @@ public class DefaultYAMLConfig implements YAMLConfig {
         return this.version;
     }
 
-    public YAMLConfig explicitStart(final boolean expStart) {
+    public YamlConfig explicitStart(final boolean expStart) {
         this.expStart = expStart;
         return this;
     }
@@ -68,7 +68,7 @@ public class DefaultYAMLConfig implements YAMLConfig {
         return this.expStart;
     }
 
-    public YAMLConfig explicitEnd(final boolean expEnd) {
+    public YamlConfig explicitEnd(final boolean expEnd) {
         this.expEnd = expEnd;
         return this;
     }
@@ -77,7 +77,7 @@ public class DefaultYAMLConfig implements YAMLConfig {
         return this.expEnd;
     }
 
-    public YAMLConfig anchorFormat(final String format) {
+    public YamlConfig anchorFormat(final String format) {
         this.format = format;
         return this;
     }
@@ -86,7 +86,7 @@ public class DefaultYAMLConfig implements YAMLConfig {
         return this.format;
     }
 
-    public YAMLConfig explicitTypes(final boolean expTypes) {
+    public YamlConfig explicitTypes(final boolean expTypes) {
         this.expTypes = expTypes;
         return this;
     }
@@ -95,7 +95,7 @@ public class DefaultYAMLConfig implements YAMLConfig {
         return this.expTypes;
     }
 
-    public YAMLConfig canonical(final boolean canonical) {
+    public YamlConfig canonical(final boolean canonical) {
         this.canonical = canonical;
         return this;
     }
@@ -104,7 +104,7 @@ public class DefaultYAMLConfig implements YAMLConfig {
         return this.canonical;
     }
 
-    public YAMLConfig bestWidth(final int bestWidth) {
+    public YamlConfig bestWidth(final int bestWidth) {
         this.bestWidth = bestWidth;
         return this;
     }
@@ -113,7 +113,7 @@ public class DefaultYAMLConfig implements YAMLConfig {
         return this.bestWidth;
     }
 
-    public YAMLConfig useBlock(final boolean useBlock) {
+    public YamlConfig useBlock(final boolean useBlock) {
         this.useBlock = useBlock;
         return this;
     }
@@ -122,7 +122,7 @@ public class DefaultYAMLConfig implements YAMLConfig {
         return this.useBlock;
     }
 
-    public YAMLConfig useFlow(final boolean useFlow) {
+    public YamlConfig useFlow(final boolean useFlow) {
         this.useFlow = useFlow;
         return this;
     }
@@ -131,7 +131,7 @@ public class DefaultYAMLConfig implements YAMLConfig {
         return this.useFlow;
     }
 
-    public YAMLConfig usePlain(final boolean usePlain) {
+    public YamlConfig usePlain(final boolean usePlain) {
         this.usePlain = usePlain;
         return this;
     }
@@ -140,7 +140,7 @@ public class DefaultYAMLConfig implements YAMLConfig {
         return this.usePlain;
     }
 
-    public YAMLConfig useSingle(final boolean useSingle) {
+    public YamlConfig useSingle(final boolean useSingle) {
         this.useSingle = useSingle;
         return this;
     }
@@ -149,7 +149,7 @@ public class DefaultYAMLConfig implements YAMLConfig {
         return this.useSingle;
     }
 
-    public YAMLConfig useDouble(final boolean useDouble) {
+    public YamlConfig useDouble(final boolean useDouble) {
         this.useDouble = useDouble;
         return this;
     }

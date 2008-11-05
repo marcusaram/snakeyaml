@@ -22,7 +22,7 @@ public class DefaultYAMLFactory implements YAMLFactory {
         return new ParserImpl(scanner, new DefaultYAMLConfig());
     }
 
-    public Parser createParser(final Scanner scanner, final YAMLConfig cfg) {
+    public Parser createParser(final Scanner scanner, final YamlConfig cfg) {
         return new ParserImpl(scanner, cfg);
     }
 
@@ -38,16 +38,16 @@ public class DefaultYAMLFactory implements YAMLFactory {
         return new ConstructorImpl(composer);
     }
 
-    public Emitter createEmitter(final Writer output, final YAMLConfig cfg) {
+    public Emitter createEmitter(final Writer output, final YamlConfig cfg) {
         return new EmitterImpl(output, cfg);
     }
 
     public Serializer createSerializer(final Emitter emitter, final Resolver resolver,
-            final YAMLConfig cfg) {
+            final YamlConfig cfg) {
         return new SerializerImpl(emitter, resolver, cfg);
     }
 
-    public Representer createRepresenter(final Serializer serializer, final YAMLConfig cfg) {
+    public Representer createRepresenter(final Serializer serializer, final YamlConfig cfg) {
         return new RepresenterImpl(serializer, cfg);
     }
 }

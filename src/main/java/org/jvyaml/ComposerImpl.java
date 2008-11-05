@@ -9,20 +9,20 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.jvyaml.events.AliasEvent;
-import org.jvyaml.events.Event;
-import org.jvyaml.events.MappingEndEvent;
-import org.jvyaml.events.MappingStartEvent;
-import org.jvyaml.events.NodeEvent;
-import org.jvyaml.events.ScalarEvent;
-import org.jvyaml.events.SequenceEndEvent;
-import org.jvyaml.events.SequenceStartEvent;
-import org.jvyaml.events.StreamEndEvent;
-import org.jvyaml.events.StreamStartEvent;
-import org.jvyaml.nodes.MappingNode;
-import org.jvyaml.nodes.Node;
-import org.jvyaml.nodes.ScalarNode;
-import org.jvyaml.nodes.SequenceNode;
+import org.yaml.snakeyaml.events.AliasEvent;
+import org.yaml.snakeyaml.events.Event;
+import org.yaml.snakeyaml.events.MappingEndEvent;
+import org.yaml.snakeyaml.events.MappingStartEvent;
+import org.yaml.snakeyaml.events.NodeEvent;
+import org.yaml.snakeyaml.events.ScalarEvent;
+import org.yaml.snakeyaml.events.SequenceEndEvent;
+import org.yaml.snakeyaml.events.SequenceStartEvent;
+import org.yaml.snakeyaml.events.StreamEndEvent;
+import org.yaml.snakeyaml.events.StreamStartEvent;
+import org.yaml.snakeyaml.nodes.MappingNode;
+import org.yaml.snakeyaml.nodes.Node;
+import org.yaml.snakeyaml.nodes.ScalarNode;
+import org.yaml.snakeyaml.nodes.SequenceNode;
 
 /**
  * @see PyYAML 3.06 for more information

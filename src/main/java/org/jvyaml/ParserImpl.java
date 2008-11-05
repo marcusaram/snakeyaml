@@ -9,37 +9,37 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import org.jvyaml.events.AliasEvent;
-import org.jvyaml.events.DocumentEndEvent;
-import org.jvyaml.events.DocumentStartEvent;
-import org.jvyaml.events.Event;
-import org.jvyaml.events.MappingEndEvent;
-import org.jvyaml.events.MappingStartEvent;
-import org.jvyaml.events.ScalarEvent;
-import org.jvyaml.events.SequenceEndEvent;
-import org.jvyaml.events.SequenceStartEvent;
-import org.jvyaml.events.StreamEndEvent;
-import org.jvyaml.events.StreamStartEvent;
-import org.jvyaml.tokens.AliasToken;
-import org.jvyaml.tokens.AnchorToken;
-import org.jvyaml.tokens.BlockEndToken;
-import org.jvyaml.tokens.BlockEntryToken;
-import org.jvyaml.tokens.BlockMappingStartToken;
-import org.jvyaml.tokens.BlockSequenceStartToken;
-import org.jvyaml.tokens.DirectiveToken;
-import org.jvyaml.tokens.DocumentEndToken;
-import org.jvyaml.tokens.DocumentStartToken;
-import org.jvyaml.tokens.FlowEntryToken;
-import org.jvyaml.tokens.FlowMappingEndToken;
-import org.jvyaml.tokens.FlowMappingStartToken;
-import org.jvyaml.tokens.FlowSequenceEndToken;
-import org.jvyaml.tokens.FlowSequenceStartToken;
-import org.jvyaml.tokens.KeyToken;
-import org.jvyaml.tokens.ScalarToken;
-import org.jvyaml.tokens.StreamEndToken;
-import org.jvyaml.tokens.TagToken;
-import org.jvyaml.tokens.Token;
-import org.jvyaml.tokens.ValueToken;
+import org.yaml.snakeyaml.events.AliasEvent;
+import org.yaml.snakeyaml.events.DocumentEndEvent;
+import org.yaml.snakeyaml.events.DocumentStartEvent;
+import org.yaml.snakeyaml.events.Event;
+import org.yaml.snakeyaml.events.MappingEndEvent;
+import org.yaml.snakeyaml.events.MappingStartEvent;
+import org.yaml.snakeyaml.events.ScalarEvent;
+import org.yaml.snakeyaml.events.SequenceEndEvent;
+import org.yaml.snakeyaml.events.SequenceStartEvent;
+import org.yaml.snakeyaml.events.StreamEndEvent;
+import org.yaml.snakeyaml.events.StreamStartEvent;
+import org.yaml.snakeyaml.tokens.AliasToken;
+import org.yaml.snakeyaml.tokens.AnchorToken;
+import org.yaml.snakeyaml.tokens.BlockEndToken;
+import org.yaml.snakeyaml.tokens.BlockEntryToken;
+import org.yaml.snakeyaml.tokens.BlockMappingStartToken;
+import org.yaml.snakeyaml.tokens.BlockSequenceStartToken;
+import org.yaml.snakeyaml.tokens.DirectiveToken;
+import org.yaml.snakeyaml.tokens.DocumentEndToken;
+import org.yaml.snakeyaml.tokens.DocumentStartToken;
+import org.yaml.snakeyaml.tokens.FlowEntryToken;
+import org.yaml.snakeyaml.tokens.FlowMappingEndToken;
+import org.yaml.snakeyaml.tokens.FlowMappingStartToken;
+import org.yaml.snakeyaml.tokens.FlowSequenceEndToken;
+import org.yaml.snakeyaml.tokens.FlowSequenceStartToken;
+import org.yaml.snakeyaml.tokens.KeyToken;
+import org.yaml.snakeyaml.tokens.ScalarToken;
+import org.yaml.snakeyaml.tokens.StreamEndToken;
+import org.yaml.snakeyaml.tokens.TagToken;
+import org.yaml.snakeyaml.tokens.Token;
+import org.yaml.snakeyaml.tokens.ValueToken;
 
 /**
  * @see PyYAML 3.06 for more information
@@ -107,7 +107,7 @@ public class ParserImpl implements Parser {
         private int[] yamlVersion;
         private int[] defaultYamlVersion;
 
-        public ProductionEnvironment(final YAMLConfig cfg) {
+        public ProductionEnvironment(final YamlConfig cfg) {
             this.tags = new LinkedList();
             this.anchors = new LinkedList();
             this.tagHandles = new HashMap();
@@ -790,9 +790,9 @@ public class ParserImpl implements Parser {
     }
 
     private Scanner scanner = null;
-    private YAMLConfig cfg = null;
+    private YamlConfig cfg = null;
 
-    public ParserImpl(final Scanner scanner, final YAMLConfig cfg) {
+    public ParserImpl(final Scanner scanner, final YamlConfig cfg) {
         this.scanner = scanner;
         this.cfg = cfg;
     }

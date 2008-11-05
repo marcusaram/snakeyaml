@@ -5,7 +5,7 @@ package org.jvyaml;
 
 import java.util.Iterator;
 
-import org.jvyaml.tokens.Token;
+import org.yaml.snakeyaml.tokens.Token;
 
 /**
  * @see PyYAML 3.06 for more information
