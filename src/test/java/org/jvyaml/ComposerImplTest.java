@@ -36,8 +36,9 @@ public class ComposerImplTest extends TestCase {
         final String str = input.toString();
         final long before = System.currentTimeMillis();
         for (int i = 0; i < 1; i++) {
-            final Composer cmp = new ComposerImpl(new ParserImpl(new ScannerImpl(str),
-                    new DefaultYAMLConfig()), new ResolverImpl());
+            final Composer cmp = new ComposerImpl(new ParserImpl(new ScannerImpl(
+                    new org.yaml.snakeyaml.reader.Reader(str)), new DefaultYAMLConfig()),
+                    new ResolverImpl());
             for (final Iterator iter = cmp.eachNode(); iter.hasNext();) {
                 System.out.println(iter.next());
             }

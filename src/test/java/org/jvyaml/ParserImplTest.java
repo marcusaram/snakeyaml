@@ -37,7 +37,8 @@ public class ParserImplTest extends TestCase {
         final String str = input.toString();
         final long before = System.currentTimeMillis();
         for (int i = 0; i < 1; i++) {
-            final Parser pars = new ParserImpl(new ScannerImpl(str), new DefaultYAMLConfig());
+            final Parser pars = new ParserImpl(new ScannerImpl(
+                    new org.yaml.snakeyaml.reader.Reader(str)), new DefaultYAMLConfig());
             for (final Iterator iter = pars.eachEvent(); iter.hasNext(); iter.next()) {
             }
         }
@@ -55,8 +56,8 @@ public class ParserImplTest extends TestCase {
         } else {
             filename = "src/test/resources/specification/example2_28.yaml";
         }
-        final Parser pars = new ParserImpl(new ScannerImpl(new FileInputStream(filename)),
-                new DefaultYAMLConfig());
+        final Parser pars = new ParserImpl(new ScannerImpl(new org.yaml.snakeyaml.reader.Reader(
+                new FileInputStream(filename))), new DefaultYAMLConfig());
         for (final Iterator iter = pars.eachEvent(); iter.hasNext();) {
             System.out.println(iter.next().getClass().getName());
         }

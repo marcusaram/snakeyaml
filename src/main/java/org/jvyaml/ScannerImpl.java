@@ -3,7 +3,6 @@
  */
 package org.jvyaml;
 
-import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -94,20 +93,12 @@ public class ScannerImpl implements Scanner {
 
     private boolean docStart = false;
 
-    private ScannerImpl(org.yaml.snakeyaml.reader.Reader reader) {
+    public ScannerImpl(org.yaml.snakeyaml.reader.Reader reader) {
         this.reader = reader;
         this.tokens = new LinkedList();
         this.indents = new LinkedList();
         this.possibleSimpleKeys = new HashMap();
         fetchStreamStart();
-    }
-
-    public ScannerImpl(final InputStream stream) {
-        this(new org.yaml.snakeyaml.reader.Reader(stream));
-    }
-
-    public ScannerImpl(final String stream) {
-        this(new org.yaml.snakeyaml.reader.Reader(stream));
     }
 
     public boolean checkToken(final Class[] choices) {
