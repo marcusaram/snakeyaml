@@ -576,8 +576,9 @@ public class ScannerImpl implements Scanner {
         Mark startMark = reader.getMark();
         reader.forward();
         Mark endMark = reader.getMark();
-        this.tokens.add(new KeyToken(startMark, endMark));
-        return Token.KEY;
+        Token token = new KeyToken(startMark, endMark);
+        this.tokens.add(token);
+        return token;
     }
 
     private Token fetchValue() {
@@ -586,7 +587,8 @@ public class ScannerImpl implements Scanner {
         if (key != null) {
             // Add KEY.
             this.possibleSimpleKeys.remove(new Integer(this.flowLevel));
-            this.tokens.add(key.getTokenNumber() - this.tokensTaken, Token.KEY);
+            this.tokens.add(key.getTokenNumber() - this.tokensTaken, new KeyToken(key.getMark(),
+                    key.getMark()));
             if (this.flowLevel == 0 && addIndent(key.getColumn())) {
                 this.tokens.add(key.getTokenNumber() - this.tokensTaken,
                         new BlockMappingStartToken(key.getMark(), key.getMark()));
