@@ -306,6 +306,10 @@ public class ScannerImpl implements Scanner {
                 + "(" + ((int) ch) + " that cannot start any token", null);
     }
 
+    /**
+     * Return the number of the nearest possible simple key. Actually we don't
+     * need to loop through the whole dictionary.
+     */
     private int nextPossibleSimpleKey() {
         for (final Iterator<SimpleKey> iter = this.possibleSimpleKeys.values().iterator(); iter
                 .hasNext();) {
@@ -317,7 +321,18 @@ public class ScannerImpl implements Scanner {
         return -1;
     }
 
+    // TODO implement def stale_possible_simple_keys(self):
+
+    /**
+     * The next token may start a simple key. We check if it's possible and save
+     * its position. This function is called for ALIAS, ANCHOR, TAG,
+     * SCALAR(flow), '[', and '{'.
+     */
     private void savePossibleSimpleKey() {
+        // TODO missing stuff from PyYAML
+
+        // The next token might be a simple key. Let's save it's number and
+        // position.
         if (this.allowSimpleKey) {
             this.possibleSimpleKeys.put(new Integer(this.flowLevel), new SimpleKey(this.tokensTaken
                     + this.tokens.size(), (this.flowLevel == 0)
@@ -325,17 +340,35 @@ public class ScannerImpl implements Scanner {
         }
     }
 
+    // TODO implement def remove_possible_simple_key(self):
+
+    /**
+     * <pre>
+     * In flow context, tokens should respect indentation.
+     * Actually the condition should be `self.indent &gt;= column` according to
+     * the spec. But this condition will prohibit intuitively correct
+     * constructions such as
+     * key : {
+     * }
+     * </pre>
+     */
     private void unwindIndent(final int col) {
+        // In the flow context, indentation is ignored. We make the scanner less
+        // restrictive then specification requires.
         if (this.flowLevel != 0) {
             return;
         }
 
+        // In block context, we may need to issue the BLOCK-END tokens.
         while (this.indent > col) {
             this.indent = ((Integer) (this.indents.remove(0))).intValue();
             this.tokens.add(Token.BLOCK_END);
         }
     }
 
+    /**
+     * Check if we need to increase indentation.
+     */
     private boolean addIndent(final int col) {
         if (this.indent < col) {
             this.indents.add(0, new Integer(this.indent));
@@ -345,6 +378,12 @@ public class ScannerImpl implements Scanner {
         return false;
     }
 
+    // Fetchers.
+
+    /**
+     * We always add STREAM-START as the first token and STREAM-END as the last
+     * token.
+     */
     private Token fetchStreamStart() {
         this.docStart = true;
         this.tokens.add(Token.STREAM_START);
