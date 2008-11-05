@@ -21,6 +21,7 @@ import org.yaml.snakeyaml.tokens.BlockSequenceStartToken;
 import org.yaml.snakeyaml.tokens.DirectiveToken;
 import org.yaml.snakeyaml.tokens.DocumentEndToken;
 import org.yaml.snakeyaml.tokens.DocumentStartToken;
+import org.yaml.snakeyaml.tokens.FlowEntryToken;
 import org.yaml.snakeyaml.tokens.KeyToken;
 import org.yaml.snakeyaml.tokens.ScalarToken;
 import org.yaml.snakeyaml.tokens.TagToken;
@@ -481,10 +482,17 @@ public class ScannerImpl implements Scanner {
     }
 
     private Token fetchFlowEntry() {
+        // Simple keys are allowed after ','.
         this.allowSimpleKey = true;
+        // Reset possible simple key on the current level.
+        /* TODO missing self.remove_possible_simple_key() */
+        // Add FLOW-ENTRY.
+        Mark startMark = reader.getMark();
         reader.forward(1);
-        this.tokens.add(Token.FLOW_ENTRY);
-        return Token.FLOW_ENTRY;
+        Mark endMark = reader.getMark();
+        Token token = new FlowEntryToken(startMark, endMark);
+        this.tokens.add(token);
+        return token;
     }
 
     private Token fetchBlockEntry() {
