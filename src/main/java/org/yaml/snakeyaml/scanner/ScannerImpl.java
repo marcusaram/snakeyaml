@@ -14,9 +14,11 @@ import java.util.regex.Pattern;
 import org.yaml.snakeyaml.error.Mark;
 import org.yaml.snakeyaml.tokens.AliasToken;
 import org.yaml.snakeyaml.tokens.AnchorToken;
+import org.yaml.snakeyaml.tokens.BlockMappingStartToken;
 import org.yaml.snakeyaml.tokens.DirectiveToken;
 import org.yaml.snakeyaml.tokens.DocumentEndToken;
 import org.yaml.snakeyaml.tokens.DocumentStartToken;
+import org.yaml.snakeyaml.tokens.KeyToken;
 import org.yaml.snakeyaml.tokens.ScalarToken;
 import org.yaml.snakeyaml.tokens.TagToken;
 import org.yaml.snakeyaml.tokens.Token;
@@ -338,7 +340,8 @@ public class ScannerImpl implements Scanner {
         if (this.allowSimpleKey) {
             this.possibleSimpleKeys.put(new Integer(this.flowLevel), new SimpleKey(this.tokensTaken
                     + this.tokens.size(), (this.flowLevel == 0)
-                    && this.indent == this.reader.getColumn(), -1, -1, this.reader.getColumn()));
+                    && this.indent == this.reader.getColumn(), -1, -1, this.reader.getColumn(),
+                    this.reader.getMark()));
         }
     }
 
@@ -497,35 +500,62 @@ public class ScannerImpl implements Scanner {
     }
 
     private Token fetchKey() {
+        // Block context needs additional checks.
         if (this.flowLevel == 0) {
+            // Are we allowed to start a key (not nessesary a simple)?
             if (!this.allowSimpleKey) {
                 throw new ScannerException(null, null, "mapping keys are not allowed here", reader
                         .getMark(), null);
             }
+            // We may need to add BLOCK-MAPPING-START.
             if (addIndent(this.reader.getColumn())) {
-                this.tokens.add(Token.BLOCK_MAPPING_START);
+                Mark mark = reader.getMark();
+                this.tokens.add(new BlockMappingStartToken(mark, mark));
             }
         }
+        // Simple keys are allowed after '?' in the block context.
         this.allowSimpleKey = this.flowLevel == 0;
+        // Reset possible simple key on the current level.
+        /* TODO missing self.remove_possible_simple_key() */
+        // Add KEY.
+        Mark startMark = reader.getMark();
         reader.forward();
-        this.tokens.add(Token.KEY);
+        Mark endMark = reader.getMark();
+        this.tokens.add(new KeyToken(startMark, endMark));
         return Token.KEY;
     }
 
     private Token fetchValue() {
+        // Do we determine a simple key?
         final SimpleKey key = (SimpleKey) this.possibleSimpleKeys.get(new Integer(this.flowLevel));
-        if (null == key) {
-            if (this.flowLevel == 0 && !this.allowSimpleKey) {
-                throw new ScannerException(null, null, "mapping values are not allowed here",
-                        reader.getMark(), null);
-            }
-        } else {
+        if (key != null) {
+            // Add KEY.
             this.possibleSimpleKeys.remove(new Integer(this.flowLevel));
             this.tokens.add(key.getTokenNumber() - this.tokensTaken, Token.KEY);
             if (this.flowLevel == 0 && addIndent(key.getColumn())) {
-                this.tokens.add(key.getTokenNumber() - this.tokensTaken, Token.BLOCK_MAPPING_START);
+                this.tokens.add(key.getTokenNumber() - this.tokensTaken,
+                        new BlockMappingStartToken(key.getMark(), key.getMark()));
             }
+            /*
+             * TODO missing If this key starts a new block mapping, we need to
+             * add BLOCK-MAPPING-START.
+             */
+            // There cannot be two simple keys one after another.
             this.allowSimpleKey = false;
+
+        } else {// It must be a part of a complex key.
+            // Block context needs additional checks.Do we really need them?
+            // They
+            // will be catched by the parser anyway.)
+            if (this.flowLevel == 0) {
+                // We are allowed to start a complex value if and only if we can
+                // start a simple key.
+                if (!this.allowSimpleKey) {
+                    throw new ScannerException(null, null, "mapping values are not allowed here",
+                            reader.getMark(), null);
+                }
+            }
+
         }
         reader.forward();
         this.tokens.add(Token.VALUE);
