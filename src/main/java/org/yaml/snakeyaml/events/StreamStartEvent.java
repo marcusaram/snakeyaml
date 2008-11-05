@@ -3,29 +3,27 @@
  */
 package org.yaml.snakeyaml.events;
 
+import java.nio.charset.Charset;
+
 import org.jvyaml.Mark;
 
 /**
  * @see PyYAML 3.06 for more information
  */
 public class StreamStartEvent extends Event {
-    public enum Encoding {
-        UTF8, UTF16LE, UTF16BE
-    }
+    private Charset encoding;
 
-    private Encoding encoding;
-
-    public StreamStartEvent(final Mark startMark, final Mark endMark, final Encoding encoding) {
+    public StreamStartEvent(final Mark startMark, final Mark endMark, final Charset encoding) {
         super(startMark, endMark);
         this.encoding = encoding;
     }
 
     public StreamStartEvent(final Mark startMark, final Mark endMark) {
         super(startMark, endMark);
-        this.encoding = Encoding.UTF8;
+        this.encoding = Charset.forName("UTF-8");
     }
 
-    public Encoding getEncoding() {
+    public Charset getEncoding() {
         return encoding;
     }
 }
