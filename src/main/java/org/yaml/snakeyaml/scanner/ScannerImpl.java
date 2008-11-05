@@ -22,6 +22,8 @@ import org.yaml.snakeyaml.tokens.DirectiveToken;
 import org.yaml.snakeyaml.tokens.DocumentEndToken;
 import org.yaml.snakeyaml.tokens.DocumentStartToken;
 import org.yaml.snakeyaml.tokens.FlowEntryToken;
+import org.yaml.snakeyaml.tokens.FlowMappingEndToken;
+import org.yaml.snakeyaml.tokens.FlowSequenceEndToken;
 import org.yaml.snakeyaml.tokens.KeyToken;
 import org.yaml.snakeyaml.tokens.ScalarToken;
 import org.yaml.snakeyaml.tokens.TagToken;
@@ -466,19 +468,32 @@ public class ScannerImpl implements Scanner {
     }
 
     private Token fetchFlowSequenceEnd() {
-        return fetchFlowCollectionEnd(Token.FLOW_SEQUENCE_END);
+        return fetchFlowCollectionEnd(false);
     }
 
     private Token fetchFlowMappingEnd() {
-        return fetchFlowCollectionEnd(Token.FLOW_MAPPING_END);
+        return fetchFlowCollectionEnd(true);
     }
 
-    private Token fetchFlowCollectionEnd(final Token tok) {
+    private Token fetchFlowCollectionEnd(final boolean isMappingEnd) {
+        // Reset possible simple key on the current level.
+        /* TODO missing self.remove_possible_simple_key() */
+        // Decrease the flow level.
         this.flowLevel--;
+        // No simple keys after ']' or '}'.
         this.allowSimpleKey = false;
+        // Add FLOW-SEQUENCE-END or FLOW-MAPPING-END.
+        Mark startMark = reader.getMark();
         reader.forward(1);
-        this.tokens.add(tok);
-        return tok;
+        Mark endMark = reader.getMark();
+        Token token;
+        if (isMappingEnd) {
+            token = new FlowMappingEndToken(startMark, endMark);
+        } else {
+            token = new FlowSequenceEndToken(startMark, endMark);
+        }
+        this.tokens.add(token);
+        return token;
     }
 
     private Token fetchFlowEntry() {
