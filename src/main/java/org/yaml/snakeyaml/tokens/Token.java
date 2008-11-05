@@ -11,8 +11,6 @@ import org.yaml.snakeyaml.error.Mark;
  * @see PyYAML 3.06 for more information
  */
 public abstract class Token {
-    public final static Token DOCUMENT_START = new DocumentStartToken(null, null);
-    public final static Token DOCUMENT_END = new DocumentEndToken(null, null);
     public final static Token BLOCK_MAPPING_START = new BlockMappingStartToken(null, null);
     public final static Token BLOCK_SEQUENCE_START = new BlockSequenceStartToken(null, null);
     public final static Token BLOCK_ENTRY = new BlockEntryToken(null, null);

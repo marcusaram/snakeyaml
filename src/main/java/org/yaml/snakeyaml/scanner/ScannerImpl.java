@@ -15,6 +15,8 @@ import org.yaml.snakeyaml.error.Mark;
 import org.yaml.snakeyaml.tokens.AliasToken;
 import org.yaml.snakeyaml.tokens.AnchorToken;
 import org.yaml.snakeyaml.tokens.DirectiveToken;
+import org.yaml.snakeyaml.tokens.DocumentEndToken;
+import org.yaml.snakeyaml.tokens.DocumentStartToken;
 import org.yaml.snakeyaml.tokens.ScalarToken;
 import org.yaml.snakeyaml.tokens.TagToken;
 import org.yaml.snakeyaml.tokens.Token;
@@ -409,19 +411,33 @@ public class ScannerImpl implements Scanner {
 
     private Token fetchDocumentStart() {
         this.docStart = false;
-        return fetchDocumentIndicator(Token.DOCUMENT_START);
+        return fetchDocumentIndicator(true);
     }
 
     private Token fetchDocumentEnd() {
-        return fetchDocumentIndicator(Token.DOCUMENT_END);
+        return fetchDocumentIndicator(false);
     }
 
-    private Token fetchDocumentIndicator(final Token tok) {
+    private Token fetchDocumentIndicator(final boolean isDocumentStart) {
+        // Set the current intendation to -1.
         unwindIndent(-1);
+        // Reset simple keys. Note that there could not be a block collection
+        // after '---'.
+        /* TODO missing self.remove_possible_simple_key() */
         this.allowSimpleKey = false;
+
+        // Add DOCUMENT-START or DOCUMENT-END.
+        Mark startMark = reader.getMark();
         reader.forward(3);
-        this.tokens.add(tok);
-        return tok;
+        Mark endMark = reader.getMark();
+        Token token;
+        if (isDocumentStart) {
+            token = new DocumentStartToken(startMark, endMark);
+        } else {
+            token = new DocumentEndToken(startMark, endMark);
+        }
+        this.tokens.add(token);
+        return token;
     }
 
     private Token fetchFlowSequenceStart() {
