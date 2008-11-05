@@ -14,7 +14,9 @@ import java.util.regex.Pattern;
 import org.yaml.snakeyaml.error.Mark;
 import org.yaml.snakeyaml.tokens.AliasToken;
 import org.yaml.snakeyaml.tokens.AnchorToken;
+import org.yaml.snakeyaml.tokens.BlockEntryToken;
 import org.yaml.snakeyaml.tokens.BlockMappingStartToken;
+import org.yaml.snakeyaml.tokens.BlockSequenceStartToken;
 import org.yaml.snakeyaml.tokens.DirectiveToken;
 import org.yaml.snakeyaml.tokens.DocumentEndToken;
 import org.yaml.snakeyaml.tokens.DocumentStartToken;
@@ -484,19 +486,33 @@ public class ScannerImpl implements Scanner {
     }
 
     private Token fetchBlockEntry() {
+        // Block context needs additional checks.
         if (this.flowLevel == 0) {
+            // Are we allowed to start a new entry?
             if (!this.allowSimpleKey) {
                 throw new ScannerException(null, null, "sequence entries are not allowed here",
                         reader.getMark(), null);
             }
+            // We may need to add BLOCK-SEQUENCE-START.
             if (addIndent(this.reader.getColumn())) {
-                this.tokens.add(Token.BLOCK_SEQUENCE_START);
+                Mark mark = reader.getMark();
+                this.tokens.add(new BlockSequenceStartToken(mark, mark));
             }
+        } else {
+            // It's an error for the block entry to occur in the flow
+            // context,but we let the parser detect this.
         }
+        // Simple keys are allowed after '-'.
         this.allowSimpleKey = true;
+        // Reset possible simple key on the current level.
+        /* TODO missing self.remove_possible_simple_key() */
+        // Add BLOCK-ENTRY.
+        Mark startMark = reader.getMark();
         reader.forward();
-        this.tokens.add(Token.BLOCK_ENTRY);
-        return Token.BLOCK_ENTRY;
+        Mark endMark = reader.getMark();
+        Token token = new BlockEntryToken(startMark, endMark);
+        this.tokens.add(token);
+        return token;
     }
 
     private Token fetchKey() {
