@@ -3,16 +3,17 @@
  */
 package org.yaml.snakeyaml.tokens;
 
+import java.nio.charset.Charset;
+
 import org.jvyaml.Mark;
-import org.yaml.snakeyaml.events.StreamStartEvent.Encoding;
 
 /**
  * @see PyYAML 3.06 for more information
  */
 public class StreamStartToken extends Token {
-    private Encoding encoding;
+    private Charset encoding;
 
-    public StreamStartToken(Mark startMark, Mark endMark, Encoding encoding) {
+    public StreamStartToken(Mark startMark, Mark endMark, Charset encoding) {
         super(startMark, endMark);
         this.encoding = encoding;
     }
@@ -22,7 +23,7 @@ public class StreamStartToken extends Token {
         return "<stream start>";
     }
 
-    public Encoding getEncoding() {
+    public Charset getEncoding() {
         return encoding;
     }
 }
