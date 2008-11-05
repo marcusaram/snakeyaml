@@ -3,6 +3,8 @@
  */
 package org.yaml.snakeyaml.scanner;
 
+import org.yaml.snakeyaml.error.Mark;
+
 /**
  * @see PyYAML 3.06 for more information
  */
@@ -12,14 +14,16 @@ class SimpleKey {
     private int index;
     private int line;
     private int column;
+    private Mark mark;
 
     public SimpleKey(final int tokenNumber, final boolean required, final int index,
-            final int line, final int column) {
+            final int line, final int column, final Mark mark) {
         this.tokenNumber = tokenNumber;
         this.required = required;
         this.index = index;
         this.line = line;
         this.column = column;
+        this.mark = mark;
     }
 
     public int getTokenNumber() {
@@ -28,5 +32,9 @@ class SimpleKey {
 
     public int getColumn() {
         return this.column;
+    }
+
+    public Mark getMark() {
+        return mark;
     }
 }
