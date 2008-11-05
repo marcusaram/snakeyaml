@@ -1,6 +1,6 @@
 package org.yaml.snakeyaml.reader;
 
-import org.jvyaml.YAMLException;
+import org.yaml.snakeyaml.error.YAMLException;
 
 public class ReaderException extends YAMLException {
     private static final long serialVersionUID = 8710781187529689083L;
