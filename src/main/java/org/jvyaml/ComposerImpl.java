@@ -3,8 +3,6 @@
  */
 package org.jvyaml;
 
-import java.io.FileReader;
-import java.io.Reader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -162,36 +160,4 @@ public class ComposerImpl implements Composer {
         return node;
     }
 
-    // TODO to be removed
-    public static void main(final String[] args) throws Exception {
-        final String filename = args[0];
-        System.out.println("Reading of file: \"" + filename + "\"");
-
-        final StringBuffer input = new StringBuffer();
-        final Reader reader = new FileReader(filename);
-        char[] buff = new char[1024];
-        int read = 0;
-        while (true) {
-            read = reader.read(buff);
-            input.append(buff, 0, read);
-            if (read < 1024) {
-                break;
-            }
-        }
-        reader.close();
-        final String str = input.toString();
-        final long before = System.currentTimeMillis();
-        for (int i = 0; i < 1; i++) {
-            final Composer cmp = new ComposerImpl(new ParserImpl(new ScannerImpl(str)),
-                    new ResolverImpl());
-            for (final Iterator iter = cmp.eachNode(); iter.hasNext();) {
-                System.out.println(iter.next());
-            }
-        }
-        final long after = System.currentTimeMillis();
-        final long time = after - before;
-        final double timeS = (after - before) / 1000.0;
-        System.out.println("Walking through the nodes for the file: " + filename + " took " + time
-                + "ms, or " + timeS + " seconds");
-    }
 }

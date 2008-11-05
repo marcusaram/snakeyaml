@@ -5,6 +5,11 @@
 	</properties>
 	<body>
 		<release version="0.3-SNAPSHOT" date="in Mercurial" description="Package as library">
+            <action dev="py4fun" type="update">
+                Change public interface. Rename YAML to Yaml. Remove all static methods.
+                Factory and configuration must be injected at the constructor. This way is closer
+                to PyYAML API. (2008-11-05)
+            </action>
             <action dev="py4fun" type="add">
                 Reader as in PyYAML is implemented. BOM is properly supported (2008-11-05)
             </action>

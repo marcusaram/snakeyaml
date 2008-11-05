@@ -3,8 +3,6 @@
  */
 package org.jvyaml;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
@@ -842,8 +840,8 @@ public class EmitterImpl implements Emitter {
                     start = ending;
                 }
                 if (ch != 0) {
-                    if (YAML.ESCAPE_REPLACEMENTS.containsKey(new Character(ch))) {
-                        data = "\\" + YAML.ESCAPE_REPLACEMENTS.get(new Character(ch));
+                    if (Yaml.ESCAPE_REPLACEMENTS.containsKey(new Character(ch))) {
+                        data = "\\" + Yaml.ESCAPE_REPLACEMENTS.get(new Character(ch));
                     } else if (ch <= '\u00FF') {
                         String s = "0" + Integer.toString(ch, 16);
                         data = "\\x" + s.substring(s.length() - 2);
@@ -1428,21 +1426,4 @@ public class EmitterImpl implements Emitter {
                 : "-";
     }
 
-    public static void main(final String[] args) throws IOException {
-        final String filename = args[0]; // filename to test against
-        System.out.println("File contents:");
-        final BufferedReader read = new BufferedReader(new FileReader(filename));
-        String last = null;
-        while ((last = read.readLine()) != null) {
-            System.out.println(last);
-        }
-        read.close();
-        System.out.println("--------------------------------");
-        final Emitter emitter = new EmitterImpl(new java.io.OutputStreamWriter(System.out), YAML
-                .config());
-        final Parser pars = new ParserImpl(new ScannerImpl(new FileReader(filename)));
-        for (final Iterator iter = pars.eachEvent(); iter.hasNext();) {
-            emitter.emit((Event) iter.next());
-        }
-    }
 }

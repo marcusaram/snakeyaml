@@ -8,7 +8,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 
-import org.jvyaml.YAML;
+import org.jvyaml.Yaml;
 
 public class YamlDocument {
     public static final String ROOT = "specification/";
@@ -20,14 +20,15 @@ public class YamlDocument {
         try {
             InputStream input = YamlDocument.class.getClassLoader().getResourceAsStream(
                     ROOT + sourceName);
-            nativeData = YAML.load(new InputStreamReader(input));
+            Yaml yaml = new Yaml();
+            nativeData = yaml.load(new InputStreamReader(input));
             ByteArrayOutputStream output = new ByteArrayOutputStream();
-            YAML.dump(nativeData, new OutputStreamWriter(output));
+            yaml.dump(nativeData, new OutputStreamWriter(output));
             presentation = output.toString("UTF-8");
             source = Util.getLocalResource(ROOT + sourceName);
             // try to read generated presentation to prove that the presentation
             // is identical to the source
-            Object result = YAML.load(presentation);
+            Object result = yaml.load(presentation);
             if (!nativeData.equals(result)) {
                 throw new RuntimeException("Generated presentation is not valid: " + presentation);
             }
