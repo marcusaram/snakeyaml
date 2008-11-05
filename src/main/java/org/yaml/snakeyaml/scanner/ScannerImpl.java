@@ -29,6 +29,7 @@ import org.yaml.snakeyaml.tokens.FlowSequenceStartToken;
 import org.yaml.snakeyaml.tokens.KeyToken;
 import org.yaml.snakeyaml.tokens.ScalarToken;
 import org.yaml.snakeyaml.tokens.StreamEndToken;
+import org.yaml.snakeyaml.tokens.StreamStartToken;
 import org.yaml.snakeyaml.tokens.TagToken;
 import org.yaml.snakeyaml.tokens.Token;
 import org.yaml.snakeyaml.tokens.ValueToken;
@@ -402,8 +403,12 @@ public class ScannerImpl implements Scanner {
      */
     private Token fetchStreamStart() {
         this.docStart = true;
-        this.tokens.add(Token.STREAM_START);
-        return Token.STREAM_START;
+        // Read the token.
+        Mark mark = reader.getMark();
+        // Add STREAM-START.
+        Token token = new StreamStartToken(mark, mark, reader.getEncoding());
+        this.tokens.add(token);
+        return token;
     }
 
     private Token fetchStreamEnd() {

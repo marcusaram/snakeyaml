@@ -3,17 +3,12 @@
  */
 package org.yaml.snakeyaml.tokens;
 
-import java.nio.charset.Charset;
-
 import org.yaml.snakeyaml.error.Mark;
 
 /**
  * @see PyYAML 3.06 for more information
  */
 public abstract class Token {
-    public final static Token STREAM_START = new StreamStartToken(null, null, Charset
-            .forName("UTF-8"));
-
     private Mark startMark;
     private Mark endMark;
 
