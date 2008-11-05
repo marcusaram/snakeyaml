@@ -11,8 +11,6 @@ import org.yaml.snakeyaml.error.Mark;
  * @see PyYAML 3.06 for more information
  */
 public abstract class Token {
-    public final static Token FLOW_MAPPING_START = new FlowMappingStartToken(null, null);
-    public final static Token FLOW_SEQUENCE_START = new FlowSequenceStartToken(null, null);
     public final static Token KEY = new KeyToken(null, null);
     public final static Token VALUE = new ValueToken(null, null);
     public final static Token STREAM_END = new StreamEndToken(null, null);
