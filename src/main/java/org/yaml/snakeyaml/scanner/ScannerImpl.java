@@ -30,6 +30,7 @@ import org.yaml.snakeyaml.tokens.KeyToken;
 import org.yaml.snakeyaml.tokens.ScalarToken;
 import org.yaml.snakeyaml.tokens.TagToken;
 import org.yaml.snakeyaml.tokens.Token;
+import org.yaml.snakeyaml.tokens.ValueToken;
 
 /**
  * Reader do the dirty work of checking for BOM and converting the input data to
@@ -614,9 +615,13 @@ public class ScannerImpl implements Scanner {
             }
 
         }
+        // Add VALUE.
+        Mark startMark = reader.getMark();
         reader.forward();
-        this.tokens.add(Token.VALUE);
-        return Token.VALUE;
+        Mark endMark = reader.getMark();
+        Token token = new ValueToken(startMark, endMark);
+        this.tokens.add(token);
+        return token;
     }
 
     private Token fetchAlias() {
