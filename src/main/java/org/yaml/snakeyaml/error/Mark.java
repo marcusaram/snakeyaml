@@ -100,4 +100,17 @@ public class Mark {
         }
         return where.toString();
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getLine() {
+        return line;
+    }
+
+    public int getColumn() {
+        return column;
+    }
+
 }
