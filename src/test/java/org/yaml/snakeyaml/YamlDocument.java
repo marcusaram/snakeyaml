@@ -5,7 +5,6 @@ package org.yaml.snakeyaml;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 
 import org.jvyaml.Yaml;
@@ -21,7 +20,7 @@ public class YamlDocument {
             InputStream input = YamlDocument.class.getClassLoader().getResourceAsStream(
                     ROOT + sourceName);
             Yaml yaml = new Yaml();
-            nativeData = yaml.load(new InputStreamReader(input));
+            nativeData = yaml.load(input);
             ByteArrayOutputStream output = new ByteArrayOutputStream();
             yaml.dump(nativeData, new OutputStreamWriter(output));
             presentation = output.toString("UTF-8");

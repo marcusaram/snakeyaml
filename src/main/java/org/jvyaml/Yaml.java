@@ -3,7 +3,7 @@
  */
 package org.jvyaml;
 
-import java.io.Reader;
+import java.io.InputStream;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.ArrayList;
@@ -113,7 +113,7 @@ public class Yaml {
         }
     }
 
-    public Object load(final Reader io) {
+    public Object load(final InputStream io) {
         final Constructor ctor = factory.createConstructor(factory.createComposer(factory
                 .createParser(factory.createScanner(io), config), factory.createResolver()));
         if (ctor.checkData()) {
@@ -133,7 +133,7 @@ public class Yaml {
         return result;
     }
 
-    public List<Object> loadAll(final Reader io) {
+    public List<Object> loadAll(final InputStream io) {
         final List<Object> result = new ArrayList<Object>();
         final Constructor ctor = factory.createConstructor(factory.createComposer(factory
                 .createParser(factory.createScanner(io), config), factory.createResolver()));

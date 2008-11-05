@@ -1,5 +1,6 @@
 package org.jvyaml;
 
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.Reader;
 import java.util.Iterator;
@@ -54,7 +55,7 @@ public class ParserImplTest extends TestCase {
         } else {
             filename = "src/test/resources/specification/example2_28.yaml";
         }
-        final Parser pars = new ParserImpl(new ScannerImpl(new FileReader(filename)),
+        final Parser pars = new ParserImpl(new ScannerImpl(new FileInputStream(filename)),
                 new DefaultYAMLConfig());
         for (final Iterator iter = pars.eachEvent(); iter.hasNext();) {
             System.out.println(iter.next().getClass().getName());

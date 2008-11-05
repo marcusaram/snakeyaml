@@ -1,6 +1,7 @@
 package org.jvyaml;
 
 import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Iterator;
@@ -32,7 +33,7 @@ public class EmitterImplTest extends TestCase {
         System.out.println("--------------------------------");
         final Emitter emitter = new EmitterImpl(new java.io.OutputStreamWriter(System.out),
                 new DefaultYAMLConfig());
-        final Parser pars = new ParserImpl(new ScannerImpl(new FileReader(filename)),
+        final Parser pars = new ParserImpl(new ScannerImpl(new FileInputStream(filename)),
                 new DefaultYAMLConfig());
         for (final Iterator iter = pars.eachEvent(); iter.hasNext();) {
             emitter.emit((Event) iter.next());

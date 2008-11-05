@@ -3,7 +3,7 @@
  */
 package org.jvyaml;
 
-import java.io.Reader;
+import java.io.InputStream;
 import java.io.Writer;
 
 /**
@@ -14,7 +14,7 @@ public class DefaultYAMLFactory implements YAMLFactory {
         return new ScannerImpl(io);
     }
 
-    public Scanner createScanner(final Reader io) {
+    public Scanner createScanner(final InputStream io) {
         return new ScannerImpl(io);
     }
 
