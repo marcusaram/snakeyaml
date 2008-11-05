@@ -17,7 +17,8 @@ import org.jvyaml.YAMLException;
  * @see yaml.reader in PyYAML 3.06
  */
 public class Reader {
-    //changed from PyYAML: \uFFFD excluded because Java returns it in case of data corruption
+    // changed from PyYAML: \uFFFD excluded because Java returns it in case of
+    // data corruption
     final static Pattern NON_PRINTABLE = Pattern
             .compile("[^\t\n\r\u0020-\u007E\u0085\u00A0-\uD7FF\uE000-\uFFFC]");
     private final static String LINEBR = "\n\u0085\u2028\u2029";
@@ -42,7 +43,7 @@ public class Reader {
         this.eof = true;
     }
 
-    public Reader(InputStream stream) throws IOException {
+    public Reader(InputStream stream) {
         this.name = "<stream>";
         this.buffer = new StringBuffer();
         UnicodeInputStream unicodeStream = new UnicodeInputStream(stream, "UTF-8");
@@ -152,5 +153,28 @@ public class Reader {
 
     public Charset getEncoding() {
         return encoding;
+    }
+
+    public String prefixForward(final int length) {
+        if (this.pointer + length + 1 >= this.buffer.length()) {
+            update(length + 1);
+        }
+        String buff = null;
+        if (this.pointer + length > this.buffer.length()) {
+            buff = this.buffer.substring(this.pointer, this.buffer.length());
+        } else {
+            buff = this.buffer.substring(this.pointer, this.pointer + length);
+        }
+        char ch = 0;
+        for (int i = 0, j = buff.length(); i < j; i++) {
+            ch = buff.charAt(i);
+            this.pointer++;
+            if (LINEBR.indexOf(ch) != -1 || (ch == '\r' && buff.charAt(i + 1) != '\n')) {
+                this.column = 0;
+            } else if (ch != '\uFEFF') {
+                this.column++;
+            }
+        }
+        return buff;
     }
 }

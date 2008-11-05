@@ -5,7 +5,6 @@ package org.yaml.snakeyaml;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
@@ -25,7 +24,7 @@ public class YamlStream {
         InputStream input = YamlDocument.class.getClassLoader().getResourceAsStream(
                 YamlDocument.ROOT + sourceName);
         Yaml yaml = new Yaml();
-        nativeData = yaml.loadAll(new InputStreamReader(input));
+        nativeData = yaml.loadAll(input);
         ByteArrayOutputStream output = new ByteArrayOutputStream();
         yaml.dumpAll(nativeData, new OutputStreamWriter(output));
         String presentation;

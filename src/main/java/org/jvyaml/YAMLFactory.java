@@ -3,7 +3,7 @@
  */
 package org.jvyaml;
 
-import java.io.Reader;
+import java.io.InputStream;
 import java.io.Writer;
 
 /**
@@ -12,7 +12,7 @@ import java.io.Writer;
 public interface YAMLFactory {
     Scanner createScanner(final String io);
 
-    Scanner createScanner(final Reader io);
+    Scanner createScanner(final InputStream io);
 
     Parser createParser(final Scanner scanner);
 
