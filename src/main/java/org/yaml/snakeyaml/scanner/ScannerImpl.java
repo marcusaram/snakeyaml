@@ -215,14 +215,15 @@ public class ScannerImpl implements Scanner {
         return null;
     }
 
+    // Private methods.
+
     private boolean needMoreTokens() {
         if (this.done) {
             return false;
         }
-        // TODO not implemented but present in PyYAML
         // The current token may be a potential simple key, so we
         // need to look further.
-        /* self.stale_possible_simple_keys() */
+        /* TODO missing self.stale_possible_simple_keys() */
         return this.tokens.isEmpty() || nextPossibleSimpleKey() == this.tokensTaken;
     }
 
@@ -244,14 +245,15 @@ public class ScannerImpl implements Scanner {
             return fetchStreamEnd();
         case '%':
             // Is it a directive?
-            if (colz) {
+            if (checkDirective()) {
                 return fetchDirective();
             }
             break;
         case '-':
             // Is it the document start?
-            if ((colz || docStart) && ENDING.matcher(reader.prefix(4)).matches()) {
+            if (checkDocumentStart()) {
                 return fetchDocumentStart();
+                // Is it the block entry indicator?
             } else if (NULL_OR_OTHER.indexOf(reader.peek(1)) != -1) {
                 return fetchBlockEntry();
             }
@@ -287,7 +289,7 @@ public class ScannerImpl implements Scanner {
             break;
         case ':':
             // Is it the value indicator?
-            if (this.flowLevel != 0 || NULL_OR_OTHER.indexOf(reader.peek(1)) != -1) {
+            if (checkValue()) {
                 return fetchValue();
             }
             break;
@@ -320,7 +322,7 @@ public class ScannerImpl implements Scanner {
             return fetchDouble();
         }
         // It must be a plain scalar then.
-        if (BEG.matcher(reader.prefix(2)).find()) {
+        if (checkPlain()) {
             return fetchPlain();
         }
         throw new ScannerException("while scanning for the next token", null, "found character "
@@ -704,6 +706,59 @@ public class ScannerImpl implements Scanner {
         final Token tok = scanPlain();
         this.tokens.add(tok);
         return tok;
+    }
+
+    // Checkers.
+    private boolean checkDirective() {
+        // DIRECTIVE: ^ '%' ...
+        // The '%' indicator is already checked.
+        if (reader.getColumn() == 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private boolean checkDocumentStart() {
+        // DOCUMENT-START: ^ '---' (' '|'\n')
+        if (reader.getColumn() == 0 || docStart) {
+            // TODO deviation from PyYAML
+            if (ENDING.matcher(reader.prefix(4)).matches()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean checkValue() {
+        // VALUE(flow context): ':'
+        if (flowLevel != 0) {
+            return true;
+        } else {
+            // VALUE(block context): ':' (' '|'\n')
+            return (NULL_OR_OTHER.indexOf(reader.peek(1)) != -1);
+        }
+    }
+
+    private boolean checkPlain() {
+        /**
+         * <pre>
+         * A plain scalar may start with any non-space character except:
+         *   '-', '?', ':', ',', '[', ']', '{', '}',
+         *   '#', '&amp;', '*', '!', '|', '&gt;', '\'', '\&quot;',
+         *   '%', '@', '`'.
+         * 
+         * It may also start with
+         *   '-', '?', ':'
+         * if it is followed by a non-space character.
+         * 
+         * Note that we limit the last rule to the block context (except the
+         * '-' character) because we want the flow context to be space
+         * independent.
+         * </pre>
+         */
+        // TODO this deviates from PyYAML (JvYamlb is also different)
+        return BEG.matcher(reader.prefix(2)).find();
     }
 
     private void scanToNextToken() {
