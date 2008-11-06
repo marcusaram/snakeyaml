@@ -19,7 +19,7 @@ public class ErrorsTest extends PyImportTest {
         failures.add("invalid-uri-escapes-3.loader-error");
         failures.add("no-block-mapping-end-2.loader-error");
         failures.add("undefined-constructor.loader-error");
-        // TODO this is against the spec but I like it :)
+        // TODO these are against the spec but I like it :)
         failures.add("invalid-omap-1.loader-error");
         failures.add("invalid-pairs-1.loader-error");
         for (String name : failures) {
