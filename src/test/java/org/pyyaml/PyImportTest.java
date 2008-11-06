@@ -3,13 +3,27 @@ package org.pyyaml;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.io.InputStream;
 
 import junit.framework.TestCase;
 
+import org.jvyaml.Yaml;
 import org.yaml.snakeyaml.Util;
 
 public abstract class PyImportTest extends TestCase {
     public static final String PATH = "pyyaml";
+
+    protected Object load(String data) {
+        Yaml yaml = new Yaml();
+        Object obj = yaml.load(data);
+        return obj;
+    }
+
+    protected Object loadAll(InputStream data) {
+        Yaml yaml = new Yaml();
+        Object obj = yaml.loadAll(data);
+        return obj;
+    }
 
     protected String getResource(String theName) {
         try {
