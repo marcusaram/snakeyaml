@@ -260,7 +260,7 @@ public class ScannerImpl implements Scanner {
             break;
         case '.':
             // Is it the document end?
-            if (colz && START.matcher(reader.prefix(4)).matches()) {
+            if (checkDocumentEnd()) {
                 return fetchDocumentEnd();
             }
             break;
@@ -724,6 +724,17 @@ public class ScannerImpl implements Scanner {
         if (reader.getColumn() == 0 || docStart) {
             // TODO deviation from PyYAML
             if (ENDING.matcher(reader.prefix(4)).matches()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean checkDocumentEnd() {
+        // DOCUMENT-END: ^ '...' (' '|'\n')
+        if (reader.getColumn() == 0) {
+            // TODO deviation from PyYAML
+            if (START.matcher(reader.prefix(4)).matches()) {
                 return true;
             }
         }
