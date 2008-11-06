@@ -7,10 +7,6 @@ import org.yaml.snakeyaml.error.Mark;
  */
 public class MarkTest extends PyImportTest {
 
-    protected void setUp() throws Exception {
-        super.setUp();
-    }
-
     public void testMarks() {
         String content = getResource("test_mark.marks");
         String[] inputs = content.split("---\n");

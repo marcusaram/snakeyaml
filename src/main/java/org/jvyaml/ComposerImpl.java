@@ -89,7 +89,6 @@ public class ComposerImpl implements Composer {
             final AliasEvent event = (AliasEvent) parser.getEvent();
             final String anchor = event.getAnchor();
             if (!anchors.containsKey(anchor)) {
-                System.err.println(" for aliasEvent: " + event);
                 throw new ComposerException(null, "found undefined alias " + anchor, null);
             }
             return (Node) anchors.get(anchor);
