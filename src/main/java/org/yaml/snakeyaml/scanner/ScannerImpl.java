@@ -325,9 +325,12 @@ public class ScannerImpl implements Scanner {
         if (checkPlain()) {
             return fetchPlain();
         }
+        // No? It's an error. Let's produce a nice error message.
         throw new ScannerException("while scanning for the next token", null, "found character "
                 + ch + "(" + ((int) ch) + " that cannot start any token", reader.getMark(), null);
     }
+
+    // Simple keys treatment.
 
     /**
      * Return the number of the nearest possible simple key. Actually we don't
