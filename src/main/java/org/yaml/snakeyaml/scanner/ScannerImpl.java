@@ -254,7 +254,7 @@ public class ScannerImpl implements Scanner {
             if (checkDocumentStart()) {
                 return fetchDocumentStart();
                 // Is it the block entry indicator?
-            } else if (NULL_OR_OTHER.indexOf(reader.peek(1)) != -1) {
+            } else if (checkBlockEntry()) {
                 return fetchBlockEntry();
             }
             break;
@@ -728,6 +728,11 @@ public class ScannerImpl implements Scanner {
             }
         }
         return false;
+    }
+
+    private boolean checkBlockEntry() {
+        // BLOCK-ENTRY: '-' (' '|'\n')
+        return NULL_OR_OTHER.indexOf(reader.peek(1)) != -1;
     }
 
     private boolean checkValue() {
