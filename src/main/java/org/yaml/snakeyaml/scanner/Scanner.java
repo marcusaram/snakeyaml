@@ -3,8 +3,6 @@
  */
 package org.yaml.snakeyaml.scanner;
 
-import java.util.Iterator;
-
 import org.yaml.snakeyaml.tokens.Token;
 
 /**
@@ -25,7 +23,5 @@ public interface Scanner {
      * Return the next token.
      */
     Token getToken();
-
-    Iterator<Token> eachToken();
 
 }
