@@ -280,10 +280,10 @@ public class ScannerImpl implements Scanner {
         case ',':
             // Is it the flow entry indicator?
             return fetchFlowEntry();
-            // TODO missing block entry indicator from PyYAML
+            // see block entry indicator above
         case '?':
             // Is it the key indicator?
-            if (this.flowLevel != 0 || NULL_OR_OTHER.indexOf(reader.peek(1)) != -1) {
+            if (checkKey()) {
                 return fetchKey();
             }
             break;
@@ -744,6 +744,16 @@ public class ScannerImpl implements Scanner {
     private boolean checkBlockEntry() {
         // BLOCK-ENTRY: '-' (' '|'\n')
         return NULL_OR_OTHER.indexOf(reader.peek(1)) != -1;
+    }
+
+    private boolean checkKey() {
+        // KEY(flow context): '?'
+        if (this.flowLevel != 0) {
+            return true;
+        } else {
+            // KEY(block context): '?' (' '|'\n')
+            return NULL_OR_OTHER.indexOf(reader.peek(1)) != -1;
+        }
     }
 
     private boolean checkValue() {
