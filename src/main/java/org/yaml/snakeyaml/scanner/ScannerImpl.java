@@ -126,6 +126,29 @@ public class ScannerImpl implements Scanner {
     private List<Integer> indents;
 
     // Variables related to simple keys treatment. See PyYAML.
+
+    /**
+     * <pre>
+     * A simple key is a key that is not denoted by the '?' indicator.
+     * Example of simple keys:
+     *   ---
+     *   block simple key: value
+     *   ? not a simple key:
+     *   : { flow simple key: value }
+     * We emit the KEY token before all keys, so when we find a potential
+     * simple key, we try to locate the corresponding ':' indicator.
+     * Simple keys should be limited to a single line and 1024 characters.
+     * 
+     * Can a simple key start at the current position? A simple key may
+     * start:
+     * - at the beginning of the line, not counting indentation spaces
+     *       (in block context),
+     * - after '{', '[', ',' (in the flow context),
+     * - after '?', ':', '-' (in the block context).
+     * In the block context, this flag also signifies if a block collection
+     * may start at the current position.
+     * </pre>
+     */
     private boolean allowSimpleKey = true;
 
     /*
@@ -190,23 +213,6 @@ public class ScannerImpl implements Scanner {
             return (Token) this.tokens.remove(0);
         }
         return null;
-    }
-
-    private class TokenIterator implements Iterator<Token> {
-        public boolean hasNext() {
-            return null != peekToken();
-        }
-
-        public Token next() {
-            return getToken();
-        }
-
-        public void remove() {
-        }
-    }
-
-    public Iterator<Token> eachToken() {
-        return new TokenIterator();
     }
 
     private boolean needMoreTokens() {

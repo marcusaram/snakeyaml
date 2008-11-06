@@ -6,6 +6,7 @@ import java.util.Iterator;
 
 import junit.framework.TestCase;
 
+import org.yaml.snakeyaml.scanner.Scanner;
 import org.yaml.snakeyaml.scanner.ScannerImpl;
 import org.yaml.snakeyaml.tokens.Token;
 
@@ -15,7 +16,7 @@ public class ScannerImplTest extends TestCase {
     public void testEachToken() {
         String test1 = "--- \n\"\\xfc\"\n";
         ScannerImpl sce2 = new ScannerImpl(new org.yaml.snakeyaml.reader.Reader(test1));
-        for (Iterator<Token> iter = sce2.eachToken(); iter.hasNext();) {
+        for (Iterator<Token> iter = new TokenIterator(sce2); iter.hasNext();) {
             Token token = iter.next();
             System.out.println(token);
         }
@@ -74,7 +75,7 @@ public class ScannerImplTest extends TestCase {
         final long before = System.currentTimeMillis();
         for (int i = 0; i < 1; i++) {
             final ScannerImpl sce2 = new ScannerImpl(new org.yaml.snakeyaml.reader.Reader(str));
-            for (final Iterator iter = sce2.eachToken(); iter.hasNext();) {
+            for (final Iterator<Token> iter = new TokenIterator(sce2); iter.hasNext();) {
                 System.out.println(iter.next());
             }
         }
@@ -84,4 +85,25 @@ public class ScannerImplTest extends TestCase {
         System.out.println("Walking through the tokens for the file: " + filename + " took " + time
                 + "ms, or " + timeS + " seconds");
     }
+
+    private static class TokenIterator implements Iterator<Token> {
+        private Scanner scanner;
+
+        public TokenIterator(Scanner scanner) {
+            this.scanner = scanner;
+        }
+
+        public boolean hasNext() {
+            return scanner.peekToken() != null;
+        }
+
+        public Token next() {
+            return scanner.getToken();
+        }
+
+        public void remove() {
+            throw new UnsupportedOperationException();
+        }
+    }
+
 }
