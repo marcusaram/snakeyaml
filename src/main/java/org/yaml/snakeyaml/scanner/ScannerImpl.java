@@ -958,20 +958,19 @@ public class ScannerImpl implements Scanner {
         // See the specification for details.
         int length = 0;
         char ch = reader.peek(length);
-        boolean zlen = true;
         while (ALPHA.indexOf(ch) != -1) {
-            zlen = false;
             length++;
             ch = reader.peek(length);
         }
-        if (zlen) {
+        if (length == 0) {
             throw new ScannerException("while scanning a directive", startMark,
                     "expected alphabetic or numeric character, but found " + ch + "(" + ((int) ch)
                             + ")", reader.getMark(), null);
         }
-        final String value = reader.prefixForward(length);
-        // forward(length);
-        if (NULL_BL_LINEBR.indexOf(reader.peek()) == -1) {
+        String value = reader.prefix(length);
+        reader.forward(length);
+        ch = reader.peek();
+        if (NULL_BL_LINEBR.indexOf(ch) == -1) {
             throw new ScannerException("while scanning a directive", startMark,
                     "expected alphabetic or numeric character, but found " + ch + "(" + ((int) ch)
                             + ")", reader.getMark(), null);
