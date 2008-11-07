@@ -979,6 +979,7 @@ public class ScannerImpl implements Scanner {
     }
 
     private String[] scanYamlDirectiveValue(Mark startMark) {
+        // See the specification for details.
         while (reader.peek() == ' ') {
             reader.forward();
         }
@@ -999,6 +1000,7 @@ public class ScannerImpl implements Scanner {
     }
 
     private String scanYamlDirectiveNumber(Mark startMark) {
+        // See the specification for details.
         final char ch = reader.peek();
         if (!Character.isDigit(ch)) {
             throw new ScannerException("while scanning a directive", startMark,
@@ -1009,12 +1011,13 @@ public class ScannerImpl implements Scanner {
         while (Character.isDigit(reader.peek(length))) {
             length++;
         }
-        final String value = reader.prefixForward(length);
-        // forward(length);
+        final String value = reader.prefix(length);
+        reader.forward(length);
         return value;
     }
 
     private String[] scanTagDirectiveValue(Mark startMark) {
+        // See the specification for details.
         while (reader.peek() == ' ') {
             reader.forward();
         }
@@ -1027,6 +1030,7 @@ public class ScannerImpl implements Scanner {
     }
 
     private String scanTagDirectiveHandle(Mark startMark) {
+        // See the specification for details.
         final String value = scanTagHandle("directive", startMark);
         if (reader.peek() != ' ') {
             throw new ScannerException("while scanning a directive", startMark,
@@ -1037,6 +1041,7 @@ public class ScannerImpl implements Scanner {
     }
 
     private String scanTagDirectivePrefix(Mark startMark) {
+        // See the specification for details.
         final String value = scanTagUri("directive", startMark);
         if (NULL_BL_LINEBR.indexOf(reader.peek()) == -1) {
             throw new ScannerException("while scanning a directive", startMark,
@@ -1047,19 +1052,20 @@ public class ScannerImpl implements Scanner {
     }
 
     private String scanDirectiveIgnoredLine(Mark startMark) {
+        // See the specification for details.
         while (reader.peek() == ' ') {
             reader.forward();
         }
-        if (reader.peek() == '"') {
+        if (reader.peek() == '#') {
             while (NULL_OR_LINEBR.indexOf(reader.peek()) == -1) {
                 reader.forward();
             }
         }
-        final char ch = reader.peek();
+        char ch = reader.peek();
         if (NULL_OR_LINEBR.indexOf(ch) == -1) {
             throw new ScannerException("while scanning a directive", startMark,
-                    "expected a comment or a line break, but found " + reader.peek() + "("
-                            + ((int) reader.peek()) + ")", reader.getMark(), null);
+                    "expected a comment or a line break, but found " + ch + "(" + ((int) ch) + ")",
+                    reader.getMark(), null);
         }
         return scanLineBreak();
     }
