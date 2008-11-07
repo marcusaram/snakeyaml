@@ -6,6 +6,11 @@
 	<body>
 		<release version="0.3-SNAPSHOT" date="in Mercurial" description="Package as library">
             <action dev="py4fun" type="fix">
+                Fix a deviation with PyYAML in method scanBlockScalar().
+                'chomping' can be null. Fix a bug in JvYaml that the trailing '\n' was removed.
+                (2008-11-07)
+            </action>
+            <action dev="py4fun" type="fix">
                 Fix a deviation with PyYAML in method scanDirectiveIgnoredLine().
                 Put '#' instead of '"'. (2008-11-07)
             </action>

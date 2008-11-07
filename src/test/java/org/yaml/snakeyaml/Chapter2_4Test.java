@@ -113,13 +113,11 @@ public class Chapter2_4Test extends TestCase {
         assertTrue(str.startsWith("GIF89"));
     }
 
-    @SuppressWarnings("unchecked")
     public void testExample_2_23_application() throws IOException {
         // TODO unclear how to test "Example 2.23. Various Explicit Tags"
         // fail("Test not finished for: 'Example 2.23. Various Explicit Tags'");
     }
 
-    @SuppressWarnings("unchecked")
     public void testExample_2_24() {
         // TODO unclear how to test "Example 2.24. Global Tags"
         // fail("Test not finished for: 'Example 2.24. Global Tags'");

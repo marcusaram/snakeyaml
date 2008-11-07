@@ -1198,48 +1198,62 @@ public class ScannerImpl implements Scanner {
     }
 
     private Token scanBlockScalar(final char style) {
-        final boolean folded = style == '>';
+        // See the specification for details.
+        boolean folded;
+        if (style == '>') {
+            folded = true;
+        } else {
+            folded = false;
+        }
         final StringBuffer chunks = new StringBuffer();
         Mark startMark = reader.getMark();
+        // Scan the header.
         reader.forward();
         final Object[] chompi = scanBlockScalarIndicators(startMark);
-        final boolean chomping = ((Boolean) chompi[0]).booleanValue();
+        final Boolean chomping = (Boolean) chompi[0];
         final int increment = ((Integer) chompi[1]).intValue();
         scanBlockScalarIgnoredLine(startMark);
+        // Determine the indentation level and go to the first non-empty line.
         int minIndent = this.indent + 1;
         if (minIndent < 1) {
             minIndent = 1;
         }
         String breaks = null;
         int maxIndent = 0;
-        int ind = 0;
+        int indent = 0;
+        Mark endMark;
         if (increment == -1) {
             final Object[] brme = scanBlockScalarIndentation();
             breaks = (String) brme[0];
             maxIndent = ((Integer) brme[1]).intValue();
-            if (minIndent > maxIndent) {
-                ind = minIndent;
-            } else {
-                ind = maxIndent;
-            }
+            endMark = (Mark) brme[2];
+            indent = Math.max(minIndent, maxIndent);
         } else {
-            ind = minIndent + increment - 1;
-            breaks = scanBlockScalarBreaks(ind);
+            indent = minIndent + increment - 1;
+            final Object[] brme = scanBlockScalarBreaks(indent);
+            breaks = (String) brme[0];
+            endMark = (Mark) brme[1];
         }
 
         String lineBreak = "";
-        while (this.reader.getColumn() == ind && reader.peek() != '\0') {
+        // Scan the inner part of the block scalar.
+        while (this.reader.getColumn() == indent && reader.peek() != '\0') {
             chunks.append(breaks);
             final boolean leadingNonSpace = BLANK_T.indexOf(reader.peek()) == -1;
             int length = 0;
             while (NULL_OR_LINEBR.indexOf(reader.peek(length)) == -1) {
                 length++;
             }
-            chunks.append(reader.prefixForward(length));
-            // forward(length);
+            chunks.append(reader.prefix(length));
+            reader.forward(length);
             lineBreak = scanLineBreak();
-            breaks = scanBlockScalarBreaks(ind);
-            if (this.reader.getColumn() == ind && reader.peek() != '\0') {
+            final Object[] brme = scanBlockScalarBreaks(indent);
+            breaks = (String) brme[0];
+            endMark = (Mark) brme[1];
+            if (this.reader.getColumn() == indent && reader.peek() != '\0') {
+                // Unfortunately, folding rules are ambiguous.
+                //
+                // This is the folding according to the specification:
                 if (folded && lineBreak.equals("\n") && leadingNonSpace
                         && BLANK_T.indexOf(reader.peek()) == -1) {
                     if (breaks.length() == 0) {
@@ -1248,29 +1262,38 @@ public class ScannerImpl implements Scanner {
                 } else {
                     chunks.append(lineBreak);
                 }
+                // Clark Evans's interpretation (also in the spec examples) not
+                // imported from PyYAML
             } else {
                 break;
             }
         }
-
-        if (chomping) {
+        // Chomp the tail.
+        if (chomping == null || chomping.booleanValue()) {
             chunks.append(lineBreak);
+        }
+        if (chomping != null && chomping.booleanValue()) {
             chunks.append(breaks);
         }
-
-        return new ScalarToken(chunks.toString(), false, null, null, style);
+        // We are done.
+        return new ScalarToken(chunks.toString(), false, startMark, endMark, style);
     }
 
     private Object[] scanBlockScalarIndicators(Mark startMark) {
-        boolean chomping = false;
+        // See the specification for details.
+        Boolean chomping = null;
         int increment = -1;
         char ch = reader.peek();
         if (ch == '-' || ch == '+') {
-            chomping = ch == '+';
+            if (ch == '+') {
+                chomping = Boolean.TRUE;
+            } else {
+                chomping = Boolean.FALSE;
+            }
             reader.forward();
             ch = reader.peek();
             if (Character.isDigit(ch)) {
-                increment = Integer.parseInt(("" + ch));
+                increment = Integer.parseInt(String.valueOf(ch));
                 if (increment == 0) {
                     throw new ScannerException("while scanning a block scalar", startMark,
                             "expected indentation indicator in the range 1-9, but found 0", reader
@@ -1279,7 +1302,7 @@ public class ScannerImpl implements Scanner {
                 reader.forward();
             }
         } else if (Character.isDigit(ch)) {
-            increment = Integer.parseInt(("" + ch));
+            increment = Integer.parseInt(String.valueOf(ch));
             if (increment == 0) {
                 throw new ScannerException("while scanning a block scalar", startMark,
                         "expected indentation indicator in the range 1-9, but found 0", reader
@@ -1288,16 +1311,21 @@ public class ScannerImpl implements Scanner {
             reader.forward();
             ch = reader.peek();
             if (ch == '-' || ch == '+') {
-                chomping = ch == '+';
+                if (ch == '+') {
+                    chomping = Boolean.TRUE;
+                } else {
+                    chomping = Boolean.FALSE;
+                }
                 reader.forward();
             }
         }
-        if (NULL_BL_LINEBR.indexOf(reader.peek()) == -1) {
+        ch = reader.peek();
+        if (NULL_BL_LINEBR.indexOf(ch) == -1) {
             throw new ScannerException("while scanning a block scalar", startMark,
-                    "expected chomping or indentation indicators, but found " + reader.peek() + "("
+                    "expected chomping or indentation indicators, but found " + ch + "("
                             + ((int) reader.peek()) + ")", reader.getMark(), null);
         }
-        return new Object[] { Boolean.valueOf(chomping), new Integer(increment) };
+        return new Object[] { chomping, new Integer(increment) };
     }
 
     private String scanBlockScalarIgnoredLine(Mark startMark) {
@@ -1318,8 +1346,10 @@ public class ScannerImpl implements Scanner {
     }
 
     private Object[] scanBlockScalarIndentation() {
+        // See the specification for details.
         final StringBuffer chunks = new StringBuffer();
         int maxIndent = 0;
+        Mark endMark = reader.getMark();
         while (BLANK_OR_LINEBR.indexOf(reader.peek()) != -1) {
             if (reader.peek() != ' ') {
                 chunks.append(scanLineBreak());
@@ -1330,21 +1360,24 @@ public class ScannerImpl implements Scanner {
                 }
             }
         }
-        return new Object[] { chunks.toString(), new Integer(maxIndent) };
+        return new Object[] { chunks.toString(), new Integer(maxIndent), endMark };
     }
 
-    private String scanBlockScalarBreaks(final int indent) {
+    private Object[] scanBlockScalarBreaks(final int indent) {
+        // See the specification for details.
         final StringBuffer chunks = new StringBuffer();
+        Mark endMark = reader.getMark();
         while (this.reader.getColumn() < indent && reader.peek() == ' ') {
             reader.forward();
         }
         while (FULL_LINEBR.indexOf(reader.peek()) != -1) {
             chunks.append(scanLineBreak());
+            endMark = reader.getMark();
             while (this.reader.getColumn() < indent && reader.peek() == ' ') {
                 reader.forward();
             }
         }
-        return chunks.toString();
+        return new Object[] { chunks.toString(), endMark };
     }
 
     private Token scanFlowScalar(final char style) {

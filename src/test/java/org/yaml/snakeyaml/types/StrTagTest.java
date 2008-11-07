@@ -11,7 +11,6 @@ import java.util.Map;
  * @see http://yaml.org/type/str.html
  */
 public class StrTagTest extends AbstractTest {
-    @SuppressWarnings("unchecked")
     private String getData(String data, String key) {
         return (String) getMapValue(data, key);
     }

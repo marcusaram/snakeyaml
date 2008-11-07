@@ -17,7 +17,6 @@ import junit.framework.TestCase;
  */
 public class Chapter2_5Test extends TestCase {
 
-    @SuppressWarnings("unchecked")
     public void testExample_2_27() {
         // TODO unclear how to test "Example 2.27. Invoice"
         // fail("Test not finished for: 'Example 2.27. Invoice'");
@@ -49,7 +48,7 @@ public class Chapter2_5Test extends TestCase {
         Map<String, String> map1 = list3.get(0);
         assertEquals("TopClass.py", map1.get("file"));
         assertEquals(new Long(23), map1.get("line"));
-        assertEquals("x = MoreObject(\"345\\n\")", map1.get("code"));
+        assertEquals("x = MoreObject(\"345\\n\")\n", map1.get("code"));
         Map<String, String> map2 = list3.get(1);
         assertEquals("MoreClass.py", map2.get("file"));
         assertEquals(new Long(58), map2.get("line"));
