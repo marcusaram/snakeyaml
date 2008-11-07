@@ -1329,6 +1329,7 @@ public class ScannerImpl implements Scanner {
     }
 
     private String scanBlockScalarIgnoredLine(Mark startMark) {
+        // See the specification for details.
         while (reader.peek() == ' ') {
             reader.forward();
         }
@@ -1337,10 +1338,11 @@ public class ScannerImpl implements Scanner {
                 reader.forward();
             }
         }
-        if (NULL_OR_LINEBR.indexOf(reader.peek()) == -1) {
+        char ch = reader.peek();
+        if (NULL_OR_LINEBR.indexOf(ch) == -1) {
             throw new ScannerException("while scanning a block scalar", startMark,
-                    "expected a comment or a line break, but found " + reader.peek() + "("
-                            + ((int) reader.peek()) + ")", reader.getMark(), null);
+                    "expected a comment or a line break, but found " + ch + "(" + ((int) ch) + ")",
+                    reader.getMark(), null);
         }
         return scanLineBreak();
     }
@@ -1353,6 +1355,7 @@ public class ScannerImpl implements Scanner {
         while (BLANK_OR_LINEBR.indexOf(reader.peek()) != -1) {
             if (reader.peek() != ' ') {
                 chunks.append(scanLineBreak());
+                endMark = reader.getMark();
             } else {
                 reader.forward();
                 if (this.reader.getColumn() > maxIndent) {
@@ -1380,19 +1383,35 @@ public class ScannerImpl implements Scanner {
         return new Object[] { chunks.toString(), endMark };
     }
 
+    /**
+     * <pre>
+     * See the specification for details.
+     * Note that we loose indentation rules for quoted scalars. Quoted
+     * scalars don't need to adhere indentation because &quot; and ' clearly
+     * mark the beginning and the end of them. Therefore we are less
+     * restrictive then the specification requires. We only need to check
+     * that document separators are not included in scalars.
+     * </pre>
+     */
     private Token scanFlowScalar(final char style) {
-        final boolean dbl = style == '"';
+        boolean _double;
+        if (style == '"') {
+            _double = true;
+        } else {
+            _double = false;
+        }
         final StringBuffer chunks = new StringBuffer();
         Mark startMark = reader.getMark();
         final char quote = reader.peek();
         reader.forward();
-        chunks.append(scanFlowScalarNonSpaces(dbl, startMark));
+        chunks.append(scanFlowScalarNonSpaces(_double, startMark));
         while (reader.peek() != quote) {
             chunks.append(scanFlowScalarSpaces(startMark));
-            chunks.append(scanFlowScalarNonSpaces(dbl, startMark));
+            chunks.append(scanFlowScalarNonSpaces(_double, startMark));
         }
         reader.forward();
-        return new ScalarToken(chunks.toString(), false, null, null, style);
+        Mark endMark = reader.getMark();
+        return new ScalarToken(chunks.toString(), false, startMark, endMark, style);
     }
 
     private String scanFlowScalarNonSpaces(final boolean dbl, Mark startMark) {
@@ -1447,13 +1466,14 @@ public class ScannerImpl implements Scanner {
     }
 
     private String scanFlowScalarSpaces(Mark startMark) {
+        // See the specification for details.
         final StringBuffer chunks = new StringBuffer();
         int length = 0;
         while (BLANK_T.indexOf(reader.peek(length)) != -1) {
             length++;
         }
-        final String whitespaces = reader.prefixForward(length);
-        // forward(length);
+        final String whitespaces = reader.prefix(length);
+        reader.forward(length);
         char ch = reader.peek();
         if (ch == '\0') {
             throw new ScannerException("while scanning a quoted scalar", startMark,
@@ -1474,11 +1494,13 @@ public class ScannerImpl implements Scanner {
     }
 
     private String scanFlowScalarBreaks(Mark startMark) {
+        // See the specification for details.
         final StringBuffer chunks = new StringBuffer();
-        String pre = null;
-        for (;;) {
-            pre = reader.prefix(3);
-            if ((pre.equals("---") || pre.equals("..."))
+        while (true) {
+            // Instead of checking indentation, we check for document
+            // separators.
+            String prefix = reader.prefix(3);
+            if ((prefix.equals("---") || prefix.equals("..."))
                     && NULL_BL_T_LINEBR.indexOf(reader.peek(3)) != -1) {
                 throw new ScannerException("while scanning a quoted scalar", startMark,
                         "found unexpected document separator", reader.getMark(), null);
