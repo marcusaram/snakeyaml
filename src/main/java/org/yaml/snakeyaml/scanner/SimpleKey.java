@@ -37,4 +37,16 @@ class SimpleKey {
     public Mark getMark() {
         return mark;
     }
+
+    public int getIndex() {
+        return index;
+    }
+
+    public int getLine() {
+        return line;
+    }
+
+    public boolean isRequired() {
+        return required;
+    }
 }
