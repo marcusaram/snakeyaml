@@ -641,7 +641,7 @@ public class ScannerImpl implements Scanner {
     private Token fetchKey() {
         // Block context needs additional checks.
         if (this.flowLevel == 0) {
-            // Are we allowed to start a key (not nessesary a simple)?
+            // Are we allowed to start a key (not necessary a simple)?
             if (!this.allowSimpleKey) {
                 throw new ScannerException(null, null, "mapping keys are not allowed here", reader
                         .getMark(), null);
@@ -724,24 +724,33 @@ public class ScannerImpl implements Scanner {
     }
 
     private Token fetchAlias() {
+        // ALIAS could be a simple key.
         savePossibleSimpleKey();
+        // No simple keys after ALIAS.
         this.allowSimpleKey = false;
+        // Scan and add ALIAS.
         final Token tok = scanAnchor(false);
         this.tokens.add(tok);
         return tok;
     }
 
     private Token fetchAnchor() {
+        // ANCHOR could start a simple key.
         savePossibleSimpleKey();
+        // No simple keys after ANCHOR.
         this.allowSimpleKey = false;
+        // Scan and add ANCHOR.
         final Token tok = scanAnchor(true);
         this.tokens.add(tok);
         return tok;
     }
 
     private Token fetchTag() {
+        // TAG could start a simple key.
         savePossibleSimpleKey();
+        // No simple keys after TAG.
         this.allowSimpleKey = false;
+        // Scan and add TAG.
         final Token tok = scanTag();
         this.tokens.add(tok);
         return tok;
@@ -775,16 +784,24 @@ public class ScannerImpl implements Scanner {
     }
 
     private Token fetchFlowScalar(final char style) {
+        // A flow scalar could be a simple key.
         savePossibleSimpleKey();
+        // No simple keys after flow scalars.
         this.allowSimpleKey = false;
+        // Scan and add SCALAR.
         final Token tok = scanFlowScalar(style);
         this.tokens.add(tok);
         return tok;
     }
 
     private Token fetchPlain() {
+        // A plain scalar could be a simple key.
         savePossibleSimpleKey();
+        // No simple keys after plain scalars. But note that `scan_plain` will
+        // change this flag if the scan is finished at the beginning of the
+        // line.
         this.allowSimpleKey = false;
+        // Scan and add SCALAR. May change `allow_simple_key`.
         final Token tok = scanPlain();
         this.tokens.add(tok);
         return tok;
@@ -804,7 +821,7 @@ public class ScannerImpl implements Scanner {
     private boolean checkDocumentStart() {
         // DOCUMENT-START: ^ '---' (' '|'\n')
         if (reader.getColumn() == 0 || docStart) {
-            // TODO deviation from PyYAML
+            // TODO looks like deviation from PyYAML
             if (ENDING.matcher(reader.prefix(4)).matches()) {
                 return true;
             }
@@ -815,7 +832,7 @@ public class ScannerImpl implements Scanner {
     private boolean checkDocumentEnd() {
         // DOCUMENT-END: ^ '...' (' '|'\n')
         if (reader.getColumn() == 0) {
-            // TODO deviation from PyYAML
+            // TODO looks like deviation from PyYAML
             if (START.matcher(reader.prefix(4)).matches()) {
                 return true;
             }
@@ -865,12 +882,37 @@ public class ScannerImpl implements Scanner {
          * independent.
          * </pre>
          */
-        // TODO this deviates from PyYAML (JvYamlb is also different)
+        // TODO looks like deviation from PyYAML (JvYamlb is also different)
         return BEG.matcher(reader.prefix(2)).find();
     }
 
+    /**
+     * <pre>
+     * We ignore spaces, line breaks and comments.
+     * If we find a line break in the block context, we set the flag
+     * `allow_simple_key` on.
+     * The byte order mark is stripped if it's the first character in the
+     * stream. We do not yet support BOM inside the stream as the
+     * specification requires. Any such mark will be considered as a part
+     * of the document.
+     * TODO: We need to make tab handling rules more sane. A good rule is
+     *   Tabs cannot precede tokens
+     *   BLOCK-SEQUENCE-START, BLOCK-MAPPING-START, BLOCK-END,
+     *   KEY(block), VALUE(block), BLOCK-ENTRY
+     * So the checking code is
+     *   if &lt;TAB&gt;:
+     *       self.allow_simple_keys = False
+     * We also need to add the check for `allow_simple_keys == True` to
+     * `unwind_indent` before issuing BLOCK-END.
+     * Scanners for block, flow, and plain scalars need to be modified.
+     * </pre>
+     */
     private void scanToNextToken() {
-        for (;;) {
+        if (reader.getIndex() == 0 && reader.peek() == '\uFEFF') {
+            reader.forward();
+        }
+        boolean found = false;
+        while (!found) {
             while (reader.peek() == ' ') {
                 reader.forward();
             }
@@ -884,7 +926,7 @@ public class ScannerImpl implements Scanner {
                     this.allowSimpleKey = true;
                 }
             } else {
-                break;
+                found = true;
             }
         }
     }
@@ -892,23 +934,28 @@ public class ScannerImpl implements Scanner {
     private Token scanDirective() {
         // See the specification for details.
         Mark startMark = reader.getMark();
+        Mark endMark;
         reader.forward();
         final String name = scanDirectiveName(startMark);
         String[] value = null;
         if (name.equals("YAML")) {
             value = scanYamlDirectiveValue(startMark);
+            endMark = reader.getMark();
         } else if (name.equals("TAG")) {
             value = scanTagDirectiveValue(startMark);
+            endMark = reader.getMark();
         } else {
+            endMark = reader.getMark();
             while (NULL_OR_LINEBR.indexOf(reader.peek()) == -1) {
                 reader.forward();
             }
         }
         scanDirectiveIgnoredLine(startMark);
-        return new DirectiveToken(name, value, null, null);
+        return new DirectiveToken(name, value, startMark, endMark);
     }
 
     private String scanDirectiveName(Mark startMark) {
+        // See the specification for details.
         int length = 0;
         char ch = reader.peek(length);
         boolean zlen = true;
