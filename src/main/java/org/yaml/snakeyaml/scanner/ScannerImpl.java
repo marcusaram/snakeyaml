@@ -1517,23 +1517,28 @@ public class ScannerImpl implements Scanner {
         }
     }
 
+    /**
+     * <pre>
+     * See the specification for details.
+     * We add an additional restriction for the flow context:
+     *   plain scalars in the flow context cannot contain ',', ':' and '?'.
+     * We also keep track of the `allow_simple_key` flag here.
+     * Indentation rules are loosed for the flow context.
+     * </pre>
+     */
     private Token scanPlain() {
-
-        // * See the specification for details. We add an additional restriction
-        // * for the flow context: plain scalars in the flow context cannot
-        // * contain ',', ':' and '?'. We also keep track of the
-        // * `allow_simple_key` flag here. Indentation rules are loosed for the
-        // * flow context.
-
         final StringBuffer chunks = new StringBuffer();
         Mark startMark = reader.getMark();
-        final int ind = this.indent + 1;
+        Mark endMark = startMark;
         String spaces = "";
-        boolean f_nzero = true;
-        Pattern r_check = R_FLOWNONZERO;
+        boolean f_nzero;
+        Pattern r_check;
         if (this.flowLevel == 0) {
             f_nzero = false;
             r_check = R_FLOWZERO;
+        } else {
+            f_nzero = true;
+            r_check = R_FLOWNONZERO;
         }
         while (reader.peek() != '#') {
             int length = 0;
@@ -1544,6 +1549,7 @@ public class ScannerImpl implements Scanner {
             }
             length = m.start();
             final char ch = reader.peek(length);
+            // It's not clear what we should do with ':' in the flow context.
             if (f_nzero && ch == ':' && S4.indexOf(reader.peek(length + 1)) == -1) {
                 reader.forward(length);
                 throw new ScannerException("while scanning a plain scalar", startMark,
@@ -1555,17 +1561,19 @@ public class ScannerImpl implements Scanner {
             }
             this.allowSimpleKey = false;
             chunks.append(spaces);
-            chunks.append(reader.prefixForward(length));
-            // forward(length);
-            spaces = scanPlainSpaces(ind);
-            if (spaces == null || (this.flowLevel == 0 && this.reader.getColumn() < ind)) {
+            chunks.append(reader.prefix(length));
+            reader.forward(length);
+            endMark = reader.getMark();
+            spaces = scanPlainSpaces();
+            if (spaces == null || reader.peek() == '#'
+                    || (this.flowLevel == 0 && this.reader.getColumn() < this.indent + 1)) {
                 break;
             }
         }
-        return new ScalarToken(chunks.toString(), null, null, true);
+        return new ScalarToken(chunks.toString(), startMark, endMark, true);
     }
 
-    private String scanPlainSpaces(final int indent) {
+    private String scanPlainSpaces() {
         final StringBuffer chunks = new StringBuffer();
         int length = 0;
         while (reader.peek(length) == ' ') {
