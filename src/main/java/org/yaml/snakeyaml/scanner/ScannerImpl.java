@@ -1070,35 +1070,74 @@ public class ScannerImpl implements Scanner {
         return scanLineBreak();
     }
 
+    /**
+     * <pre>
+     * The specification does not restrict characters for anchors and
+     * aliases. This may lead to problems, for instance, the document:
+     *   [ *alias, value ]
+     * can be interpteted in two ways, as
+     *   [ &quot;value&quot; ]
+     * and
+     *   [ *alias , &quot;value&quot; ]
+     * Therefore we restrict aliases to numbers and ASCII letters.
+     * </pre>
+     */
     private Token scanAnchor(final boolean isAnchor) {
         Mark startMark = reader.getMark();
         final char indicator = reader.peek();
         final String name = indicator == '*' ? "alias" : "anchor";
         reader.forward();
         int length = 0;
-        int chunk_size = 16;
-        Matcher m = null;
-        for (;;) {
-            final String chunk = reader.prefix(chunk_size);
-            if ((m = NON_ALPHA.matcher(chunk)).find()) {
-                break;
-            }
-            chunk_size += 16;
+        char[] chArray = new char[1];
+        char ch = reader.peek(length);
+        chArray[0] = ch;
+        while (!(NON_ALPHA.matcher(new String(chArray))).find()) {
+            length++;
+            ch = reader.peek(length);
+            chArray[0] = ch;
         }
-        length = m.start();
         if (length == 0) {
             throw new ScannerException("while scanning an " + name, startMark,
-                    "expected alphabetic or numeric character, but found something else...", reader
+                    "expected alphabetic or numeric character, but found but found " + ch, reader
                             .getMark(), null);
         }
-        final String value = reader.prefixForward(length);
-        // forward(length);
-        if (NON_ALPHA_OR_NUM.indexOf(reader.peek()) == -1) {
+        String value = reader.prefix(length);
+        reader.forward(length);
+        ch = reader.peek();
+        if (NON_ALPHA_OR_NUM.indexOf(ch) == -1) {
             throw new ScannerException("while scanning an " + name, startMark,
-                    "expected alphabetic or numeric character, but found " + reader.peek() + "("
+                    "expected alphabetic or numeric character, but found " + ch + "("
                             + ((int) reader.peek()) + ")", reader.getMark(), null);
-
         }
+        /**
+         * Code in JvYAML 0.2.1 (is it faster ?)
+         * 
+         * <pre>
+         * int chunk_size = 16;
+         * Matcher m = null;
+         * for (;;) {
+         *     final String chunk = reader.prefix(chunk_size);
+         *     if ((m = NON_ALPHA.matcher(chunk)).find()) {
+         *         break;
+         *     }
+         *     chunk_size += 16;
+         * }
+         * length = m.start();
+         * if (length == 0) {
+         *     throw new ScannerException(&quot;while scanning an &quot; + name, startMark,
+         *             &quot;expected alphabetic or numeric character, but found something else...&quot;, reader
+         *                     .getMark(), null);
+         * }
+         * final String value = reader.prefix(length);
+         * reader.forward(length);
+         * if (NON_ALPHA_OR_NUM.indexOf(reader.peek()) == -1) {
+         *     throw new ScannerException(&quot;while scanning an &quot; + name, startMark,
+         *             &quot;expected alphabetic or numeric character, but found &quot; + reader.peek() + &quot;(&quot;
+         *                     + ((int) reader.peek()) + &quot;)&quot;, reader.getMark(), null);
+         * 
+         * }
+         * </pre>
+         */
         Mark endMark = reader.getMark();
         Token tok;
         if (isAnchor) {
