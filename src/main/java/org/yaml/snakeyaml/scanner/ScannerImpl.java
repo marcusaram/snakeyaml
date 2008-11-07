@@ -1414,25 +1414,26 @@ public class ScannerImpl implements Scanner {
         return new ScalarToken(chunks.toString(), false, startMark, endMark, style);
     }
 
-    private String scanFlowScalarNonSpaces(final boolean dbl, Mark startMark) {
+    private String scanFlowScalarNonSpaces(final boolean _double, Mark startMark) {
+        // See the specification for details.
         final StringBuffer chunks = new StringBuffer();
-        for (;;) {
+        while (true) {
             int length = 0;
             while (SPACES_AND_STUFF.indexOf(reader.peek(length)) == -1) {
                 length++;
             }
             if (length != 0) {
-                chunks.append(reader.prefixForward(length));
-                // forward(length);
+                chunks.append(reader.prefix(length));
+                reader.forward(length);
             }
             char ch = reader.peek();
-            if (!dbl && ch == '\'' && reader.peek(1) == '\'') {
+            if (!_double && ch == '\'' && reader.peek(1) == '\'') {
                 chunks.append("'");
                 reader.forward(2);
-            } else if ((dbl && ch == '\'') || (!dbl && DOUBLE_ESC.indexOf(ch) != -1)) {
+            } else if ((_double && ch == '\'') || (!_double && DOUBLE_ESC.indexOf(ch) != -1)) {
                 chunks.append(ch);
                 reader.forward();
-            } else if (dbl && ch == '\\') {
+            } else if (_double && ch == '\\') {
                 reader.forward();
                 ch = reader.peek();
                 if (ESCAPE_REPLACEMENTS.containsKey(new Character(ch))) {
