@@ -1110,7 +1110,7 @@ public class ScannerImpl implements Scanner {
                             + ((int) reader.peek()) + ")", reader.getMark(), null);
         }
         /**
-         * Code in JvYAML 0.2.1 (is it faster ?)
+         * TODO Code in JvYAML 0.2.1 (is it faster ?)
          * 
          * <pre>
          * int chunk_size = 16;
@@ -1186,13 +1186,15 @@ public class ScannerImpl implements Scanner {
             }
             suffix = scanTagUri("tag", startMark);
         }
-        if (NULL_BL_LINEBR.indexOf(reader.peek()) == -1) {
+        ch = reader.peek();
+        if (NULL_BL_LINEBR.indexOf(ch) == -1) {
             throw new ScannerException("while scanning a tag", startMark,
-                    "expected ' ', but found " + reader.peek() + "(" + ((int) reader.peek()) + ")",
-                    reader.getMark(), null);
+                    "expected ' ', but found " + ch + "(" + ((int) ch) + ")", reader.getMark(),
+                    null);
         }
+        String[] value = new String[] { handle, suffix };
         Mark endMark = reader.getMark();
-        return new TagToken(new String[] { handle, suffix }, startMark, endMark);
+        return new TagToken(value, startMark, endMark);
     }
 
     private Token scanBlockScalar(final char style) {
