@@ -1573,14 +1573,21 @@ public class ScannerImpl implements Scanner {
         return new ScalarToken(chunks.toString(), startMark, endMark, true);
     }
 
+    /**
+     * <pre>
+     * See the specification for details.
+     * The specification is really confusing about tabs in plain scalars.
+     * We just forbid them completely. Do not use tabs in YAML!
+     * </pre>
+     */
     private String scanPlainSpaces() {
         final StringBuffer chunks = new StringBuffer();
         int length = 0;
         while (reader.peek(length) == ' ') {
             length++;
         }
-        final String whitespaces = reader.prefixForward(length);
-        // forward(length);
+        final String whitespaces = reader.prefix(length);
+        reader.forward(length);
         char ch = reader.peek();
         if (FULL_LINEBR.indexOf(ch) != -1) {
             final String lineBreak = scanLineBreak();
@@ -1611,6 +1618,13 @@ public class ScannerImpl implements Scanner {
         return chunks.toString();
     }
 
+    /**
+     * <pre>
+     * See the specification for details.
+     * For some strange reasons, the specification does not allow '_' in
+     * tag handles. I have allowed it anyway.
+     * </pre>
+     */
     private String scanTagHandle(final String name, Mark startMark) {
         char ch = reader.peek();
         if (ch != '!') {
@@ -1633,19 +1647,21 @@ public class ScannerImpl implements Scanner {
             }
             length++;
         }
-        final String value = reader.prefixForward(length);
-        // forward(length);
+        final String value = reader.prefix(length);
+        reader.forward(length);
         return value;
     }
 
     private String scanTagUri(final String name, Mark startMark) {
+        // See the specification for details.
+        // Note: we do not check if URI is well-formed.
         final StringBuffer chunks = new StringBuffer();
         int length = 0;
         char ch = reader.peek(length);
         while (STRANGE_CHAR.indexOf(ch) != -1) {
             if ('%' == ch) {
-                chunks.append(reader.prefixForward(length));
-                // forward(length);
+                chunks.append(reader.prefix(length));
+                reader.forward(length);
                 length = 0;
                 chunks.append(scanUriEscapes(name, startMark));
             } else {
@@ -1654,10 +1670,10 @@ public class ScannerImpl implements Scanner {
             ch = reader.peek(length);
         }
         if (length != 0) {
-            chunks.append(reader.prefixForward(length));
-            // forward(length);
+            chunks.append(reader.prefix(length));
+            reader.forward(length);
+            length = 0;
         }
-
         if (chunks.length() == 0) {
             throw new ScannerException("while scanning a " + name, startMark,
                     "expected URI, but found " + ch + "(" + ((int) ch) + ")", reader.getMark(),
@@ -1667,6 +1683,7 @@ public class ScannerImpl implements Scanner {
     }
 
     private String scanUriEscapes(final String name, Mark startMark) {
+        // See the specification for details.
         final StringBuffer bytes = new StringBuffer();
         while (reader.peek() == '%') {
             reader.forward();
@@ -1703,5 +1720,4 @@ public class ScannerImpl implements Scanner {
             return "";
         }
     }
-
 }
