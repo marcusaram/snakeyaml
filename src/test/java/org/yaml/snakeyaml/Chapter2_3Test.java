@@ -4,9 +4,12 @@
 package org.yaml.snakeyaml;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Map;
 
 import junit.framework.TestCase;
+
+import org.jvyaml.Yaml;
 
 /**
  * Test Chapter 2.3 from the YAML specification
@@ -28,22 +31,17 @@ public class Chapter2_3Test extends TestCase {
         assertEquals("Mark McGwire's year was crippled by a knee injury.", data);
     }
 
-    public void testExample_2_15_without_more_indented_lines() {
-        String etalon = "Sammy Sosa completed another fine season with great stats.\n\nWhat a year!\n";
-        YamlDocument document = new YamlDocument("example2_15a.yaml");
-        String data = (String) document.getNativeData();
-        assertEquals(etalon, data);
-    }
-
     public void testExample_2_15() {
-        String etalon = "Sammy Sosa completed another fine season with great stats.\n  63 Home Runs\n  0.288 Batting Average\nWhat a year!";
-        try {
-            YamlDocument document = new YamlDocument("example2_15.yaml");
-            String data = (String) document.getNativeData();
-            assertEquals(etalon, data);
-        } catch (RuntimeException e) {
-            // TODO fail("'More indented' lines are not yet implemented.");
-        }
+        String etalon = "Sammy Sosa completed another fine season with great stats.\n\n  63 Home Runs\n  0.288 Batting Average\n\nWhat a year!\n";
+        InputStream input = YamlDocument.class.getClassLoader().getResourceAsStream(
+                YamlDocument.ROOT + "example2_15.yaml");
+        Yaml yaml = new Yaml();
+        String data = (String) yaml.load(input);
+        assertEquals(etalon, data);
+        //
+        String dumped = yaml.dump(data);
+        assertTrue(dumped.contains("Sammy Sosa completed another fine season with great stats"));
+        assertEquals("Must be splitted into 2 lines.", 2, dumped.split("\n").length);
     }
 
     @SuppressWarnings("unchecked")
