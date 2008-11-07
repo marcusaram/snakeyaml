@@ -74,16 +74,12 @@ public class Chapter2_2Test extends TestCase {
 
     @SuppressWarnings("unchecked")
     public void testExample_2_11() {
-        try {
-            YamlDocument document = new YamlDocument("example2_11.yaml");
-            Map<Object, Object> map = (Map<Object, Object>) document.getNativeData();
-            assertEquals(2, map.size());
-            for (Object key : map.keySet()) {
-                List<String> list = (List<String>) key;
-                assertEquals(2, list.size());
-            }
-        } catch (RuntimeException e) {
-            // TODO fail("Non scalar keys are not yet implemented.");
+        YamlDocument document = new YamlDocument("example2_11.yaml");
+        Map<Object, Object> map = (Map<Object, Object>) document.getNativeData();
+        assertEquals(2, map.size());
+        for (Object key : map.keySet()) {
+            List<String> list = (List<String>) key;
+            assertEquals(2, list.size());
         }
     }
 
