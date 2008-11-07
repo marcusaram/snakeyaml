@@ -7,8 +7,6 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.jvyaml.ParserException;
-
 /**
  * @see http://yaml.org/type/str.html
  */
@@ -53,12 +51,8 @@ public class StrTagTest extends AbstractTest {
      */
     @SuppressWarnings("unchecked")
     public void testIssueId6() {
-        try {
-            Map<String, String> map = (Map<String, String>) load("---\n:test: |-\n\"Test\r\r(* error here)\"");
-            assertEquals("\"Test\r\r(* error here)\"", map.get("test"));
-        } catch (ParserException e) {
-            // TODO http://code.google.com/p/jvyamlb/issues/detail?id=6
-        }
+        Map<String, String> map = (Map<String, String>) load("---\ntest: |-\n \"Test\r\r (* error here)\"");
+        assertEquals("\"Test\n\n(* error here)\"", map.get("test"));
     }
 
     public void testUnicodeDump() {

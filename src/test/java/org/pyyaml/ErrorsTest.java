@@ -17,7 +17,6 @@ public class ErrorsTest extends PyImportTest {
         failures.add("fetch-complex-value-bug.loader-error");
         failures.add("invalid-uri-escapes-2.loader-error");
         failures.add("invalid-uri-escapes-3.loader-error");
-        failures.add("no-block-mapping-end-2.loader-error");
         failures.add("undefined-constructor.loader-error");
         // TODO these are against the spec but I like it :)
         failures.add("invalid-omap-1.loader-error");
@@ -50,7 +49,7 @@ public class ErrorsTest extends PyImportTest {
         }
     }
 
-    public void qtestLoaderErrors1() throws FileNotFoundException {
+    public void testLoaderErrors1() throws FileNotFoundException {
         File[] files = getStreamsByExtension("no-block-mapping-end-2.loader-error");
         try {
             List data = (List) loadAll(new FileInputStream(files[0]));
@@ -59,8 +58,9 @@ public class ErrorsTest extends PyImportTest {
                 System.out.println(object);
 
             }
-            System.out.println(data);
+            // System.out.println(data);
         } catch (YAMLException e) {
+            System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!");
             assertTrue(true);
         }
     }

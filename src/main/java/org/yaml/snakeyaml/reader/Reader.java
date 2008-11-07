@@ -11,8 +11,8 @@ import org.yaml.snakeyaml.error.YAMLException;
 
 /**
  * Reader: determines the data encoding and converts it to unicode, checks if
- * characters are in allowed range, adds '\0' to the end. <br/> Yeah, it's ugly
- * and slow.
+ * characters are in allowed range, adds '\0' to the end. <br/>
+ * Yeah, it's ugly and slow.
  * 
  * @see yaml.reader in PyYAML 3.06
  */
@@ -28,8 +28,8 @@ public class Reader {
     private int pointer = 0;
     private boolean eof = true;
     private StringBuffer buffer;
-    private int index = 0;// for error reporting only
-    private int line = 0;// for error reporting only
+    private int index = 0;
+    private int line = 0;
     private int column = 0;
     private Charset encoding;
 
@@ -193,5 +193,13 @@ public class Reader {
             }
         }
         return buff;
+    }
+
+    public int getIndex() {
+        return index;
+    }
+
+    public int getLine() {
+        return line;
     }
 }

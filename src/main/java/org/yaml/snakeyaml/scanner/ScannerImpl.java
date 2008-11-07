@@ -12,6 +12,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.yaml.snakeyaml.error.Mark;
+import org.yaml.snakeyaml.error.YAMLException;
 import org.yaml.snakeyaml.tokens.AliasToken;
 import org.yaml.snakeyaml.tokens.AnchorToken;
 import org.yaml.snakeyaml.tokens.BlockEndToken;
@@ -221,24 +222,25 @@ public class ScannerImpl implements Scanner {
         if (this.done) {
             return false;
         }
+        if (this.tokens.isEmpty()) {
+            return true;
+        }
         // The current token may be a potential simple key, so we
         // need to look further.
-        /* TODO missing self.stale_possible_simple_keys() */
-        return this.tokens.isEmpty() || nextPossibleSimpleKey() == this.tokensTaken;
+        stalePossibleSimpleKeys();
+        return nextPossibleSimpleKey() == this.tokensTaken;
     }
 
     private Token fetchMoreTokens() {
         // Eat whitespaces and comments until we reach the next token.
         scanToNextToken();
-        // TODO not implemented but present in PyYAML
         // Remove obsolete possible simple keys.
-        /* self.stale_possible_simple_keys() */
+        stalePossibleSimpleKeys();
         // Compare the current indentation and column. It may add some tokens
         // and decrease the current indentation level.
         unwindIndent(reader.getColumn());
         // Peek the next character.
         final char ch = reader.peek();
-        final boolean colz = reader.getColumn() == 0;
         switch (ch) {
         case '\0':
             // Is it the end of stream?
@@ -347,7 +349,29 @@ public class ScannerImpl implements Scanner {
         return -1;
     }
 
-    // TODO implement def stale_possible_simple_keys(self):
+    /**
+     * <pre>
+     * Remove entries that are no longer possible simple keys. According to
+     * the YAML specification, simple keys
+     * - should be limited to a single line,
+     * - should be no longer than 1024 characters.
+     * Disabling this procedure will allow simple keys of any length and
+     * height (may cause problems if indentation is broken though).
+     * </pre>
+     */
+    private void stalePossibleSimpleKeys() {
+        for (Integer level : this.possibleSimpleKeys.keySet()) {
+            SimpleKey key = this.possibleSimpleKeys.get(level);
+            if ((key.getLine() != reader.getLine()) || (reader.getIndex() - key.getIndex() > 1024)) {
+                if (key.isRequired()) {
+                    throw new ScannerException("while scanning a simple key", key.getMark(),
+                            "could not found expected ':'", reader.getMark(), null);
+                } else {
+                    this.possibleSimpleKeys.remove(level);
+                }
+            }
+        }
+    }
 
     /**
      * The next token may start a simple key. We check if it's possible and save
@@ -355,19 +379,50 @@ public class ScannerImpl implements Scanner {
      * SCALAR(flow), '[', and '{'.
      */
     private void savePossibleSimpleKey() {
-        // TODO missing stuff from PyYAML
+        // The next token may start a simple key. We check if it's possible
+        // and save its position. This function is called for
+        // ALIAS, ANCHOR, TAG, SCALAR(flow), '[', and '{'.
+
+        // Check if a simple key is required at the current position.
+        boolean required = ((this.flowLevel == 0) && (this.indent == this.reader.getColumn()));
+
+        if (allowSimpleKey || !required) {
+            // A simple key is required only if it is the first token in the
+            // current
+            // line. Therefore it is always allowed.
+        } else {
+            throw new YAMLException(
+                    "A simple key is required only if it is the first token in the current line");
+        }
 
         // The next token might be a simple key. Let's save it's number and
         // position.
         if (this.allowSimpleKey) {
-            this.possibleSimpleKeys.put(new Integer(this.flowLevel), new SimpleKey(this.tokensTaken
-                    + this.tokens.size(), (this.flowLevel == 0)
-                    && this.indent == this.reader.getColumn(), -1, -1, this.reader.getColumn(),
-                    this.reader.getMark()));
+            removePossibleSimpleKey();
+            int tokenNumber = this.tokensTaken + this.tokens.size();
+            SimpleKey key = new SimpleKey(tokenNumber, required, reader.getIndex(), reader
+                    .getLine(), this.reader.getColumn(), this.reader.getMark());
+            this.possibleSimpleKeys.put(new Integer(this.flowLevel), key);
         }
     }
 
-    // TODO implement def remove_possible_simple_key(self):
+    /**
+     * Remove the saved possible key position at the current flow level.
+     */
+    private void removePossibleSimpleKey() {
+        for (Integer i : possibleSimpleKeys.keySet()) {
+            if (flowLevel == i) {
+                SimpleKey key = possibleSimpleKeys.get(i);
+                if (key.isRequired()) {
+                    throw new ScannerException("while scanning a simple key", key.getMark(),
+                            "could not found expected ':'", reader.getMark(), null);
+                }
+                possibleSimpleKeys.remove(flowLevel);
+            }
+        }
+    }
+
+    // Indentation functions.
 
     /**
      * <pre>
@@ -439,8 +494,12 @@ public class ScannerImpl implements Scanner {
     }
 
     private Token fetchDirective() {
+        // Set the current intendation to -1.
         unwindIndent(-1);
+        // Reset simple keys.
+        removePossibleSimpleKey();
         this.allowSimpleKey = false;
+        // Scan and add DIRECTIVE.
         final Token tok = scanDirective();
         this.tokens.add(tok);
         return tok;
@@ -460,7 +519,7 @@ public class ScannerImpl implements Scanner {
         unwindIndent(-1);
         // Reset simple keys. Note that there could not be a block collection
         // after '---'.
-        /* TODO missing self.remove_possible_simple_key() */
+        removePossibleSimpleKey();
         this.allowSimpleKey = false;
 
         // Add DOCUMENT-START or DOCUMENT-END.
@@ -516,7 +575,7 @@ public class ScannerImpl implements Scanner {
 
     private Token fetchFlowCollectionEnd(final boolean isMappingEnd) {
         // Reset possible simple key on the current level.
-        /* TODO missing self.remove_possible_simple_key() */
+        removePossibleSimpleKey();
         // Decrease the flow level.
         this.flowLevel--;
         // No simple keys after ']' or '}'.
@@ -539,7 +598,7 @@ public class ScannerImpl implements Scanner {
         // Simple keys are allowed after ','.
         this.allowSimpleKey = true;
         // Reset possible simple key on the current level.
-        /* TODO missing self.remove_possible_simple_key() */
+        removePossibleSimpleKey();
         // Add FLOW-ENTRY.
         Mark startMark = reader.getMark();
         reader.forward(1);
@@ -569,7 +628,7 @@ public class ScannerImpl implements Scanner {
         // Simple keys are allowed after '-'.
         this.allowSimpleKey = true;
         // Reset possible simple key on the current level.
-        /* TODO missing self.remove_possible_simple_key() */
+        removePossibleSimpleKey();
         // Add BLOCK-ENTRY.
         Mark startMark = reader.getMark();
         reader.forward();
@@ -596,7 +655,7 @@ public class ScannerImpl implements Scanner {
         // Simple keys are allowed after '?' in the block context.
         this.allowSimpleKey = this.flowLevel == 0;
         // Reset possible simple key on the current level.
-        /* TODO missing self.remove_possible_simple_key() */
+        removePossibleSimpleKey();
         // Add KEY.
         Mark startMark = reader.getMark();
         reader.forward();
@@ -618,10 +677,14 @@ public class ScannerImpl implements Scanner {
                 this.tokens.add(key.getTokenNumber() - this.tokensTaken,
                         new BlockMappingStartToken(key.getMark(), key.getMark()));
             }
-            /*
-             * TODO missing If this key starts a new block mapping, we need to
-             * add BLOCK-MAPPING-START.
-             */
+            // If this key starts a new block mapping, we need to add
+            // BLOCK-MAPPING-START.
+            if (flowLevel == 0) {
+                if (addIndent(key.getColumn())) {
+                    this.tokens.add(key.getTokenNumber() - this.tokensTaken,
+                            new BlockMappingStartToken(key.getMark(), key.getMark()));
+                }
+            }
             // There cannot be two simple keys one after another.
             this.allowSimpleKey = false;
 
@@ -637,7 +700,19 @@ public class ScannerImpl implements Scanner {
                             reader.getMark(), null);
                 }
             }
-
+            // If this value starts a new block mapping, we need to add
+            // BLOCK-MAPPING-START. It will be detected as an error later by
+            // the parser.
+            if (flowLevel == 0) {
+                if (addIndent(reader.getColumn())) {
+                    Mark mark = reader.getMark();
+                    this.tokens.add(new BlockMappingStartToken(mark, mark));
+                }
+            }
+            // Simple keys are allowed after ':' in the block context.
+            allowSimpleKey = (flowLevel == 0);
+            // Reset possible simple key on the current level.
+            removePossibleSimpleKey();
         }
         // Add VALUE.
         Mark startMark = reader.getMark();
@@ -681,7 +756,11 @@ public class ScannerImpl implements Scanner {
     }
 
     private Token fetchBlockScalar(final char style) {
+        // A simple key may follow a block scalar.
         this.allowSimpleKey = true;
+        // Reset possible simple key on the current level.
+        removePossibleSimpleKey();
+        // Scan and add SCALAR.
         final Token tok = scanBlockScalar(style);
         this.tokens.add(tok);
         return tok;
