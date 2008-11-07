@@ -16,30 +16,25 @@ import junit.framework.TestCase;
  */
 public class Chapter2_3Test extends TestCase {
 
-    @SuppressWarnings("unchecked")
     public void testExample_2_13() {
         YamlDocument document = new YamlDocument("example2_13.yaml");
         String data = (String) document.getNativeData();
-        assertEquals(21, data.length());
-        assertEquals("\\//||\\/||\n// ||  ||__", data);
+        assertEquals("\\//||\\/||\n// ||  ||__\n", data);
     }
 
-    @SuppressWarnings("unchecked")
     public void testExample_2_14() {
         YamlDocument document = new YamlDocument("example2_14.yaml");
         String data = (String) document.getNativeData();
         assertEquals("Mark McGwire's year was crippled by a knee injury.", data);
     }
 
-    @SuppressWarnings("unchecked")
     public void testExample_2_15_without_more_indented_lines() {
-        String etalon = "Sammy Sosa completed another fine season with great stats.\n\nWhat a year!";
+        String etalon = "Sammy Sosa completed another fine season with great stats.\n\nWhat a year!\n";
         YamlDocument document = new YamlDocument("example2_15a.yaml");
         String data = (String) document.getNativeData();
         assertEquals(etalon, data);
     }
 
-    @SuppressWarnings("unchecked")
     public void testExample_2_15() {
         String etalon = "Sammy Sosa completed another fine season with great stats.\n  63 Home Runs\n  0.288 Batting Average\nWhat a year!";
         try {
@@ -57,8 +52,9 @@ public class Chapter2_3Test extends TestCase {
         Map<String, String> map = (Map<String, String>) document.getNativeData();
         assertEquals(map.toString(), 3, map.size());
         assertEquals("Mark McGwire", map.get("name"));
-        assertEquals("Mark set a major league home run record in 1998.", map.get("accomplishment"));
-        assertEquals("65 Home Runs\n0.278 Batting Average", map.get("stats"));
+        assertEquals("Mark set a major league home run record in 1998.\n", map
+                .get("accomplishment"));
+        assertEquals("65 Home Runs\n0.278 Batting Average\n", map.get("stats"));
 
     }
 
