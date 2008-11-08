@@ -11,8 +11,8 @@ import org.yaml.snakeyaml.error.YAMLException;
 
 /**
  * Reader: determines the data encoding and converts it to unicode, checks if
- * characters are in allowed range, adds '\0' to the end. <br/>
- * Yeah, it's ugly and slow.
+ * characters are in allowed range, adds '\0' to the end. <br/> Yeah, it's ugly
+ * and slow.
  * 
  * @see yaml.reader in PyYAML 3.06
  */
@@ -136,7 +136,7 @@ public class Reader {
         }
     }
 
-    public void update(final int length) {
+    private void update(final int length) {
         this.buffer.delete(0, this.pointer);
         this.pointer = 0;
         while (this.buffer.length() < length) {
@@ -170,29 +170,6 @@ public class Reader {
 
     public Charset getEncoding() {
         return encoding;
-    }
-
-    public String prefixForward(final int length) {
-        if (this.pointer + length + 1 >= this.buffer.length()) {
-            update(length + 1);
-        }
-        String buff = null;
-        if (this.pointer + length > this.buffer.length()) {
-            buff = this.buffer.substring(this.pointer, this.buffer.length());
-        } else {
-            buff = this.buffer.substring(this.pointer, this.pointer + length);
-        }
-        char ch = 0;
-        for (int i = 0, j = buff.length(); i < j; i++) {
-            ch = buff.charAt(i);
-            this.pointer++;
-            if (LINEBR.indexOf(ch) != -1 || (ch == '\r' && buff.charAt(i + 1) != '\n')) {
-                this.column = 0;
-            } else if (ch != '\uFEFF') {
-                this.column++;
-            }
-        }
-        return buff;
     }
 
     public int getIndex() {
