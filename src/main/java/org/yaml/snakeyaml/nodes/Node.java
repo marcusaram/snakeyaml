@@ -17,7 +17,13 @@ public abstract class Node {
 
     public Node(final String tag, final Object value, final Mark startMark, final Mark endMark) {
         this.tag = tag;
+        if (tag == null) {
+            throw new NullPointerException("tag in a Node is required.");
+        }
         this.value = value;
+        if (value == null) {
+            throw new NullPointerException("value in a Node is required.");
+        }
         this.startMark = startMark;
         this.endMark = endMark;
     }
