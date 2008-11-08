@@ -12,13 +12,14 @@ import org.yaml.snakeyaml.error.YAMLException;
  * @see imported from PyYAML
  */
 public class ErrorsTest extends PyImportTest {
+    // TODO these exceptions must be fixed
     private boolean skip(String filename) {
         List<String> failures = new ArrayList<String>();
         failures.add("fetch-complex-value-bug.loader-error");
         failures.add("invalid-uri-escapes-2.loader-error");
         failures.add("invalid-uri-escapes-3.loader-error");
         failures.add("undefined-constructor.loader-error");
-        // TODO these are against the spec but I like it :)
+        // TODO these are against the specification but I like it :)
         failures.add("invalid-omap-1.loader-error");
         failures.add("invalid-pairs-1.loader-error");
         for (String name : failures) {
