@@ -17,8 +17,8 @@ import org.yaml.snakeyaml.error.YAMLException;
  * @see yaml.reader in PyYAML 3.06
  */
 public class Reader {
-    // changed from PyYAML: \uFFFD excluded because Java returns it in case of
-    // data corruption
+    // NON_PRINTABLE changed from PyYAML: \uFFFD excluded because Java returns
+    // it in case of data corruption
     final static Pattern NON_PRINTABLE = Pattern
             .compile("[^\t\n\r\u0020-\u007E\u0085\u00A0-\uD7FF\uE000-\uFFFC]");
     private final static String LINEBR = "\n\u0085\u2028\u2029";
