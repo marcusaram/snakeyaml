@@ -11,7 +11,6 @@ import org.yaml.snakeyaml.error.Mark;
 public abstract class CollectionNode extends Node {
     private boolean flowStyle;
 
-    // TODO should value be a collection ? py4fun
     public CollectionNode(final String tag, final Object value, final Mark startMark,
             final Mark endMark, final boolean flowStyle) {
         super(tag, value, startMark, endMark);

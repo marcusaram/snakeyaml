@@ -3,6 +3,8 @@
  */
 package org.yaml.snakeyaml.nodes;
 
+import java.util.Map;
+
 import org.yaml.snakeyaml.error.Mark;
 
 /**
@@ -11,8 +13,9 @@ import org.yaml.snakeyaml.error.Mark;
 public class MappingNode extends CollectionNode {
     public static final String id = "mapping";
 
-    public MappingNode(final String tag, final Object value, final Mark startMark,
-            final Mark endMark, final boolean flowStyle) {
+    @SuppressWarnings("unchecked")
+    public MappingNode(final String tag, final Map value, final Mark startMark, final Mark endMark,
+            final boolean flowStyle) {
         super(tag, value, startMark, endMark, flowStyle);
     }
 

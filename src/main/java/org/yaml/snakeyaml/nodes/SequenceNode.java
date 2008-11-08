@@ -3,6 +3,8 @@
  */
 package org.yaml.snakeyaml.nodes;
 
+import java.util.List;
+
 import org.yaml.snakeyaml.error.Mark;
 
 /**
@@ -11,7 +13,8 @@ import org.yaml.snakeyaml.error.Mark;
 public class SequenceNode extends CollectionNode {
     public static final String id = "sequence";
 
-    public SequenceNode(final String tag, final Object value, final Mark startMark,
+    @SuppressWarnings("unchecked")
+    public SequenceNode(final String tag, final List value, final Mark startMark,
             final Mark endMark, final boolean flowStyle) {
         super(tag, value, startMark, endMark, flowStyle);
     }
