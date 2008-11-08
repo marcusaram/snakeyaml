@@ -5,6 +5,9 @@
 	</properties>
 	<body>
 		<release version="0.3-SNAPSHOT" date="in Mercurial" description="Package as library">
+            <action dev="py4fun" type="update">
+                Marks in a Token are required (2008-11-08)
+            </action>
             <action dev="py4fun" type="remove">
                 Remove prefixForward() method from Reader because it is not present
                 in PyYAML (2008-11-08)
