@@ -133,7 +133,7 @@ public class Chapter2_4Test extends TestCase {
             assertTrue(set.contains("Sammy Sosa"));
             assertTrue(set.contains("Ken Griff"));
         } catch (RuntimeException e) {
-            // TOTO fail("!!set is not implemented.");
+            // TODO fail("!!set is not implemented.");
         }
     }
 
