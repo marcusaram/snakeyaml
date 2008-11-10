@@ -20,6 +20,10 @@ import org.yaml.snakeyaml.nodes.SequenceNode;
  * @see PyYAML 3.06 for more information
  */
 public class ResolverImpl implements Resolver {
+    private static final String DEFAULT_SCALAR_TAG = "tag:yaml.org,2002:str";
+    private static final String DEFAULT_SEQUENCE_TAG = "tag:yaml.org,2002:seq";
+    private static final String DEFAULT_MAPPING_TAG = "tag:yaml.org,2002:map";
+
     private final static Map yamlImplicitResolvers = new HashMap();
     private final static Map yamlPathResolvers = new HashMap();
 
@@ -213,11 +217,11 @@ public class ResolverImpl implements Resolver {
             return (String) exactPaths.get(null);
         }
         if (kind.equals(ScalarNode.class)) {
-            return Yaml.DEFAULT_SCALAR_TAG;
+            return DEFAULT_SCALAR_TAG;
         } else if (kind.equals(SequenceNode.class)) {
-            return Yaml.DEFAULT_SEQUENCE_TAG;
+            return DEFAULT_SEQUENCE_TAG;
         } else if (kind.equals(MappingNode.class)) {
-            return Yaml.DEFAULT_MAPPING_TAG;
+            return DEFAULT_MAPPING_TAG;
         }
         return null;
     }
