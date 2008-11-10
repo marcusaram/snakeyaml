@@ -51,8 +51,7 @@ public class ErrorsTest extends PyImportTest {
     }
 
     public void testLoaderStringErrors() throws FileNotFoundException {
-        // File[] files = getStreamsByExtension(".loader-error");
-        File[] files = getStreamsByExtension("a-nasty-libyaml-bug.loader-error");
+        File[] files = getStreamsByExtension(".loader-error");
         assertTrue("No test files found.", files.length > 0);
         for (int i = 0; i < files.length; i++) {
             if (skip(files[i].getName())) {
@@ -64,6 +63,23 @@ public class ErrorsTest extends PyImportTest {
                 fail("Loading must fail for " + files[i].getAbsolutePath());
                 // System.err.println("Loading must fail for " +
                 // files[i].getAbsolutePath());
+            } catch (YAMLException e) {
+                assertTrue(true);
+            }
+        }
+    }
+
+    public void testLoaderSingleErrors() throws FileNotFoundException {
+        File[] files = getStreamsByExtension(".single-loader-error");
+        assertTrue("No test files found.", files.length > 0);
+        for (int i = 0; i < files.length; i++) {
+            try {
+                String content = getResource(files[i].getName());
+                Object obj = load(content.trim());
+                // TODO fail("Loading must fail for " +
+                // files[i].getAbsolutePath());
+                // multiple documents must not be accepted
+                System.err.println("Loading must fail for " + files[i].getAbsolutePath());
             } catch (YAMLException e) {
                 assertTrue(true);
             }
