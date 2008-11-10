@@ -7,7 +7,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
 
-import org.jvyaml.Yaml;
 
 public class YamlDocument {
     public static final String ROOT = "specification/";
