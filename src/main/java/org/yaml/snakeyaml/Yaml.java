@@ -79,9 +79,7 @@ public class Yaml {
      * @param data -
      *            Java object to be Serialized to YAML
      * @param output -
-     *            stream to write to (UTF-8 encoding without BOM)
-     * 
-     * TODO use OutputStream instead of Writer
+     *            stream to write to
      */
     public void dump(final Object data, final Writer output) {
         final List<Object> lst = new ArrayList<Object>(1);
@@ -95,9 +93,7 @@ public class Yaml {
      * @param data -
      *            Iterator with Objects
      * @param output -
-     *            stream to write to (UTF-8 encoding without BOM)
-     * 
-     * TODO use OutputStream instead of Writer
+     *            stream to write to
      */
     public void dumpAll(final Iterable<Object> data, final Writer output) {
         final Serializer s = factory.createSerializer(factory.createEmitter(output, config),
