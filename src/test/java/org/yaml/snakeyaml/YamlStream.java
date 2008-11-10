@@ -14,7 +14,6 @@ import java.util.Map;
 
 import junit.framework.AssertionFailedError;
 
-import org.jvyaml.Yaml;
 
 public class YamlStream {
     private List<Object> nativeData = new ArrayList<Object>();

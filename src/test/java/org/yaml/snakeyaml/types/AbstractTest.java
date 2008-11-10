@@ -7,7 +7,7 @@ import java.util.Map;
 
 import junit.framework.TestCase;
 
-import org.jvyaml.Yaml;
+import org.yaml.snakeyaml.Yaml;
 
 public abstract class AbstractTest extends TestCase {
     @SuppressWarnings("unchecked")

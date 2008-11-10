@@ -9,7 +9,6 @@ import java.util.Map;
 
 import junit.framework.TestCase;
 
-import org.jvyaml.Yaml;
 
 /**
  * Test Chapter 2.3 from the YAML specification

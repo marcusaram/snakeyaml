@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.TimeZone;
 
+import org.yaml.snakeyaml.Yaml;
+
 import junit.framework.TestCase;
 
 /**

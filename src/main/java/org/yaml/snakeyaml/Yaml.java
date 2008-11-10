@@ -1,7 +1,7 @@
 /*
  * See LICENSE file in distribution for copyright and licensing information.
  */
-package org.jvyaml;
+package org.yaml.snakeyaml;
 
 import java.io.InputStream;
 import java.io.StringWriter;
@@ -10,7 +10,12 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.yaml.snakeyaml.YamlConfig;
+import org.jvyaml.Constructor;
+import org.jvyaml.DefaultYAMLConfig;
+import org.jvyaml.DefaultYAMLFactory;
+import org.jvyaml.Representer;
+import org.jvyaml.Serializer;
+import org.jvyaml.YAMLFactory;
 import org.yaml.snakeyaml.error.YAMLException;
 
 /**
@@ -42,24 +47,58 @@ public class Yaml {
         return config;
     }
 
+    /**
+     * Serialize a Java object into a YAML String.
+     * 
+     * @param data -
+     *            Java object to be Serialized to YAML
+     * @return YAML String
+     */
     public String dump(final Object data) {
         final List<Object> lst = new ArrayList<Object>(1);
         lst.add(data);
         return dumpAll(lst);
     }
 
+    /**
+     * Serialize a sequence of Java objects into a YAML String.
+     * 
+     * @param data -
+     *            Iterator with Objects
+     * @return - YAML String with all the objects in proper sequence
+     */
     public String dumpAll(final Iterable<Object> data) {
         final StringWriter swe = new StringWriter();
         dumpAll(data, swe);
         return swe.toString();
     }
 
+    /**
+     * Serialize a Java object into a YAML stream.
+     * 
+     * @param data -
+     *            Java object to be Serialized to YAML
+     * @param output -
+     *            stream to write to (UTF-8 encoding without BOM)
+     * 
+     * TODO use OutputStream instead of Writer
+     */
     public void dump(final Object data, final Writer output) {
         final List<Object> lst = new ArrayList<Object>(1);
         lst.add(data);
         dumpAll(lst, output);
     }
 
+    /**
+     * Serialize a sequence of Java objects into a YAML stream.
+     * 
+     * @param data -
+     *            Iterator with Objects
+     * @param output -
+     *            stream to write to (UTF-8 encoding without BOM)
+     * 
+     * TODO use OutputStream instead of Writer
+     */
     public void dumpAll(final Iterable<Object> data, final Writer output) {
         final Serializer s = factory.createSerializer(factory.createEmitter(output, config),
                 factory.createResolver(), config);
@@ -80,9 +119,17 @@ public class Yaml {
         }
     }
 
-    public Object load(final String io) {
+    /**
+     * Parse the first YAML document in a String and produce the corresponding
+     * Java object. (Because the encoding in known BOM is not respected.)
+     * 
+     * @param yaml -
+     *            YAML data to load from (BOM must not be present)
+     * @return parsed object
+     */
+    public Object load(final String yaml) {
         final Constructor ctor = factory.createConstructor(factory.createComposer(factory
-                .createParser(factory.createScanner(io), config), factory.createResolver()));
+                .createParser(factory.createScanner(yaml), config), factory.createResolver()));
         if (ctor.checkData()) {
             return ctor.getData();
         } else {
@@ -90,6 +137,14 @@ public class Yaml {
         }
     }
 
+    /**
+     * Parse the first YAML document in a stream and produce the corresponding
+     * Java object.
+     * 
+     * @param io -
+     *            data to load from (BOM is respected and ignored)
+     * @return parsed object
+     */
     public Object load(final InputStream io) {
         final Constructor ctor = factory.createConstructor(factory.createComposer(factory
                 .createParser(factory.createScanner(io), config), factory.createResolver()));
@@ -100,10 +155,19 @@ public class Yaml {
         }
     }
 
+    /**
+     * Parse all YAML documents in a String and produce corresponding Java
+     * objects. (Because the encoding in known BOM is not respected.)
+     * 
+     * @param yaml -
+     *            YAML data to load from (BOM must not be present)
+     * @return an iterator over the parsed Java objects in this String in proper
+     *         sequence
+     */
     @SuppressWarnings("unchecked")
-    public Iterable<Object> loadAll(final String io) {
+    public Iterable<Object> loadAll(final String yaml) {
         final Constructor ctor = factory.createConstructor(factory.createComposer(factory
-                .createParser(factory.createScanner(io), config), factory.createResolver()));
+                .createParser(factory.createScanner(yaml), config), factory.createResolver()));
         Iterator<Object> result = new Iterator<Object>() {
             public boolean hasNext() {
                 return ctor.checkData();
@@ -120,10 +184,19 @@ public class Yaml {
         return new YamlIterable(result);
     }
 
+    /**
+     * Parse all YAML documents in a stream and produce corresponding Java
+     * objects.
+     * 
+     * @param yaml -
+     *            YAML data to load from (BOM is respected and ignored)
+     * @return an iterator over the parsed Java objects in this stream in proper
+     *         sequence
+     */
     @SuppressWarnings("unchecked")
-    public Iterable<Object> loadAll(final InputStream io) {
+    public Iterable<Object> loadAll(final InputStream yaml) {
         final Constructor ctor = factory.createConstructor(factory.createComposer(factory
-                .createParser(factory.createScanner(io), config), factory.createResolver()));
+                .createParser(factory.createScanner(yaml), config), factory.createResolver()));
         Iterator<Object> result = new Iterator<Object>() {
             public boolean hasNext() {
                 return ctor.checkData();

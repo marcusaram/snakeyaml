@@ -7,8 +7,8 @@ import java.io.InputStream;
 
 import junit.framework.TestCase;
 
-import org.jvyaml.Yaml;
 import org.yaml.snakeyaml.Util;
+import org.yaml.snakeyaml.Yaml;
 
 public abstract class PyImportTest extends TestCase {
     public static final String PATH = "pyyaml";
