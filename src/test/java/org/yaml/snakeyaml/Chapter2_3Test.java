@@ -109,7 +109,8 @@ public class Chapter2_3Test extends TestCase {
             Map<String, String> map = (Map<String, String>) document.getNativeData();
             assertEquals(" # not a 'comment'.", map.get("quoted"));
         } catch (RuntimeException e) {
-            // TODO fail("Double ' is not escaped in single quoted scalars.");
+            // TODO fail("Double ' is not escaped in single quoted scalars. (a
+            // bug in dump())");
         }
     }
 
