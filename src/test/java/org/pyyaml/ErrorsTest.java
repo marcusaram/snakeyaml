@@ -86,6 +86,9 @@ public class ErrorsTest extends PyImportTest {
         }
     }
 
+    // TODO not imported: public void testEmitterErrors()
+    // TODO not imported: public void testDumperErrors()
+
     @SuppressWarnings("unchecked")
     public void qtestLoaderErrors1() throws FileNotFoundException {
         File[] files = getStreamsByExtension("no-block-mapping-end-2.loader-error");
