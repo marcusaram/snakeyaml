@@ -38,8 +38,33 @@ import org.yaml.snakeyaml.tokens.Token;
 import org.yaml.snakeyaml.tokens.ValueToken;
 
 /**
- * Reader do the dirty work of checking for BOM and converting the input data to
- * Unicode. It also adds NUL to the end.
+ * <pre>
+ * Scanner produces tokens of the following types:
+ * STREAM-START
+ * STREAM-END
+ * DIRECTIVE(name, value)
+ * DOCUMENT-START
+ * DOCUMENT-END
+ * BLOCK-SEQUENCE-START
+ * BLOCK-MAPPING-START
+ * BLOCK-END
+ * FLOW-SEQUENCE-START
+ * FLOW-MAPPING-START
+ * FLOW-SEQUENCE-END
+ * FLOW-MAPPING-END
+ * BLOCK-ENTRY
+ * FLOW-ENTRY
+ * KEY
+ * VALUE
+ * ALIAS(value)
+ * ANCHOR(value)
+ * TAG(value)
+ * SCALAR(value, plain, style)
+ * Read comments in the Scanner code for more details.
+ * </pre>
+ * 
+ * Reader does the dirty work of checking for BOM and converting the input data
+ * to Unicode. It also adds NUL to the end.
  * 
  * Reader supports the following methods
  * 
@@ -48,10 +73,6 @@ import org.yaml.snakeyaml.tokens.ValueToken;
  * reader.peek the next l characters
  * reader.forward(l=1) read the next l characters and move the pointer.
  * </pre>
- */
-/**
- * @author as80418
- * 
  */
 public class ScannerImpl implements Scanner {
 

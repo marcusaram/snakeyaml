@@ -6,6 +6,8 @@ package org.yaml.snakeyaml.scanner;
 import org.yaml.snakeyaml.error.Mark;
 
 /**
+ * Simple keys treatment.
+ * 
  * @see PyYAML 3.06 for more information
  */
 class SimpleKey {
