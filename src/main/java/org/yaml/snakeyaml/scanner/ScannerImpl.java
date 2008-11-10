@@ -4,10 +4,12 @@
 package org.yaml.snakeyaml.scanner;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -360,7 +362,9 @@ public class ScannerImpl implements Scanner {
      * </pre>
      */
     private void stalePossibleSimpleKeys() {
-        for (Integer level : this.possibleSimpleKeys.keySet()) {
+        // copy keys to avoid java.util.ConcurrentModificationException
+        Set<Integer> keys = new HashSet<Integer>(this.possibleSimpleKeys.keySet());
+        for (Integer level : keys) {
             SimpleKey key = this.possibleSimpleKeys.get(level);
             if ((key.getLine() != reader.getLine()) || (reader.getIndex() - key.getIndex() > 1024)) {
                 if (key.isRequired()) {
@@ -410,7 +414,9 @@ public class ScannerImpl implements Scanner {
      * Remove the saved possible key position at the current flow level.
      */
     private void removePossibleSimpleKey() {
-        for (Integer i : possibleSimpleKeys.keySet()) {
+        // copy keys to avoid java.util.ConcurrentModificationException
+        Set<Integer> keys = new HashSet<Integer>(this.possibleSimpleKeys.keySet());
+        for (Integer i : keys) {
             if (flowLevel == i) {
                 SimpleKey key = possibleSimpleKeys.get(i);
                 if (key.isRequired()) {
