@@ -6,6 +6,8 @@ package org.yaml.snakeyaml.scanner;
 import org.yaml.snakeyaml.tokens.Token;
 
 /**
+ * Produce <code>Token<code>s.
+ * 
  * @see PyYAML 3.06 for more information
  */
 public interface Scanner {
