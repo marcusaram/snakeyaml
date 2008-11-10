@@ -74,7 +74,7 @@ public class Yaml {
         return dumpAll(lst);
     }
 
-    public String dumpAll(final List<Object> data) {
+    public String dumpAll(final Iterable<Object> data) {
         final StringWriter swe = new StringWriter();
         dumpAll(data, swe);
         return swe.toString();
@@ -86,7 +86,7 @@ public class Yaml {
         dumpAll(lst, output);
     }
 
-    public void dumpAll(final List<Object> data, final Writer output) {
+    public void dumpAll(final Iterable<Object> data, final Writer output) {
         final Serializer s = factory.createSerializer(factory.createEmitter(output, config),
                 factory.createResolver(), config);
         try {
