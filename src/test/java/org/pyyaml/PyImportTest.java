@@ -25,6 +25,12 @@ public abstract class PyImportTest extends TestCase {
         return obj;
     }
 
+    protected Object loadAll(String data) {
+        Yaml yaml = new Yaml();
+        Object obj = yaml.loadAll(data);
+        return obj;
+    }
+
     protected String getResource(String theName) {
         try {
             String content;

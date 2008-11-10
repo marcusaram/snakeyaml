@@ -19,6 +19,8 @@ public class ErrorsTest extends PyImportTest {
         failures.add("invalid-uri-escapes-2.loader-error");
         failures.add("invalid-uri-escapes-3.loader-error");
         failures.add("undefined-constructor.loader-error");
+        failures.add("no-block-mapping-end-2.loader-error");
+        failures.add("unacceptable-key.loader-error");
         // TODO these are against the specification but I like it :)
         failures.add("invalid-omap-1.loader-error");
         failures.add("invalid-pairs-1.loader-error");
@@ -39,21 +41,40 @@ public class ErrorsTest extends PyImportTest {
             }
             try {
                 loadAll(new FileInputStream(files[i]));
-                // fail("Loading must fail for " + files[i].getAbsolutePath());
-                System.err.println("Loading must fail for " + files[i].getAbsolutePath());
+                fail("Loading must fail for " + files[i].getAbsolutePath());
+                // System.err.println("Loading must fail for " +
+                // files[i].getAbsolutePath());
             } catch (YAMLException e) {
                 assertTrue(true);
-            } catch (Exception e) {
-                System.err.println("Loading must fail (with exception) for "
-                        + files[i].getAbsolutePath());
             }
         }
     }
 
-    public void testLoaderErrors1() throws FileNotFoundException {
+    public void testLoaderStringErrors() throws FileNotFoundException {
+        // File[] files = getStreamsByExtension(".loader-error");
+        File[] files = getStreamsByExtension("a-nasty-libyaml-bug.loader-error");
+        assertTrue("No test files found.", files.length > 0);
+        for (int i = 0; i < files.length; i++) {
+            if (skip(files[i].getName())) {
+                continue;
+            }
+            try {
+                String content = getResource(files[i].getName());
+                loadAll(content.trim());
+                fail("Loading must fail for " + files[i].getAbsolutePath());
+                // System.err.println("Loading must fail for " +
+                // files[i].getAbsolutePath());
+            } catch (YAMLException e) {
+                assertTrue(true);
+            }
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    public void qtestLoaderErrors1() throws FileNotFoundException {
         File[] files = getStreamsByExtension("no-block-mapping-end-2.loader-error");
         try {
-            List data = (List) loadAll(new FileInputStream(files[0]));
+            List<Object> data = (List<Object>) loadAll(new FileInputStream(files[0]));
             for (Object object : data) {
 
                 System.out.println(object);
@@ -65,4 +86,5 @@ public class ErrorsTest extends PyImportTest {
             assertTrue(true);
         }
     }
+
 }
