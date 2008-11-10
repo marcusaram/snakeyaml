@@ -24,7 +24,9 @@ public class YamlStream {
         InputStream input = YamlDocument.class.getClassLoader().getResourceAsStream(
                 YamlDocument.ROOT + sourceName);
         Yaml yaml = new Yaml();
-        nativeData = yaml.loadAll(input);
+        for (Object document : yaml.loadAll(input)) {
+            nativeData.add(document);
+        }
         ByteArrayOutputStream output = new ByteArrayOutputStream();
         yaml.dumpAll(nativeData, new OutputStreamWriter(output));
         String presentation;
@@ -36,7 +38,9 @@ public class YamlStream {
         // try to read generated presentation to prove that the presentation
         // is identical to the source
         List<Object> parsedNativeData = new ArrayList<Object>();
-        parsedNativeData = yaml.loadAll(presentation);
+        for (Object document : yaml.loadAll(presentation)) {
+            parsedNativeData.add(document);
+        }
         if (nativeData.getClass() != parsedNativeData.getClass()) {
             throw new AssertionFailedError("Different class: " + parsedNativeData.getClass());
         }

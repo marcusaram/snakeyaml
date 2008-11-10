@@ -126,23 +126,56 @@ public class Yaml {
         }
     }
 
-    public List<Object> loadAll(final String io) {
-        final List<Object> result = new ArrayList<Object>();
+    @SuppressWarnings("unchecked")
+    public Iterable<Object> loadAll(final String io) {
         final Constructor ctor = factory.createConstructor(factory.createComposer(factory
                 .createParser(factory.createScanner(io), config), factory.createResolver()));
-        while (ctor.checkData()) {
-            result.add(ctor.getData());
-        }
-        return result;
+        Iterator<Object> result = new Iterator<Object>() {
+            public boolean hasNext() {
+                return ctor.checkData();
+            }
+
+            public Object next() {
+                return ctor.getData();
+            }
+
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+        };
+        return new YamlIterable(result);
     }
 
-    public List<Object> loadAll(final InputStream io) {
-        final List<Object> result = new ArrayList<Object>();
+    @SuppressWarnings("unchecked")
+    public Iterable<Object> loadAll(final InputStream io) {
         final Constructor ctor = factory.createConstructor(factory.createComposer(factory
                 .createParser(factory.createScanner(io), config), factory.createResolver()));
-        while (ctor.checkData()) {
-            result.add(ctor.getData());
+        Iterator<Object> result = new Iterator<Object>() {
+            public boolean hasNext() {
+                return ctor.checkData();
+            }
+
+            public Object next() {
+                return ctor.getData();
+            }
+
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+        };
+        return new YamlIterable(result);
+    }
+
+    private class YamlIterable implements Iterable<Object> {
+        private Iterator<Object> iterator;
+
+        public YamlIterable(Iterator<Object> iterator) {
+            this.iterator = iterator;
         }
-        return result;
+
+        public Iterator<Object> iterator() {
+            return iterator;
+        }
+
     }
 }
