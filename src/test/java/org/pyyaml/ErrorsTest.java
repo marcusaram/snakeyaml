@@ -41,7 +41,7 @@ public class ErrorsTest extends PyImportTest {
             }
             try {
                 for (Object document : loadAll(new FileInputStream(files[i]))) {
-                    // System.out.println("Data: " + document);
+                    assertNotNull(document);
                 }
                 fail("Loading must fail for " + files[i].getAbsolutePath());
                 // System.err.println("Loading must fail for " +
@@ -62,7 +62,7 @@ public class ErrorsTest extends PyImportTest {
             try {
                 String content = getResource(files[i].getName());
                 for (Object document : loadAll(content.trim())) {
-                    // System.out.println("Data: " + document);
+                    assertNotNull(document);
                 }
                 fail("Loading must fail for " + files[i].getAbsolutePath());
                 // System.err.println("Loading must fail for " +
