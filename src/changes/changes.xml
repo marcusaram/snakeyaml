@@ -34,8 +34,8 @@
             </action>
             <action dev="py4fun" type="fix">
                 Fix a deviation with PyYAML in method scanBlockScalar().
-                'chomping' can be null. Fix a bug in JvYaml that the trailing '\n' was removed.
-                (2008-11-07)
+                'chomping' can be null. Fix a bug in JvYaml that the trailing '\n' in a 
+                block scalar was removed.(2008-11-07)
             </action>
             <action dev="py4fun" type="fix">
                 Fix a deviation with PyYAML in method scanDirectiveIgnoredLine().
