@@ -34,6 +34,24 @@ import org.yaml.snakeyaml.events.StreamStartEvent;
  * @see PyYAML 3.06 for more information
  */
 public class EmitterImpl implements Emitter {
+    private static final Map<Character, String> ESCAPE_REPLACEMENTS = new HashMap<Character, String>();
+
+    static {
+        ESCAPE_REPLACEMENTS.put(new Character('\0'), "0");
+        ESCAPE_REPLACEMENTS.put(new Character('\u0007'), "a");
+        ESCAPE_REPLACEMENTS.put(new Character('\u0008'), "b");
+        ESCAPE_REPLACEMENTS.put(new Character('\u0009'), "t");
+        ESCAPE_REPLACEMENTS.put(new Character('\n'), "n");
+        ESCAPE_REPLACEMENTS.put(new Character('\u000B'), "v");
+        ESCAPE_REPLACEMENTS.put(new Character('\u000C'), "f");
+        ESCAPE_REPLACEMENTS.put(new Character('\r'), "r");
+        ESCAPE_REPLACEMENTS.put(new Character('\u001B'), "e");
+        ESCAPE_REPLACEMENTS.put(new Character('"'), "\"");
+        ESCAPE_REPLACEMENTS.put(new Character('\\'), "\\");
+        ESCAPE_REPLACEMENTS.put(new Character('\u0085'), "N");
+        ESCAPE_REPLACEMENTS.put(new Character('\u00A0'), "_");
+    }
+
     private static class ScalarAnalysis {
         public String scalar;
         public boolean empty;
@@ -841,8 +859,8 @@ public class EmitterImpl implements Emitter {
                     start = ending;
                 }
                 if (ch != 0) {
-                    if (Yaml.ESCAPE_REPLACEMENTS.containsKey(new Character(ch))) {
-                        data = "\\" + Yaml.ESCAPE_REPLACEMENTS.get(new Character(ch));
+                    if (ESCAPE_REPLACEMENTS.containsKey(new Character(ch))) {
+                        data = "\\" + ESCAPE_REPLACEMENTS.get(new Character(ch));
                     } else if (ch <= '\u00FF') {
                         String s = "0" + Integer.toString(ch, 16);
                         data = "\\x" + s.substring(s.length() - 2);

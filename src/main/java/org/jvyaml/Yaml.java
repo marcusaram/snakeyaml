@@ -7,42 +7,16 @@ import java.io.InputStream;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import org.yaml.snakeyaml.YamlConfig;
 import org.yaml.snakeyaml.error.YAMLException;
 
 /**
- * The combinatorial explosion class.
- * 
- * 
- * 
+ * Public YAML interface
  */
 public class Yaml {
-    public static final String DEFAULT_SCALAR_TAG = "tag:yaml.org,2002:str";
-    public static final String DEFAULT_SEQUENCE_TAG = "tag:yaml.org,2002:seq";
-    public static final String DEFAULT_MAPPING_TAG = "tag:yaml.org,2002:map";
-
-    public static final Map<Character, String> ESCAPE_REPLACEMENTS = new HashMap<Character, String>();
-
-    static {
-        ESCAPE_REPLACEMENTS.put(new Character('\0'), "0");
-        ESCAPE_REPLACEMENTS.put(new Character('\u0007'), "a");
-        ESCAPE_REPLACEMENTS.put(new Character('\u0008'), "b");
-        ESCAPE_REPLACEMENTS.put(new Character('\u0009'), "t");
-        ESCAPE_REPLACEMENTS.put(new Character('\n'), "n");
-        ESCAPE_REPLACEMENTS.put(new Character('\u000B'), "v");
-        ESCAPE_REPLACEMENTS.put(new Character('\u000C'), "f");
-        ESCAPE_REPLACEMENTS.put(new Character('\r'), "r");
-        ESCAPE_REPLACEMENTS.put(new Character('\u001B'), "e");
-        ESCAPE_REPLACEMENTS.put(new Character('"'), "\"");
-        ESCAPE_REPLACEMENTS.put(new Character('\\'), "\\");
-        ESCAPE_REPLACEMENTS.put(new Character('\u0085'), "N");
-        ESCAPE_REPLACEMENTS.put(new Character('\u00A0'), "_");
-    }
 
     private YamlConfig config;
     private YAMLFactory factory;
