@@ -40,7 +40,9 @@ public class ErrorsTest extends PyImportTest {
                 continue;
             }
             try {
-                loadAll(new FileInputStream(files[i]));
+                for (Object document : loadAll(new FileInputStream(files[i]))) {
+                    // System.out.println("Data: " + document);
+                }
                 fail("Loading must fail for " + files[i].getAbsolutePath());
                 // System.err.println("Loading must fail for " +
                 // files[i].getAbsolutePath());
@@ -59,7 +61,9 @@ public class ErrorsTest extends PyImportTest {
             }
             try {
                 String content = getResource(files[i].getName());
-                loadAll(content.trim());
+                for (Object document : loadAll(content.trim())) {
+                    // System.out.println("Data: " + document);
+                }
                 fail("Loading must fail for " + files[i].getAbsolutePath());
                 // System.err.println("Loading must fail for " +
                 // files[i].getAbsolutePath());
@@ -75,7 +79,7 @@ public class ErrorsTest extends PyImportTest {
         for (int i = 0; i < files.length; i++) {
             try {
                 String content = getResource(files[i].getName());
-                Object obj = load(content.trim());
+                load(content.trim());
                 // TODO fail("Loading must fail for " +
                 // files[i].getAbsolutePath());
                 // multiple documents must not be accepted
