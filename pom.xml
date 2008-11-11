@@ -9,12 +9,20 @@
 	<description>Port of PyYAML to Java 5 without any external dependencies</description>
 	<inceptionYear>2008</inceptionYear>
 	<url>http://trac-hg.assembla.com/snakeyaml/</url>
+	<issueManagement>
+		<system>Trac</system>
+		<url>http://trac-hg.assembla.com/snakeyaml/report</url>
+	</issueManagement>
 	<mailingLists>
 		<mailingList>
 			<name>SnakeYAML developers and users List</name>
 			<post>snakeyaml@googlegroups.com</post>
 		</mailingList>
 	</mailingLists>
+	<scm>
+		<connection>scm:hg:http://hg.assembla.com/snakeyaml</connection>
+		<url>http://trac-hg.assembla.com/snakeyaml/browser</url>
+	</scm>
 	<licenses>
 		<license>
 			<name>The MIT License</name>
