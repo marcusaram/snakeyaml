@@ -3,12 +3,18 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>SnakeYAML</groupId>
 	<artifactId>SnakeYAML</artifactId>
-	<version>1.0-SNAPSHOT</version>
+	<version>0.4</version>
 	<packaging>jar</packaging>
 	<name>YAML 1.1 parser and emitter for Java</name>
-	<description>Port of PyYAML to Java 5 without any dependencies</description>
+	<description>Port of PyYAML to Java 5 without any external dependencies</description>
 	<inceptionYear>2008</inceptionYear>
-	<url>http://yaml.org/</url>
+	<url>http://trac-hg.assembla.com/snakeyaml/</url>
+	<mailingLists>
+		<mailingList>
+			<name>SnakeYAML developers and users List</name>
+			<post>snakeyaml@googlegroups.com</post>
+		</mailingList>
+	</mailingLists>
 	<licenses>
 		<license>
 			<name>The MIT License</name>
