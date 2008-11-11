@@ -4,7 +4,7 @@
 		<author email="py4fun@gmail.com">Andrey Somov</author>
 	</properties>
 	<body>
-		<release version="0.3-SNAPSHOT" date="in Mercurial" description="Package as library">
+		<release version="0.4" date="2008-11-11" description="Import from JvYaml">
             <action dev="py4fun" type="update">
                 Move constants from Yaml interface to appropriate classes (2008-11-10)
             </action>
