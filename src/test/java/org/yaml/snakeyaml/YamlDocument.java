@@ -4,9 +4,10 @@
 package org.yaml.snakeyaml;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
-
+import java.io.UnsupportedEncodingException;
 
 public class YamlDocument {
     public static final String ROOT = "specification/";
@@ -15,23 +16,25 @@ public class YamlDocument {
     private Object nativeData;
 
     public YamlDocument(String sourceName) {
+        InputStream input = YamlDocument.class.getClassLoader().getResourceAsStream(
+                ROOT + sourceName);
+        Yaml yaml = new Yaml();
+        nativeData = yaml.load(input);
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        yaml.dump(nativeData, new OutputStreamWriter(output));
         try {
-            InputStream input = YamlDocument.class.getClassLoader().getResourceAsStream(
-                    ROOT + sourceName);
-            Yaml yaml = new Yaml();
-            nativeData = yaml.load(input);
-            ByteArrayOutputStream output = new ByteArrayOutputStream();
-            yaml.dump(nativeData, new OutputStreamWriter(output));
             presentation = output.toString("UTF-8");
             source = Util.getLocalResource(ROOT + sourceName);
-            // try to read generated presentation to prove that the presentation
-            // is identical to the source
-            Object result = yaml.load(presentation);
-            if (!nativeData.equals(result)) {
-                throw new RuntimeException("Generated presentation is not valid: " + presentation);
-            }
-        } catch (Exception e) {
+        } catch (UnsupportedEncodingException e) {
             throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        // try to read generated presentation to prove that the presentation
+        // is identical to the source
+        Object result = yaml.load(presentation);
+        if (!nativeData.equals(result)) {
+            throw new RuntimeException("Generated presentation is not valid: " + presentation);
         }
     }
 
