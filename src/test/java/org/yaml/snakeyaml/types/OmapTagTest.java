@@ -14,7 +14,7 @@ import org.yaml.snakeyaml.YamlDocument;
 public class OmapTagTest extends AbstractTest {
 
     @SuppressWarnings("unchecked")
-    public void testMap() throws IOException {
+    public void testOmap() throws IOException {
         try {
             YamlDocument document = new YamlDocument("types/omap.yaml");
             Map<String, Map<String, String>> map = (Map<String, Map<String, String>>) document

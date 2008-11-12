@@ -14,7 +14,7 @@ import org.yaml.snakeyaml.YamlDocument;
 public class SetTagTest extends AbstractTest {
 
     @SuppressWarnings("unchecked")
-    public void testMap() {
+    public void testSet() {
         try {
             YamlDocument document = new YamlDocument("types/set.yaml");
             Map<String, Set<String>> map = (Map<String, Set<String>>) document.getNativeData();
