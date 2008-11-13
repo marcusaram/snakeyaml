@@ -44,6 +44,65 @@ import org.yaml.snakeyaml.tokens.Token;
 import org.yaml.snakeyaml.tokens.ValueToken;
 
 /**
+ * <pre>
+ * # The following YAML grammar is LL(1) and is parsed by a recursive descent
+ * parser.
+ * stream            ::= STREAM-START implicit_document? explicit_document* STREAM-END
+ * implicit_document ::= block_node DOCUMENT-END*
+ * explicit_document ::= DIRECTIVE* DOCUMENT-START block_node? DOCUMENT-END*
+ * block_node_or_indentless_sequence ::=
+ *                       ALIAS
+ *                       | properties (block_content | indentless_block_sequence)?
+ *                       | block_content
+ *                       | indentless_block_sequence
+ * block_node        ::= ALIAS
+ *                       | properties block_content?
+ *                       | block_content
+ * flow_node         ::= ALIAS
+ *                       | properties flow_content?
+ *                       | flow_content
+ * properties        ::= TAG ANCHOR? | ANCHOR TAG?
+ * block_content     ::= block_collection | flow_collection | SCALAR
+ * flow_content      ::= flow_collection | SCALAR
+ * block_collection  ::= block_sequence | block_mapping
+ * flow_collection   ::= flow_sequence | flow_mapping
+ * block_sequence    ::= BLOCK-SEQUENCE-START (BLOCK-ENTRY block_node?)* BLOCK-END
+ * indentless_sequence   ::= (BLOCK-ENTRY block_node?)+
+ * block_mapping     ::= BLOCK-MAPPING_START
+ *                       ((KEY block_node_or_indentless_sequence?)?
+ *                       (VALUE block_node_or_indentless_sequence?)?)*
+ *                       BLOCK-END
+ * flow_sequence     ::= FLOW-SEQUENCE-START
+ *                       (flow_sequence_entry FLOW-ENTRY)*
+ *                       flow_sequence_entry?
+ *                       FLOW-SEQUENCE-END
+ * flow_sequence_entry   ::= flow_node | KEY flow_node? (VALUE flow_node?)?
+ * flow_mapping      ::= FLOW-MAPPING-START
+ *                       (flow_mapping_entry FLOW-ENTRY)*
+ *                       flow_mapping_entry?
+ *                       FLOW-MAPPING-END
+ * flow_mapping_entry    ::= flow_node | KEY flow_node? (VALUE flow_node?)?
+ * FIRST sets:
+ * stream: { STREAM-START }
+ * explicit_document: { DIRECTIVE DOCUMENT-START }
+ * implicit_document: FIRST(block_node)
+ * block_node: { ALIAS TAG ANCHOR SCALAR BLOCK-SEQUENCE-START BLOCK-MAPPING-START FLOW-SEQUENCE-START FLOW-MAPPING-START }
+ * flow_node: { ALIAS ANCHOR TAG SCALAR FLOW-SEQUENCE-START FLOW-MAPPING-START }
+ * block_content: { BLOCK-SEQUENCE-START BLOCK-MAPPING-START FLOW-SEQUENCE-START FLOW-MAPPING-START SCALAR }
+ * flow_content: { FLOW-SEQUENCE-START FLOW-MAPPING-START SCALAR }
+ * block_collection: { BLOCK-SEQUENCE-START BLOCK-MAPPING-START }
+ * flow_collection: { FLOW-SEQUENCE-START FLOW-MAPPING-START }
+ * block_sequence: { BLOCK-SEQUENCE-START }
+ * block_mapping: { BLOCK-MAPPING-START }
+ * block_node_or_indentless_sequence: { ALIAS ANCHOR TAG SCALAR BLOCK-SEQUENCE-START BLOCK-MAPPING-START FLOW-SEQUENCE-START FLOW-MAPPING-START BLOCK-ENTRY }
+ * indentless_sequence: { ENTRY }
+ * flow_collection: { FLOW-SEQUENCE-START FLOW-MAPPING-START }
+ * flow_sequence: { FLOW-SEQUENCE-START }
+ * flow_mapping: { FLOW-MAPPING-START }
+ * flow_sequence_entry: { ALIAS ANCHOR TAG SCALAR FLOW-SEQUENCE-START FLOW-MAPPING-START KEY }
+ * flow_mapping_entry: { ALIAS ANCHOR TAG SCALAR FLOW-SEQUENCE-START FLOW-MAPPING-START KEY }
+ * </pre>
+ * 
  * @see PyYAML 3.06 for more information
  */
 public class ParserImpl implements Parser {
@@ -219,7 +278,7 @@ public class ParserImpl implements Parser {
                 Token tok = scanner.peekToken();
                 final Object[] directives = processDirectives(env, scanner);
                 if (!(scanner.peekToken() instanceof DocumentStartToken)) {
-                    throw new ParserException(null, "expected '<document start>', but found "
+                    throw new ParserException(null, null, "expected '<document start>', but found "
                             + tok.getClass().getName(), null);
                 }
                 scanner.getToken();
@@ -281,7 +340,7 @@ public class ParserImpl implements Parser {
                 } else if (tok instanceof ScalarToken) {
                     parseStack.add(0, P_TABLE[P_SCALAR]);
                 } else {
-                    throw new ParserException("while scanning a node",
+                    throw new ParserException("while scanning a node", null,
                             "expected the node content, but found " + tok.getClass().getName(),
                             null);
                 }
@@ -309,7 +368,7 @@ public class ParserImpl implements Parser {
                     final String suffix = ((String[]) tag)[1];
                     if (handle != null) {
                         if (!env.getTagHandles().containsKey(handle)) {
-                            throw new ParserException("while parsing a node",
+                            throw new ParserException("while parsing a node", null,
                                     "found undefined tag handle " + handle, null);
                         }
                         tag = ((String) env.getTagHandles().get(handle)) + suffix;
@@ -341,7 +400,7 @@ public class ParserImpl implements Parser {
                 } else if (tok instanceof ScalarToken) {
                     parseStack.add(0, P_TABLE[P_SCALAR]);
                 } else {
-                    throw new ParserException("while scanning a flow node",
+                    throw new ParserException("while scanning a flow node", null,
                             "expected the node content, but found " + tok.getClass().getName(),
                             null);
                 }
@@ -496,7 +555,7 @@ public class ParserImpl implements Parser {
                 Token tok = null;
                 if (!(scanner.peekToken() instanceof BlockEndToken)) {
                     tok = scanner.peekToken();
-                    throw new ParserException("while scanning a block collection",
+                    throw new ParserException("while scanning a block collection", null,
                             "expected <block end>, but found " + tok.getClass().getName(), null);
                 }
                 scanner.getToken();
@@ -519,7 +578,7 @@ public class ParserImpl implements Parser {
                 Token tok = null;
                 if (!(scanner.peekToken() instanceof BlockEndToken)) {
                     tok = scanner.peekToken();
-                    throw new ParserException("while scanning a block mapping",
+                    throw new ParserException("while scanning a block mapping", null,
                             "expected <block end>, but found " + tok.getClass().getName(), null);
                 }
                 scanner.getToken();
@@ -756,12 +815,12 @@ public class ParserImpl implements Parser {
             final DirectiveToken tok = (DirectiveToken) scanner.getToken();
             if (tok.getName().equals("YAML")) {
                 if (env.getYamlVersion() != null) {
-                    throw new ParserException(null, "found duplicate YAML directive", null);
+                    throw new ParserException(null, null, "found duplicate YAML directive", null);
                 }
                 final int major = Integer.parseInt(tok.getValue()[0]);
                 final int minor = Integer.parseInt(tok.getValue()[1]);
                 if (major != 1) {
-                    throw new ParserException(null,
+                    throw new ParserException(null, null,
                             "found incompatible YAML document (version 1.* is required)", null);
                 }
                 env.setYamlVersion(new int[] { major, minor });
@@ -769,7 +828,7 @@ public class ParserImpl implements Parser {
                 final String handle = tok.getValue()[0];
                 final String prefix = tok.getValue()[1];
                 if (env.getTagHandles().containsKey(handle)) {
-                    throw new ParserException(null, "duplicate tag handle " + handle, null);
+                    throw new ParserException(null, null, "duplicate tag handle " + handle, null);
                 }
                 env.getTagHandles().put(handle, prefix);
             }

@@ -18,4 +18,8 @@ public class ScannerException extends MarkedYAMLException {
         super(context, contextMark, problem, problemMark, note);
     }
 
+    public ScannerException(String context, Mark contextMark, String problem, Mark problemMark) {
+        super(context, contextMark, problem, problemMark, null);
+    }
+
 }
