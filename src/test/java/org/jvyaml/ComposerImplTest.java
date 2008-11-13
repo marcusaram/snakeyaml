@@ -4,6 +4,7 @@ import java.io.FileReader;
 import java.io.Reader;
 import java.util.Iterator;
 
+import org.yaml.snakeyaml.parser.ParserImpl;
 import org.yaml.snakeyaml.scanner.ScannerImpl;
 
 import junit.framework.TestCase;

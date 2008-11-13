@@ -23,6 +23,7 @@ import org.yaml.snakeyaml.nodes.MappingNode;
 import org.yaml.snakeyaml.nodes.Node;
 import org.yaml.snakeyaml.nodes.ScalarNode;
 import org.yaml.snakeyaml.nodes.SequenceNode;
+import org.yaml.snakeyaml.parser.Parser;
 
 /**
  * @see PyYAML 3.06 for more information

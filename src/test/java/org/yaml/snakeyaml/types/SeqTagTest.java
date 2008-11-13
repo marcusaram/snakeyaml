@@ -6,8 +6,8 @@ package org.yaml.snakeyaml.types;
 import java.util.List;
 import java.util.Map;
 
-import org.jvyaml.ParserException;
 import org.yaml.snakeyaml.YamlDocument;
+import org.yaml.snakeyaml.parser.ParserException;
 
 /**
  * @see http://yaml.org/type/seq.html

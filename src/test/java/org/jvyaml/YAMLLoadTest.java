@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.TimeZone;
 
 import org.yaml.snakeyaml.Yaml;
+import org.yaml.snakeyaml.parser.ParserException;
 
 import junit.framework.TestCase;
 

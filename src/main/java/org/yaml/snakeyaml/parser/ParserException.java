@@ -1,7 +1,7 @@
 /*
  * See LICENSE file in distribution for copyright and licensing information.
  */
-package org.jvyaml;
+package org.yaml.snakeyaml.parser;
 
 import org.yaml.snakeyaml.error.YAMLException;
 
