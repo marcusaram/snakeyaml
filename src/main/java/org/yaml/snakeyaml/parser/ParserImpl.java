@@ -103,6 +103,9 @@ import org.yaml.snakeyaml.tokens.ValueToken;
  * flow_mapping_entry: { ALIAS ANCHOR TAG SCALAR FLOW-SEQUENCE-START FLOW-MAPPING-START KEY }
  * </pre>
  * 
+ * Since writing a recursive-descendant parser is a straightforward task, we do
+ * not give many comments here.
+ * 
  * @see PyYAML 3.06 for more information
  */
 public class ParserImpl implements Parser {
