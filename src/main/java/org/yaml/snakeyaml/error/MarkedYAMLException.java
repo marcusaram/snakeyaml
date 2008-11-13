@@ -9,14 +9,18 @@ public class MarkedYAMLException extends YAMLException {
     private Mark problemMark;
     private String note;
 
-    public MarkedYAMLException(String context, Mark contextMark, String problem, Mark problemMark,
-            String note) {
+    protected MarkedYAMLException(String context, Mark contextMark, String problem,
+            Mark problemMark, String note) {
         super(context + "; " + problem);
         this.context = context;
         this.contextMark = contextMark;
         this.problem = problem;
         this.problemMark = problemMark;
         this.note = note;
+    }
+
+    protected MarkedYAMLException(String context, Mark contextMark, String problem, Mark problemMark) {
+        this(context, contextMark, problem, problemMark, null);
     }
 
     @Override
