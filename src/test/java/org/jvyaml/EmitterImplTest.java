@@ -9,6 +9,8 @@ import java.util.Iterator;
 import junit.framework.TestCase;
 
 import org.yaml.snakeyaml.events.Event;
+import org.yaml.snakeyaml.parser.Parser;
+import org.yaml.snakeyaml.parser.ParserImpl;
 import org.yaml.snakeyaml.scanner.ScannerImpl;
 
 public class EmitterImplTest extends TestCase {
