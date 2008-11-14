@@ -31,12 +31,12 @@ import org.yaml.snakeyaml.parser.Parser;
 public class ComposerImpl implements Composer {
     private Parser parser;
     private Resolver resolver;
-    private Map anchors;
+    private Map<String, Node> anchors;
 
     public ComposerImpl(final Parser parser, final Resolver resolver) {
         this.parser = parser;
         this.resolver = resolver;
-        this.anchors = new HashMap();
+        this.anchors = new HashMap<String, Node>();
     }
 
     public boolean checkNode() {
@@ -69,7 +69,8 @@ public class ComposerImpl implements Composer {
             final AliasEvent event = (AliasEvent) parser.getEvent();
             final String anchor = event.getAnchor();
             if (!anchors.containsKey(anchor)) {
-                throw new ComposerException(null, "found undefined alias " + anchor, null);
+                throw new ComposerException(null, null, "found undefined alias " + anchor, event
+                        .getStartMark());
             }
             return (Node) anchors.get(anchor);
         }
@@ -81,7 +82,8 @@ public class ComposerImpl implements Composer {
         if (null != anchor) {
             if (anchors.containsKey(anchor)) {
                 throw new ComposerException("found duplicate anchor " + anchor
-                        + "; first occurence", null, null);
+                        + "; first occurence", this.anchors.get(anchor).getStartMark(),
+                        "second occurence", event.getStartMark());
             }
         }
         resolver.descendResolver(parent, index);
