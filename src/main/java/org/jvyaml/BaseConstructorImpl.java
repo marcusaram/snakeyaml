@@ -72,27 +72,6 @@ public class BaseConstructorImpl implements Constructor {
         return null;
     }
 
-    private class DocumentIterator implements Iterator {
-        public boolean hasNext() {
-            return checkData();
-        }
-
-        public Object next() {
-            return getData();
-        }
-
-        public void remove() {
-        }
-    }
-
-    public Iterator eachDocument() {
-        return new DocumentIterator();
-    }
-
-    public Iterator iterator() {
-        return eachDocument();
-    }
-
     public Object constructDocument(final Node node) {
         final Object data = constructObject(node);
         constructedObjects.clear();
