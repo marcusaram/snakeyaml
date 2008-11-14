@@ -13,6 +13,8 @@ import org.yaml.snakeyaml.events.Event;
 public interface Parser {
     boolean checkEvent(final Class[] choices);
 
+    boolean checkEvent(Class choice);
+
     Event peekEvent();
 
     Event getEvent();

@@ -881,6 +881,12 @@ public class ParserImpl implements Parser {
         return false;
     }
 
+    public boolean checkEvent(final Class choice) {
+        Class[] a = new Class[1];
+        a[0] = choice;
+        return checkEvent(a);
+    }
+
     public Event peekEvent() {
         parseStream();
         if (this.currentEvent == null) {
