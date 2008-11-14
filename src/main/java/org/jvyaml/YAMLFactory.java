@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.io.Writer;
 
 import org.yaml.snakeyaml.YamlConfig;
+import org.yaml.snakeyaml.composer.Composer;
 import org.yaml.snakeyaml.parser.Parser;
 import org.yaml.snakeyaml.scanner.Scanner;
 
