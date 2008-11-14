@@ -11,6 +11,7 @@ import org.yaml.snakeyaml.nodes.Node;
  * @see PyYAML 3.06 for more information
  */
 public interface Resolver {
+    // TODO index or object ???
     void descendResolver(final Node currentNode, final Object currentIndex);
 
     void ascendResolver();

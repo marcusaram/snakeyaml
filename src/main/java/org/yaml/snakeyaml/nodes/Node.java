@@ -13,7 +13,7 @@ public abstract class Node {
     private Object value;
     private int hash = -1;
     private Mark startMark;
-    private Mark endMark;
+    protected Mark endMark;
 
     public Node(final String tag, final Object value, final Mark startMark, final Mark endMark) {
         if (tag == null) {
