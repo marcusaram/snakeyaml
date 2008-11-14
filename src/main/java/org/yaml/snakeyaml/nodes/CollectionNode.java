@@ -20,4 +20,8 @@ public abstract class CollectionNode extends Node {
     public boolean getFlowStyle() {
         return flowStyle;
     }
+
+    public void setEndMark(Mark endMark) {
+        this.endMark = endMark;
+    }
 }
