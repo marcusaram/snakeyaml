@@ -12,12 +12,12 @@ import org.yaml.snakeyaml.nodes.Node;
  */
 public interface Resolver {
     // TODO index or object ???
-    void descendResolver(final Node currentNode, final Object currentIndex);
+    public void descendResolver(final Node currentNode, final Object currentIndex);
 
-    void ascendResolver();
+    public void ascendResolver();
 
-    boolean checkResolverPrefix(final int depth, final List path, final Class kind,
+    public boolean checkResolverPrefix(final int depth, final List path, final Class kind,
             final Node currentNode, final Object currentIndex);
 
-    String resolve(final Class kind, final String value, final boolean[] implicit);
+    public String resolve(final Class kind, final String value, final boolean[] implicit);
 }
