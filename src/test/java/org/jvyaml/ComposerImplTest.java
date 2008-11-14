@@ -4,10 +4,10 @@ import java.io.FileReader;
 import java.io.Reader;
 import java.util.Iterator;
 
+import junit.framework.TestCase;
+
 import org.yaml.snakeyaml.parser.ParserImpl;
 import org.yaml.snakeyaml.scanner.ScannerImpl;
-
-import junit.framework.TestCase;
 
 public class ComposerImplTest extends TestCase {
 
@@ -42,7 +42,7 @@ public class ComposerImplTest extends TestCase {
             final Composer cmp = new ComposerImpl(new ParserImpl(new ScannerImpl(
                     new org.yaml.snakeyaml.reader.Reader(str)), new DefaultYAMLConfig()),
                     new ResolverImpl());
-            for (final Iterator iter = cmp.eachNode(); iter.hasNext();) {
+            for (final Iterator iter = new NodeIterator(cmp); iter.hasNext();) {
                 System.out.println(iter.next());
             }
         }
@@ -51,5 +51,25 @@ public class ComposerImplTest extends TestCase {
         final double timeS = (after - before) / 1000.0;
         System.out.println("Walking through the nodes for the file: " + filename + " took " + time
                 + "ms, or " + timeS + " seconds");
+    }
+
+    private static class NodeIterator implements Iterator {
+        private Composer composer;
+
+        public NodeIterator(Composer composer) {
+            this.composer = composer;
+        }
+
+        public boolean hasNext() {
+            return composer.checkNode();
+        }
+
+        public Object next() {
+            return composer.getNode();
+        }
+
+        public void remove() {
+            throw new UnsupportedOperationException();
+        }
     }
 }

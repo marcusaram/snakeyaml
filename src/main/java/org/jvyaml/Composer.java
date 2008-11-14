@@ -3,8 +3,6 @@
  */
 package org.jvyaml;
 
-import java.util.Iterator;
-
 import org.yaml.snakeyaml.nodes.Node;
 
 /**
@@ -15,7 +13,4 @@ public interface Composer {
 
     Node getNode();
 
-    Iterator eachNode();
-
-    Iterator iterator();
 }
