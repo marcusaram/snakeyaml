@@ -11,6 +11,8 @@ import org.yaml.snakeyaml.composer.Composer;
 import org.yaml.snakeyaml.composer.ComposerImpl;
 import org.yaml.snakeyaml.parser.Parser;
 import org.yaml.snakeyaml.parser.ParserImpl;
+import org.yaml.snakeyaml.resolver.Resolver;
+import org.yaml.snakeyaml.resolver.ResolverImpl;
 import org.yaml.snakeyaml.scanner.Scanner;
 import org.yaml.snakeyaml.scanner.ScannerImpl;
 
