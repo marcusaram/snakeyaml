@@ -3,8 +3,6 @@
  */
 package org.jvyaml;
 
-import java.util.Iterator;
-
 import org.yaml.snakeyaml.nodes.Node;
 
 /**
@@ -14,10 +12,6 @@ public interface Constructor {
     boolean checkData();
 
     Object getData();
-
-    Iterator eachDocument();
-
-    Iterator iterator();
 
     Object constructDocument(final Node node);
 
