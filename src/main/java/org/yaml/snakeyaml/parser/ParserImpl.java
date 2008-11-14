@@ -899,27 +899,6 @@ public class ParserImpl implements Parser {
         return value;
     }
 
-    private class EventIterator implements Iterator {
-        public boolean hasNext() {
-            return null != peekEvent();
-        }
-
-        public Object next() {
-            return getEvent();
-        }
-
-        public void remove() {
-        }
-    }
-
-    public Iterator eachEvent() {
-        return new EventIterator();
-    }
-
-    public Iterator iterator() {
-        return eachEvent();
-    }
-
     private List parseStack = null;
     private ProductionEnvironment pEnv = null;
 

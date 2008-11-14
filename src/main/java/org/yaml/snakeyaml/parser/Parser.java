@@ -3,8 +3,6 @@
  */
 package org.yaml.snakeyaml.parser;
 
-import java.util.Iterator;
-
 import org.yaml.snakeyaml.events.Event;
 
 /**
@@ -16,10 +14,6 @@ public interface Parser {
     Event peekEvent();
 
     Event getEvent();
-
-    Iterator eachEvent();
-
-    Iterator iterator();
 
     void parseStream();
 

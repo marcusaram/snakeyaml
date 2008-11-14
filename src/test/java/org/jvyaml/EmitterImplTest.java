@@ -38,8 +38,29 @@ public class EmitterImplTest extends TestCase {
                 new DefaultYAMLConfig());
         final Parser pars = new ParserImpl(new ScannerImpl(new org.yaml.snakeyaml.reader.Reader(
                 new FileInputStream(filename))), new DefaultYAMLConfig());
-        for (final Iterator iter = pars.eachEvent(); iter.hasNext();) {
+        for (final Iterator iter = new EventIterator(pars); iter.hasNext();) {
             emitter.emit((Event) iter.next());
         }
     }
+
+    private static class EventIterator implements Iterator {
+        Parser parser;
+
+        public EventIterator(Parser parser) {
+            this.parser = parser;
+        }
+
+        public boolean hasNext() {
+            return null != parser.peekEvent();
+        }
+
+        public Object next() {
+            return parser.getEvent();
+        }
+
+        public void remove() {
+            throw new UnsupportedOperationException();
+        }
+    }
+
 }

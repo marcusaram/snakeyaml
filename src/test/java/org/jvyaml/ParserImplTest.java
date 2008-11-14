@@ -5,11 +5,11 @@ import java.io.FileReader;
 import java.io.Reader;
 import java.util.Iterator;
 
+import junit.framework.TestCase;
+
 import org.yaml.snakeyaml.parser.Parser;
 import org.yaml.snakeyaml.parser.ParserImpl;
 import org.yaml.snakeyaml.scanner.ScannerImpl;
-
-import junit.framework.TestCase;
 
 public class ParserImplTest extends TestCase {
 
@@ -43,7 +43,7 @@ public class ParserImplTest extends TestCase {
         for (int i = 0; i < 1; i++) {
             final Parser pars = new ParserImpl(new ScannerImpl(
                     new org.yaml.snakeyaml.reader.Reader(str)), new DefaultYAMLConfig());
-            for (final Iterator iter = pars.eachEvent(); iter.hasNext(); iter.next()) {
+            for (final Iterator iter = new EventIterator(pars); iter.hasNext(); iter.next()) {
             }
         }
         final long after = System.currentTimeMillis();
@@ -62,8 +62,28 @@ public class ParserImplTest extends TestCase {
         }
         final Parser pars = new ParserImpl(new ScannerImpl(new org.yaml.snakeyaml.reader.Reader(
                 new FileInputStream(filename))), new DefaultYAMLConfig());
-        for (final Iterator iter = pars.eachEvent(); iter.hasNext();) {
+        for (final Iterator iter = new EventIterator(pars); iter.hasNext();) {
             System.out.println(iter.next().getClass().getName());
+        }
+    }
+
+    private static class EventIterator implements Iterator {
+        Parser parser;
+
+        public EventIterator(Parser parser) {
+            this.parser = parser;
+        }
+
+        public boolean hasNext() {
+            return null != parser.peekEvent();
+        }
+
+        public Object next() {
+            return parser.getEvent();
+        }
+
+        public void remove() {
+            throw new UnsupportedOperationException();
         }
     }
 }
