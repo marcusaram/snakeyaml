@@ -5,7 +5,6 @@ package org.jvyaml;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -45,27 +44,6 @@ public class ComposerImpl implements Composer {
 
     public Node getNode() {
         return checkNode() ? composeDocument() : (Node) null;
-    }
-
-    private class NodeIterator implements Iterator {
-        public boolean hasNext() {
-            return checkNode();
-        }
-
-        public Object next() {
-            return getNode();
-        }
-
-        public void remove() {
-        }
-    }
-
-    public Iterator eachNode() {
-        return new NodeIterator();
-    }
-
-    public Iterator iterator() {
-        return eachNode();
     }
 
     public Node composeDocument() {
