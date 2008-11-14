@@ -863,7 +863,7 @@ public class ParserImpl implements Parser {
 
     private Event currentEvent = null;
 
-    public boolean checkEvent(final Class[] choices) {
+    private boolean checkEvent(final Class<Token>[] choices) {
         parseStream();
         if (this.currentEvent == null) {
             this.currentEvent = parseStreamNext();
@@ -902,7 +902,7 @@ public class ParserImpl implements Parser {
     private List parseStack = null;
     private ProductionEnvironment pEnv = null;
 
-    public void parseStream() {
+    private void parseStream() {
         if (null == parseStack) {
             this.parseStack = new LinkedList();
             this.parseStack.add(0, P_TABLE[P_STREAM]);
@@ -910,7 +910,7 @@ public class ParserImpl implements Parser {
         }
     }
 
-    public Event parseStreamNext() {
+    private Event parseStreamNext() {
         while (!parseStack.isEmpty()) {
             final Event value = ((Production) (this.parseStack.remove(0))).produce(this.parseStack,
                     this.pEnv, this.scanner);
