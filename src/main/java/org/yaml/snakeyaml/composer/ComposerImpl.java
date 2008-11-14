@@ -57,6 +57,25 @@ public class ComposerImpl implements Composer {
         }
     }
 
+    public Node getSingleNode() {
+        // Drop the STREAM-START event.
+        parser.getEvent();
+        // Compose a document if the stream is not empty.
+        Node document = null;
+        if (!parser.checkEvent(StreamEndEvent.class)) {
+            document = composeDocument();
+        }
+        // Ensure that the stream contains no more documents.
+        if (!parser.checkEvent(StreamEndEvent.class)) {
+            Event event = parser.getEvent();
+            throw new ComposerException("expected a single document in the stream", document
+                    .getStartMark(), "but found another document", event.getStartMark());
+        }
+        // Drop the STREAM-END event.
+        parser.getEvent();
+        return document;
+    }
+
     public Node composeDocument() {
         if (parser.peekEvent() instanceof StreamStartEvent) {
             // Drop STREAM-START event
