@@ -40,11 +40,21 @@ public class ComposerImpl implements Composer {
     }
 
     public boolean checkNode() {
-        return !(parser.peekEvent() instanceof StreamEndEvent);
+        // Drop the STREAM-START event.
+        if (parser.checkEvent(StreamStartEvent.class)) {
+            parser.getEvent();
+        }
+        // If there are more documents available?
+        return !parser.checkEvent(StreamEndEvent.class);
     }
 
     public Node getNode() {
-        return checkNode() ? composeDocument() : (Node) null;
+        // Get the root node of the next document.
+        if (!parser.checkEvent(StreamEndEvent.class)) {
+            return composeDocument();
+        } else {
+            return (Node) null;
+        }
     }
 
     public Node composeDocument() {
