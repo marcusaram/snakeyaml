@@ -9,6 +9,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
 
+import org.yaml.snakeyaml.composer.Composer;
+
 /**
  * @see PyYAML 3.06 for more information
  */
