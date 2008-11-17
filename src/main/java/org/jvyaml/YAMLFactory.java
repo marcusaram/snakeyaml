@@ -20,8 +20,6 @@ public interface YAMLFactory {
 
     Parser createParser(final Scanner scanner);
 
-    Parser createParser(final Scanner scanner, final YamlConfig cfg);
-
     Resolver createResolver();
 
     Composer createComposer(final Parser parser, final Resolver resolver);

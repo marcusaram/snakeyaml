@@ -35,4 +35,17 @@ public abstract class Event {
     protected String getArguments() {
         return "";
     }
+
+    /*
+     * for tests only
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Event) {
+            return toString().equals(obj.toString());
+        } else {
+            return false;
+        }
+    }
+
 }

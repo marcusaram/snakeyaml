@@ -130,7 +130,7 @@ public class ComposerImpl implements Composer {
                 anchors.put(anchor, node);
             }
             int ix = 0;
-            while (!(parser.peekEvent() instanceof SequenceEndEvent)) {
+            while (!parser.checkEvent(SequenceEndEvent.class)) {
                 ((List) node.getValue()).add(composeNode(node, new Integer(ix++)));
             }
             parser.getEvent();
@@ -159,5 +159,4 @@ public class ComposerImpl implements Composer {
         resolver.ascendResolver();
         return node;
     }
-
 }

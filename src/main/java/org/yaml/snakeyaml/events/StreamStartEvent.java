@@ -13,11 +13,6 @@ import org.yaml.snakeyaml.error.Mark;
 public class StreamStartEvent extends Event {
     private Charset encoding;
 
-    public StreamStartEvent(final Mark startMark, final Mark endMark, final Charset encoding) {
-        super(startMark, endMark);
-        this.encoding = encoding;
-    }
-
     public StreamStartEvent(final Mark startMark, final Mark endMark) {
         super(startMark, endMark);
         this.encoding = Charset.forName("UTF-8");

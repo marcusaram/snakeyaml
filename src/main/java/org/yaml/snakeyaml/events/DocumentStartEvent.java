@@ -12,11 +12,11 @@ import org.yaml.snakeyaml.error.Mark;
  */
 public class DocumentStartEvent extends Event {
     private boolean explicit;
-    private int[] version;
+    private Integer[] version;
     private Map<String, String> tags;
 
     public DocumentStartEvent(final Mark startMark, final Mark endMark, final boolean explicit,
-            final int[] version, final Map<String, String> tags) {
+            final Integer[] version, final Map<String, String> tags) {
         super(startMark, endMark);
         this.explicit = explicit;
         this.version = version;
@@ -27,7 +27,7 @@ public class DocumentStartEvent extends Event {
         return explicit;
     }
 
-    public int[] getVersion() {
+    public Integer[] getVersion() {
         return version;
     }
 

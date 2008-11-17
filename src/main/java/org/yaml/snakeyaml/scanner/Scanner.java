@@ -3,6 +3,8 @@
  */
 package org.yaml.snakeyaml.scanner;
 
+import java.util.List;
+
 import org.yaml.snakeyaml.tokens.Token;
 
 /**
@@ -14,7 +16,14 @@ public interface Scanner {
     /**
      * Check if the next token is one of the given types.
      */
-    boolean checkToken(final Class<Token>[] choices);
+    @SuppressWarnings("unchecked")
+    boolean checkToken(final List<Class> choices);
+
+    /**
+     * Convenience method to avoid List creation
+     */
+    @SuppressWarnings("unchecked")
+    boolean checkToken(Class choice);
 
     /**
      * Return the next token, but do not delete if from the queue.
