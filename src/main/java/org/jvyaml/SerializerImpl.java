@@ -38,7 +38,7 @@ public class SerializerImpl implements Serializer {
     private YamlConfig options;
     private boolean useExplicitStart;
     private boolean useExplicitEnd;
-    private int[] useVersion;
+    private Integer[] useVersion;
     private boolean useTags;
     private String anchorTemplate;
     private Set serializedNodes;
@@ -53,7 +53,7 @@ public class SerializerImpl implements Serializer {
         this.options = opts;
         this.useExplicitStart = opts.explicitStart();
         this.useExplicitEnd = opts.explicitEnd();
-        int[] version = new int[2];
+        Integer[] version = new Integer[2];
         if (opts.useVersion()) {
             final String v1 = opts.version();
             final int index = v1.indexOf('.');
@@ -92,7 +92,7 @@ public class SerializerImpl implements Serializer {
         if (!opened) {
             throw new SerializerException("serializer is not opened");
         } else if (!closed) {
-            this.emitter.emit(new StreamEndEvent());
+            this.emitter.emit(new StreamEndEvent(null, null));
             this.closed = true;
             this.opened = false;
         }
@@ -177,7 +177,7 @@ public class SerializerImpl implements Serializer {
                 for (final Iterator iter = ((List) node.getValue()).iterator(); iter.hasNext();) {
                     serializeNode((Node) iter.next(), node, new Integer(ix++));
                 }
-                this.emitter.emit(new SequenceEndEvent());
+                this.emitter.emit(new SequenceEndEvent(null, null));
             } else if (node instanceof MappingNode) {
                 final boolean implicit = !options.explicitTypes()
                         && (node.getTag().equals(this.resolver.resolve(MappingNode.class, null,
@@ -190,7 +190,7 @@ public class SerializerImpl implements Serializer {
                     serializeNode(key, node, null);
                     serializeNode((Node) value.get(key), node, key);
                 }
-                this.emitter.emit(new MappingEndEvent());
+                this.emitter.emit(new MappingEndEvent(null, null));
             }
         }
     }

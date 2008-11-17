@@ -3,14 +3,20 @@
  */
 package org.yaml.snakeyaml.parser;
 
+import java.util.List;
+
 import org.yaml.snakeyaml.events.Event;
 
 /**
  * @see PyYAML 3.06 for more information
  */
 public interface Parser {
-    Event peekEvent();
+    public boolean checkEvent(List<Class<Event>> classList);
 
-    Event getEvent();
+    public boolean checkEvent(Class<?> cls);
+
+    public Event peekEvent();
+
+    public Event getEvent();
 
 }

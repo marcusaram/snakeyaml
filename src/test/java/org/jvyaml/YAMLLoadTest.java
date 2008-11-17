@@ -7,10 +7,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.TimeZone;
 
+import junit.framework.TestCase;
+
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.parser.ParserException;
-
-import junit.framework.TestCase;
 
 /**
  * @author <a href="mailto:ola.bini@ki.se">Ola Bini</a>
@@ -61,11 +61,6 @@ public class YAMLLoadTest extends TestCase {
     public void testBuiltinTag() {
         assertEquals("str", yaml.load("!!str str"));
         assertEquals("str", yaml.load("%YAML 1.1\n---\n!!str str"));
-        assertEquals("str", yaml.load("%YAML 1.0\n---\n!str str"));
-        Yaml yaml2 = new Yaml(new DefaultYAMLConfig().version("1.0"));
-        assertEquals("str", yaml2.load("---\n!str str"));
-        assertEquals(new Long(123), yaml2.load("---\n!int 123"));
-        assertEquals(new Long(123), yaml2.load("%YAML 1.1\n---\n!!int 123"));
     }
 
     public void testDirectives() {

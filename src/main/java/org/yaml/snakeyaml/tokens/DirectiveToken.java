@@ -3,6 +3,8 @@
  */
 package org.yaml.snakeyaml.tokens;
 
+import java.util.List;
+
 import org.yaml.snakeyaml.error.Mark;
 import org.yaml.snakeyaml.error.YAMLException;
 
@@ -11,15 +13,15 @@ import org.yaml.snakeyaml.error.YAMLException;
  */
 public class DirectiveToken extends Token {
     private String name;
-    private String[] value;
+    private List<?> value;
 
-    public DirectiveToken(final String name, final String[] value, final Mark startMark,
+    public DirectiveToken(final String name, final List<?> value, final Mark startMark,
             final Mark endMark) {
         super(startMark, endMark);
         this.name = name;
-        if (value.length != 2) {
+        if (value.size() != 2) {
             throw new YAMLException("Two strings must be provided instead of "
-                    + String.valueOf(value.length));
+                    + String.valueOf(value.size()));
         }
         this.value = value;
     }
@@ -28,13 +30,13 @@ public class DirectiveToken extends Token {
         return this.name;
     }
 
-    public String[] getValue() {
+    public List<?> getValue() {
         return this.value;
     }
 
     @Override
     protected String getArguments() {
-        return "name=" + name + ", value=[" + value[0] + ", " + value[1] + "]";
+        return "name=" + name + ", value=[" + value.get(0) + ", " + value.get(1) + "]";
     }
 
     @Override

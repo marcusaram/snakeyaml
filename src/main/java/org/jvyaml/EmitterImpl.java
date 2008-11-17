@@ -1157,7 +1157,7 @@ public class EmitterImpl implements Emitter {
         stream.flush();
     }
 
-    static String prepareVersion(final int[] version) {
+    static String prepareVersion(final Integer[] version) {
         if (version[0] != 1) {
             throw new EmitterException("unsupported YAML version: " + version[0] + "." + version[1]);
         }

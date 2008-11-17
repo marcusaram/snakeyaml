@@ -37,7 +37,7 @@ public class EmitterImplTest extends TestCase {
         final Emitter emitter = new EmitterImpl(new java.io.OutputStreamWriter(System.out),
                 new DefaultYAMLConfig());
         final Parser pars = new ParserImpl(new ScannerImpl(new org.yaml.snakeyaml.reader.Reader(
-                new FileInputStream(filename))), new DefaultYAMLConfig());
+                new FileInputStream(filename))));
         for (final Iterator iter = new EventIterator(pars); iter.hasNext();) {
             emitter.emit((Event) iter.next());
         }

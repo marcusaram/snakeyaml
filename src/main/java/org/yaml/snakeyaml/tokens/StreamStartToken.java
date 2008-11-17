@@ -26,4 +26,12 @@ public class StreamStartToken extends Token {
     public Charset getEncoding() {
         return encoding;
     }
+
+    /**
+     * @see __repr__ for Token in PyYAML
+     */
+    protected String getArguments() {
+        return "encoding=" + encoding;
+    }
+
 }

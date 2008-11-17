@@ -25,11 +25,7 @@ public class DefaultYAMLFactory implements YAMLFactory {
     }
 
     public Parser createParser(final Scanner scanner) {
-        return new ParserImpl(scanner, new DefaultYAMLConfig());
-    }
-
-    public Parser createParser(final Scanner scanner, final YamlConfig cfg) {
-        return new ParserImpl(scanner, cfg);
+        return new ParserImpl(scanner);
     }
 
     public Resolver createResolver() {

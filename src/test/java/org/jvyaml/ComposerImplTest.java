@@ -4,10 +4,10 @@ import java.io.FileReader;
 import java.io.Reader;
 import java.util.Iterator;
 
+import junit.framework.TestCase;
+
 import org.yaml.snakeyaml.parser.ParserImpl;
 import org.yaml.snakeyaml.scanner.ScannerImpl;
-
-import junit.framework.TestCase;
 
 public class ComposerImplTest extends TestCase {
 
@@ -40,8 +40,7 @@ public class ComposerImplTest extends TestCase {
         final long before = System.currentTimeMillis();
         for (int i = 0; i < 1; i++) {
             final Composer cmp = new ComposerImpl(new ParserImpl(new ScannerImpl(
-                    new org.yaml.snakeyaml.reader.Reader(str)), new DefaultYAMLConfig()),
-                    new ResolverImpl());
+                    new org.yaml.snakeyaml.reader.Reader(str))), new ResolverImpl());
             for (final Iterator iter = cmp.eachNode(); iter.hasNext();) {
                 System.out.println(iter.next());
             }

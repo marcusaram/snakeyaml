@@ -3,6 +3,7 @@
  */
 package org.yaml.snakeyaml.scanner;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -197,22 +198,34 @@ public class ScannerImpl implements Scanner {
     /**
      * Check if the next token is one of the given types.
      */
-    public boolean checkToken(final Class<Token>[] choices) {
+    @SuppressWarnings("unchecked")
+    // TODO should the Class have Token definition ?
+    public boolean checkToken(final List<Class> choices) {
         while (needMoreTokens()) {
             fetchMoreTokens();
         }
         if (!this.tokens.isEmpty()) {
-            if (choices.length == 0) {
+            if (choices.size() == 0) {
                 return true;
             }
             final Token first = this.tokens.get(0);
-            for (int i = 0, j = choices.length; i < j; i++) {
-                if (choices[i].isInstance(first)) {
+            for (Class<Token> class1 : choices) {
+                if (class1.isInstance(first)) {
                     return true;
                 }
             }
         }
         return false;
+    }
+
+    /**
+     * Check if the next token is one of the given types.
+     */
+    @SuppressWarnings("unchecked")
+    public boolean checkToken(Class choice) {
+        List<Class> list = new ArrayList<Class>();
+        list.add(choice);
+        return checkToken(list);
     }
 
     /**
@@ -234,7 +247,7 @@ public class ScannerImpl implements Scanner {
         }
         if (!this.tokens.isEmpty()) {
             this.tokensTaken++;
-            return (Token) this.tokens.remove(0);
+            return this.tokens.remove(0);
         }
         return null;
     }
@@ -964,7 +977,7 @@ public class ScannerImpl implements Scanner {
         Mark endMark;
         reader.forward();
         final String name = scanDirectiveName(startMark);
-        String[] value = null;
+        List<?> value = null;
         if (name.equals("YAML")) {
             value = scanYamlDirectiveValue(startMark);
             endMark = reader.getMark();
@@ -1005,28 +1018,31 @@ public class ScannerImpl implements Scanner {
         return value;
     }
 
-    private String[] scanYamlDirectiveValue(Mark startMark) {
+    private List<Integer> scanYamlDirectiveValue(Mark startMark) {
         // See the specification for details.
         while (reader.peek() == ' ') {
             reader.forward();
         }
-        final String major = scanYamlDirectiveNumber(startMark);
+        final Integer major = scanYamlDirectiveNumber(startMark);
         if (reader.peek() != '.') {
             throw new ScannerException("while scanning a directive", startMark,
                     "expected a digit or '.', but found " + reader.peek() + "("
                             + ((int) reader.peek()) + ")", reader.getMark());
         }
         reader.forward();
-        final String minor = scanYamlDirectiveNumber(startMark);
+        final Integer minor = scanYamlDirectiveNumber(startMark);
         if (NULL_BL_LINEBR.indexOf(reader.peek()) == -1) {
             throw new ScannerException("while scanning a directive", startMark,
                     "expected a digit or ' ', but found " + reader.peek() + "("
                             + ((int) reader.peek()) + ")", reader.getMark());
         }
-        return new String[] { major, minor };
+        List<Integer> result = new ArrayList<Integer>(2);
+        result.add(major);
+        result.add(minor);
+        return result;
     }
 
-    private String scanYamlDirectiveNumber(Mark startMark) {
+    private Integer scanYamlDirectiveNumber(Mark startMark) {
         // See the specification for details.
         final char ch = reader.peek();
         if (!Character.isDigit(ch)) {
@@ -1037,12 +1053,12 @@ public class ScannerImpl implements Scanner {
         while (Character.isDigit(reader.peek(length))) {
             length++;
         }
-        final String value = reader.prefix(length);
+        Integer value = new Integer(reader.prefix(length));
         reader.forward(length);
         return value;
     }
 
-    private String[] scanTagDirectiveValue(Mark startMark) {
+    private List<String> scanTagDirectiveValue(Mark startMark) {
         // See the specification for details.
         while (reader.peek() == ' ') {
             reader.forward();
@@ -1052,7 +1068,10 @@ public class ScannerImpl implements Scanner {
             reader.forward();
         }
         final String prefix = scanTagDirectivePrefix(startMark);
-        return new String[] { handle, prefix };
+        List<String> result = new ArrayList<String>(2);
+        result.add(handle);
+        result.add(prefix);
+        return result;
     }
 
     private String scanTagDirectiveHandle(Mark startMark) {

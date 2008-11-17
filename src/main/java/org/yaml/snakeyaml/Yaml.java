@@ -125,7 +125,7 @@ public class Yaml {
      */
     public Object load(final String yaml) {
         final Constructor ctor = factory.createConstructor(factory.createComposer(factory
-                .createParser(factory.createScanner(yaml), config), factory.createResolver()));
+                .createParser(factory.createScanner(yaml)), factory.createResolver()));
         if (ctor.checkData()) {
             return ctor.getData();
         } else {
@@ -143,7 +143,7 @@ public class Yaml {
      */
     public Object load(final InputStream io) {
         final Constructor ctor = factory.createConstructor(factory.createComposer(factory
-                .createParser(factory.createScanner(io), config), factory.createResolver()));
+                .createParser(factory.createScanner(io)), factory.createResolver()));
         if (ctor.checkData()) {
             return ctor.getData();
         } else {
@@ -163,7 +163,7 @@ public class Yaml {
     @SuppressWarnings("unchecked")
     public Iterable<Object> loadAll(final String yaml) {
         final Constructor ctor = factory.createConstructor(factory.createComposer(factory
-                .createParser(factory.createScanner(yaml), config), factory.createResolver()));
+                .createParser(factory.createScanner(yaml)), factory.createResolver()));
         Iterator<Object> result = new Iterator<Object>() {
             public boolean hasNext() {
                 return ctor.checkData();
@@ -192,7 +192,7 @@ public class Yaml {
     @SuppressWarnings("unchecked")
     public Iterable<Object> loadAll(final InputStream yaml) {
         final Constructor ctor = factory.createConstructor(factory.createComposer(factory
-                .createParser(factory.createScanner(yaml), config), factory.createResolver()));
+                .createParser(factory.createScanner(yaml)), factory.createResolver()));
         Iterator<Object> result = new Iterator<Object>() {
             public boolean hasNext() {
                 return ctor.checkData();

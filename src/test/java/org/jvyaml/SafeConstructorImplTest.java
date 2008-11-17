@@ -2,10 +2,10 @@ package org.jvyaml;
 
 import java.util.Iterator;
 
+import junit.framework.TestCase;
+
 import org.yaml.snakeyaml.parser.ParserImpl;
 import org.yaml.snakeyaml.scanner.ScannerImpl;
-
-import junit.framework.TestCase;
 
 public class SafeConstructorImplTest extends TestCase {
 
@@ -37,9 +37,8 @@ public class SafeConstructorImplTest extends TestCase {
         final String str = input.toString();
         // final long before = System.currentTimeMillis();
         // for(int i=0;i<1;i++) {
-        final Constructor ctor = new SafeConstructorImpl(new ComposerImpl(
-                new ParserImpl(new ScannerImpl(new org.yaml.snakeyaml.reader.Reader(str)),
-                        new DefaultYAMLConfig()), new ResolverImpl()));
+        final Constructor ctor = new SafeConstructorImpl(new ComposerImpl(new ParserImpl(
+                new ScannerImpl(new org.yaml.snakeyaml.reader.Reader(str))), new ResolverImpl()));
         for (final Iterator iter = ctor.eachDocument(); iter.hasNext();) {
             System.out.println(iter.next());
         }
