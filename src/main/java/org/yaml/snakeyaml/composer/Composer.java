@@ -1,9 +1,7 @@
 /*
  * See LICENSE file in distribution for copyright and licensing information.
  */
-package org.jvyaml;
-
-import java.util.Iterator;
+package org.yaml.snakeyaml.composer;
 
 import org.yaml.snakeyaml.nodes.Node;
 
@@ -11,11 +9,8 @@ import org.yaml.snakeyaml.nodes.Node;
  * @see PyYAML 3.06 for more information
  */
 public interface Composer {
-    boolean checkNode();
 
-    Node getNode();
+    public boolean checkNode();
 
-    Iterator eachNode();
-
-    Iterator iterator();
+    public Node getNode();
 }

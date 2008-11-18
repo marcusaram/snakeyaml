@@ -4,7 +4,9 @@ import java.util.Iterator;
 
 import junit.framework.TestCase;
 
+import org.yaml.snakeyaml.composer.ComposerImpl;
 import org.yaml.snakeyaml.parser.ParserImpl;
+import org.yaml.snakeyaml.resolver.ResolverImpl;
 import org.yaml.snakeyaml.scanner.ScannerImpl;
 
 public class SafeConstructorImplTest extends TestCase {
@@ -39,7 +41,8 @@ public class SafeConstructorImplTest extends TestCase {
         // for(int i=0;i<1;i++) {
         final Constructor ctor = new SafeConstructorImpl(new ComposerImpl(new ParserImpl(
                 new ScannerImpl(new org.yaml.snakeyaml.reader.Reader(str))), new ResolverImpl()));
-        for (final Iterator iter = ctor.eachDocument(); iter.hasNext();) {
+        for (final Iterator iter = new BaseConstructorImplTest.DocumentIterator(ctor); iter
+                .hasNext();) {
             System.out.println(iter.next());
         }
         // }
