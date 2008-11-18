@@ -122,24 +122,25 @@ public class ResolverImpl implements Resolver {
         resolverPrefixPaths.pop();
     }
 
-    private boolean checkResolverPrefix(final int depth, final List path, final Node currentNode,
-            final Object currentIndex) {
-        final Object[] check = (Object[]) path.get(depth - 1);
-        final Object nodeCheck = check[0];
-        final Object indexCheck = check[1];
+    @SuppressWarnings("unchecked")
+    private boolean checkResolverPrefix(final int depth, final List<PathResolverTuple> path,
+            final Node currentNode, final Object currentIndex) {
+        final PathResolverTuple check = path.get(depth - 1);
+        final Object nodeCheck = check.getNodeCheck();
+        final Object indexCheck = check.getIndexCheck();
         if (nodeCheck instanceof String) {
             if (!currentNode.getTag().equals(nodeCheck)) {
                 return false;
             }
-        } else if (null != nodeCheck) {
+        } else if (nodeCheck != null) {
             if (!((Class) nodeCheck).isInstance(currentNode)) {
                 return false;
             }
         }
-        if (indexCheck == Boolean.TRUE && currentIndex != null) {
+        if (Boolean.TRUE.equals(indexCheck) && currentIndex != null) {
             return false;
         }
-        if (indexCheck == Boolean.FALSE && currentIndex == null) {
+        if ((Boolean.FALSE.equals(indexCheck) || indexCheck == null) && currentIndex == null) {
             return false;
         }
         if (indexCheck instanceof String) {
@@ -148,7 +149,7 @@ public class ResolverImpl implements Resolver {
                 return false;
             }
         } else if (indexCheck instanceof Integer) {
-            if (!currentIndex.equals(indexCheck)) {
+            if (!indexCheck.equals(currentIndex)) {
                 return false;
             }
         }
