@@ -9,7 +9,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
 
-import org.jvyaml.SafeConstructorImpl;
 import org.yaml.snakeyaml.composer.Composer;
 
 /**

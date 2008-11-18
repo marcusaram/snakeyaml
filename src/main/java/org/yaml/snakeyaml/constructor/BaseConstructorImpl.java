@@ -109,7 +109,7 @@ public class BaseConstructorImpl implements Constructor {
             return constructedObjects.get(node);
         }
         if (recursiveObjects.containsKey(node)) {
-            throw new ConstructorException(null, "found recursive node", null);
+            throw new ConstructorException(null, null, "found recursive node", node.getStartMark());
         }
         recursiveObjects.put(node, null);
         YamlConstructor ctor = getYamlConstructor(node.getTag());
@@ -167,8 +167,8 @@ public class BaseConstructorImpl implements Constructor {
                     }
                 }
             }
-            throw new ConstructorException(null, "expected a scalar node, but found "
-                    + node.getClass().getName(), null);
+            throw new ConstructorException(null, null, "expected a scalar node, but found "
+                    + node.getNodeId(), node.getStartMark());
         }
         return node.getValue();
     }
@@ -187,8 +187,8 @@ public class BaseConstructorImpl implements Constructor {
 
     public Object constructSequence(final Node node) {
         if (!(node instanceof SequenceNode)) {
-            throw new ConstructorException(null, "expected a sequence node, but found "
-                    + node.getClass().getName(), null);
+            throw new ConstructorException(null, null, "expected a sequence node, but found "
+                    + node.getNodeId(), node.getStartMark());
         }
         final List internal = (List) node.getValue();
         final List val = new ArrayList(internal.size());
@@ -200,8 +200,8 @@ public class BaseConstructorImpl implements Constructor {
 
     public Object constructMapping(final Node node) {
         if (!(node instanceof MappingNode)) {
-            throw new ConstructorException(null, "expected a mapping node, but found "
-                    + node.getClass().getName(), null);
+            throw new ConstructorException(null, null, "expected a mapping node, but found "
+                    + node.getNodeId(), node.getStartMark());
         }
         Map mapping = new HashMap();
         List merge = null;
@@ -211,8 +211,8 @@ public class BaseConstructorImpl implements Constructor {
             final Node value_v = (Node) val.get(key_v);
             if (key_v.getTag().equals("tag:yaml.org,2002:merge")) {
                 if (merge != null) {
-                    throw new ConstructorException("while constructing a mapping",
-                            "found duplicate merge key", null);
+                    throw new ConstructorException("while constructing a mapping", node
+                            .getStartMark(), "found duplicate merge key", key_v.getStartMark());
                 }
                 if (value_v instanceof MappingNode) {
                     merge = new LinkedList();
@@ -223,21 +223,22 @@ public class BaseConstructorImpl implements Constructor {
                     for (final Iterator sub = vals.iterator(); sub.hasNext();) {
                         final Node subnode = (Node) sub.next();
                         if (!(subnode instanceof MappingNode)) {
-                            throw new ConstructorException("while constructing a mapping",
-                                    "expected a mapping for merging, but found "
-                                            + subnode.getClass().getName(), null);
+                            throw new ConstructorException("while constructing a mapping", node
+                                    .getStartMark(), "expected a mapping for merging, but found "
+                                    + subnode.getNodeId(), subnode.getStartMark());
                         }
                         merge.add(0, constructMapping(subnode));
                     }
                 } else {
-                    throw new ConstructorException("while constructing a mapping",
+                    throw new ConstructorException("while constructing a mapping", node
+                            .getStartMark(),
                             "expected a mapping or list of mappings for merging, but found "
-                                    + value_v.getClass().getName(), null);
+                                    + value_v.getNodeId(), value_v.getStartMark());
                 }
             } else if (key_v.getTag().equals("tag:yaml.org,2002:value")) {
                 if (mapping.containsKey("=")) {
-                    throw new ConstructorException("while construction a mapping",
-                            "found duplicate value key", null);
+                    throw new ConstructorException("while construction a mapping", node
+                            .getStartMark(), "found duplicate value key", key_v.getStartMark());
                 }
                 mapping.put("=", constructObject(value_v));
             } else {
@@ -256,8 +257,8 @@ public class BaseConstructorImpl implements Constructor {
 
     public Object constructPairs(final Node node) {
         if (!(node instanceof MappingNode)) {
-            throw new ConstructorException(null, "expected a mapping node, but found "
-                    + node.getClass().getName(), null);
+            throw new ConstructorException(null, null, "expected a mapping node, but found "
+                    + node.getNodeId(), node.getStartMark());
         }
         final List value = new LinkedList();
         final Map vals = (Map) node.getValue();
