@@ -27,8 +27,8 @@ public class ResolverImpl implements Resolver {
     private final static Map<String, List<ResolverTuple>> yamlImplicitResolvers = new HashMap<String, List<ResolverTuple>>();
     private final static Map yamlPathResolvers = new HashMap();
 
-    private List resolverExactPaths = new LinkedList();
-    private List resolverPrefixPaths = new LinkedList();
+    private LinkedList<Map<? extends Node, String>> resolverExactPaths = new LinkedList<Map<? extends Node, String>>();
+    private LinkedList resolverPrefixPaths = new LinkedList();
 
     public static void addImplicitResolver(final String tag, final Pattern regexp,
             final String first) {
@@ -86,7 +86,7 @@ public class ResolverImpl implements Resolver {
         final List prefixPaths = new LinkedList();
         if (null != currentNode) {
             final int depth = resolverPrefixPaths.size();
-            for (final Iterator iter = ((List) resolverPrefixPaths.get(0)).iterator(); iter
+            for (final Iterator iter = ((List) resolverPrefixPaths.getFirst()).iterator(); iter
                     .hasNext();) {
                 final Object[] obj = (Object[]) iter.next();
                 final List path = (List) obj[0];
@@ -113,13 +113,13 @@ public class ResolverImpl implements Resolver {
                 }
             }
         }
-        resolverExactPaths.add(0, exactPaths);
-        resolverPrefixPaths.add(0, prefixPaths);
+        resolverExactPaths.push(exactPaths);
+        resolverPrefixPaths.push(prefixPaths);
     }
 
     public void ascendResolver() {
-        resolverExactPaths.remove(0);
-        resolverPrefixPaths.remove(0);
+        resolverExactPaths.pop();
+        resolverPrefixPaths.pop();
     }
 
     public boolean checkResolverPrefix(final int depth, final List path, final Class kind,
@@ -155,7 +155,8 @@ public class ResolverImpl implements Resolver {
         return true;
     }
 
-    public String resolve(final Class kind, final String value, final boolean[] implicit) {
+    public String resolve(final Class<? extends Node> kind, final String value,
+            final boolean[] implicit) {
         List<ResolverTuple> resolvers = null;
         if (kind.equals(ScalarNode.class) && implicit[0]) {
             if ("".equals(value)) {
@@ -178,12 +179,14 @@ public class ResolverImpl implements Resolver {
                 }
             }
         }
-        final Map exactPaths = (Map) resolverExactPaths.get(0);
-        if (exactPaths.containsKey(kind)) {
-            return (String) exactPaths.get(kind);
-        }
-        if (exactPaths.containsKey(null)) {
-            return (String) exactPaths.get(null);
+        if (!yamlPathResolvers.isEmpty()) {
+            final Map<? extends Node, String> exactPaths = resolverExactPaths.getFirst();
+            if (exactPaths.containsKey(kind)) {
+                return exactPaths.get(kind);
+            }
+            if (exactPaths.containsKey(null)) {
+                return exactPaths.get(null);
+            }
         }
         if (kind.equals(ScalarNode.class)) {
             return DEFAULT_SCALAR_TAG;
