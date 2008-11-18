@@ -3,7 +3,6 @@ package org.jvyaml;
 import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.Reader;
-import java.util.Iterator;
 
 import junit.framework.TestCase;
 
@@ -43,7 +42,7 @@ public class ParserImplTest extends TestCase {
         for (int i = 0; i < 1; i++) {
             final Parser pars = new ParserImpl(new ScannerImpl(
                     new org.yaml.snakeyaml.reader.Reader(str)));
-            for (final Iterator iter = new EventIterator(pars); iter.hasNext(); iter.next()) {
+            while (pars.peekEvent() != null) {
             }
         }
         final long after = System.currentTimeMillis();
@@ -62,28 +61,9 @@ public class ParserImplTest extends TestCase {
         }
         final Parser pars = new ParserImpl(new ScannerImpl(new org.yaml.snakeyaml.reader.Reader(
                 new FileInputStream(filename))));
-        for (final Iterator iter = new EventIterator(pars); iter.hasNext();) {
-            System.out.println(iter.next().getClass().getName());
+        while (pars.peekEvent() != null) {
+            System.out.println(pars.getEvent().getClass().getName());
         }
     }
 
-    private static class EventIterator implements Iterator {
-        Parser parser;
-
-        public EventIterator(Parser parser) {
-            this.parser = parser;
-        }
-
-        public boolean hasNext() {
-            return null != parser.peekEvent();
-        }
-
-        public Object next() {
-            return parser.getEvent();
-        }
-
-        public void remove() {
-            throw new UnsupportedOperationException();
-        }
-    }
 }

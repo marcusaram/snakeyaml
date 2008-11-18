@@ -1,7 +1,5 @@
 package org.jvyaml;
 
-import java.util.Iterator;
-
 import junit.framework.TestCase;
 
 import org.yaml.snakeyaml.composer.ComposerImpl;
@@ -41,10 +39,10 @@ public class BaseConstructorImplTest extends TestCase {
         final String str = input.toString();
         // final long before = System.currentTimeMillis();
         // for(int i=0;i<1;i++) {
-        final Constructor ctor = new BaseConstructorImpl(new ComposerImpl(
-                new ParserImpl(new ScannerImpl(new org.yaml.snakeyaml.reader.Reader(str))), new ResolverImpl()));
-        for (final Iterator iter = new DocumentIterator(ctor); iter.hasNext();) {
-            System.out.println(iter.next());
+        final Constructor ctor = new BaseConstructorImpl(new ComposerImpl(new ParserImpl(
+                new ScannerImpl(new org.yaml.snakeyaml.reader.Reader(str))), new ResolverImpl()));
+        while (ctor.checkData()) {
+            System.out.println(ctor.getData());
         }
         // }
         // final long after = System.currentTimeMillis();
@@ -54,23 +52,4 @@ public class BaseConstructorImplTest extends TestCase {
         // filename + " took " + time + "ms, or " + timeS + " seconds");
     }
 
-    public static class DocumentIterator implements Iterator {
-        private Constructor constructor;
-
-        public DocumentIterator(Constructor constructor) {
-            this.constructor = constructor;
-        }
-
-        public boolean hasNext() {
-            return constructor.checkData();
-        }
-
-        public Object next() {
-            return constructor.getData();
-        }
-
-        public void remove() {
-            throw new UnsupportedOperationException();
-        }
-    }
 }

@@ -1,7 +1,5 @@
 package org.jvyaml;
 
-import java.util.Iterator;
-
 import junit.framework.TestCase;
 
 import org.yaml.snakeyaml.composer.ComposerImpl;
@@ -41,11 +39,11 @@ public class ConstructorImplTest extends TestCase {
         final String str = input.toString();
         final long before = System.currentTimeMillis();
         for (int i = 0; i < 1; i++) {
-            final Constructor ctor = new ConstructorImpl(new ComposerImpl(new ParserImpl(
-                    new ScannerImpl(new org.yaml.snakeyaml.reader.Reader(str))), new ResolverImpl()));
-            for (final Iterator iter = new BaseConstructorImplTest.DocumentIterator(ctor); iter
-                    .hasNext(); iter.next()) {
-                System.out.println(iter.next());
+            final Constructor ctor = new ConstructorImpl(
+                    new ComposerImpl(new ParserImpl(new ScannerImpl(
+                            new org.yaml.snakeyaml.reader.Reader(str))), new ResolverImpl()));
+            while (ctor.checkData()) {
+                System.out.println(ctor.getData());
             }
         }
         final long after = System.currentTimeMillis();
