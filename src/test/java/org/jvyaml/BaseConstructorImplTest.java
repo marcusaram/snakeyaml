@@ -4,7 +4,9 @@ import java.util.Iterator;
 
 import junit.framework.TestCase;
 
+import org.yaml.snakeyaml.composer.ComposerImpl;
 import org.yaml.snakeyaml.parser.ParserImpl;
+import org.yaml.snakeyaml.resolver.ResolverImpl;
 import org.yaml.snakeyaml.scanner.ScannerImpl;
 
 public class BaseConstructorImplTest extends TestCase {
@@ -37,9 +39,9 @@ public class BaseConstructorImplTest extends TestCase {
         final String str = input.toString();
         // final long before = System.currentTimeMillis();
         // for(int i=0;i<1;i++) {
-        final Constructor ctor = new BaseConstructorImpl(new ComposerImpl(new ParserImpl(
-                new ScannerImpl(new org.yaml.snakeyaml.reader.Reader(str))), new ResolverImpl()));
-        for (final Iterator iter = ctor.eachDocument(); iter.hasNext();) {
+        final Constructor ctor = new BaseConstructorImpl(new ComposerImpl(
+                new ParserImpl(new ScannerImpl(new org.yaml.snakeyaml.reader.Reader(str))), new ResolverImpl()));
+        for (final Iterator iter = new DocumentIterator(ctor); iter.hasNext();) {
             System.out.println(iter.next());
         }
         // }
@@ -48,5 +50,25 @@ public class BaseConstructorImplTest extends TestCase {
         // final double timeS = (after-before)/1000.0;
         // System.out.println("Walking through the nodes for the file: " +
         // filename + " took " + time + "ms, or " + timeS + " seconds");
+    }
+
+    public static class DocumentIterator implements Iterator {
+        private Constructor constructor;
+
+        public DocumentIterator(Constructor constructor) {
+            this.constructor = constructor;
+        }
+
+        public boolean hasNext() {
+            return constructor.checkData();
+        }
+
+        public Object next() {
+            return constructor.getData();
+        }
+
+        public void remove() {
+            throw new UnsupportedOperationException();
+        }
     }
 }

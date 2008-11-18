@@ -14,6 +14,7 @@ public class MappingNode extends CollectionNode {
     public static final String id = "mapping";
 
     @SuppressWarnings("unchecked")
+    // TODO MAp must be list !!!
     public MappingNode(final String tag, final Map value, final Mark startMark, final Mark endMark,
             final boolean flowStyle) {
         super(tag, value, startMark, endMark, flowStyle);

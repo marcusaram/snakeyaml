@@ -11,5 +11,5 @@ import org.yaml.snakeyaml.events.Event;
  * @see PyYAML 3.06 for more information
  */
 public interface Emitter {
-    void emit(final Event event) throws IOException;
+    public void emit(Event event) throws IOException;
 }

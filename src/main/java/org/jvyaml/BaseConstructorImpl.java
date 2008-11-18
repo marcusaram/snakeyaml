@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
 
+import org.yaml.snakeyaml.composer.Composer;
 import org.yaml.snakeyaml.nodes.MappingNode;
 import org.yaml.snakeyaml.nodes.Node;
 import org.yaml.snakeyaml.nodes.ScalarNode;
@@ -70,27 +71,6 @@ public class BaseConstructorImpl implements Constructor {
             }
         }
         return null;
-    }
-
-    private class DocumentIterator implements Iterator {
-        public boolean hasNext() {
-            return checkData();
-        }
-
-        public Object next() {
-            return getData();
-        }
-
-        public void remove() {
-        }
-    }
-
-    public Iterator eachDocument() {
-        return new DocumentIterator();
-    }
-
-    public Iterator iterator() {
-        return eachDocument();
     }
 
     public Object constructDocument(final Node node) {
