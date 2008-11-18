@@ -18,6 +18,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.yaml.snakeyaml.composer.Composer;
+import org.yaml.snakeyaml.constructor.BaseConstructorImpl;
+import org.yaml.snakeyaml.constructor.Constructor;
+import org.yaml.snakeyaml.constructor.ConstructorException;
 import org.yaml.snakeyaml.error.YAMLException;
 import org.yaml.snakeyaml.nodes.Node;
 import org.yaml.snakeyaml.util.Base64Coder;

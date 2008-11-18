@@ -10,12 +10,12 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.jvyaml.Constructor;
 import org.jvyaml.DefaultYAMLConfig;
 import org.jvyaml.DefaultYAMLFactory;
 import org.jvyaml.Representer;
 import org.jvyaml.Serializer;
 import org.jvyaml.YAMLFactory;
+import org.yaml.snakeyaml.constructor.Constructor;
 import org.yaml.snakeyaml.error.YAMLException;
 
 /**
