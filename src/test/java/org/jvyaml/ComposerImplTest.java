@@ -2,7 +2,6 @@ package org.jvyaml;
 
 import java.io.FileReader;
 import java.io.Reader;
-import java.util.Iterator;
 
 import junit.framework.TestCase;
 
@@ -43,10 +42,9 @@ public class ComposerImplTest extends TestCase {
         final long before = System.currentTimeMillis();
         for (int i = 0; i < 1; i++) {
             final Composer cmp = new ComposerImpl(new ParserImpl(new ScannerImpl(
-                    new org.yaml.snakeyaml.reader.Reader(str))),
-                    new ResolverImpl());
-            for (final Iterator iter = new NodeIterator(cmp); iter.hasNext();) {
-                System.out.println(iter.next());
+                    new org.yaml.snakeyaml.reader.Reader(str))), new ResolverImpl());
+            while (cmp.checkNode()) {
+                System.out.println(cmp.getNode());
             }
         }
         final long after = System.currentTimeMillis();
@@ -56,23 +54,4 @@ public class ComposerImplTest extends TestCase {
                 + "ms, or " + timeS + " seconds");
     }
 
-    private static class NodeIterator implements Iterator {
-        private Composer composer;
-
-        public NodeIterator(Composer composer) {
-            this.composer = composer;
-        }
-
-        public boolean hasNext() {
-            return composer.checkNode();
-        }
-
-        public Object next() {
-            return composer.getNode();
-        }
-
-        public void remove() {
-            throw new UnsupportedOperationException();
-        }
-    }
 }
