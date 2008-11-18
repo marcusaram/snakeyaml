@@ -10,10 +10,9 @@ import org.yaml.snakeyaml.nodes.Node;
  */
 public interface Resolver {
     // TODO index or object ???
-    public void descendResolver(final Node currentNode, final Object currentIndex);
+    public void descendResolver(Node currentNode, Object currentIndex);
 
     public void ascendResolver();
 
-    public String resolve(final Class<? extends Node> class1, final String value,
-            final boolean[] implicit);
+    public String resolve(Class<? extends Node> class1, String value, boolean implicit);
 }
