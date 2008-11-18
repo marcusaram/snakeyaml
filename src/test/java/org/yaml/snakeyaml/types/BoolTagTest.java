@@ -55,7 +55,7 @@ public class BoolTagTest extends AbstractTest {
         Map<String, Boolean> map = new HashMap<String, Boolean>();
         map.put("boolean", Boolean.TRUE);
         String output = dump(map);
-        assertTrue(output.contains("boolean: true"));
+        assertTrue(output, output.contains("boolean: true"));
     }
 
 }

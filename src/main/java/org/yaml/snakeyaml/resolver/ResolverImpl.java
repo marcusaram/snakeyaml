@@ -24,7 +24,7 @@ public class ResolverImpl implements Resolver {
     private static final String DEFAULT_SEQUENCE_TAG = "tag:yaml.org,2002:seq";
     private static final String DEFAULT_MAPPING_TAG = "tag:yaml.org,2002:map";
 
-    private final static Map yamlImplicitResolvers = new HashMap();
+    private final static Map<String, List<ResolverTuple>> yamlImplicitResolvers = new HashMap<String, List<ResolverTuple>>();
     private final static Map yamlPathResolvers = new HashMap();
 
     private List resolverExactPaths = new LinkedList();
@@ -32,86 +32,53 @@ public class ResolverImpl implements Resolver {
 
     public static void addImplicitResolver(final String tag, final Pattern regexp,
             final String first) {
-        final String firstVal = first;
-        if (firstVal == null || "".equals("firstVal")) {
-            List curr = (List) yamlImplicitResolvers.get("");
+        if (first == null) {
+            List<ResolverTuple> curr = yamlImplicitResolvers.get(null);
             if (curr == null) {
-                curr = new LinkedList();
-                yamlImplicitResolvers.put("", curr);
+                curr = new LinkedList<ResolverTuple>();
+                yamlImplicitResolvers.put(null, curr);
             }
-            curr.add(new Object[] { tag, regexp });
+            curr.add(new ResolverTuple(tag, regexp));
         } else {
-            final char[] chrs = firstVal.toCharArray();
+            final char[] chrs = first.toCharArray();
             for (int i = 0, j = chrs.length; i < j; i++) {
                 final Character theC = new Character(chrs[i]);
-                List curr = (List) yamlImplicitResolvers.get(theC);
-                if (curr == null) {
-                    curr = new LinkedList();
-                    yamlImplicitResolvers.put(theC, curr);
+                String key;
+                if (theC == 0) {
+                    // special case: for null
+                    key = "";
+                } else {
+                    key = String.valueOf(theC);
                 }
-                curr.add(new Object[] { tag, regexp });
+                List<ResolverTuple> curr = yamlImplicitResolvers.get(key);
+                if (curr == null) {
+                    curr = new LinkedList<ResolverTuple>();
+                    yamlImplicitResolvers.put(key, curr);
+                }
+                curr.add(new ResolverTuple(tag, regexp));
             }
         }
     }
 
+    /**
+     * <pre>
+     * Note: `add_path_resolver` is experimental.  The API could be changed.
+     * `new_path` is a pattern that is matched against the path from the
+     * root to the node that is being considered.  `node_path` elements are
+     * tuples `(node_check, index_check)`.  `node_check` is a node class:
+     * `ScalarNode`, `SequenceNode`, `MappingNode` or `None`.  `None`
+     * matches any kind of a node.  `index_check` could be `None`, a boolean
+     * value, a string value, or a number.  `None` and `False` match against
+     * any _value_ of sequence and mapping nodes.  `True` matches against
+     * any _key_ of a mapping node.  A string `index_check` matches against
+     * a mapping value that corresponds to a scalar key which content is
+     * equal to the `index_check` value.  An integer `index_check` matches
+     * against a sequence value with the index equal to `index_check`.
+     * </pre>
+     */
     public static void addPathResolver(final String tag, final List path, final Class kind) {
-        final List newPath = new LinkedList();
-        Object nodeCheck = null;
-        Object indexCheck = null;
-        for (final Iterator iter = path.iterator(); iter.hasNext();) {
-            final Object element = iter.next();
-            if (element instanceof List) {
-                final List eList = (List) element;
-                if (eList.size() == 2) {
-                    nodeCheck = eList.get(0);
-                    indexCheck = eList.get(1);
-                } else if (eList.size() == 1) {
-                    nodeCheck = eList.get(0);
-                    indexCheck = Boolean.TRUE;
-                } else {
-                    throw new ResolverException("Invalid path element: " + element);
-                }
-            } else {
-                nodeCheck = null;
-                indexCheck = element;
-            }
-
-            if (nodeCheck instanceof String) {
-                nodeCheck = ScalarNode.class;
-            } else if (nodeCheck instanceof List) {
-                nodeCheck = SequenceNode.class;
-            } else if (nodeCheck instanceof Map) {
-                nodeCheck = MappingNode.class;
-            } else if (null != nodeCheck && !ScalarNode.class.equals(nodeCheck)
-                    && !SequenceNode.class.equals(nodeCheck)
-                    && !MappingNode.class.equals(nodeCheck)) {
-                throw new ResolverException("Invalid node checker: " + nodeCheck);
-            }
-            if (!(indexCheck instanceof String || indexCheck instanceof Integer)
-                    && null != indexCheck) {
-                throw new ResolverException("Invalid index checker: " + indexCheck);
-            }
-            newPath.add(new Object[] { nodeCheck, indexCheck });
-        }
-        Class newKind = null;
-        if (String.class.equals(kind)) {
-            newKind = ScalarNode.class;
-        } else if (List.class.equals(kind)) {
-            newKind = SequenceNode.class;
-        } else if (Map.class.equals(kind)) {
-            newKind = MappingNode.class;
-        } else if (kind != null && !ScalarNode.class.equals(kind)
-                && !SequenceNode.class.equals(kind) && !MappingNode.class.equals(kind)) {
-            throw new ResolverException("Invalid node kind: " + kind);
-        } else {
-            newKind = kind;
-        }
-        final List x = new ArrayList(1);
-        x.add(newPath);
-        final List y = new ArrayList(2);
-        y.add(x);
-        y.add(kind);
-        yamlPathResolvers.put(y, tag);
+        // TODO addPathResolver is not implemented
+        throw new UnsupportedOperationException();
     }
 
     public void descendResolver(final Node currentNode, final Object currentIndex) {
@@ -189,23 +156,25 @@ public class ResolverImpl implements Resolver {
     }
 
     public String resolve(final Class kind, final String value, final boolean[] implicit) {
-        List resolvers = null;
+        List<ResolverTuple> resolvers = null;
         if (kind.equals(ScalarNode.class) && implicit[0]) {
             if ("".equals(value)) {
-                resolvers = (List) yamlImplicitResolvers.get("");
+                resolvers = yamlImplicitResolvers.get("");
             } else {
-                resolvers = (List) yamlImplicitResolvers.get(new Character(value.charAt(0)));
+                resolvers = yamlImplicitResolvers.get(String.valueOf(value.charAt(0)));
             }
             if (resolvers == null) {
-                resolvers = new LinkedList();
+                resolvers = new LinkedList<ResolverTuple>();
             }
             if (yamlImplicitResolvers.containsKey(null)) {
-                resolvers.addAll((List) yamlImplicitResolvers.get(null));
+                resolvers.addAll(yamlImplicitResolvers.get(null));
             }
-            for (final Iterator iter = resolvers.iterator(); iter.hasNext();) {
-                final Object[] val = (Object[]) iter.next();
-                if (((Pattern) val[1]).matcher(value).matches()) {
-                    return (String) val[0];
+            for (final Iterator<ResolverTuple> iter = resolvers.iterator(); iter.hasNext();) {
+                ResolverTuple v = iter.next();
+                String tag = v.getTag();
+                Pattern regexp = v.getRegexp();
+                if (regexp.matcher(value).matches()) {
+                    return tag;
                 }
             }
         }
@@ -245,7 +214,6 @@ public class ResolverImpl implements Resolver {
         addImplicitResolver("tag:yaml.org,2002:merge", Pattern.compile("^(?:<<)$"), "<");
         addImplicitResolver("tag:yaml.org,2002:null", Pattern.compile("^(?:~|null|Null|NULL| )$"),
                 "~nN\0");
-        addImplicitResolver("tag:yaml.org,2002:null", Pattern.compile("^$"), null);
         addImplicitResolver(
                 "tag:yaml.org,2002:timestamp",
                 Pattern
