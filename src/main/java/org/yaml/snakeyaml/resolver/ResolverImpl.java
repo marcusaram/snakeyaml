@@ -90,7 +90,7 @@ public class ResolverImpl implements Resolver {
                     .hasNext();) {
                 final Object[] obj = (Object[]) iter.next();
                 final List path = (List) obj[0];
-                if (checkResolverPrefix(depth, path, (Class) obj[1], currentNode, currentIndex)) {
+                if (checkResolverPrefix(depth, path, currentNode, currentIndex)) {
                     if (path.size() > depth) {
                         prefixPaths.add(new Object[] { path, obj[1] });
                     } else {
@@ -122,8 +122,8 @@ public class ResolverImpl implements Resolver {
         resolverPrefixPaths.pop();
     }
 
-    public boolean checkResolverPrefix(final int depth, final List path, final Class kind,
-            final Node currentNode, final Object currentIndex) {
+    private boolean checkResolverPrefix(final int depth, final List path, final Node currentNode,
+            final Object currentIndex) {
         final Object[] check = (Object[]) path.get(depth - 1);
         final Object nodeCheck = check[0];
         final Object indexCheck = check[1];
