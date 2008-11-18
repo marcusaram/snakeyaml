@@ -81,15 +81,19 @@ public class ResolverImpl implements Resolver {
         throw new UnsupportedOperationException();
     }
 
+    // TODO this method was not properly imported from PyYAML
     public void descendResolver(final Node currentNode, final Object currentIndex) {
-        final Map exactPaths = new HashMap();
-        final List prefixPaths = new LinkedList();
-        if (null != currentNode) {
+        if (yamlPathResolvers.isEmpty()) {
+            return;
+        }
+        Map exactPaths = new HashMap();
+        List prefixPaths = new LinkedList();
+        if (currentNode != null) {
             final int depth = resolverPrefixPaths.size();
             for (final Iterator iter = ((List) resolverPrefixPaths.getFirst()).iterator(); iter
                     .hasNext();) {
                 final Object[] obj = (Object[]) iter.next();
-                final List path = (List) obj[0];
+                List<PathResolverTuple> path = (List<PathResolverTuple>) obj[0];
                 if (checkResolverPrefix(depth, path, currentNode, currentIndex)) {
                     if (path.size() > depth) {
                         prefixPaths.add(new Object[] { path, obj[1] });
@@ -118,6 +122,9 @@ public class ResolverImpl implements Resolver {
     }
 
     public void ascendResolver() {
+        if (yamlPathResolvers.isEmpty()) {
+            return;
+        }
         resolverExactPaths.pop();
         resolverPrefixPaths.pop();
     }
