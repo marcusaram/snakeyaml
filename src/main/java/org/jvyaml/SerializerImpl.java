@@ -157,9 +157,9 @@ public class SerializerImpl implements Serializer {
             this.resolver.descendResolver(parent, index);
             if (node instanceof ScalarNode) {
                 final String detectedTag = this.resolver.resolve(ScalarNode.class, (String) node
-                        .getValue(), new boolean[] { true, false });
+                        .getValue(), true);
                 final String defaultTag = this.resolver.resolve(ScalarNode.class, (String) node
-                        .getValue(), new boolean[] { false, true });
+                        .getValue(), false);
                 final boolean[] implicit = new boolean[] { false, false };
                 if (!options.explicitTypes()) {
                     implicit[0] = node.getTag().equals(detectedTag);
@@ -171,7 +171,7 @@ public class SerializerImpl implements Serializer {
             } else if (node instanceof SequenceNode) {
                 final boolean implicit = !options.explicitTypes()
                         && (node.getTag().equals(this.resolver.resolve(SequenceNode.class, null,
-                                new boolean[] { true, true })));
+                                true)));
                 this.emitter.emit(new SequenceStartEvent(tAlias, node.getTag(), implicit, null,
                         null, ((CollectionNode) node).getFlowStyle()));
                 int ix = 0;
@@ -182,7 +182,7 @@ public class SerializerImpl implements Serializer {
             } else if (node instanceof MappingNode) {
                 final boolean implicit = !options.explicitTypes()
                         && (node.getTag().equals(this.resolver.resolve(MappingNode.class, null,
-                                new boolean[] { true, true })));
+                                true)));
                 this.emitter.emit(new MappingStartEvent(tAlias, node.getTag(), implicit, null,
                         null, ((CollectionNode) node).getFlowStyle()));
                 final Map value = (Map) node.getValue();

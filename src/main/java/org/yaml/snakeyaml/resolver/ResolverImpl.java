@@ -164,9 +164,9 @@ public class ResolverImpl implements Resolver {
     }
 
     public String resolve(final Class<? extends Node> kind, final String value,
-            final boolean[] implicit) {
+            final boolean implicit) {
         List<ResolverTuple> resolvers = null;
-        if (kind.equals(ScalarNode.class) && implicit[0]) {
+        if (kind.equals(ScalarNode.class) && implicit) {
             if ("".equals(value)) {
                 resolvers = yamlImplicitResolvers.get("");
             } else {

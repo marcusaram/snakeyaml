@@ -30,9 +30,6 @@ import org.yaml.snakeyaml.resolver.Resolver;
  * @see PyYAML 3.06 for more information
  */
 public class ComposerImpl implements Composer {
-    private final static boolean[] FALS = new boolean[] { false };
-    private final static boolean[] TRU = new boolean[] { true };
-
     private Parser parser;
     private Resolver resolver;
     private Map<String, Node> anchors;
@@ -130,7 +127,7 @@ public class ComposerImpl implements Composer {
         ScalarEvent ev = (ScalarEvent) parser.getEvent();
         String tag = ev.getTag();
         if (tag == null || tag.equals("!")) {
-            tag = resolver.resolve(ScalarNode.class, ev.getValue(), ev.getImplicit());
+            tag = resolver.resolve(ScalarNode.class, ev.getValue(), ev.getImplicit()[0]);
         }
         Node node = new ScalarNode(tag, ev.getValue(), ev.getStartMark(), ev.getEndMark(), ev
                 .getStyle());
@@ -146,7 +143,7 @@ public class ComposerImpl implements Composer {
         String tag = startEvent.getTag();
         if (tag == null || tag.equals("!")) {
             // TODO get rid of TRU and FALS
-            tag = resolver.resolve(SequenceNode.class, null, startEvent.getImplicit() ? TRU : FALS);
+            tag = resolver.resolve(SequenceNode.class, null, startEvent.getImplicit());
         }
         CollectionNode node = new SequenceNode(tag, new ArrayList<Object>(), startEvent
                 .getStartMark(), null, startEvent.getFlowStyle());
@@ -167,7 +164,7 @@ public class ComposerImpl implements Composer {
         MappingStartEvent startEvent = (MappingStartEvent) parser.getEvent();
         String tag = startEvent.getTag();
         if (tag == null || tag.equals("!")) {
-            tag = resolver.resolve(MappingNode.class, null, startEvent.getImplicit() ? TRU : FALS);
+            tag = resolver.resolve(MappingNode.class, null, startEvent.getImplicit());
         }
         // TODO must be list instead !!!
         MappingNode node = new MappingNode(tag, new HashMap(), startEvent.getStartMark(), null,
