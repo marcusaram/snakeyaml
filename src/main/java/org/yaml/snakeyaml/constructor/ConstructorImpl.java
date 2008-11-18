@@ -1,7 +1,7 @@
 /*
  * See LICENSE file in distribution for copyright and licensing information.
  */
-package org.jvyaml;
+package org.yaml.snakeyaml.constructor;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
 
+import org.jvyaml.SafeConstructorImpl;
 import org.yaml.snakeyaml.composer.Composer;
 
 /**
