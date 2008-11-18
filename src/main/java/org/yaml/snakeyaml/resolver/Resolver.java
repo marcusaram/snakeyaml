@@ -19,5 +19,6 @@ public interface Resolver {
     public boolean checkResolverPrefix(final int depth, final List path, final Class kind,
             final Node currentNode, final Object currentIndex);
 
-    public String resolve(final Class kind, final String value, final boolean[] implicit);
+    public String resolve(final Class<? extends Node> class1, final String value,
+            final boolean[] implicit);
 }
