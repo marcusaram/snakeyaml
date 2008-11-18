@@ -4,11 +4,14 @@
 		<author email="py4fun@gmail.com">Andrey Somov</author>
 	</properties>
 	<body>
-	<release version="0.5" date="in Mercurial1" description="Fix issues in Parser">
+	    <release version="0.5" date="in Mercurial1" description="Fix issues in Parser">
+            <action dev="py4fun" type="fix">
+                Fix: 'set' type works. (2008-11-18)
+            </action>
             <action dev="py4fun" type="update">
                 Rewrite Parser from scratch. (2008-11-17)
             </action>
-            </release>
+        </release>
 		<release version="0.4" date="2008-11-11" description="Fix issues in Scanner">
             <action dev="py4fun" type="update">
                 Move constants from Yaml interface to appropriate classes (2008-11-10)

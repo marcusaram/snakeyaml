@@ -126,11 +126,7 @@ public class Yaml {
     public Object load(final String yaml) {
         final Constructor ctor = factory.createConstructor(factory.createComposer(factory
                 .createParser(factory.createScanner(yaml)), factory.createResolver()));
-        if (ctor.checkData()) {
-            return ctor.getData();
-        } else {
-            return null;
-        }
+        return ctor.getSingleData();
     }
 
     /**
@@ -144,11 +140,7 @@ public class Yaml {
     public Object load(final InputStream io) {
         final Constructor ctor = factory.createConstructor(factory.createComposer(factory
                 .createParser(factory.createScanner(io)), factory.createResolver()));
-        if (ctor.checkData()) {
-            return ctor.getData();
-        } else {
-            return null;
-        }
+        return ctor.getSingleData();
     }
 
     /**

@@ -13,6 +13,8 @@ public interface Constructor {
 
     Object getData();
 
+    Object getSingleData();
+
     Object constructDocument(final Node node);
 
     Object constructObject(final Node node);

@@ -13,4 +13,6 @@ public interface Composer {
     public boolean checkNode();
 
     public Node getNode();
+
+    public Node getSingleNode();
 }

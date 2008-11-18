@@ -563,6 +563,7 @@ public class ParserImpl implements Parser {
                 choices.add(ValueToken.class);
                 choices.add(BlockEndToken.class);
                 if (!scanner.checkToken(choices)) {
+                    states.add(new ParseIndentlessSequenceEntry());
                     return new ParseBlockNode().produce();
                 } else {
                     state = new ParseIndentlessSequenceEntry();

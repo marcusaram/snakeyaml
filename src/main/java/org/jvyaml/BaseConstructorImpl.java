@@ -73,6 +73,15 @@ public class BaseConstructorImpl implements Constructor {
         return null;
     }
 
+    public Object getSingleData() {
+        // Ensure that the stream contains a single document and construct it
+        Node node = composer.getSingleNode();
+        if (null != node) {
+            return constructDocument(node);
+        }
+        return null;
+    }
+
     public Object constructDocument(final Node node) {
         final Object data = constructObject(node);
         constructedObjects.clear();
