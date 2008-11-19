@@ -21,7 +21,7 @@ public interface Constructor {
 
     Object constructPrivateType(final Node node);
 
-    Object constructSequence(final Node node);
+    Object constructSequence(final Node node, boolean deep);
 
     Object constructMapping(final Node node);
 
