@@ -28,14 +28,14 @@ public class BaseConstructorImpl implements Constructor {
     private final static Map<String, Pattern> yamlMultiRegexps = new HashMap<String, Pattern>();
 
     private Composer composer;
-    private Map constructedObjects;
-    private Map recursiveObjects;
+    private Map<Node, Object> constructedObjects;
+    private Map<Node, Object> recursiveObjects;
     private boolean deepConstruct;
 
     public BaseConstructorImpl(final Composer composer) {
         this.composer = composer;
-        constructedObjects = new HashMap();
-        recursiveObjects = new HashMap();
+        constructedObjects = new HashMap<Node, Object>();
+        recursiveObjects = new HashMap<Node, Object>();
         deepConstruct = false;
     }
 
@@ -80,7 +80,8 @@ public class BaseConstructorImpl implements Constructor {
             return constructedObjects.get(node);
         }
         if (recursiveObjects.containsKey(node)) {
-            throw new ConstructorException(null, null, "found recursive node", node.getStartMark());
+            throw new ConstructorException(null, null, "found unconstructable recursive node", node
+                    .getStartMark());
         }
         recursiveObjects.put(node, null);
         YamlConstructor ctor = getYamlConstructor(node.getTag());
@@ -114,6 +115,29 @@ public class BaseConstructorImpl implements Constructor {
         return data;
     }
 
+    public Object constructScalar(final Node node) {
+        if (!(node instanceof ScalarNode)) {
+            throw new ConstructorException(null, null, "expected a scalar node, but found "
+                    + node.getNodeId(), node.getStartMark());
+        }
+        return node.getValue();
+    }
+
+    @SuppressWarnings("unchecked")
+    public Object constructSequence(final Node node, boolean deep) {
+        if (!(node instanceof SequenceNode)) {
+            throw new ConstructorException(null, null, "expected a sequence node, but found "
+                    + node.getNodeId(), node.getStartMark());
+        }
+        final List<Node> internal = (List<Node>) node.getValue();
+        final List<Object> result = new ArrayList<Object>(internal.size());
+        for (final Iterator<Node> iter = internal.iterator(); iter.hasNext();) {
+            Node child = iter.next();
+            result.add(constructObject(child, deep));
+        }
+        return result;
+    }
+
     public static void addMultiConstructor(final String tagPrefix, final YamlMultiConstructor ctor) {
         yamlMultiConstructors.put(tagPrefix, ctor);
         yamlMultiRegexps.put(tagPrefix, Pattern.compile("^" + tagPrefix));
@@ -137,7 +161,7 @@ public class BaseConstructorImpl implements Constructor {
         if (node instanceof ScalarNode) {
             return constructScalar(node);
         } else if (node instanceof SequenceNode) {
-            return constructSequence(node);
+            return constructSequence(node, false);
         } else if (node instanceof MappingNode) {
             return constructMapping(node);
         } else {
@@ -146,46 +170,16 @@ public class BaseConstructorImpl implements Constructor {
         return null;
     }
 
-    public Object constructScalar(final Node node) {
-        if (!(node instanceof ScalarNode)) {
-            if (node instanceof MappingNode) {
-                final Map vals = ((Map) node.getValue());
-                for (final Iterator iter = vals.keySet().iterator(); iter.hasNext();) {
-                    final Node key = (Node) iter.next();
-                    if ("tag:yaml.org,2002:value".equals(key.getTag())) {
-                        return constructScalar((Node) vals.get(key));
-                    }
-                }
-            }
-            throw new ConstructorException(null, null, "expected a scalar node, but found "
-                    + node.getNodeId(), node.getStartMark());
-        }
-        return node.getValue();
-    }
-
     public Object constructPrivateType(final Node node) {
         Object val = null;
         if (node.getValue() instanceof Map) {
             val = constructMapping(node);
         } else if (node.getValue() instanceof List) {
-            val = constructSequence(node);
+            val = constructSequence(node, false);
         } else {
             val = node.getValue().toString();
         }
         return new PrivateType(node.getTag(), val);
-    }
-
-    public Object constructSequence(final Node node) {
-        if (!(node instanceof SequenceNode)) {
-            throw new ConstructorException(null, null, "expected a sequence node, but found "
-                    + node.getNodeId(), node.getStartMark());
-        }
-        final List internal = (List) node.getValue();
-        final List val = new ArrayList(internal.size());
-        for (final Iterator iter = internal.iterator(); iter.hasNext();) {
-            val.add(constructObject((Node) iter.next(), false));
-        }
-        return val;
     }
 
     public Object constructMapping(final Node node) {
@@ -277,7 +271,7 @@ public class BaseConstructorImpl implements Constructor {
     };
     public final static YamlConstructor CONSTRUCT_SEQUENCE = new YamlConstructor() {
         public Object call(final Constructor self, final Node node) {
-            return self.constructSequence(node);
+            return self.constructSequence(node, false);
         }
     };
     public final static YamlConstructor CONSTRUCT_MAPPING = new YamlConstructor() {
