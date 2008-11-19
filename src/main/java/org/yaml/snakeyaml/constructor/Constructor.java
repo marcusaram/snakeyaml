@@ -25,7 +25,7 @@ public interface Constructor {
 
     Object constructMapping(final Node node);
 
-    Object constructPairs(final Node node);
+    Object constructPairs(final Node node, boolean deep);
 
     interface YamlConstructor {
         Object call(final Constructor self, final Node node);

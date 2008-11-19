@@ -239,19 +239,21 @@ public class BaseConstructorImpl implements Constructor {
         return mapping;
     }
 
-    public Object constructPairs(final Node node) {
+    public Object constructPairs(final Node node, boolean deep) {
         if (!(node instanceof MappingNode)) {
             throw new ConstructorException(null, null, "expected a mapping node, but found "
                     + node.getNodeId(), node.getStartMark());
         }
-        final List value = new LinkedList();
-        final Map vals = (Map) node.getValue();
-        for (final Iterator iter = vals.keySet().iterator(); iter.hasNext();) {
-            final Node key = (Node) iter.next();
-            final Node val = (Node) vals.get(key);
-            value.add(new Object[] { constructObject(key, false), constructObject(val, false) });
+        final List<Object> pairs = new LinkedList<Object>();
+        final Map<Node, Node> vals = (Map<Node, Node>) node.getValue();
+        for (final Iterator<Node> iter = vals.keySet().iterator(); iter.hasNext();) {
+            final Node keyNode = iter.next();
+            final Node valueNode = vals.get(keyNode);
+            Object key = constructObject(keyNode, deep);
+            Object value = constructObject(valueNode, deep);
+            pairs.add(new Object[] { key, value });
         }
-        return value;
+        return pairs;
     }
 
     public final static YamlConstructor CONSTRUCT_PRIMITIVE = new YamlConstructor() {
