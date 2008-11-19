@@ -23,53 +23,32 @@ import org.yaml.snakeyaml.nodes.SequenceNode;
  * @see PyYAML 3.06 for more information
  */
 public class BaseConstructorImpl implements Constructor {
-    private final static Map yamlConstructors = new HashMap();
-    private final static Map yamlMultiConstructors = new HashMap();
-    private final static Map yamlMultiRegexps = new HashMap();
-
-    public YamlConstructor getYamlConstructor(final Object key) {
-        return (YamlConstructor) yamlConstructors.get(key);
-    }
-
-    public YamlMultiConstructor getYamlMultiConstructor(final Object key) {
-        return (YamlMultiConstructor) yamlMultiConstructors.get(key);
-    }
-
-    public Pattern getYamlMultiRegexp(final Object key) {
-        return (Pattern) yamlMultiRegexps.get(key);
-    }
-
-    public Set getYamlMultiRegexps() {
-        return yamlMultiRegexps.keySet();
-    }
-
-    public static void addConstructor(final String tag, final YamlConstructor ctor) {
-        yamlConstructors.put(tag, ctor);
-    }
-
-    public static void addMultiConstructor(final String tagPrefix, final YamlMultiConstructor ctor) {
-        yamlMultiConstructors.put(tagPrefix, ctor);
-        yamlMultiRegexps.put(tagPrefix, Pattern.compile("^" + tagPrefix));
-    }
+    private final static Map<String, YamlConstructor> yamlConstructors = new HashMap<String, YamlConstructor>();
+    private final static Map<String, YamlMultiConstructor> yamlMultiConstructors = new HashMap<String, YamlMultiConstructor>();
+    private final static Map<String, Pattern> yamlMultiRegexps = new HashMap<String, Pattern>();
 
     private Composer composer;
-    private Map constructedObjects = new HashMap();
-    private Map recursiveObjects = new HashMap();
+    private Map constructedObjects;
+    private Map recursiveObjects;
+    private boolean deepConstruct;
 
     public BaseConstructorImpl(final Composer composer) {
         this.composer = composer;
+        constructedObjects = new HashMap();
+        recursiveObjects = new HashMap();
+        deepConstruct = false;
     }
 
     public boolean checkData() {
+        // If there are more documents available?
         return composer.checkNode();
     }
 
     public Object getData() {
+        // Construct and return the next document.
         if (composer.checkNode()) {
             Node node = composer.getNode();
-            if (null != node) {
-                return constructDocument(node);
-            }
+            return constructDocument(node);
         }
         return null;
     }
@@ -77,34 +56,26 @@ public class BaseConstructorImpl implements Constructor {
     public Object getSingleData() {
         // Ensure that the stream contains a single document and construct it
         Node node = composer.getSingleNode();
-        if (null != node) {
+        if (node != null) {
             return constructDocument(node);
         }
         return null;
     }
 
-    public Object constructDocument(final Node node) {
-        final Object data = constructObject(node);
+    private Object constructDocument(Node node) {
+        Object data = constructObject(node, false);
         constructedObjects.clear();
         recursiveObjects.clear();
+        deepConstruct = false;
         return data;
     }
 
-    public static class YamlMultiAdapter implements YamlConstructor {
-        private YamlMultiConstructor ctor;
-        private String prefix;
-
-        public YamlMultiAdapter(final YamlMultiConstructor ctor, final String prefix) {
-            this.ctor = ctor;
-            this.prefix = prefix;
+    private Object constructObject(final Node node, boolean deep) {
+        boolean oldDeep;
+        if (deep) {
+            oldDeep = deepConstruct;
+            deepConstruct = true;
         }
-
-        public Object call(final Constructor self, final Node node) {
-            return ctor.call(self, this.prefix, node);
-        }
-    }
-
-    public Object constructObject(final Node node) {
         if (constructedObjects.containsKey(node)) {
             return constructedObjects.get(node);
         }
@@ -141,6 +112,25 @@ public class BaseConstructorImpl implements Constructor {
         constructedObjects.put(node, data);
         recursiveObjects.remove(node);
         return data;
+    }
+
+    public static void addMultiConstructor(final String tagPrefix, final YamlMultiConstructor ctor) {
+        yamlMultiConstructors.put(tagPrefix, ctor);
+        yamlMultiRegexps.put(tagPrefix, Pattern.compile("^" + tagPrefix));
+    }
+
+    public static class YamlMultiAdapter implements YamlConstructor {
+        private YamlMultiConstructor ctor;
+        private String prefix;
+
+        public YamlMultiAdapter(final YamlMultiConstructor ctor, final String prefix) {
+            this.ctor = ctor;
+            this.prefix = prefix;
+        }
+
+        public Object call(final Constructor self, final Node node) {
+            return ctor.call(self, this.prefix, node);
+        }
     }
 
     public Object constructPrimitive(final Node node) {
@@ -193,7 +183,7 @@ public class BaseConstructorImpl implements Constructor {
         final List internal = (List) node.getValue();
         final List val = new ArrayList(internal.size());
         for (final Iterator iter = internal.iterator(); iter.hasNext();) {
-            val.add(constructObject((Node) iter.next()));
+            val.add(constructObject((Node) iter.next(), false));
         }
         return val;
     }
@@ -240,9 +230,9 @@ public class BaseConstructorImpl implements Constructor {
                     throw new ConstructorException("while construction a mapping", node
                             .getStartMark(), "found duplicate value key", key_v.getStartMark());
                 }
-                mapping.put("=", constructObject(value_v));
+                mapping.put("=", constructObject(value_v, false));
             } else {
-                mapping.put(constructObject(key_v), constructObject(value_v));
+                mapping.put(constructObject(key_v, false), constructObject(value_v, false));
             }
         }
         if (null != merge) {
@@ -265,7 +255,7 @@ public class BaseConstructorImpl implements Constructor {
         for (final Iterator iter = vals.keySet().iterator(); iter.hasNext();) {
             final Node key = (Node) iter.next();
             final Node val = (Node) vals.get(key);
-            value.add(new Object[] { constructObject(key), constructObject(val) });
+            value.add(new Object[] { constructObject(key, false), constructObject(val, false) });
         }
         return value;
     }
@@ -295,5 +285,25 @@ public class BaseConstructorImpl implements Constructor {
             return self.constructMapping(node);
         }
     };
+
+    public YamlConstructor getYamlConstructor(final Object key) {
+        return yamlConstructors.get(key);
+    }
+
+    public YamlMultiConstructor getYamlMultiConstructor(final Object key) {
+        return yamlMultiConstructors.get(key);
+    }
+
+    public Pattern getYamlMultiRegexp(final Object key) {
+        return yamlMultiRegexps.get(key);
+    }
+
+    public Set<String> getYamlMultiRegexps() {
+        return yamlMultiRegexps.keySet();
+    }
+
+    public static void addConstructor(final String tag, final YamlConstructor ctor) {
+        yamlConstructors.put(tag, ctor);
+    }
 
 }

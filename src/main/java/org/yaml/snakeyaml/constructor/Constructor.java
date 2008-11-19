@@ -15,10 +15,6 @@ public interface Constructor {
 
     Object getSingleData();
 
-    Object constructDocument(final Node node);
-
-    Object constructObject(final Node node);
-
     Object constructPrimitive(final Node node);
 
     Object constructScalar(final Node node);
