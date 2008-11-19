@@ -21,11 +21,11 @@ public interface Constructor {
 
     Object constructPrivateType(final Node node);
 
-    Object constructSequence(final Node node, boolean deep);
+    Object constructSequence(final Node node);
 
     Object constructMapping(final Node node);
 
-    Object constructPairs(final Node node, boolean deep);
+    Object constructPairs(final Node node);
 
     interface YamlConstructor {
         Object call(final Constructor self, final Node node);
