@@ -26,12 +26,4 @@ public interface Constructor {
     Object constructMapping(final Node node);
 
     Object constructPairs(final Node node);
-
-    interface YamlConstructor {
-        Object call(final Constructor self, final Node node);
-    }
-
-    interface YamlMultiConstructor {
-        Object call(final Constructor self, final String pref, final Node node);
-    }
 }
