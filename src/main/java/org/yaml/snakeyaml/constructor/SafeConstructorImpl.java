@@ -95,7 +95,7 @@ public class SafeConstructorImpl extends BaseConstructorImpl {
     }
 
     public static Object constructYamlOmap(final Constructor ctor, final Node node) {
-        return ctor.constructPairs(node);
+        return ctor.constructPairs(node, false);
     }
 
     public static Object constructYamlPairs(final Constructor ctor, final Node node) {
