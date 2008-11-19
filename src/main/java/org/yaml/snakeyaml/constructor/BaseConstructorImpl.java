@@ -20,6 +20,8 @@ import org.yaml.snakeyaml.nodes.ScalarNode;
 import org.yaml.snakeyaml.nodes.SequenceNode;
 
 /**
+ * because Java does not have generators 'deep' is dropped.
+ * 
  * @see PyYAML 3.06 for more information
  */
 public class BaseConstructorImpl implements Constructor {
@@ -30,13 +32,11 @@ public class BaseConstructorImpl implements Constructor {
     private Composer composer;
     private Map<Node, Object> constructedObjects;
     private Map<Node, Object> recursiveObjects;
-    private boolean deepConstruct;
 
     public BaseConstructorImpl(final Composer composer) {
         this.composer = composer;
         constructedObjects = new HashMap<Node, Object>();
         recursiveObjects = new HashMap<Node, Object>();
-        deepConstruct = false;
     }
 
     public boolean checkData() {
@@ -63,19 +63,13 @@ public class BaseConstructorImpl implements Constructor {
     }
 
     private Object constructDocument(Node node) {
-        Object data = constructObject(node, false);
+        Object data = constructObject(node);
         constructedObjects.clear();
         recursiveObjects.clear();
-        deepConstruct = false;
         return data;
     }
 
-    private Object constructObject(final Node node, boolean deep) {
-        boolean oldDeep;
-        if (deep) {
-            oldDeep = deepConstruct;
-            deepConstruct = true;
-        }
+    private Object constructObject(final Node node) {
         if (constructedObjects.containsKey(node)) {
             return constructedObjects.get(node);
         }
@@ -124,7 +118,7 @@ public class BaseConstructorImpl implements Constructor {
     }
 
     @SuppressWarnings("unchecked")
-    public Object constructSequence(final Node node, boolean deep) {
+    public Object constructSequence(final Node node) {
         if (!(node instanceof SequenceNode)) {
             throw new ConstructorException(null, null, "expected a sequence node, but found "
                     + node.getNodeId(), node.getStartMark());
@@ -133,7 +127,7 @@ public class BaseConstructorImpl implements Constructor {
         final List<Object> result = new ArrayList<Object>(internal.size());
         for (final Iterator<Node> iter = internal.iterator(); iter.hasNext();) {
             Node child = iter.next();
-            result.add(constructObject(child, deep));
+            result.add(constructObject(child));
         }
         return result;
     }
@@ -161,7 +155,7 @@ public class BaseConstructorImpl implements Constructor {
         if (node instanceof ScalarNode) {
             return constructScalar(node);
         } else if (node instanceof SequenceNode) {
-            return constructSequence(node, false);
+            return constructSequence(node);
         } else if (node instanceof MappingNode) {
             return constructMapping(node);
         } else {
@@ -175,7 +169,7 @@ public class BaseConstructorImpl implements Constructor {
         if (node.getValue() instanceof Map) {
             val = constructMapping(node);
         } else if (node.getValue() instanceof List) {
-            val = constructSequence(node, false);
+            val = constructSequence(node);
         } else {
             val = node.getValue().toString();
         }
@@ -224,9 +218,9 @@ public class BaseConstructorImpl implements Constructor {
                     throw new ConstructorException("while construction a mapping", node
                             .getStartMark(), "found duplicate value key", key_v.getStartMark());
                 }
-                mapping.put("=", constructObject(value_v, false));
+                mapping.put("=", constructObject(value_v));
             } else {
-                mapping.put(constructObject(key_v, false), constructObject(value_v, false));
+                mapping.put(constructObject(key_v), constructObject(value_v));
             }
         }
         if (null != merge) {
@@ -239,7 +233,7 @@ public class BaseConstructorImpl implements Constructor {
         return mapping;
     }
 
-    public Object constructPairs(final Node node, boolean deep) {
+    public Object constructPairs(final Node node) {
         if (!(node instanceof MappingNode)) {
             throw new ConstructorException(null, null, "expected a mapping node, but found "
                     + node.getNodeId(), node.getStartMark());
@@ -249,8 +243,8 @@ public class BaseConstructorImpl implements Constructor {
         for (final Iterator<Node> iter = vals.keySet().iterator(); iter.hasNext();) {
             final Node keyNode = iter.next();
             final Node valueNode = vals.get(keyNode);
-            Object key = constructObject(keyNode, deep);
-            Object value = constructObject(valueNode, deep);
+            Object key = constructObject(keyNode);
+            Object value = constructObject(valueNode);
             pairs.add(new Object[] { key, value });
         }
         return pairs;
@@ -273,7 +267,7 @@ public class BaseConstructorImpl implements Constructor {
     };
     public final static YamlConstructor CONSTRUCT_SEQUENCE = new YamlConstructor() {
         public Object call(final Constructor self, final Node node) {
-            return self.constructSequence(node, false);
+            return self.constructSequence(node);
         }
     };
     public final static YamlConstructor CONSTRUCT_MAPPING = new YamlConstructor() {

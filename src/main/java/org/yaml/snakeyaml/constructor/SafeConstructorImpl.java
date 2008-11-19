@@ -95,7 +95,7 @@ public class SafeConstructorImpl extends BaseConstructorImpl {
     }
 
     public static Object constructYamlOmap(final Constructor ctor, final Node node) {
-        return ctor.constructPairs(node, false);
+        return ctor.constructPairs(node);
     }
 
     public static Object constructYamlPairs(final Constructor ctor, final Node node) {
@@ -112,7 +112,7 @@ public class SafeConstructorImpl extends BaseConstructorImpl {
     }
 
     public static Object constructYamlSeq(final Constructor ctor, final Node node) {
-        return ctor.constructSequence(node, false);
+        return ctor.constructSequence(node);
     }
 
     public static Object constructYamlMap(final Constructor ctor, final Node node) {
@@ -304,7 +304,7 @@ public class SafeConstructorImpl extends BaseConstructorImpl {
             throw new YAMLException("Can't construct a sequence from class " + pref + ": "
                     + e.toString());
         }
-        outp.addAll((List) ctor.constructSequence(node, false));
+        outp.addAll((List) ctor.constructSequence(node));
         return outp;
     }
 
