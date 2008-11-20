@@ -15,7 +15,7 @@ public class SequenceNode extends CollectionNode {
 
     @SuppressWarnings("unchecked")
     public SequenceNode(final String tag, final List value, final Mark startMark,
-            final Mark endMark, final boolean flowStyle) {
+            final Mark endMark, final Boolean flowStyle) {
         super(tag, value, startMark, endMark, flowStyle);
     }
 
