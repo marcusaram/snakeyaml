@@ -447,7 +447,8 @@ public class ParserImpl implements Parser {
             boolean implicit = (tag == null || tag.equals("!"));
             if (indentlessSequence && scanner.checkToken(BlockEntryToken.class)) {
                 endMark = scanner.peekToken().getEndMark();
-                event = new SequenceStartEvent(anchor, tag, implicit, startMark, endMark, false);
+                event = new SequenceStartEvent(anchor, tag, implicit, startMark, endMark,
+                        Boolean.FALSE);
                 state = new ParseIndentlessSequenceEntry();
             } else {
                 if (scanner.checkToken(ScalarToken.class)) {
@@ -469,19 +470,23 @@ public class ParserImpl implements Parser {
                     state = states.removeLast();
                 } else if (scanner.checkToken(FlowSequenceStartToken.class)) {
                     endMark = scanner.peekToken().getEndMark();
-                    event = new SequenceStartEvent(anchor, tag, implicit, startMark, endMark, true);
+                    event = new SequenceStartEvent(anchor, tag, implicit, startMark, endMark,
+                            Boolean.TRUE);
                     state = new ParseFlowSequenceFirstEntry();
                 } else if (scanner.checkToken(FlowMappingStartToken.class)) {
                     endMark = scanner.peekToken().getEndMark();
-                    event = new MappingStartEvent(anchor, tag, implicit, startMark, endMark, true);
+                    event = new MappingStartEvent(anchor, tag, implicit, startMark, endMark,
+                            Boolean.TRUE);
                     state = new ParseFlowMappingFirstKey();
                 } else if (block && scanner.checkToken(BlockSequenceStartToken.class)) {
                     endMark = scanner.peekToken().getStartMark();
-                    event = new SequenceStartEvent(anchor, tag, implicit, startMark, endMark, false);
+                    event = new SequenceStartEvent(anchor, tag, implicit, startMark, endMark,
+                            Boolean.FALSE);
                     state = new ParseBlockSequenceFirstEntry();
                 } else if (block && scanner.checkToken(BlockMappingStartToken.class)) {
                     endMark = scanner.peekToken().getStartMark();
-                    event = new MappingStartEvent(anchor, tag, implicit, startMark, endMark, false);
+                    event = new MappingStartEvent(anchor, tag, implicit, startMark, endMark,
+                            Boolean.FALSE);
                     state = new ParseBlockMappingFirstKey();
                 } else if (anchor != null || tag != null) {
                     // Empty scalars are allowed even if a tag or an anchor is
@@ -684,7 +689,7 @@ public class ParserImpl implements Parser {
                 if (scanner.checkToken(KeyToken.class)) {
                     Token token = scanner.peekToken();
                     Event event = new MappingStartEvent(null, null, true, token.getStartMark(),
-                            token.getEndMark(), true);
+                            token.getEndMark(), Boolean.TRUE);
                     state = new ParseFlowSequenceEntryMappingKey();
                     return event;
                 } else if (!scanner.checkToken(FlowSequenceEndToken.class)) {

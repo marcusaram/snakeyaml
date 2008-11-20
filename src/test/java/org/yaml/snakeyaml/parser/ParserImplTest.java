@@ -31,7 +31,8 @@ public class ParserImplTest extends TestCase {
         LinkedList<Event> etalonEvents = new LinkedList<Event>();
         etalonEvents.add(new StreamStartEvent(dummyMark, dummyMark));
         etalonEvents.add(new DocumentStartEvent(dummyMark, dummyMark, false, null, null));
-        etalonEvents.add(new MappingStartEvent(null, null, true, dummyMark, dummyMark, false));
+        etalonEvents.add(new MappingStartEvent(null, null, true, dummyMark, dummyMark,
+                Boolean.FALSE));
         boolean[] implicit = { true, false };
         etalonEvents.add(new ScalarEvent(null, null, implicit, "string", dummyMark, dummyMark,
                 (char) 0));
@@ -61,11 +62,13 @@ public class ParserImplTest extends TestCase {
         LinkedList<Event> etalonEvents = new LinkedList<Event>();
         etalonEvents.add(new StreamStartEvent(dummyMark, dummyMark));
         etalonEvents.add(new DocumentStartEvent(dummyMark, dummyMark, false, null, null));
-        etalonEvents.add(new MappingStartEvent(null, null, true, dummyMark, dummyMark, true));
+        etalonEvents
+                .add(new MappingStartEvent(null, null, true, dummyMark, dummyMark, Boolean.TRUE));
         boolean[] implicit = { true, false };
         etalonEvents.add(new ScalarEvent(null, null, implicit, "american", dummyMark, dummyMark,
                 (char) 0));
-        etalonEvents.add(new SequenceStartEvent(null, null, true, dummyMark, dummyMark, false));
+        etalonEvents.add(new SequenceStartEvent(null, null, true, dummyMark, dummyMark,
+                Boolean.FALSE));
         etalonEvents.add(new ScalarEvent(null, null, implicit, "Boston Red Sox", dummyMark,
                 dummyMark, (char) 0));
         etalonEvents.add(new SequenceEndEvent(dummyMark, dummyMark));
