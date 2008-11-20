@@ -11,10 +11,10 @@ import org.yaml.snakeyaml.error.Mark;
 public abstract class CollectionStartEvent extends NodeEvent {
     private String tag;
     private boolean implicit;
-    private boolean flowStyle;
+    private Boolean flowStyle;
 
     public CollectionStartEvent(final String anchor, final String tag, final boolean implicit,
-            final Mark startMark, final Mark endMark, final boolean flowStyle) {
+            final Mark startMark, final Mark endMark, final Boolean flowStyle) {
         super(anchor, startMark, endMark);
         this.tag = tag;
         this.implicit = implicit;
@@ -29,7 +29,7 @@ public abstract class CollectionStartEvent extends NodeEvent {
         return this.implicit;
     }
 
-    public boolean getFlowStyle() {
+    public Boolean getFlowStyle() {
         return this.flowStyle;
     }
 
