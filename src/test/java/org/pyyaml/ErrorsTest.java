@@ -92,7 +92,8 @@ public class ErrorsTest extends PyImportTest {
 
     @SuppressWarnings("unchecked")
     public void testLoaderErrors1() throws FileNotFoundException {
-        File[] files = getStreamsByExtension("no-block-mapping-end-2.loader-error");
+        // TODO this test for debugging only
+        File[] files = getStreamsByExtension("unacceptable-key.loader-error");
         try {
             for (Object document : loadAll(new FileInputStream(files[0]))) {
                 assertNotNull(document);
