@@ -38,6 +38,35 @@ public class ConstructorTest extends TestCase {
         assertEquals(99, person.getAge());
     }
 
+    /**
+     * TODO Deviation from PyYAML. Assume the tag is the class name
+     */
+    public void qtestGetBeanAssumeClass() {
+        String data = "--- !org.yaml.snakeyaml.constructor.Person\nfirstName: Andrey\nage: 99";
+        Object obj = construct(data);
+        assertNotNull(obj);
+        assertTrue("Unexpected: " + obj.getClass().toString(), obj instanceof Person);
+        Person person = (Person) obj;
+        assertEquals("Andrey", person.getFirstName());
+        assertNull(person.getLastName());
+        assertEquals(99, person.getAge());
+    }
+
+    // TODO sequence constructor is not yet implemented
+    /**
+     * create instance from constructor
+     */
+    public void qtestGetConstructorBean() {
+        String data = "--- !java/object:org.yaml.snakeyaml.constructor.Person [ Andrey, Somov, 99 ]";
+        Object obj = construct(data);
+        assertNotNull(obj);
+        assertTrue(obj.getClass().toString(), obj instanceof Person);
+        Person person = (Person) obj;
+        assertEquals("Andrey", person.getFirstName());
+        assertNull(person.getLastName());
+        assertEquals(99, person.getAge());
+    }
+
     private Object construct(String data) {
         Reader reader = new Reader(data);
         Scanner scanner = new ScannerImpl(reader);
