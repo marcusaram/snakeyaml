@@ -1,4 +1,4 @@
-package org.jvyaml.nodes;
+package org.yaml.snakeyaml.nodes;
 
 import org.yaml.snakeyaml.nodes.Node;
 import org.yaml.snakeyaml.nodes.ScalarNode;
