@@ -5,6 +5,7 @@ package org.yaml.snakeyaml.types;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @see http://yaml.org/type/null.html
@@ -41,6 +42,19 @@ public class NullTagTest extends AbstractTest {
         assertNull(parsed.get(2));
         assertEquals("4th entry", parsed.get(3));
         assertNull(parsed.get(4));
+    }
+
+    public void testNullInMap() throws IOException {
+        String input = "key1: null\n~: value1";
+        Map<String, Object> parsed = getMap(input);
+        assertEquals(2, parsed.size());
+        assertTrue(parsed.containsKey(null));
+        Object value1 = parsed.get(null);
+        assertEquals("value1", value1);
+        //
+        assertNull(parsed.get("key1"));
+        //
+        assertFalse(getMap("key2: value2").containsKey(null));
     }
 
     public void testBoolShorthand() throws IOException {
