@@ -1,4 +1,4 @@
-package org.jvyaml.events;
+package org.yaml.snakeyaml.events;
 
 import junit.framework.TestCase;
 
