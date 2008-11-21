@@ -142,7 +142,6 @@ public class ComposerImpl implements Composer {
         SequenceStartEvent startEvent = (SequenceStartEvent) parser.getEvent();
         String tag = startEvent.getTag();
         if (tag == null || tag.equals("!")) {
-            // TODO get rid of TRU and FALS
             tag = resolver.resolve(SequenceNode.class, null, startEvent.getImplicit());
         }
         CollectionNode node = new SequenceNode(tag, new ArrayList<Object>(), startEvent
