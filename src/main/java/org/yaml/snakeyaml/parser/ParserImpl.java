@@ -300,7 +300,6 @@ public class ParserImpl implements Parser {
             choices.add(StreamEndToken.class);
             Event event;
             if (scanner.checkToken(choices)) {
-                // XXX business usage of Mark
                 event = processEmptyScalar(scanner.peekToken().getStartMark());
                 state = states.removeLast();
                 return event;

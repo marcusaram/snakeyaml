@@ -199,7 +199,6 @@ public class ScannerImpl implements Scanner {
      * Check if the next token is one of the given types.
      */
     @SuppressWarnings("unchecked")
-    // TODO should the Class have Token definition ?
     public boolean checkToken(final List<Class> choices) {
         while (needMoreTokens()) {
             fetchMoreTokens();
