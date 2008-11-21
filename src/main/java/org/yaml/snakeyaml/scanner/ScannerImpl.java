@@ -1154,35 +1154,6 @@ public class ScannerImpl implements Scanner {
                     "expected alphabetic or numeric character, but found " + ch + "("
                             + ((int) reader.peek()) + ")", reader.getMark());
         }
-        /**
-         * TODO Code in JvYAML 0.2.1 (is it faster ?)
-         * 
-         * <pre>
-         * int chunk_size = 16;
-         * Matcher m = null;
-         * for (;;) {
-         *     final String chunk = reader.prefix(chunk_size);
-         *     if ((m = NON_ALPHA.matcher(chunk)).find()) {
-         *         break;
-         *     }
-         *     chunk_size += 16;
-         * }
-         * length = m.start();
-         * if (length == 0) {
-         *     throw new ScannerException(&quot;while scanning an &quot; + name, startMark,
-         *             &quot;expected alphabetic or numeric character, but found something else...&quot;, reader
-         *                     .getMark(), null);
-         * }
-         * final String value = reader.prefix(length);
-         * reader.forward(length);
-         * if (NON_ALPHA_OR_NUM.indexOf(reader.peek()) == -1) {
-         *     throw new ScannerException(&quot;while scanning an &quot; + name, startMark,
-         *             &quot;expected alphabetic or numeric character, but found &quot; + reader.peek() + &quot;(&quot;
-         *                     + ((int) reader.peek()) + &quot;)&quot;, reader.getMark(), null);
-         * 
-         * }
-         * </pre>
-         */
         Mark endMark = reader.getMark();
         Token tok;
         if (isAnchor) {
