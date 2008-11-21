@@ -32,14 +32,12 @@ public class BoolTagTest extends AbstractTest {
         assertEquals(Boolean.TRUE, getMapValue("canonical: ON", "canonical"));
         assertEquals(Boolean.TRUE, getMapValue("canonical: On", "canonical"));
         assertEquals(Boolean.TRUE, getMapValue("canonical: on", "canonical"));
-        // TODO assertEquals(Boolean.TRUE, getData("canonical:
-        // Y").get("canonical"));
-        // TODO assertEquals(Boolean.TRUE, getData("canonical:
-        // y").get("canonical"));
-        // TODO assertEquals(Boolean.FALSE, getMapValue("canonical: n",
-        // "canonical"));
-        // TODO assertEquals(Boolean.FALSE, getMapValue("canonical: N",
-        // "canonical"));
+        // it looks like it is against the specification but it is like in
+        // PyYAML
+        assertEquals("n", getMapValue("canonical: n", "canonical"));
+        assertEquals("N", getMapValue("canonical: N", "canonical"));
+        assertEquals("y", getMapValue("canonical: y", "canonical"));
+        assertEquals("Y", getMapValue("canonical: Y", "canonical"));
     }
 
     public void testBoolShorthand() throws IOException {
