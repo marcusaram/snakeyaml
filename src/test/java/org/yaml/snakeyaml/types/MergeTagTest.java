@@ -22,12 +22,12 @@ public class MergeTagTest extends AbstractTest {
         Map<Object, Object> center = (Map<Object, Object>) list.get(0);
         assertEquals(2, center.size());
         assertEquals(new Long(1), center.get("x"));
-        assertEquals(new Long(2), center.get(Boolean.TRUE));
+        assertEquals(new Long(2), center.get("y"));
         //
         Map<Object, Object> left = (Map<Object, Object>) list.get(1);
         assertEquals(2, left.size());
         assertEquals(new Long(0), left.get("x"));
-        assertEquals(new Long(2), left.get(Boolean.TRUE));
+        assertEquals(new Long(2), left.get("y"));
         //
         Map<Object, Object> big = (Map<Object, Object>) list.get(2);
         assertEquals(1, big.size());
@@ -40,7 +40,7 @@ public class MergeTagTest extends AbstractTest {
         Map<Object, Object> explicit = (Map<Object, Object>) list.get(4);
         assertEquals(4, explicit.size());
         assertEquals(new Long(1), explicit.get("x"));
-        assertEquals(new Long(2), explicit.get(Boolean.TRUE));
+        assertEquals(new Long(2), explicit.get("y"));
         assertEquals(new Long(10), explicit.get("r"));
         assertEquals("center/big", explicit.get("label"));
         // Merge one map
