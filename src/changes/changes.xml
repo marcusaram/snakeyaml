@@ -6,7 +6,7 @@
 	<body>
 	    <release version="0.5" date="in Mercurial" description="Fix issues in Parser">
             <action dev="py4fun" type="update">
-                Single characters 'Y', 'N', 'y' and 'n' parsed as String opposed to boolean
+                Single characters 'Y', 'N', 'y' and 'n' are parsed as String opposed to boolean
                 as it is defined in the specification. This is how it is done in PyYAML (2008-11-21)
             </action>
             <action dev="py4fun" type="remove">
