@@ -9,6 +9,7 @@ import java.io.Writer;
 import org.yaml.snakeyaml.YamlConfig;
 import org.yaml.snakeyaml.composer.Composer;
 import org.yaml.snakeyaml.constructor.Constructor;
+import org.yaml.snakeyaml.emitter.Emitter;
 import org.yaml.snakeyaml.parser.Parser;
 import org.yaml.snakeyaml.resolver.Resolver;
 import org.yaml.snakeyaml.scanner.Scanner;

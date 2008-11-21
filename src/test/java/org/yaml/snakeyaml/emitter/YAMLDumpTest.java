@@ -1,7 +1,7 @@
 /*
  * See LICENSE file in distribution for copyright and licensing information.
  */
-package org.jvyaml;
+package org.yaml.snakeyaml.emitter;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -10,9 +10,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
 
-import org.yaml.snakeyaml.Yaml;
-
 import junit.framework.TestCase;
+
+import org.jvyaml.DefaultYAMLConfig;
+import org.jvyaml.TestBean;
+import org.yaml.snakeyaml.Yaml;
 
 /**
  * @author <a href="mailto:ola.bini@ki.se">Ola Bini</a>
