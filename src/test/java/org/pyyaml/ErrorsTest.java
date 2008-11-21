@@ -15,11 +15,9 @@ public class ErrorsTest extends PyImportTest {
     // TODO these exceptions must be fixed
     private boolean skip(String filename) {
         List<String> failures = new ArrayList<String>();
-        failures.add("fetch-complex-value-bug.loader-error");
         failures.add("invalid-uri-escapes-2.loader-error");
         failures.add("invalid-uri-escapes-3.loader-error");
         failures.add("undefined-constructor.loader-error");
-        failures.add("no-block-mapping-end-2.loader-error");
         failures.add("unacceptable-key.loader-error");
         // TODO these are against the specification but I like it :)
         failures.add("invalid-omap-1.loader-error");
@@ -93,14 +91,12 @@ public class ErrorsTest extends PyImportTest {
     // TODO not imported: public void testDumperErrors()
 
     @SuppressWarnings("unchecked")
-    public void qtestLoaderErrors1() throws FileNotFoundException {
+    public void testLoaderErrors1() throws FileNotFoundException {
         File[] files = getStreamsByExtension("no-block-mapping-end-2.loader-error");
         try {
-            List<Object> data = (List<Object>) loadAll(new FileInputStream(files[0]));
-            for (Object object : data) {
-
-                System.out.println(object);
-
+            for (Object document : loadAll(new FileInputStream(files[0]))) {
+                assertNotNull(document);
+                System.out.println(document);
             }
             // System.out.println(data);
         } catch (YAMLException e) {
