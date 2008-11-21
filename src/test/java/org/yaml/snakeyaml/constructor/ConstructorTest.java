@@ -27,6 +27,17 @@ public class ConstructorTest extends TestCase {
         // LinkedHashMap);
     }
 
+    public void testGetBean() {
+        String data = "--- !java/object:org.yaml.snakeyaml.constructor.Person\nfirstName: Andrey\nage: 99";
+        Object obj = construct(data);
+        assertNotNull(obj);
+        assertTrue(obj.getClass().toString(), obj instanceof Person);
+        Person person = (Person) obj;
+        assertEquals("Andrey", person.getFirstName());
+        assertNull(person.getLastName());
+        assertEquals(99, person.getAge());
+    }
+
     private Object construct(String data) {
         Reader reader = new Reader(data);
         Scanner scanner = new ScannerImpl(reader);
