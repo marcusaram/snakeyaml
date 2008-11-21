@@ -80,8 +80,7 @@ public class ErrorsTest extends PyImportTest {
             try {
                 String content = getResource(files[i].getName());
                 load(content.trim());
-                // TODO fail("Loading must fail for " +
-                // files[i].getAbsolutePath());
+                fail("Loading must fail for " + files[i].getAbsolutePath());
                 // multiple documents must not be accepted
                 System.err.println("Loading must fail for " + files[i].getAbsolutePath());
             } catch (YAMLException e) {
