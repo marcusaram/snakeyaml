@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.yaml.snakeyaml.YamlConfig;
+import org.yaml.snakeyaml.emitter.EmitterImpl;
 import org.yaml.snakeyaml.resolver.ResolverImpl;
 
 import junit.framework.TestCase;

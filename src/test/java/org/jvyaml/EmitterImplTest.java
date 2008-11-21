@@ -7,6 +7,8 @@ import java.io.IOException;
 
 import junit.framework.TestCase;
 
+import org.yaml.snakeyaml.emitter.Emitter;
+import org.yaml.snakeyaml.emitter.EmitterImpl;
 import org.yaml.snakeyaml.events.Event;
 import org.yaml.snakeyaml.parser.Parser;
 import org.yaml.snakeyaml.parser.ParserImpl;
