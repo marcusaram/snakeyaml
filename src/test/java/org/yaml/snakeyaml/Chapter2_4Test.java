@@ -125,16 +125,12 @@ public class Chapter2_4Test extends TestCase {
 
     @SuppressWarnings("unchecked")
     public void testExample_2_25() {
-        try {
-            YamlDocument document = new YamlDocument("example2_25.yaml");
-            Set<String> set = (Set<String>) document.getNativeData();
-            assertEquals(3, set.size());
-            assertTrue(set.contains("Mark McGwire"));
-            assertTrue(set.contains("Sammy Sosa"));
-            assertTrue(set.contains("Ken Griff"));
-        } catch (RuntimeException e) {
-            // TODO fail("!!set is not implemented.");
-        }
+        YamlDocument document = new YamlDocument("example2_25.yaml");
+        Set<String> set = (Set<String>) document.getNativeData();
+        assertEquals(3, set.size());
+        assertTrue(set.contains("Mark McGwire"));
+        assertTrue(set.contains("Sammy Sosa"));
+        assertTrue(set.contains("Ken Griff"));
     }
 
     @SuppressWarnings("unchecked")
