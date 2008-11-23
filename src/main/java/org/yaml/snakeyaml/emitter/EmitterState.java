@@ -1,0 +1,15 @@
+/**
+ * See LICENSE file in distribution for copyright and licensing information.
+ */
+package org.yaml.snakeyaml.emitter;
+
+import java.io.IOException;
+
+/**
+ * Python's methods are first class object. Java need a class.
+ * 
+ * @see PyYAML 3.06 for more information
+ */
+interface EmitterState {
+    void expect() throws IOException;
+}

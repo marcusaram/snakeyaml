@@ -66,4 +66,7 @@ public interface YamlConfig {
     YamlConfig useDouble(final boolean useDouble);
 
     boolean useDouble();
+
+    String line_break();
+
 }
