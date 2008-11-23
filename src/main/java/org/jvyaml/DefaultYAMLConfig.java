@@ -159,4 +159,9 @@ public class DefaultYAMLConfig implements YamlConfig {
     public boolean useDouble() {
         return this.useDouble;
     }
+
+    public String line_break() {
+        // TODO Auto-generated method stub
+        return "\n";
+    }
 }

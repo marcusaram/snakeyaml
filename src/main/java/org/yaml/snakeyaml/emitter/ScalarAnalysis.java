@@ -7,6 +7,7 @@ package org.yaml.snakeyaml.emitter;
  * @see PyYAML 3.06 for more information
  */
 class ScalarAnalysis {
+    // TODO make getters
     public String scalar;
     public boolean empty;
     public boolean multiline;
