@@ -86,4 +86,28 @@ public class StrTagTest extends AbstractTest {
         String output = dump(map);
         assertTrue(output, output.contains("number: !!str True"));
     }
+
+    public void testEmitLongString() throws IOException {
+        String str = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx";
+        String output = dump(str);
+        assertEquals(str + "\n", output);
+    }
+
+    public void testEmitLongStringWithCR() throws IOException {
+        String str = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\n\n";
+        String output = dump(str);
+        assertEquals("'" + str + "\n  '\n", output);
+    }
+
+    public void testEmitDoubleQuoted() throws IOException {
+        String str = "\"xx\"";
+        String output = dump(str);
+        assertEquals("'" + str + "'\n", output);
+    }
+
+    public void testEmitEndOfLine() throws IOException {
+        String str = "xxxxxxx\n";
+        String output = dump(str);
+        assertEquals("'" + str + "\n  '\n", output);
+    }
 }
