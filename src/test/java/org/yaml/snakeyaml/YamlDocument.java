@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
 
 public class YamlDocument {
     public static final String ROOT = "specification/";
@@ -21,9 +22,10 @@ public class YamlDocument {
         Yaml yaml = new Yaml();
         nativeData = yaml.load(input);
         ByteArrayOutputStream output = new ByteArrayOutputStream();
-        yaml.dump(nativeData, new OutputStreamWriter(output));
+        Charset charset = Charset.forName("UTF-8");
+        yaml.dump(nativeData, new OutputStreamWriter(output, charset));
         try {
-            presentation = output.toString("UTF-8");
+            presentation = output.toString(charset.name());
             source = Util.getLocalResource(ROOT + sourceName);
         } catch (UnsupportedEncodingException e) {
             throw new RuntimeException(e);
