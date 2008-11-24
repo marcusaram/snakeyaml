@@ -9,7 +9,6 @@ import java.util.Map;
 
 import junit.framework.TestCase;
 
-
 /**
  * Test Chapter 2.3 from the YAML specification
  * 
@@ -57,20 +56,15 @@ public class Chapter2_3Test extends TestCase {
 
     @SuppressWarnings("unchecked")
     public void testExample_2_17() throws IOException {
-        try {
-            YamlDocument document = new YamlDocument("example2_17.yaml");
-            Map<String, String> map = (Map<String, String>) document.getNativeData();
-            assertEquals(map.toString(), 6, map.size());
-            assertEquals("Sosa did fine.\u263A", map.get("unicode"));
-            assertEquals("\b1998\t1999\t2000\n", map.get("control"));
-            assertEquals("\\x13\\x10 is \\r\\n", map.get("hexesc"));
-            assertEquals("\"Howdy!\" he cried.", map.get("single"));
-            assertEquals(" # not a 'comment'.", map.get("quoted"));
-            assertEquals("|\\-*-/|", map.get("tie-fighter"));
-        } catch (RuntimeException e) {
-            // TODO fail("Scalars cannot be parsed: "
-            // + Util.getLocalResource(YamlDocument.ROOT + "example2_17.yaml"));
-        }
+        YamlDocument document = new YamlDocument("example2_17.yaml");
+        Map<String, String> map = (Map<String, String>) document.getNativeData();
+        assertEquals(map.toString(), 6, map.size());
+        assertEquals("Sosa did fine.\u263A", map.get("unicode"));
+        assertEquals("\b1998\t1999\t2000\n", map.get("control"));
+        assertEquals("\r\n is \r\n", map.get("hexesc"));
+        assertEquals("\"Howdy!\" he cried.", map.get("single"));
+        assertEquals(" # not a 'comment'.", map.get("quoted"));
+        assertEquals("|\\-*-/|", map.get("tie-fighter"));
     }
 
     @SuppressWarnings("unchecked")
@@ -91,7 +85,7 @@ public class Chapter2_3Test extends TestCase {
     public void testExample_2_17_hexesc() {
         YamlDocument document = new YamlDocument("example2_17_hexesc.yaml");
         Map<String, String> map = (Map<String, String>) document.getNativeData();
-        assertEquals("\u0013\u0010 is \r\n", map.get("hexesc"));
+        assertEquals("\r\n is \r\n", map.get("hexesc"));
     }
 
     @SuppressWarnings("unchecked")
@@ -103,14 +97,9 @@ public class Chapter2_3Test extends TestCase {
 
     @SuppressWarnings("unchecked")
     public void testExample_2_17_quoted() {
-        try {
-            YamlDocument document = new YamlDocument("example2_17_quoted.yaml");
-            Map<String, String> map = (Map<String, String>) document.getNativeData();
-            assertEquals(" # not a 'comment'.", map.get("quoted"));
-        } catch (RuntimeException e) {
-            // TODO fail("Double ' is not escaped in single quoted scalars. (a
-            // bug in dump())");
-        }
+        YamlDocument document = new YamlDocument("example2_17_quoted.yaml");
+        Map<String, String> map = (Map<String, String>) document.getNativeData();
+        assertEquals(" # not a 'comment'.", map.get("quoted"));
     }
 
     @SuppressWarnings("unchecked")
