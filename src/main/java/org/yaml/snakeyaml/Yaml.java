@@ -109,10 +109,8 @@ public class Yaml {
         }
         try {
             s.close();
-            System.out.println("writer closed.");
         } catch (final java.io.IOException e) {
             // Nothing to do in this situation
-            System.out.println("?????? !!!!!!!!! ???????????");
         }
     }
 

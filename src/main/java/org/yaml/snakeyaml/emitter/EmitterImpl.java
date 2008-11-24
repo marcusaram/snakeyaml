@@ -192,7 +192,6 @@ public class EmitterImpl implements Emitter {
             this.state.expect();
             this.event = null;
         }
-        System.out.println("Emitted: " + event);
     }
 
     // In some cases, we wait for a few next events before emitting.
@@ -1407,7 +1406,6 @@ public class EmitterImpl implements Emitter {
     }
 
     void writePlain(String text, boolean split) throws IOException {
-        System.out.println("Printed !!" + text);
         if (text == null || "".equals(text)) {
             return;
         }
