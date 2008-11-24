@@ -46,8 +46,7 @@ public class SerializerImpl implements Serializer {
     private Set serializedNodes;
     private Map anchors;
     private int lastAnchorId;
-    private boolean closed;
-    private boolean opened;
+    private Boolean closed;
 
     public SerializerImpl(final Emitter emitter, final Resolver resolver, final YamlConfig opts) {
         this.emitter = emitter;
@@ -71,8 +70,7 @@ public class SerializerImpl implements Serializer {
         this.serializedNodes = new HashSet();
         this.anchors = new HashMap();
         this.lastAnchorId = 0;
-        this.closed = false;
-        this.opened = false;
+        this.closed = null;
     }
 
     protected boolean ignoreAnchor(final Node node) {
@@ -80,10 +78,10 @@ public class SerializerImpl implements Serializer {
     }
 
     public void open() throws IOException {
-        if (!closed && !opened) {
+        if (closed == null) {
+            this.closed = Boolean.FALSE;
             this.emitter.emit(new StreamStartEvent(null, null));
-            this.opened = true;
-        } else if (closed) {
+        } else if (Boolean.TRUE.equals(closed)) {
             throw new SerializerException("serializer is closed");
         } else {
             throw new SerializerException("serializer is already opened");
@@ -91,19 +89,18 @@ public class SerializerImpl implements Serializer {
     }
 
     public void close() throws IOException {
-        if (!opened) {
+        if (closed == null) {
             throw new SerializerException("serializer is not opened");
-        } else if (!closed) {
+        } else if (!Boolean.TRUE.equals(closed)) {
             this.emitter.emit(new StreamEndEvent(null, null));
-            this.closed = true;
-            this.opened = false;
+            this.closed = Boolean.TRUE;
         }
     }
 
     public void serialize(final Node node) throws IOException {
-        if (!this.closed && !this.opened) {
+        if (closed == null) {
             throw new SerializerException("serializer is not opened");
-        } else if (this.closed) {
+        } else if (closed) {
             throw new SerializerException("serializer is closed");
         }
         this.emitter.emit(new DocumentStartEvent(null, null, this.useExplicitStart,

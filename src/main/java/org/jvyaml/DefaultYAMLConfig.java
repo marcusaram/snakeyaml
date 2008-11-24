@@ -30,7 +30,7 @@ public class DefaultYAMLConfig implements YamlConfig {
         return this;
     }
 
-    public int indent() {
+    public int getIndent() {
         return this.indent;
     }
 
@@ -102,7 +102,7 @@ public class DefaultYAMLConfig implements YamlConfig {
         return this;
     }
 
-    public boolean canonical() {
+    public boolean isCanonical() {
         return this.canonical;
     }
 
@@ -111,7 +111,7 @@ public class DefaultYAMLConfig implements YamlConfig {
         return this;
     }
 
-    public int bestWidth() {
+    public int getWidth() {
         return this.bestWidth;
     }
 
@@ -160,7 +160,7 @@ public class DefaultYAMLConfig implements YamlConfig {
         return this.useDouble;
     }
 
-    public String line_break() {
+    public String getLineBreak() {
         // TODO Auto-generated method stub
         return "\n";
     }

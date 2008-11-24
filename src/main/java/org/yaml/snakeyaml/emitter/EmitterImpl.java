@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.Queue;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.regex.Pattern;
@@ -66,33 +67,59 @@ public class EmitterImpl implements Emitter {
         DEFAULT_TAG_PREFIXES.put("!", "!");
         DEFAULT_TAG_PREFIXES.put("tag:yaml.org,2002:", "!!");
     }
-
+    // The stream should have the methods `write` and possibly `flush`.
     private Writer stream;
+
+    // Encoding can be overriden by STREAM-START.
     private Charset encoding;
+
+    // Emitter is a state machine with a stack of states to handle nested
+    // structures.
     private LinkedList<EmitterState> states;
     private EmitterState state;
-    private LinkedList<Event> events;
+
+    // Current event and the event queue.
+    private Queue<Event> events;
     private Event event;
+
+    // The current indentation level and the stack of previous indents.
     private LinkedList<Integer> indents;
     private Integer indent;
+
+    // Flow level.
     private int flowLevel;
+
+    // Contexts.
     private boolean rootContext;
     private boolean sequenceContext;
     private boolean mappingContext;
     private boolean simpleKeyContext;
+
+    //
+    // Characteristics of the last emitted character:
+    // - current position.
+    // - is it a whitespace?
+    // - is it an indention character
+    // (indentation space, '-', '?', or ':')?
     private int line;
     private int column;
     private boolean whitespace;
     private boolean indention;
+
+    // Formatting details.
     private Boolean canonical;
     private int bestIndent;
     private int bestWidth;
-    private String best_line_break;
+    private String bestLineBreak;
+
+    // Tag prefixes.
     public Map<String, String> tagPrefixes;
 
+    // Prepared anchor and tag.
     public String preparedAnchor;
     public String preparedTag;
 
+    // Scalar analysis and style.
     public ScalarAnalysis analysis;
     public char style = 0;
 
@@ -103,10 +130,10 @@ public class EmitterImpl implements Emitter {
         this.encoding = null;
         // Emitter is a state machine with a stack of states to handle nested
         // structures.
-        this.states = new LinkedList();
+        this.states = new LinkedList<EmitterState>();
         this.state = new ExpectStreamStart();
         // Current event and the event queue.
-        this.events = new LinkedList();
+        this.events = new LinkedList<Event>();
         this.event = null;
         // The current indentation level and the stack of previous indents.
         this.indents = new LinkedList<Integer>();
@@ -131,20 +158,19 @@ public class EmitterImpl implements Emitter {
         indention = true;
 
         // Formatting details.
-        this.canonical = opts.canonical();
+        this.canonical = opts.isCanonical();
         this.bestIndent = 2;
-        if ((opts.indent() > 1) && (opts.indent() < 10)) {
-            this.indent = opts.indent();
-            this.bestIndent = opts.indent();
+        if ((opts.getIndent() > 1) && (opts.getIndent() < 10)) {
+            this.bestIndent = opts.getIndent();
         }
         this.bestWidth = 80;
-        if (opts.bestWidth() > this.bestIndent * 2) {
-            this.bestWidth = opts.bestWidth();
+        if (opts.getWidth() > this.bestIndent * 2) {
+            this.bestWidth = opts.getWidth();
         }
-        this.best_line_break = "\n";
-        if (opts.line_break().equals("\n") || opts.line_break().equals("\r")
-                || opts.line_break().equals("\r\n")) {
-            this.best_line_break = opts.line_break();
+        this.bestLineBreak = "\n";
+        if (opts.getLineBreak().equals("\n") || opts.getLineBreak().equals("\r")
+                || opts.getLineBreak().equals("\r\n")) {
+            this.bestLineBreak = opts.getLineBreak();
         }
 
         // Tag prefixes.
@@ -160,12 +186,13 @@ public class EmitterImpl implements Emitter {
     }
 
     public void emit(final Event event) throws IOException {
-        this.events.push(event);
+        this.events.offer(event);
         while (!needMoreEvents()) {
-            this.event = this.events.pop();
+            this.event = this.events.poll();
             this.state.expect();
             this.event = null;
         }
+        System.out.println("Emitted: " + event);
     }
 
     // In some cases, we wait for a few next events before emitting.
@@ -174,7 +201,7 @@ public class EmitterImpl implements Emitter {
         if (events.isEmpty()) {
             return true;
         }
-        event = events.getFirst();
+        Event event = events.peek();
         if (event instanceof DocumentStartEvent) {
             return needEvents(1);
         } else if (event instanceof SequenceStartEvent) {
@@ -207,7 +234,7 @@ public class EmitterImpl implements Emitter {
     }
 
     private void increaseIndent(boolean flow, boolean indentless) {
-        indents.push(new Integer(indent));
+        indents.push(indent);
         if (indent == null) {
             if (flow) {
                 indent = bestIndent;
@@ -248,7 +275,7 @@ public class EmitterImpl implements Emitter {
 
     private class ExpectFirstDocumentStart implements EmitterState {
         public void expect() throws IOException {
-            new ExpectDocumentStart(true);
+            new ExpectDocumentStart(true).expect();
         }
     }
 
@@ -266,7 +293,7 @@ public class EmitterImpl implements Emitter {
                     String versionText = prepareVersion(ev.getVersion());
                     writeVersionDirective(versionText);
                 }
-                tagPrefixes = new HashMap(DEFAULT_TAG_PREFIXES);
+                tagPrefixes = new HashMap<String, String>(DEFAULT_TAG_PREFIXES);
                 if (ev.getTags() != null) {
                     Set<String> handles = new TreeSet<String>(ev.getTags().keySet());
                     for (String handle : handles) {
@@ -337,16 +364,16 @@ public class EmitterImpl implements Emitter {
             } else if (event instanceof SequenceStartEvent) {
                 if (flowLevel != 0 || canonical || ((SequenceStartEvent) event).getFlowStyle()
                         || checkEmptySequence()) {
-                    new ExpectFlowSequence();
+                    expectFlowSequence();
                 } else {
-                    new ExpectBlockSequence();
+                    expectBlockSequence();
                 }
             } else if (event instanceof MappingStartEvent) {
                 if (flowLevel != 0 || canonical || ((MappingStartEvent) event).getFlowStyle()
                         || checkEmptyMapping()) {
-                    new ExpectFlowMapping();
+                    expectFlowMapping();
                 } else {
-                    new ExpectBlockMapping();
+                    expectBlockMapping();
                 }
             }
         } else {
@@ -371,13 +398,11 @@ public class EmitterImpl implements Emitter {
 
     // Flow sequence handlers.
 
-    private class ExpectFlowSequence implements EmitterState {
-        public void expect() throws IOException {
-            writeIndicator("[", true, true, false);
-            flowLevel++;
-            increaseIndent(true, false);
-            state = new ExpectFirstFlowSequenceItem();
-        }
+    private void expectFlowSequence() throws IOException {
+        writeIndicator("[", true, true, false);
+        flowLevel++;
+        increaseIndent(true, false);
+        state = new ExpectFirstFlowSequenceItem();
     }
 
     private class ExpectFirstFlowSequenceItem implements EmitterState {
@@ -421,13 +446,11 @@ public class EmitterImpl implements Emitter {
 
     // Flow mapping handlers.
 
-    private class ExpectFlowMapping implements EmitterState {
-        public void expect() throws IOException {
-            writeIndicator("{", true, true, false);
-            flowLevel++;
-            increaseIndent(true, false);
-            state = new ExpectFirstFlowMappingKey();
-        }
+    private void expectFlowMapping() throws IOException {
+        writeIndicator("{", true, true, false);
+        flowLevel++;
+        increaseIndent(true, false);
+        state = new ExpectFirstFlowMappingKey();
     }
 
     private class ExpectFirstFlowMappingKey implements EmitterState {
@@ -502,12 +525,10 @@ public class EmitterImpl implements Emitter {
 
     // Block sequence handlers.
 
-    private class ExpectBlockSequence implements EmitterState {
-        public void expect() throws IOException {
-            boolean indentless = (mappingContext && !indention);
-            increaseIndent(false, indentless);
-            state = new ExpectFirstBlockSequenceItem();
-        }
+    private void expectBlockSequence() throws IOException {
+        boolean indentless = (mappingContext && !indention);
+        increaseIndent(false, indentless);
+        state = new ExpectFirstBlockSequenceItem();
     }
 
     private class ExpectFirstBlockSequenceItem implements EmitterState {
@@ -537,11 +558,9 @@ public class EmitterImpl implements Emitter {
     }
 
     // Block mapping handlers.
-    private class ExpectBlockMapping implements EmitterState {
-        public void expect() throws IOException {
-            increaseIndent(false, false);
-            state = new ExpectFirstBlockMappingKey();
-        }
+    private void expectBlockMapping() throws IOException {
+        increaseIndent(false, false);
+        state = new ExpectFirstBlockMappingKey();
     }
 
     private class ExpectFirstBlockMappingKey implements EmitterState {
@@ -595,24 +614,25 @@ public class EmitterImpl implements Emitter {
     // Checkers.
 
     private boolean checkEmptySequence() {
-        return event instanceof SequenceStartEvent && !events.isEmpty()
-                && events.getFirst() instanceof SequenceEndEvent;
+        return (event instanceof SequenceStartEvent && !events.isEmpty() && events.peek() instanceof SequenceEndEvent);
     }
 
     private boolean checkEmptyMapping() {
-        return event instanceof MappingStartEvent && !events.isEmpty()
-                && events.getFirst() instanceof MappingEndEvent;
+        return (event instanceof MappingStartEvent && !events.isEmpty() && events.peek() instanceof MappingEndEvent);
     }
 
     private boolean checkEmptyDocument() {
         if (!(event instanceof DocumentStartEvent) || events.isEmpty()) {
             return false;
         }
-        Event event = events.getFirst();
-        return event instanceof ScalarEvent && ((ScalarEvent) event).getAnchor() == null
-                && ((ScalarEvent) event).getTag() == null
-                && ((ScalarEvent) event).getImplicit() != null
-                && ((ScalarEvent) event).getValue().equals("");
+        Event event = events.peek();
+        if (event instanceof ScalarEvent) {
+            ScalarEvent e = (ScalarEvent) event;
+            return (e.getAnchor() == null && e.getTag() == null && e.getImplicit() != null && e
+                    .getValue() == "");
+        } else {
+            return false;
+        }
     }
 
     private boolean checkSimpleKey() {
@@ -638,10 +658,9 @@ public class EmitterImpl implements Emitter {
         if (event instanceof ScalarEvent) {
             if (analysis == null) {
                 analysis = analyzeScalar(((ScalarEvent) event).getValue());
-                length += analysis.scalar.length();
             }
+            length += analysis.scalar.length();
         }
-
         return (length < 128 && (event instanceof AliasEvent
                 || (event instanceof ScalarEvent && !analysis.empty && !analysis.multiline)
                 || checkEmptySequence() || checkEmptyMapping()));
@@ -760,7 +779,7 @@ public class EmitterImpl implements Emitter {
         if (major != 1) {
             throw new EmitterException("unsupported YAML version: " + version[0] + "." + version[1]);
         }
-        return version[0].toString() + "." + version[1].toString();
+        return major.toString() + "." + minor.toString();
     }
 
     // TODO move the definition up
@@ -772,7 +791,7 @@ public class EmitterImpl implements Emitter {
         } else if (handle.charAt(0) != '!' || handle.charAt(handle.length() - 1) != '!') {
             throw new EmitterException("tag handle must start and end with '!': " + handle);
         } else if (!"!".equals(handle) && !HANDLE_FORMAT.matcher(handle).matches()) {
-            throw new EmitterException("invalid syntax for tag handle: " + handle);
+            throw new EmitterException("invalid character in the tag handle: " + handle);
         }
         return handle;
     }
@@ -830,7 +849,6 @@ public class EmitterImpl implements Emitter {
         }
     }
 
-    // stoped here 23-11-2009 ???
     // TODO is it the same as alias ?
     private final static Pattern ANCHOR_FORMAT = Pattern.compile("^[-_\\w]*$");
 
@@ -844,10 +862,6 @@ public class EmitterImpl implements Emitter {
         return anchor;
     }
 
-    private final static Pattern DOC_INDIC = Pattern.compile("^(---|\\.\\.\\.)");
-    private final static String SPECIAL_INDIC = "#,[]{}#&*!|>'\"%@`";
-    private final static String FLOW_INDIC = ",?[]{}";
-
     private ScalarAnalysis analyzeScalar(final String scalar) {
         // Empty scalar is a special case.
         if (scalar == null || "".equals(scalar)) {
@@ -860,8 +874,6 @@ public class EmitterImpl implements Emitter {
         boolean specialCharacters = false;
 
         // Whitespaces.
-        boolean inlineSpaces = false; // non-space space+ non-space
-        boolean inlineBreaks = false; // non-space break+ non-space
         boolean leadingSpaces = false; // ^ space+ (non-space | $)
         boolean leadingBreaks = false; // ^ break+ (non-space | $)
         boolean trailingSpaces = false; // (^ | non-space) space+ $
@@ -875,9 +887,8 @@ public class EmitterImpl implements Emitter {
         }
         // First character or preceded by a whitespace.
         boolean preceededBySpace = true;
-        // TODO add 2028 and 2029
-        boolean followedBySpace = scalar.length() == 1
-                || "\0 \t\r\n\u0085".indexOf(scalar.charAt(1)) != -1;
+        boolean followedBySpace = (scalar.length() == 1 || "\0 \t\r\n\u0085\u2029\u2029"
+                .indexOf(scalar.charAt(1)) != -1);
         // The current series of whitespaces contain plain spaces.
         boolean spaces = false;
         // The current series of whitespaces contain line breaks.
@@ -941,30 +952,25 @@ public class EmitterImpl implements Emitter {
             // Spaces, line breaks, and how they are mixed. State machine.
 
             // Start or continue series of whitespaces.
-            if (ch == ' ' || ch == '\n' || ch == '\u0085' || ch == '\u2028' || ch == '\u2029') {
-                if (spaces && breaks) {
-                    // break+ (space+ break+) => mixed
+            if (" \n\u0085\u2028\u2029".indexOf(ch) != -1) {
+                if (spaces && breaks) { // break+ (space+ break+) => mixed
                     if (ch != ' ') {
                         mixed = true;
                     }
-                } else if (spaces) {
-                    // (space+ break+) => mixed
+                } else if (spaces) { // (space+ break+) => mixed
                     if (ch != ' ') {
                         breaks = true;
                         mixed = true;
                     }
-                } else if (breaks) {
-                    // break+ space+
+                } else if (breaks) { // break+ space+
                     if (ch == ' ') {
                         spaces = true;
                     }
                 } else {
                     leading = (index == 0);
-                    if (ch == ' ') {
-                        // space+
+                    if (ch == ' ') { // space+
                         spaces = true;
-                    } else {
-                        // break+
+                    } else { // break+
                         breaks = true;
                     }
                 }
@@ -983,10 +989,6 @@ public class EmitterImpl implements Emitter {
                         mixedBreaksSpaces = true;
                     } else if (spaces && breaks) {
                         inlineBreaksSpaces = true;
-                    } else if (spaces) {
-                        inlineSpaces = true;
-                    } else if (breaks) {
-                        inlineBreaks = true;
                     }
                 }
                 spaces = breaks = mixed = leading = false;
@@ -1091,7 +1093,7 @@ public class EmitterImpl implements Emitter {
 
     void writeIndent() throws IOException {
         int indent;
-        if (this.indent != -1) {
+        if (this.indent != null) {
             indent = this.indent;
         } else {
             indent = 0;
@@ -1117,7 +1119,7 @@ public class EmitterImpl implements Emitter {
 
     private void writeLineBreak(String data) throws IOException {
         if (data == null) {
-            data = this.best_line_break;
+            data = this.bestLineBreak;
         }
         this.whitespace = true;
         this.indention = true;
@@ -1145,6 +1147,7 @@ public class EmitterImpl implements Emitter {
         writeLineBreak(null);
     }
 
+    // TODO re-check stopped here 24-11-2009
     // Scalar streams.
     private void writeSingleQuoted(String text, boolean split) throws IOException {
         writeIndicator("'", true, false, false);
@@ -1404,6 +1407,7 @@ public class EmitterImpl implements Emitter {
     }
 
     void writePlain(String text, boolean split) throws IOException {
+        System.out.println("Printed !!" + text);
         if (text == null || "".equals(text)) {
             return;
         }

@@ -9,7 +9,7 @@ package org.yaml.snakeyaml;
 public interface YamlConfig {
     YamlConfig indent(final int indent);
 
-    int indent();
+    int getIndent();
 
     YamlConfig useHeader(final boolean useHeader);
 
@@ -41,11 +41,11 @@ public interface YamlConfig {
 
     YamlConfig canonical(final boolean canonical);
 
-    boolean canonical();
+    boolean isCanonical();
 
     YamlConfig bestWidth(final int bestWidth);
 
-    int bestWidth();
+    int getWidth();
 
     YamlConfig useBlock(final boolean useBlock);
 
@@ -67,6 +67,6 @@ public interface YamlConfig {
 
     boolean useDouble();
 
-    String line_break();
+    String getLineBreak();
 
 }

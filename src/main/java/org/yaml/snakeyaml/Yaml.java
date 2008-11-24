@@ -106,12 +106,13 @@ public class Yaml {
             }
         } catch (final java.io.IOException e) {
             throw new YAMLException(e);
-        } finally {
-            try {
-                s.close();
-            } catch (final java.io.IOException e) {
-                // Nothing to do in this situation
-            }
+        }
+        try {
+            s.close();
+            System.out.println("writer closed.");
+        } catch (final java.io.IOException e) {
+            // Nothing to do in this situation
+            System.out.println("?????? !!!!!!!!! ???????????");
         }
     }
 
