@@ -68,20 +68,20 @@ public class StrTagTest extends AbstractTest {
         Map<String, String> map = new HashMap<String, String>();
         map.put("number", "1");
         String output = dump(map);
-        assertTrue(output.contains("number: !!str 1"));
+        assertTrue(output, output.contains("number: !!str 1"));
     }
 
     public void testStringFloatOut() {
         Map<String, String> map = new HashMap<String, String>();
         map.put("number", "1.1");
         String output = dump(map);
-        assertTrue(output.contains("number: !!str 1.1"));
+        assertTrue(output, output.contains("number: !!str 1.1"));
     }
 
     public void testStringBoolOut() {
         Map<String, String> map = new HashMap<String, String>();
         map.put("number", "True");
         String output = dump(map);
-        assertTrue(output.contains("number: !!str True"));
+        assertTrue(output, output.contains("number: !!str True"));
     }
 }

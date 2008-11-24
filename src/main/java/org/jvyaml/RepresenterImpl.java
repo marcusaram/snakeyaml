@@ -40,7 +40,7 @@ public class RepresenterImpl implements Representer {
     private Node representData(final Object data) throws IOException {
         String aliasKey = null;
         Node node = null;
-
+        // TODO in PyYAML if is inversed
         if (!ignoreAliases(data)) {
             aliasKey = "" + System.identityHashCode(data);
         }
@@ -133,7 +133,7 @@ public class RepresenterImpl implements Representer {
         } else if (data instanceof Boolean) {
             return new ScalarYAMLNodeCreator("tag:yaml.org,2002:bool", data);
         } else if (data == null) {
-            return new ScalarYAMLNodeCreator("tag:yaml.org,2002:null", "");
+            return new ScalarYAMLNodeCreator("tag:yaml.org,2002:null", "null");
         } else if (data.getClass().isArray()) {
             return new ArrayYAMLNodeCreator(data);
         } else if (data instanceof ByteBuffer) {

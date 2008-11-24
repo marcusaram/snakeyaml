@@ -225,6 +225,7 @@ public class ResolverImpl implements Resolver {
         addImplicitResolver("tag:yaml.org,2002:merge", Pattern.compile("^(?:<<)$"), "<");
         addImplicitResolver("tag:yaml.org,2002:null", Pattern.compile("^(?:~|null|Null|NULL| )$"),
                 "~nN\0");
+        addImplicitResolver("tag:yaml.org,2002:null", Pattern.compile("^$"), null);
         addImplicitResolver(
                 "tag:yaml.org,2002:timestamp",
                 Pattern
