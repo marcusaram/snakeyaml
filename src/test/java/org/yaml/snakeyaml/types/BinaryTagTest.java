@@ -45,7 +45,7 @@ public class BinaryTagTest extends AbstractTest {
         Map<String, ByteBuffer> map = new HashMap<String, ByteBuffer>();
         map.put("canonical", buffer);
         String output = dump(map);
-        assertTrue(output, output.contains("canonical: !!binary R0lGOD"));
+        assertEquals(output, "canonical: !!binary 'R0lGODkJYmluYXJ5CmltYWdlCg=='\n");
     }
 
 }
