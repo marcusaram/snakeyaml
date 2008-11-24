@@ -13,7 +13,7 @@ public class DefaultYAMLConfig implements YamlConfig {
     private boolean useHeader = false;
     private boolean useVersion = false;
     private String version = "1.1";
-    private boolean expStart = true;
+    private boolean expStart = false;
     private boolean expEnd = false;
     private String format = "id{0,number,####}";
     private boolean expTypes = false;

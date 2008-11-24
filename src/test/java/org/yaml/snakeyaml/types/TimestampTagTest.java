@@ -45,7 +45,7 @@ public class TimestampTagTest extends AbstractTest {
         Map<String, Date> map = new HashMap<String, Date>();
         map.put("canonical", date);
         String output = dump(map);
-        assertEquals("--- \ncanonical: 2008-09-23T10:35:04Z\n", output);
+        assertEquals("canonical: 2008-09-23T10:35:04Z\n", output);
         assertTrue("" + output, output.contains("canonical: 2008-09-23T10:35:04Z"));
     }
 
@@ -72,6 +72,6 @@ public class TimestampTagTest extends AbstractTest {
         Map<String, Date> map = new HashMap<String, Date>();
         map.put("canonical", date);
         String output = dump(map);
-        assertEquals("--- \ncanonical: 2001-11-23T20:01:42Z\n", output);
+        assertEquals("canonical: 2001-11-23T20:01:42Z\n", output);
     }
 }

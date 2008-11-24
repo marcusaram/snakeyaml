@@ -67,8 +67,7 @@ public class NullTagTest extends AbstractTest {
 
     public void testBoolOut() throws IOException {
         String output = dump(null);
-        // TODO must contain no additional space and no !!
-        assertEquals("--- !!null\n", output);
+        assertEquals("null\n", output);
     }
 
 }
