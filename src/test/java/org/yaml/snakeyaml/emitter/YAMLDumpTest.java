@@ -3,7 +3,6 @@
  */
 package org.yaml.snakeyaml.emitter;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -67,9 +66,4 @@ public class YAMLDumpTest extends TestCase {
 
     }
 
-    public void testEmitLongString() throws IOException {
-        String str = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\n\n";
-        java.io.StringWriter w = new java.io.StringWriter();
-        new EmitterImpl(w, new DefaultYAMLConfig()).writeDoubleQuoted(str, true);
-    }
 }

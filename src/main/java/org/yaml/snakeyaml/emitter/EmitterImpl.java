@@ -1217,7 +1217,7 @@ public class EmitterImpl implements Emitter {
         writeIndicator("'", false, false, false);
     }
 
-    void writeDoubleQuoted(final String text, final boolean split) throws IOException {
+    private void writeDoubleQuoted(final String text, final boolean split) throws IOException {
         writeIndicator("\"", true, false, false);
         int start = 0;
         int end = 0;
