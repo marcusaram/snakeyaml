@@ -54,6 +54,10 @@ public class StrTagTest extends AbstractTest {
         assertEquals("\"Test\n\n(* error here)\"", map.get("test"));
     }
 
+    public void testStrDump() {
+        assertEquals("--- abc\n", dump("abc"));
+    }
+
     public void testUnicodeDump() {
         assertEquals("--- \"\\xfc\"\n", dump("\u00fc"));
         assertEquals("--- \"\\u263a\"\n", dump("\u263a"));
