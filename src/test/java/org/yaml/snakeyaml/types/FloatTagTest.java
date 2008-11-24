@@ -45,4 +45,11 @@ public class FloatTagTest extends AbstractTest {
         assertEquals(new Double(-1.0), load("-1.0"));
     }
 
+    public void testDumpStr() {
+        assertEquals("'1.0'\n", dump("1.0"));
+    }
+
+    public void testDump() {
+        assertEquals("1.0\n", dump(1.0));
+    }
 }
