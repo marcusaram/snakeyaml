@@ -2,8 +2,6 @@ package org.yaml.snakeyaml.events;
 
 import junit.framework.TestCase;
 
-import org.yaml.snakeyaml.events.ScalarEvent;
-
 public class ScalarEventTest extends TestCase {
 
     public void testToString() {

@@ -18,7 +18,6 @@ import org.yaml.snakeyaml.parser.ParserImpl;
 import org.yaml.snakeyaml.representer.Representer;
 import org.yaml.snakeyaml.representer.RepresenterImpl;
 import org.yaml.snakeyaml.resolver.Resolver;
-import org.yaml.snakeyaml.resolver.ResolverImpl;
 import org.yaml.snakeyaml.scanner.Scanner;
 import org.yaml.snakeyaml.scanner.ScannerImpl;
 import org.yaml.snakeyaml.serializer.Serializer;
@@ -41,7 +40,7 @@ public class YAMLFactory {
     }
 
     public Resolver createResolver() {
-        return new ResolverImpl();
+        return new Resolver();
     }
 
     public Composer createComposer(final Parser parser, final Resolver resolver) {

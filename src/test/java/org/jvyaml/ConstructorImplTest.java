@@ -6,7 +6,7 @@ import org.yaml.snakeyaml.composer.ComposerImpl;
 import org.yaml.snakeyaml.constructor.Constructor;
 import org.yaml.snakeyaml.constructor.ConstructorImpl;
 import org.yaml.snakeyaml.parser.ParserImpl;
-import org.yaml.snakeyaml.resolver.ResolverImpl;
+import org.yaml.snakeyaml.resolver.Resolver;
 import org.yaml.snakeyaml.scanner.ScannerImpl;
 
 public class ConstructorImplTest extends TestCase {
@@ -39,9 +39,8 @@ public class ConstructorImplTest extends TestCase {
         final String str = input.toString();
         final long before = System.currentTimeMillis();
         for (int i = 0; i < 1; i++) {
-            final Constructor ctor = new ConstructorImpl(
-                    new ComposerImpl(new ParserImpl(new ScannerImpl(
-                            new org.yaml.snakeyaml.reader.Reader(str))), new ResolverImpl()));
+            final Constructor ctor = new ConstructorImpl(new ComposerImpl(new ParserImpl(
+                    new ScannerImpl(new org.yaml.snakeyaml.reader.Reader(str))), new Resolver()));
             while (ctor.checkData()) {
                 System.out.println(ctor.getData());
             }

@@ -1,8 +1,8 @@
 package org.jvyaml;
 
-import org.yaml.snakeyaml.error.Mark;
-
 import junit.framework.TestCase;
+
+import org.yaml.snakeyaml.error.Mark;
 
 public class MarkTest extends TestCase {
 

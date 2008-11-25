@@ -1,8 +1,5 @@
 package org.yaml.snakeyaml.nodes;
 
-import org.yaml.snakeyaml.nodes.Node;
-import org.yaml.snakeyaml.nodes.ScalarNode;
-
 import junit.framework.TestCase;
 
 public class ScalarNodeTest extends TestCase {
