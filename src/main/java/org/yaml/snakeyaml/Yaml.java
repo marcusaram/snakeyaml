@@ -92,8 +92,7 @@ public class Yaml {
      *            stream to write to
      */
     public void dumpAll(final Iterable<Object> data, final Writer output) {
-        final Serializer s = factory.createSerializer(new Emitter(output, config), new Resolver(),
-                config);
+        Serializer s = new Serializer(new Emitter(output, config), new Resolver(), config);
         try {
             s.open();
             final Representer r = factory.createRepresenter(s, config);
