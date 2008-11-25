@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.jvyaml.DefaultYAMLFactory;
 import org.jvyaml.YAMLFactory;
 import org.yaml.snakeyaml.constructor.Constructor;
 import org.yaml.snakeyaml.error.YAMLException;
@@ -21,7 +20,6 @@ import org.yaml.snakeyaml.serializer.Serializer;
  * Public YAML interface
  */
 public class Yaml {
-
     private YamlConfig config;
     private YAMLFactory factory;
 
@@ -31,7 +29,7 @@ public class Yaml {
     }
 
     public Yaml(YamlConfig config) {
-        this(config, new DefaultYAMLFactory());
+        this(config, new YAMLFactory());
     }
 
     public Yaml(YAMLFactory factory) {
@@ -39,7 +37,7 @@ public class Yaml {
     }
 
     public Yaml() {
-        this(new YamlConfig(), new DefaultYAMLFactory());
+        this(new YamlConfig(), new YAMLFactory());
     }
 
     public YamlConfig getConfig() {
