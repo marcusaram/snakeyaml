@@ -59,6 +59,8 @@ public class EmitterImpl implements Emitter {
         ESCAPE_REPLACEMENTS.put(new Character('\\'), "\\");
         ESCAPE_REPLACEMENTS.put(new Character('\u0085'), "N");
         ESCAPE_REPLACEMENTS.put(new Character('\u00A0'), "_");
+        ESCAPE_REPLACEMENTS.put(new Character('\u2028'), "L");
+        ESCAPE_REPLACEMENTS.put(new Character('\u2029'), "P");
     }
 
     private final static Map<String, String> DEFAULT_TAG_PREFIXES = new HashMap<String, String>();
@@ -110,17 +112,17 @@ public class EmitterImpl implements Emitter {
     private String bestLineBreak;
 
     // Tag prefixes.
-    public Map<String, String> tagPrefixes;
+    private Map<String, String> tagPrefixes;
 
     // Prepared anchor and tag.
-    public String preparedAnchor;
-    public String preparedTag;
+    private String preparedAnchor;
+    private String preparedTag;
 
     // Scalar analysis and style.
-    public ScalarAnalysis analysis;
-    public char style = 0;
+    private ScalarAnalysis analysis;
+    private char style = 0;
 
-    public EmitterImpl(final Writer stream, final YamlConfig opts) {
+    public EmitterImpl(Writer stream, YamlConfig opts) {
         // The stream should have the methods `write` and possibly `flush`.
         this.stream = stream;
         // Emitter is a state machine with a stack of states to handle nested
@@ -1115,7 +1117,6 @@ public class EmitterImpl implements Emitter {
         writeLineBreak(null);
     }
 
-    // TODO re-check stopped here 24-11-2009
     // Scalar streams.
     private void writeSingleQuoted(String text, boolean split) throws IOException {
         writeIndicator("'", true, false, false);
@@ -1141,7 +1142,7 @@ public class EmitterImpl implements Emitter {
                     start = end;
                 }
             } else if (breaks) {
-                if (ch == 0 || !(ch == '\n' || ch == '\u0085' || ch == '\u2028' || ch == '\u2029')) {
+                if (ch == 0 || "\n\u0085\u2028\u2029".indexOf(ch) == -1) {
                     if (text.charAt(start) == '\n') {
                         writeLineBreak(null);
                     }
@@ -1158,8 +1159,7 @@ public class EmitterImpl implements Emitter {
                     start = end;
                 }
             } else {
-                if (ch == 0 || (ch == '\n' || ch == '\u0085' || ch == '\u2028' || ch == '\u2029')
-                        || ch == '\'') {
+                if (ch == 0 || " \n\u0085\u2028\u2029".indexOf(ch) != -1 || ch == '\'') {
                     if (start < end) {
                         String data = text.substring(start, end);
                         this.column += data.length();
@@ -1368,9 +1368,8 @@ public class EmitterImpl implements Emitter {
         if (text == null || "".equals(text)) {
             return;
         }
-        String data = null;
         if (!this.whitespace) {
-            data = " ";
+            String data = " ";
             this.column += data.length();
             stream.write(data);
         }
@@ -1391,7 +1390,7 @@ public class EmitterImpl implements Emitter {
                         this.whitespace = false;
                         this.indention = false;
                     } else {
-                        data = text.substring(start, end);
+                        String data = text.substring(start, end);
                         this.column += data.length();
                         stream.write(data);
                     }
@@ -1402,7 +1401,7 @@ public class EmitterImpl implements Emitter {
                     if (text.charAt(start) == '\n') {
                         writeLineBreak(null);
                     }
-                    data = text.substring(start, end);
+                    String data = text.substring(start, end);
                     for (int i = 0; i < data.length(); i++) {
                         char br = data.charAt(i);
                         if (br == '\n') {
@@ -1418,7 +1417,7 @@ public class EmitterImpl implements Emitter {
                 }
             } else {
                 if (ch == 0 || "\n\u0085\u2028\u2029".indexOf(ch) != -1) {
-                    data = text.substring(start, end);
+                    String data = text.substring(start, end);
                     this.column += data.length();
                     stream.write(data);
                     start = end;
