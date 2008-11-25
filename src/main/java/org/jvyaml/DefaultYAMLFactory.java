@@ -15,6 +15,8 @@ import org.yaml.snakeyaml.emitter.Emitter;
 import org.yaml.snakeyaml.emitter.EmitterImpl;
 import org.yaml.snakeyaml.parser.Parser;
 import org.yaml.snakeyaml.parser.ParserImpl;
+import org.yaml.snakeyaml.representer.Representer;
+import org.yaml.snakeyaml.representer.RepresenterImpl;
 import org.yaml.snakeyaml.resolver.Resolver;
 import org.yaml.snakeyaml.resolver.ResolverImpl;
 import org.yaml.snakeyaml.scanner.Scanner;

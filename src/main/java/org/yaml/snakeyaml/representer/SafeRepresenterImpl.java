@@ -1,7 +1,7 @@
 /*
  * See LICENSE file in distribution for copyright and licensing information.
  */
-package org.jvyaml;
+package org.yaml.snakeyaml.representer;
 
 import org.yaml.snakeyaml.YamlConfig;
 import org.yaml.snakeyaml.serializer.Serializer;
