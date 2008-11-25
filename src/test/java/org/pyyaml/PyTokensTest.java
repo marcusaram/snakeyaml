@@ -158,7 +158,7 @@ public class PyTokensTest extends PyImportTest {
                 for (String token : tokens) {
                     System.out.println(token);
                 }
-                fail("Cannot scan: " + files[i]);
+                fail("Cannot scan: " + files[i] + "; " + e.getMessage());
             }
         }
     }
