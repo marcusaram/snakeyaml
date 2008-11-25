@@ -1,4 +1,4 @@
-package org.pyyaml;
+package org.yaml.snakeyaml.error;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.yaml.snakeyaml.PyImportTest;
 import org.yaml.snakeyaml.error.YAMLException;
 
 /**
