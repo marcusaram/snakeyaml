@@ -12,6 +12,8 @@ import junit.framework.TestCase;
 
 import org.yaml.snakeyaml.YamlConfig;
 import org.yaml.snakeyaml.emitter.EmitterImpl;
+import org.yaml.snakeyaml.representer.Representer;
+import org.yaml.snakeyaml.representer.RepresenterImpl;
 import org.yaml.snakeyaml.resolver.ResolverImpl;
 import org.yaml.snakeyaml.serializer.Serializer;
 import org.yaml.snakeyaml.serializer.SerializerImpl;
