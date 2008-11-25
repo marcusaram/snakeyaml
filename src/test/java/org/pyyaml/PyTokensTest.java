@@ -3,6 +3,7 @@ package org.pyyaml;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -185,6 +186,40 @@ public class PyTokensTest extends PyImportTest {
                 }
                 fail("Cannot scan: " + files[i]);
             }
+        }
+    }
+
+    public void testSlopy() throws IOException {
+        List<String> tokens = new LinkedList<String>();
+        Reader reader = new Reader(getResource("sloppy-indentation-!!!!!!!!!.data"));
+        Scanner scanner = new ScannerImpl(reader);
+        try {
+            while (scanner.checkToken(new ArrayList<Class>())) {
+                Token token = scanner.getToken();
+                tokens.add(token.getClass().getName());
+            }
+            System.out.println("Tokens:");
+            for (String token : tokens) {
+                System.out.println(token);
+            }
+        } catch (RuntimeException e) {
+            String data = getResource("sloppy-indentation.data");
+            System.out.println("Data: \n" + data);
+            System.out.println("Tokens:");
+            for (String token : tokens) {
+                System.out.println(token);
+            }
+            fail("Cannot scan: " + e.getMessage());
+        }
+    }
+
+    public void testSlopy2() throws IOException {
+        List<String> tokens = new LinkedList<String>();
+        Reader reader = new Reader(getResource("sloppy-indentation-!!!!!!!!!.data"));
+        Scanner scanner = new ScannerImpl(reader);
+        while (scanner.checkToken(new ArrayList<Class>())) {
+            Token token = scanner.getToken();
+            tokens.add(token.getClass().getName());
         }
     }
 }
