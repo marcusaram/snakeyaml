@@ -7,6 +7,7 @@ import java.io.IOException;
 
 import junit.framework.TestCase;
 
+import org.yaml.snakeyaml.YamlConfig;
 import org.yaml.snakeyaml.emitter.Emitter;
 import org.yaml.snakeyaml.emitter.EmitterImpl;
 import org.yaml.snakeyaml.events.Event;
@@ -36,7 +37,7 @@ public class EmitterImplTest extends TestCase {
         read.close();
         System.out.println("--------------------------------");
         final Emitter emitter = new EmitterImpl(new java.io.OutputStreamWriter(System.out),
-                new DefaultYAMLConfig());
+                new YamlConfig());
         final Parser pars = new ParserImpl(new ScannerImpl(new org.yaml.snakeyaml.reader.Reader(
                 new FileInputStream(filename))));
         while (pars.peekEvent() != null) {

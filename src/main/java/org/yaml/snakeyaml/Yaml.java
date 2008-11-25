@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.jvyaml.DefaultYAMLConfig;
 import org.jvyaml.DefaultYAMLFactory;
 import org.jvyaml.Representer;
 import org.jvyaml.YAMLFactory;
@@ -36,11 +35,11 @@ public class Yaml {
     }
 
     public Yaml(YAMLFactory factory) {
-        this(new DefaultYAMLConfig(), factory);
+        this(new YamlConfig(), factory);
     }
 
     public Yaml() {
-        this(new DefaultYAMLConfig(), new DefaultYAMLFactory());
+        this(new YamlConfig(), new DefaultYAMLFactory());
     }
 
     public YamlConfig getConfig() {

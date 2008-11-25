@@ -11,9 +11,9 @@ import java.util.TimeZone;
 
 import junit.framework.TestCase;
 
-import org.jvyaml.DefaultYAMLConfig;
 import org.jvyaml.TestBean;
 import org.yaml.snakeyaml.Yaml;
+import org.yaml.snakeyaml.YamlConfig;
 
 /**
  * @author <a href="mailto:ola.bini@ki.se">Ola Bini</a>
@@ -45,7 +45,7 @@ public class YAMLDumpTest extends TestCase {
     }
 
     public void testVersionDumps() {
-        Yaml yaml = new Yaml(new DefaultYAMLConfig().explicitTypes(true));
+        Yaml yaml = new Yaml(new YamlConfig().explicitTypes(true));
         assertEquals("!!int '1'\n", yaml.dump(new Integer(1)));
         /*
          * TODO yaml = new Yaml(new
