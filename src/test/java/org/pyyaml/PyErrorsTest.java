@@ -1,4 +1,4 @@
-package org.yaml.snakeyaml.error;
+package org.pyyaml;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -6,12 +6,12 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.yaml.snakeyaml.PyImportTest;
+import org.yaml.snakeyaml.error.YAMLException;
 
 /**
  * @see imported from PyYAML
  */
-public class ErrorsTest extends PyImportTest {
+public class PyErrorsTest extends PyImportTest {
     // TODO these exceptions must be fixed
     private boolean skip(String filename) {
         List<String> failures = new ArrayList<String>();

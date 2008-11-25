@@ -1,6 +1,5 @@
-package org.yaml.snakeyaml.error;
+package org.pyyaml;
 
-import org.yaml.snakeyaml.PyImportTest;
 import org.yaml.snakeyaml.error.Mark;
 
 /**
