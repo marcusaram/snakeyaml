@@ -66,8 +66,6 @@ public class StrTagTest extends AbstractTest {
     }
 
     public void testUnicodeDump() {
-        assertEquals("\"\\xfc\"\n", dump("\"\u00fc\""));// double quoted must be
-        // escaped
         assertEquals("\\u263a\n", dump("\\u263a"));
         assertEquals("The leading zero must be preserved.", "\\u063a\n", dump("\\u063a"));
     }
