@@ -5,7 +5,6 @@ package org.yaml.snakeyaml.emitter;
 
 import java.io.IOException;
 import java.io.Writer;
-import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -70,8 +69,8 @@ public class EmitterImpl implements Emitter {
     // The stream should have the methods `write` and possibly `flush`.
     private Writer stream;
 
-    // Encoding can be overriden by STREAM-START.
-    private Charset encoding;
+    // Encoding is defined by Writer (cannot be overriden by STREAM-START.)
+    // private Charset encoding;
 
     // Emitter is a state machine with a stack of states to handle nested
     // structures.
@@ -126,8 +125,6 @@ public class EmitterImpl implements Emitter {
     public EmitterImpl(final Writer stream, final YamlConfig opts) {
         // The stream should have the methods `write` and possibly `flush`.
         this.stream = stream;
-        // Encoding can be overriden by STREAM-START.
-        this.encoding = null;
         // Emitter is a state machine with a stack of states to handle nested
         // structures.
         this.states = new LinkedList<EmitterState>();
@@ -252,10 +249,6 @@ public class EmitterImpl implements Emitter {
     private class ExpectStreamStart implements EmitterState {
         public void expect() throws IOException {
             if (event instanceof StreamStartEvent) {
-                StreamStartEvent e = (StreamStartEvent) event;
-                if (e.getEncoding() != null) {
-                    encoding = e.getEncoding();
-                }
                 writeStreamStart();
                 state = new ExpectFirstDocumentStart();
             } else {
@@ -781,7 +774,6 @@ public class EmitterImpl implements Emitter {
         return major.toString() + "." + minor.toString();
     }
 
-    // TODO move the definition up
     private final static Pattern HANDLE_FORMAT = Pattern.compile("^![-_\\w]*!$");
 
     private String prepareTagHandle(String handle) {
@@ -848,7 +840,6 @@ public class EmitterImpl implements Emitter {
         }
     }
 
-    // TODO is it the same as alias ?
     private final static Pattern ANCHOR_FORMAT = Pattern.compile("^[-_\\w]*$");
 
     static String prepareAnchor(String anchor) {
@@ -1065,8 +1056,7 @@ public class EmitterImpl implements Emitter {
     }
 
     void writeStreamStart() {
-        // Write BOM if needed.
-        // TODO Write BOM if needed.
+        // BOM is written by Writer.
     }
 
     void writeStreamEnd() throws IOException {
@@ -1084,9 +1074,6 @@ public class EmitterImpl implements Emitter {
         this.whitespace = whitespace;
         this.indention = this.indention && indentation;
         this.column += data.length();
-        if (this.encoding != null) {
-            // TODO encode data
-        }
         stream.write(data);
     }
 
@@ -1109,9 +1096,6 @@ public class EmitterImpl implements Emitter {
                 data.append(" ");
             }
             this.column = indent;
-            if (this.encoding != null) {
-                // TODO encode data
-            }
             stream.write(data.toString());
         }
     }
@@ -1124,24 +1108,15 @@ public class EmitterImpl implements Emitter {
         this.indention = true;
         this.line++;
         this.column = 0;
-        if (this.encoding != null) {
-            // TODO encode data
-        }
         stream.write(data);
     }
 
     void writeVersionDirective(String versionText) throws IOException {
-        if (this.encoding != null) {
-            // TODO encode data
-        }
         stream.write("%YAML " + versionText);
         writeLineBreak(null);
     }
 
     void writeTagDirective(String handleText, String prefixText) throws IOException {
-        if (this.encoding != null) {
-            // TODO encode data
-        }
         stream.write("%TAG " + handleText + " " + prefixText);
         writeLineBreak(null);
     }
@@ -1167,7 +1142,6 @@ public class EmitterImpl implements Emitter {
                     } else {
                         String data = text.substring(start, end);
                         this.column += data.length();
-                        // TODO encoding ???
                         stream.write(data);
                     }
                     start = end;
@@ -1195,7 +1169,6 @@ public class EmitterImpl implements Emitter {
                     if (start < end) {
                         String data = text.substring(start, end);
                         this.column += data.length();
-                        // TODO encode data ???
                         stream.write(data);
                         start = end;
                     }
@@ -1204,7 +1177,6 @@ public class EmitterImpl implements Emitter {
             if (ch == '\'') {
                 String data = "''";
                 this.column += 2;
-                // TODO encode data ???
                 stream.write(data);
                 start = end + 1;
             }
@@ -1231,7 +1203,6 @@ public class EmitterImpl implements Emitter {
                 if (start < end) {
                     String data = text.substring(start, end);
                     this.column += data.length();
-                    // TODO encode data ???
                     stream.write(data);
                     start = end;
                 }
@@ -1247,7 +1218,6 @@ public class EmitterImpl implements Emitter {
                         data = "\\u" + s.substring(s.length() - 4);
                     }
                     this.column += data.length();
-                    // TODO encode data ???
                     stream.write(data);
                     start = end + 1;
                 }
@@ -1259,7 +1229,6 @@ public class EmitterImpl implements Emitter {
                     start = end;
                 }
                 this.column += data.length();
-                // TODO encode data ???
                 stream.write(data);
                 this.column += data.length();
                 stream.write(data);
@@ -1269,7 +1238,6 @@ public class EmitterImpl implements Emitter {
                 if (text.charAt(start) == ' ') {
                     data = "\\";
                     this.column += data.length();
-                    // TODO encode data ???
                     stream.write(data);
                 }
             }
@@ -1336,7 +1304,6 @@ public class EmitterImpl implements Emitter {
                     } else {
                         String data = text.substring(start, end);
                         this.column += data.length();
-                        // TODO encode data ???
                         stream.write(data);
                     }
                     start = end;
@@ -1344,7 +1311,6 @@ public class EmitterImpl implements Emitter {
             } else {
                 if (ch == 0 || " \n\0085\u2028\u2029".indexOf(ch) != -1) {
                     String data = text.substring(start, end);
-                    // TODO encode data ???
                     stream.write(data);
                     if (ch == 0) {
                         writeLineBreak(null);
@@ -1390,7 +1356,6 @@ public class EmitterImpl implements Emitter {
             } else {
                 if (ch == 0 || "\n\u0085\u2028\u2029".indexOf(ch) != -1) {
                     String data = text.substring(start, end);
-                    // TODO encode data ???
                     stream.write(data);
                     if (ch == 0) {
                         writeLineBreak(null);
@@ -1413,7 +1378,6 @@ public class EmitterImpl implements Emitter {
         if (!this.whitespace) {
             data = " ";
             this.column += data.length();
-            // TODO encode data ???
             stream.write(data);
         }
         this.whitespace = false;
@@ -1435,7 +1399,6 @@ public class EmitterImpl implements Emitter {
                     } else {
                         data = text.substring(start, end);
                         this.column += data.length();
-                        // TODO encode data ???
                         stream.write(data);
                     }
                     start = end;
@@ -1463,7 +1426,6 @@ public class EmitterImpl implements Emitter {
                 if (ch == 0 || "\n\u0085\u2028\u2029".indexOf(ch) != -1) {
                     data = text.substring(start, end);
                     this.column += data.length();
-                    // TODO encode data ???
                     stream.write(data);
                     start = end;
                 }
