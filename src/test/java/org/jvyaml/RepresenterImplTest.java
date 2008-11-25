@@ -13,7 +13,6 @@ import junit.framework.TestCase;
 import org.yaml.snakeyaml.YamlConfig;
 import org.yaml.snakeyaml.emitter.Emitter;
 import org.yaml.snakeyaml.representer.Representer;
-import org.yaml.snakeyaml.representer.RepresenterImpl;
 import org.yaml.snakeyaml.resolver.Resolver;
 import org.yaml.snakeyaml.serializer.Serializer;
 
@@ -28,7 +27,7 @@ public class RepresenterImplTest extends TestCase {
         final Serializer s = new Serializer(new Emitter(new java.io.OutputStreamWriter(System.out),
                 cfg), new Resolver(), cfg);
         s.open();
-        final Representer r = new RepresenterImpl(s, cfg);
+        final Representer r = new Representer(s, cfg);
         final Map test1 = new HashMap();
         final List test1Val = new LinkedList();
         test1Val.add("hello");
