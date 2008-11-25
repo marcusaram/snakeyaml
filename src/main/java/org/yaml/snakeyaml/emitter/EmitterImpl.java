@@ -89,8 +89,6 @@ public class EmitterImpl implements Emitter {
     private int flowLevel;
 
     // Contexts.
-    private boolean rootContext;
-    private boolean sequenceContext;
     private boolean mappingContext;
     private boolean simpleKeyContext;
 
@@ -138,8 +136,6 @@ public class EmitterImpl implements Emitter {
         // Flow level.
         this.flowLevel = 0;
         // Contexts.
-        rootContext = false;
-        sequenceContext = false;
         mappingContext = false;
         simpleKeyContext = false;
 
@@ -342,8 +338,6 @@ public class EmitterImpl implements Emitter {
 
     private void expectNode(boolean root, boolean sequence, boolean mapping, boolean simpleKey)
             throws IOException {
-        rootContext = root;
-        sequenceContext = sequence;
         mappingContext = mapping;
         simpleKeyContext = simpleKey;
         if (event instanceof AliasEvent) {
