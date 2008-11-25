@@ -3,6 +3,8 @@
  */
 package org.yaml.snakeyaml;
 
+import java.util.Map;
+
 /**
  * @see PyYAML 3.06 for more information
  */
@@ -21,6 +23,7 @@ public class YamlConfig {
     private boolean usePlain = false;
     private boolean useSingle = false;
     private boolean useDouble = false;
+    private Map<String, String> tags;
 
     public YamlConfig indent(final int indent) {
         this.indent = indent;
@@ -151,5 +154,9 @@ public class YamlConfig {
     public String getLineBreak() {
         // TODO Auto-generated method stub
         return "\n";
+    }
+
+    public Map<String, String> tags() {
+        return tags;
     }
 }

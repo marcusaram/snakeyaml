@@ -42,10 +42,10 @@ public class SerializerImpl implements Serializer {
     private boolean explicitStart;
     private boolean explicitEnd;
     private Integer[] useVersion;
-    private boolean useTags;
+    private Map<String, String> useTags;
     private String anchorTemplate;
-    private Set serializedNodes;
-    private Map anchors;
+    private Set<Node> serializedNodes;
+    private Map<Node, String> anchors;
     private int lastAnchorId;
     private Boolean closed;
 
@@ -56,22 +56,18 @@ public class SerializerImpl implements Serializer {
         this.explicitStart = opts.explicitStart();
         this.explicitEnd = opts.explicitEnd();
         this.useVersion = opts.version();
-        this.useTags = opts.useHeader();
+        this.useTags = opts.tags();
         this.anchorTemplate = opts.anchorFormat() == null ? ANCHOR_TEMPLATE : opts.anchorFormat();
-        this.serializedNodes = new HashSet();
-        this.anchors = new HashMap();
+        this.serializedNodes = new HashSet<Node>();
+        this.anchors = new HashMap<Node, String>();
         this.lastAnchorId = 0;
         this.closed = null;
     }
 
-    protected boolean ignoreAnchor(final Node node) {
-        return false;
-    }
-
     public void open() throws IOException {
         if (closed == null) {
-            this.closed = Boolean.FALSE;
             this.emitter.emit(new StreamStartEvent(null, null));
+            this.closed = Boolean.FALSE;
         } else if (Boolean.TRUE.equals(closed)) {
             throw new SerializerException("serializer is closed");
         } else {
@@ -95,36 +91,34 @@ public class SerializerImpl implements Serializer {
             throw new SerializerException("serializer is closed");
         }
         this.emitter.emit(new DocumentStartEvent(null, null, this.explicitStart, this.useVersion,
-                null));
+                useTags));
         anchorNode(node);
         serializeNode(node, null, null);
         this.emitter.emit(new DocumentEndEvent(null, null, this.explicitEnd));
-        this.serializedNodes = new HashSet();
-        this.anchors = new HashMap();
+        this.serializedNodes.clear();
+        this.anchors.clear();
         this.lastAnchorId = 0;
     }
 
     private void anchorNode(final Node node) {
-        if (!ignoreAnchor(node)) {
-            if (this.anchors.containsKey(node)) {
-                String anchor = (String) this.anchors.get(node);
-                if (null == anchor) {
-                    anchor = generateAnchor(node);
-                    this.anchors.put(node, anchor);
+        if (this.anchors.containsKey(node)) {
+            String anchor = (String) this.anchors.get(node);
+            if (null == anchor) {
+                anchor = generateAnchor(node);
+                this.anchors.put(node, anchor);
+            }
+        } else {
+            this.anchors.put(node, null);
+            if (node instanceof SequenceNode) {
+                for (final Iterator iter = ((List) node.getValue()).iterator(); iter.hasNext();) {
+                    anchorNode((Node) iter.next());
                 }
-            } else {
-                this.anchors.put(node, null);
-                if (node instanceof SequenceNode) {
-                    for (final Iterator iter = ((List) node.getValue()).iterator(); iter.hasNext();) {
-                        anchorNode((Node) iter.next());
-                    }
-                } else if (node instanceof MappingNode) {
-                    final Map value = (Map) node.getValue();
-                    for (final Iterator iter = value.keySet().iterator(); iter.hasNext();) {
-                        final Node key = (Node) iter.next();
-                        anchorNode(key);
-                        anchorNode((Node) value.get(key));
-                    }
+            } else if (node instanceof MappingNode) {
+                final Map value = (Map) node.getValue();
+                for (final Iterator iter = value.keySet().iterator(); iter.hasNext();) {
+                    final Node key = (Node) iter.next();
+                    anchorNode(key);
+                    anchorNode((Node) value.get(key));
                 }
             }
         }
