@@ -15,13 +15,9 @@ public interface YamlConfig {
 
     boolean useHeader();
 
-    YamlConfig useVersion(final boolean useVersion);
+    YamlConfig version(final Integer[] version);
 
-    boolean useVersion();
-
-    YamlConfig version(final String version);
-
-    String version();
+    Integer[] version();
 
     YamlConfig explicitStart(final boolean expStart);
 
@@ -35,6 +31,7 @@ public interface YamlConfig {
 
     String anchorFormat();
 
+    // TODO it is not present in PyYAML. Do we need it ?
     YamlConfig explicitTypes(final boolean expTypes);
 
     boolean explicitTypes();

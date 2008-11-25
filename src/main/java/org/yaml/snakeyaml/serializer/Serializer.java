@@ -15,5 +15,5 @@ public interface Serializer {
 
     void close() throws IOException;
 
-    void serialize(final Node node) throws IOException;
+    void serialize(Node node) throws IOException;
 }
