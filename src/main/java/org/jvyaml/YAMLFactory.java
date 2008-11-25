@@ -5,17 +5,13 @@ package org.jvyaml;
 
 import java.io.InputStream;
 
-import org.yaml.snakeyaml.YamlConfig;
 import org.yaml.snakeyaml.composer.Composer;
 import org.yaml.snakeyaml.constructor.Constructor;
 import org.yaml.snakeyaml.constructor.ConstructorImpl;
 import org.yaml.snakeyaml.parser.Parser;
 import org.yaml.snakeyaml.parser.ParserImpl;
-import org.yaml.snakeyaml.representer.Representer;
-import org.yaml.snakeyaml.representer.RepresenterImpl;
 import org.yaml.snakeyaml.scanner.Scanner;
 import org.yaml.snakeyaml.scanner.ScannerImpl;
-import org.yaml.snakeyaml.serializer.Serializer;
 
 /**
  * @see PyYAML 3.06 for more information
@@ -37,7 +33,4 @@ public class YAMLFactory {
         return new ConstructorImpl(composer);
     }
 
-    public Representer createRepresenter(final Serializer serializer, final YamlConfig cfg) {
-        return new RepresenterImpl(serializer, cfg);
-    }
 }

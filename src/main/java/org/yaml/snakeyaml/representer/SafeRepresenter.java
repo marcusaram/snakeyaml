@@ -9,8 +9,8 @@ import org.yaml.snakeyaml.serializer.Serializer;
 /**
  * @see PyYAML 3.06 for more information
  */
-public class SafeRepresenterImpl extends RepresenterImpl {
-    public SafeRepresenterImpl(final Serializer serializer, final YamlConfig opts) {
+public class SafeRepresenter extends Representer {
+    public SafeRepresenter(final Serializer serializer, final YamlConfig opts) {
         super(serializer, opts);
     }
 
