@@ -98,16 +98,16 @@ public class Yaml {
         try {
             s.open();
             final Representer r = factory.createRepresenter(s, config);
-            for (final Iterator<Object> iter = data.iterator(); iter.hasNext();) {
+            for (Iterator<Object> iter = data.iterator(); iter.hasNext();) {
                 r.represent(iter.next());
             }
-        } catch (final java.io.IOException e) {
+        } catch (java.io.IOException e) {
             throw new YAMLException(e);
         }
         try {
             s.close();
-        } catch (final java.io.IOException e) {
-            // Nothing to do in this situation
+        } catch (java.io.IOException e) {
+            throw new YAMLException(e);
         }
     }
 
