@@ -11,7 +11,7 @@ import java.util.Map;
 import junit.framework.TestCase;
 
 import org.yaml.snakeyaml.YamlConfig;
-import org.yaml.snakeyaml.emitter.EmitterImpl;
+import org.yaml.snakeyaml.emitter.Emitter;
 import org.yaml.snakeyaml.representer.Representer;
 import org.yaml.snakeyaml.representer.RepresenterImpl;
 import org.yaml.snakeyaml.resolver.Resolver;
@@ -26,7 +26,7 @@ public class RepresenterImplTest extends TestCase {
 
     public static void main(final String[] args) throws IOException {
         final YamlConfig cfg = new YamlConfig();
-        final Serializer s = new SerializerImpl(new EmitterImpl(new java.io.OutputStreamWriter(
+        final Serializer s = new SerializerImpl(new Emitter(new java.io.OutputStreamWriter(
                 System.out), cfg), new Resolver(), cfg);
         s.open();
         final Representer r = new RepresenterImpl(s, cfg);

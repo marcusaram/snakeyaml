@@ -13,6 +13,7 @@ import java.util.List;
 import org.jvyaml.YAMLFactory;
 import org.yaml.snakeyaml.composer.Composer;
 import org.yaml.snakeyaml.constructor.Constructor;
+import org.yaml.snakeyaml.emitter.Emitter;
 import org.yaml.snakeyaml.error.YAMLException;
 import org.yaml.snakeyaml.representer.Representer;
 import org.yaml.snakeyaml.resolver.Resolver;
@@ -91,8 +92,8 @@ public class Yaml {
      *            stream to write to
      */
     public void dumpAll(final Iterable<Object> data, final Writer output) {
-        final Serializer s = factory.createSerializer(factory.createEmitter(output, config),
-                new Resolver(), config);
+        final Serializer s = factory.createSerializer(new Emitter(output, config), new Resolver(),
+                config);
         try {
             s.open();
             final Representer r = factory.createRepresenter(s, config);

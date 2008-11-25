@@ -4,14 +4,12 @@
 package org.jvyaml;
 
 import java.io.InputStream;
-import java.io.Writer;
 
 import org.yaml.snakeyaml.YamlConfig;
 import org.yaml.snakeyaml.composer.Composer;
 import org.yaml.snakeyaml.constructor.Constructor;
 import org.yaml.snakeyaml.constructor.ConstructorImpl;
 import org.yaml.snakeyaml.emitter.Emitter;
-import org.yaml.snakeyaml.emitter.EmitterImpl;
 import org.yaml.snakeyaml.parser.Parser;
 import org.yaml.snakeyaml.parser.ParserImpl;
 import org.yaml.snakeyaml.representer.Representer;
@@ -40,10 +38,6 @@ public class YAMLFactory {
 
     public Constructor createConstructor(final Composer composer) {
         return new ConstructorImpl(composer);
-    }
-
-    public Emitter createEmitter(final Writer output, final YamlConfig cfg) {
-        return new EmitterImpl(output, cfg);
     }
 
     public Serializer createSerializer(final Emitter emitter, final Resolver resolver,
