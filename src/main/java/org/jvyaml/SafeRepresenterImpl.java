@@ -4,6 +4,7 @@
 package org.jvyaml;
 
 import org.yaml.snakeyaml.YamlConfig;
+import org.yaml.snakeyaml.serializer.Serializer;
 
 /**
  * @see PyYAML 3.06 for more information
