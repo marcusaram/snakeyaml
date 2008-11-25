@@ -40,10 +40,6 @@ public class Yaml {
         this(new YamlConfig(), new YAMLFactory());
     }
 
-    public YamlConfig getConfig() {
-        return config;
-    }
-
     /**
      * Serialize a Java object into a YAML String.
      * 
