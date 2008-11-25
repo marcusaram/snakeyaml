@@ -1,17 +1,16 @@
-package org.yaml.snakeyaml.reader;
+package org.pyyaml;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 
-import org.yaml.snakeyaml.PyImportTest;
 import org.yaml.snakeyaml.reader.Reader;
 import org.yaml.snakeyaml.reader.ReaderException;
 
 /**
  * @see imported from PyYAML
  */
-public class ReaderTest extends PyImportTest {
+public class PyReaderTest extends PyImportTest {
 
     public void testReaderUnicodeErrors() throws IOException {
         File[] inputs = getStreamsByExtension(".stream-error");

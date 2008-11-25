@@ -1,7 +1,7 @@
 /*
  * See LICENSE file in distribution for copyright and licensing information.
  */
-package org.yaml.snakeyaml.recursive;
+package org.pyyaml;
 
 public class AnInstance {
     private Object foo;

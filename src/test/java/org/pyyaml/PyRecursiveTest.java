@@ -1,7 +1,7 @@
 /*
  * See LICENSE file in distribution for copyright and licensing information.
  */
-package org.yaml.snakeyaml.recursive;
+package org.pyyaml;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,7 +15,7 @@ import junit.framework.TestCase;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.representer.RepresenterException;
 
-public class RecursiveTest extends TestCase {
+public class PyRecursiveTest extends TestCase {
 
     @SuppressWarnings("unchecked")
     public void testDict() {
