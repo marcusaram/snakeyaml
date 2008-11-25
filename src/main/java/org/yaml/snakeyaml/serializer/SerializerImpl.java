@@ -4,7 +4,7 @@
 package org.yaml.snakeyaml.serializer;
 
 import java.io.IOException;
-import java.text.MessageFormat;
+import java.text.NumberFormat;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -43,7 +43,6 @@ public class SerializerImpl implements Serializer {
     private boolean explicitEnd;
     private Integer[] useVersion;
     private Map<String, String> useTags;
-    private String anchorTemplate;
     private Set<Node> serializedNodes;
     private Map<Node, String> anchors;
     private int lastAnchorId;
@@ -57,7 +56,6 @@ public class SerializerImpl implements Serializer {
         this.explicitEnd = opts.explicitEnd();
         this.useVersion = opts.version();
         this.useTags = opts.tags();
-        this.anchorTemplate = opts.anchorFormat() == null ? ANCHOR_TEMPLATE : opts.anchorFormat();
         this.serializedNodes = new HashSet<Node>();
         this.anchors = new HashMap<Node, String>();
         this.lastAnchorId = 0;
@@ -100,34 +98,38 @@ public class SerializerImpl implements Serializer {
         this.lastAnchorId = 0;
     }
 
+    @SuppressWarnings("unchecked")
     private void anchorNode(final Node node) {
         if (this.anchors.containsKey(node)) {
-            String anchor = (String) this.anchors.get(node);
+            String anchor = this.anchors.get(node);
             if (null == anchor) {
-                anchor = generateAnchor(node);
+                anchor = generateAnchor();
                 this.anchors.put(node, anchor);
             }
         } else {
             this.anchors.put(node, null);
             if (node instanceof SequenceNode) {
-                for (final Iterator iter = ((List) node.getValue()).iterator(); iter.hasNext();) {
-                    anchorNode((Node) iter.next());
+                List<Node> list = (List<Node>) node.getValue();
+                for (Node item : list) {
+                    anchorNode(item);
                 }
             } else if (node instanceof MappingNode) {
-                final Map value = (Map) node.getValue();
-                for (final Iterator iter = value.keySet().iterator(); iter.hasNext();) {
-                    final Node key = (Node) iter.next();
+                Map<Node, Node> map = (Map<Node, Node>) node.getValue();
+                for (Node key : map.keySet()) {
+                    Node value = map.get(key);
                     anchorNode(key);
-                    anchorNode((Node) value.get(key));
+                    anchorNode(value);
                 }
             }
         }
     }
 
-    private String generateAnchor(final Node node) {
+    private String generateAnchor() {
         this.lastAnchorId++;
-        return new MessageFormat(this.anchorTemplate).format(new Object[] { new Integer(
-                this.lastAnchorId) });
+        NumberFormat format = NumberFormat.getNumberInstance();
+        format.setMinimumIntegerDigits(3);
+        String anchorId = format.format(this.lastAnchorId);
+        return "id" + anchorId;
     }
 
     private void serializeNode(final Node node, final Node parent, final Object index)

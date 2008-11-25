@@ -70,15 +70,6 @@ public class YamlConfig {
         return this.expEnd;
     }
 
-    public YamlConfig anchorFormat(final String format) {
-        this.format = format;
-        return this;
-    }
-
-    public String anchorFormat() {
-        return this.format;
-    }
-
     public YamlConfig explicitTypes(final boolean expTypes) {
         this.expTypes = expTypes;
         return this;
