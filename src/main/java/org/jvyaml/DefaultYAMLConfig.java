@@ -11,8 +11,7 @@ import org.yaml.snakeyaml.YamlConfig;
 public class DefaultYAMLConfig implements YamlConfig {
     private int indent = 2;
     private boolean useHeader = false;
-    private boolean useVersion = false;
-    private String version = "1.1";
+    private Integer[] version = null;
     private boolean expStart = false;
     private boolean expEnd = false;
     private String format = "id{0,number,####}";
@@ -43,21 +42,12 @@ public class DefaultYAMLConfig implements YamlConfig {
         return this.useHeader;
     }
 
-    public YamlConfig useVersion(final boolean useVersion) {
-        this.useVersion = useVersion;
-        return this;
-    }
-
-    public boolean useVersion() {
-        return this.useVersion;
-    }
-
-    public YamlConfig version(final String version) {
+    public YamlConfig version(final Integer[] version) {
         this.version = version;
         return this;
     }
 
-    public String version() {
+    public Integer[] version() {
         return this.version;
     }
 

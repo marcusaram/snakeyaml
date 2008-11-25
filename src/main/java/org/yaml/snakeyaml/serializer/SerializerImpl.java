@@ -35,11 +35,12 @@ import org.yaml.snakeyaml.resolver.Resolver;
  * @see PyYAML 3.06 for more information
  */
 public class SerializerImpl implements Serializer {
+    private static final String ANCHOR_TEMPLATE = "id{0,number,####}";
     private Emitter emitter;
     private Resolver resolver;
     private YamlConfig options;
-    private boolean useExplicitStart;
-    private boolean useExplicitEnd;
+    private boolean explicitStart;
+    private boolean explicitEnd;
     private Integer[] useVersion;
     private boolean useTags;
     private String anchorTemplate;
@@ -48,25 +49,15 @@ public class SerializerImpl implements Serializer {
     private int lastAnchorId;
     private Boolean closed;
 
-    public SerializerImpl(final Emitter emitter, final Resolver resolver, final YamlConfig opts) {
+    public SerializerImpl(Emitter emitter, Resolver resolver, YamlConfig opts) {
         this.emitter = emitter;
         this.resolver = resolver;
         this.options = opts;
-        this.useExplicitStart = opts.explicitStart();
-        this.useExplicitEnd = opts.explicitEnd();
-        Integer[] version = new Integer[2];
-        if (opts.useVersion()) {
-            final String v1 = opts.version();
-            final int index = v1.indexOf('.');
-            version[0] = Integer.parseInt(v1.substring(0, index));
-            version[1] = Integer.parseInt(v1.substring(index + 1));
-        } else {
-            version = null;
-        }
-        this.useVersion = version;
+        this.explicitStart = opts.explicitStart();
+        this.explicitEnd = opts.explicitEnd();
+        this.useVersion = opts.version();
         this.useTags = opts.useHeader();
-        this.anchorTemplate = opts.anchorFormat() == null ? "id{0,number,####}" : opts
-                .anchorFormat();
+        this.anchorTemplate = opts.anchorFormat() == null ? ANCHOR_TEMPLATE : opts.anchorFormat();
         this.serializedNodes = new HashSet();
         this.anchors = new HashMap();
         this.lastAnchorId = 0;
@@ -97,17 +88,17 @@ public class SerializerImpl implements Serializer {
         }
     }
 
-    public void serialize(final Node node) throws IOException {
+    public void serialize(Node node) throws IOException {
         if (closed == null) {
             throw new SerializerException("serializer is not opened");
         } else if (closed) {
             throw new SerializerException("serializer is closed");
         }
-        this.emitter.emit(new DocumentStartEvent(null, null, this.useExplicitStart,
-                this.useVersion, null));
+        this.emitter.emit(new DocumentStartEvent(null, null, this.explicitStart, this.useVersion,
+                null));
         anchorNode(node);
         serializeNode(node, null, null);
-        this.emitter.emit(new DocumentEndEvent(null, null, this.useExplicitEnd));
+        this.emitter.emit(new DocumentEndEvent(null, null, this.explicitEnd));
         this.serializedNodes = new HashSet();
         this.anchors = new HashMap();
         this.lastAnchorId = 0;
