@@ -38,14 +38,6 @@ public class YAMLFactory {
         return new ParserImpl(scanner);
     }
 
-    public Resolver createResolver() {
-        return new Resolver();
-    }
-
-    public Composer createComposer(final Parser parser, final Resolver resolver) {
-        return new Composer(parser, resolver);
-    }
-
     public Constructor createConstructor(final Composer composer) {
         return new ConstructorImpl(composer);
     }

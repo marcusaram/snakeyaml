@@ -11,9 +11,11 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.jvyaml.YAMLFactory;
+import org.yaml.snakeyaml.composer.Composer;
 import org.yaml.snakeyaml.constructor.Constructor;
 import org.yaml.snakeyaml.error.YAMLException;
 import org.yaml.snakeyaml.representer.Representer;
+import org.yaml.snakeyaml.resolver.Resolver;
 import org.yaml.snakeyaml.serializer.Serializer;
 
 /**
@@ -90,7 +92,7 @@ public class Yaml {
      */
     public void dumpAll(final Iterable<Object> data, final Writer output) {
         final Serializer s = factory.createSerializer(factory.createEmitter(output, config),
-                factory.createResolver(), config);
+                new Resolver(), config);
         try {
             s.open();
             final Representer r = factory.createRepresenter(s, config);
@@ -116,8 +118,8 @@ public class Yaml {
      * @return parsed object
      */
     public Object load(final String yaml) {
-        final Constructor ctor = factory.createConstructor(factory.createComposer(factory
-                .createParser(factory.createScanner(yaml)), factory.createResolver()));
+        final Constructor ctor = factory.createConstructor(new Composer(factory
+                .createParser(factory.createScanner(yaml)), new Resolver()));
         return ctor.getSingleData();
     }
 
@@ -130,8 +132,8 @@ public class Yaml {
      * @return parsed object
      */
     public Object load(final InputStream io) {
-        final Constructor ctor = factory.createConstructor(factory.createComposer(factory
-                .createParser(factory.createScanner(io)), factory.createResolver()));
+        final Constructor ctor = factory.createConstructor(new Composer(factory
+                .createParser(factory.createScanner(io)), new Resolver()));
         return ctor.getSingleData();
     }
 
@@ -146,8 +148,8 @@ public class Yaml {
      */
     @SuppressWarnings("unchecked")
     public Iterable<Object> loadAll(final String yaml) {
-        final Constructor ctor = factory.createConstructor(factory.createComposer(factory
-                .createParser(factory.createScanner(yaml)), factory.createResolver()));
+        final Constructor ctor = factory.createConstructor(new Composer(factory
+                .createParser(factory.createScanner(yaml)), new Resolver()));
         Iterator<Object> result = new Iterator<Object>() {
             public boolean hasNext() {
                 return ctor.checkData();
@@ -175,8 +177,8 @@ public class Yaml {
      */
     @SuppressWarnings("unchecked")
     public Iterable<Object> loadAll(final InputStream yaml) {
-        final Constructor ctor = factory.createConstructor(factory.createComposer(factory
-                .createParser(factory.createScanner(yaml)), factory.createResolver()));
+        final Constructor ctor = factory.createConstructor(new Composer(factory
+                .createParser(factory.createScanner(yaml)), new Resolver()));
         Iterator<Object> result = new Iterator<Object>() {
             public boolean hasNext() {
                 return ctor.checkData();
