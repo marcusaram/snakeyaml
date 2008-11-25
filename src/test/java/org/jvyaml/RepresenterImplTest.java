@@ -14,7 +14,7 @@ import org.yaml.snakeyaml.YamlConfig;
 import org.yaml.snakeyaml.emitter.EmitterImpl;
 import org.yaml.snakeyaml.representer.Representer;
 import org.yaml.snakeyaml.representer.RepresenterImpl;
-import org.yaml.snakeyaml.resolver.ResolverImpl;
+import org.yaml.snakeyaml.resolver.Resolver;
 import org.yaml.snakeyaml.serializer.Serializer;
 import org.yaml.snakeyaml.serializer.SerializerImpl;
 
@@ -27,7 +27,7 @@ public class RepresenterImplTest extends TestCase {
     public static void main(final String[] args) throws IOException {
         final YamlConfig cfg = new YamlConfig();
         final Serializer s = new SerializerImpl(new EmitterImpl(new java.io.OutputStreamWriter(
-                System.out), cfg), new ResolverImpl(), cfg);
+                System.out), cfg), new Resolver(), cfg);
         s.open();
         final Representer r = new RepresenterImpl(s, cfg);
         final Map test1 = new HashMap();
