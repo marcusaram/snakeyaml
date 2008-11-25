@@ -14,7 +14,7 @@ public class YamlConfig {
     private Integer[] version = null;
     private boolean expStart = false;
     private boolean expEnd = false;
-    private String format = "id{0,number,####}";
+    // TODO should expTypes be removed ?
     private boolean expTypes = false;
     private boolean canonical = false;
     private int bestWidth = 80;
