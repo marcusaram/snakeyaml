@@ -3,9 +3,15 @@
  */
 package org.yaml.snakeyaml.types;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
+import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
+
+import org.yaml.snakeyaml.Yaml;
 
 /**
  * @see http://yaml.org/type/str.html
@@ -70,21 +76,21 @@ public class StrTagTest extends AbstractTest {
         Map<String, String> map = new HashMap<String, String>();
         map.put("number", "1");
         String output = dump(map);
-        assertTrue(output, output.contains("number: !!str 1"));
+        assertTrue(output, output.contains("number: '1'"));
     }
 
     public void testStringFloatOut() {
         Map<String, String> map = new HashMap<String, String>();
         map.put("number", "1.1");
         String output = dump(map);
-        assertTrue(output, output.contains("number: !!str 1.1"));
+        assertTrue(output, output.contains("number: '1.1'"));
     }
 
     public void testStringBoolOut() {
         Map<String, String> map = new HashMap<String, String>();
         map.put("number", "True");
         String output = dump(map);
-        assertTrue(output, output.contains("number: !!str True"));
+        assertTrue(output, output.contains("number: 'True'"));
     }
 
     public void testEmitLongString() throws IOException {
@@ -109,5 +115,18 @@ public class StrTagTest extends AbstractTest {
         String str = "xxxxxxx\n";
         String output = dump(str);
         assertEquals("'" + str + "\n  '\n", output);
+    }
+
+    public void testDumpUtf16() throws IOException {
+        String str = "xxx";
+        assertEquals(3, str.toString().length());
+        Yaml yaml = new Yaml();
+        Charset charset = Charset.forName("UTF-16");
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        Writer writer = new OutputStreamWriter(stream, charset);
+        yaml.dump(str, writer);
+        assertEquals(str + "\n", stream.toString("UTF-16"));
+        assertEquals("Must include BOM: " + stream.toString(), (1 + 3 + 1) * 2, stream.toString()
+                .length());
     }
 }
