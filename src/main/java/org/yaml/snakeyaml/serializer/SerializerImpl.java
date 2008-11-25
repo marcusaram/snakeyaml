@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.text.NumberFormat;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -35,7 +34,6 @@ import org.yaml.snakeyaml.resolver.Resolver;
  * @see PyYAML 3.06 for more information
  */
 public class SerializerImpl implements Serializer {
-    private static final String ANCHOR_TEMPLATE = "id{0,number,####}";
     private Emitter emitter;
     private Resolver resolver;
     private YamlConfig options;
@@ -132,20 +130,20 @@ public class SerializerImpl implements Serializer {
         return "id" + anchorId;
     }
 
-    private void serializeNode(final Node node, final Node parent, final Object index)
-            throws IOException {
-        final String tAlias = (String) this.anchors.get(node);
-        if (this.serializedNodes.contains(node) && tAlias != null) {
+    @SuppressWarnings("unchecked")
+    private void serializeNode(Node node, Node parent, Object index) throws IOException {
+        String tAlias = this.anchors.get(node);
+        if (this.serializedNodes.contains(node)) {
             this.emitter.emit(new AliasEvent(tAlias, null, null));
         } else {
             this.serializedNodes.add(node);
             this.resolver.descendResolver(parent, index);
             if (node instanceof ScalarNode) {
-                final String detectedTag = this.resolver.resolve(ScalarNode.class, (String) node
+                String detectedTag = this.resolver.resolve(ScalarNode.class, (String) node
                         .getValue(), true);
-                final String defaultTag = this.resolver.resolve(ScalarNode.class, (String) node
+                String defaultTag = this.resolver.resolve(ScalarNode.class, (String) node
                         .getValue(), false);
-                final boolean[] implicit = new boolean[] { false, false };
+                boolean[] implicit = new boolean[] { false, false };
                 if (!options.explicitTypes()) {
                     implicit[0] = node.getTag().equals(detectedTag);
                     implicit[1] = node.getTag().equals(defaultTag);
@@ -154,27 +152,29 @@ public class SerializerImpl implements Serializer {
                         .getValue(), null, null, ((ScalarNode) node).getStyle());
                 this.emitter.emit(event);
             } else if (node instanceof SequenceNode) {
-                final boolean implicit = !options.explicitTypes()
+                boolean implicit = !options.explicitTypes()
                         && (node.getTag().equals(this.resolver.resolve(SequenceNode.class, null,
                                 true)));
                 this.emitter.emit(new SequenceStartEvent(tAlias, node.getTag(), implicit, null,
                         null, ((CollectionNode) node).getFlowStyle()));
-                int ix = 0;
-                for (final Iterator iter = ((List) node.getValue()).iterator(); iter.hasNext();) {
-                    serializeNode((Node) iter.next(), node, new Integer(ix++));
+                int indexCounter = 0;
+                List<Node> list = (List<Node>) node.getValue();
+                for (Node item : list) {
+                    serializeNode(item, node, new Integer(indexCounter));
+                    indexCounter++;
                 }
                 this.emitter.emit(new SequenceEndEvent(null, null));
             } else if (node instanceof MappingNode) {
-                final boolean implicit = !options.explicitTypes()
+                boolean implicit = !options.explicitTypes()
                         && (node.getTag().equals(this.resolver.resolve(MappingNode.class, null,
                                 true)));
                 this.emitter.emit(new MappingStartEvent(tAlias, node.getTag(), implicit, null,
                         null, ((CollectionNode) node).getFlowStyle()));
-                final Map value = (Map) node.getValue();
-                for (final Iterator iter = value.keySet().iterator(); iter.hasNext();) {
-                    final Node key = (Node) iter.next();
+                Map<Node, Node> map = (Map<Node, Node>) node.getValue();
+                for (Node key : map.keySet()) {
+                    Node value = map.get(key);
                     serializeNode(key, node, null);
-                    serializeNode((Node) value.get(key), node, key);
+                    serializeNode(value, node, key);
                 }
                 this.emitter.emit(new MappingEndEvent(null, null));
             }
