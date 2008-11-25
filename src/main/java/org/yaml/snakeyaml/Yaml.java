@@ -13,10 +13,10 @@ import java.util.List;
 import org.jvyaml.DefaultYAMLConfig;
 import org.jvyaml.DefaultYAMLFactory;
 import org.jvyaml.Representer;
-import org.jvyaml.Serializer;
 import org.jvyaml.YAMLFactory;
 import org.yaml.snakeyaml.constructor.Constructor;
 import org.yaml.snakeyaml.error.YAMLException;
+import org.yaml.snakeyaml.serializer.Serializer;
 
 /**
  * Public YAML interface

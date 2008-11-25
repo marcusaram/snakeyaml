@@ -11,6 +11,8 @@ import java.util.Map;
 import org.yaml.snakeyaml.YamlConfig;
 import org.yaml.snakeyaml.emitter.EmitterImpl;
 import org.yaml.snakeyaml.resolver.ResolverImpl;
+import org.yaml.snakeyaml.serializer.Serializer;
+import org.yaml.snakeyaml.serializer.SerializerImpl;
 
 import junit.framework.TestCase;
 

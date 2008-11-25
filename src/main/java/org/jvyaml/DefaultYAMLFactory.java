@@ -19,6 +19,8 @@ import org.yaml.snakeyaml.resolver.Resolver;
 import org.yaml.snakeyaml.resolver.ResolverImpl;
 import org.yaml.snakeyaml.scanner.Scanner;
 import org.yaml.snakeyaml.scanner.ScannerImpl;
+import org.yaml.snakeyaml.serializer.Serializer;
+import org.yaml.snakeyaml.serializer.SerializerImpl;
 
 /**
  * @see PyYAML 3.06 for more information

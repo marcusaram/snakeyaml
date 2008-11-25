@@ -21,6 +21,7 @@ import org.yaml.snakeyaml.nodes.MappingNode;
 import org.yaml.snakeyaml.nodes.Node;
 import org.yaml.snakeyaml.nodes.ScalarNode;
 import org.yaml.snakeyaml.nodes.SequenceNode;
+import org.yaml.snakeyaml.serializer.Serializer;
 import org.yaml.snakeyaml.util.Base64Coder;
 
 /**

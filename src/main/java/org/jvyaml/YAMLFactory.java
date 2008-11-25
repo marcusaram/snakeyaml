@@ -13,6 +13,7 @@ import org.yaml.snakeyaml.emitter.Emitter;
 import org.yaml.snakeyaml.parser.Parser;
 import org.yaml.snakeyaml.resolver.Resolver;
 import org.yaml.snakeyaml.scanner.Scanner;
+import org.yaml.snakeyaml.serializer.Serializer;
 
 /**
  * @see PyYAML 3.06 for more information
