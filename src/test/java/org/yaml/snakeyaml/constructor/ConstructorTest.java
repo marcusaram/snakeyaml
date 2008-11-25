@@ -6,7 +6,6 @@ import java.util.Map;
 import junit.framework.TestCase;
 
 import org.yaml.snakeyaml.composer.Composer;
-import org.yaml.snakeyaml.composer.ComposerImpl;
 import org.yaml.snakeyaml.parser.Parser;
 import org.yaml.snakeyaml.parser.ParserImpl;
 import org.yaml.snakeyaml.reader.Reader;
@@ -71,7 +70,7 @@ public class ConstructorTest extends TestCase {
         Scanner scanner = new ScannerImpl(reader);
         Parser parser = new ParserImpl(scanner);
         Resolver resolver = new Resolver();
-        Composer composer = new ComposerImpl(parser, resolver);
+        Composer composer = new Composer(parser, resolver);
         Constructor constructor = new ConstructorImpl(composer);
         Object result = constructor.getSingleData();
         return result;

@@ -8,7 +8,6 @@ import java.io.Writer;
 
 import org.yaml.snakeyaml.YamlConfig;
 import org.yaml.snakeyaml.composer.Composer;
-import org.yaml.snakeyaml.composer.ComposerImpl;
 import org.yaml.snakeyaml.constructor.Constructor;
 import org.yaml.snakeyaml.constructor.ConstructorImpl;
 import org.yaml.snakeyaml.emitter.Emitter;
@@ -44,7 +43,7 @@ public class YAMLFactory {
     }
 
     public Composer createComposer(final Parser parser, final Resolver resolver) {
-        return new ComposerImpl(parser, resolver);
+        return new Composer(parser, resolver);
     }
 
     public Constructor createConstructor(final Composer composer) {

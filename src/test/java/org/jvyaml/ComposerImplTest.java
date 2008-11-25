@@ -6,7 +6,6 @@ import java.io.Reader;
 import junit.framework.TestCase;
 
 import org.yaml.snakeyaml.composer.Composer;
-import org.yaml.snakeyaml.composer.ComposerImpl;
 import org.yaml.snakeyaml.parser.ParserImpl;
 import org.yaml.snakeyaml.resolver.Resolver;
 import org.yaml.snakeyaml.scanner.ScannerImpl;
@@ -41,7 +40,7 @@ public class ComposerImplTest extends TestCase {
         final String str = input.toString();
         final long before = System.currentTimeMillis();
         for (int i = 0; i < 1; i++) {
-            final Composer cmp = new ComposerImpl(new ParserImpl(new ScannerImpl(
+            final Composer cmp = new Composer(new ParserImpl(new ScannerImpl(
                     new org.yaml.snakeyaml.reader.Reader(str))), new Resolver());
             while (cmp.checkNode()) {
                 System.out.println(cmp.getNode());

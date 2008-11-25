@@ -30,7 +30,7 @@ public class ComposerImplTest extends TestCase {
         Scanner scanner = new ScannerImpl(reader);
         Parser parser = new ParserImpl(scanner);
         Resolver resolver = new Resolver();
-        Composer composer = new ComposerImpl(parser, resolver);
+        Composer composer = new Composer(parser, resolver);
         Node node = composer.getSingleNode();
         return node;
     }
