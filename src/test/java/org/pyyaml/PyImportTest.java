@@ -47,6 +47,13 @@ public abstract class PyImportTest extends TestCase {
         return files;
     }
 
+    protected File getFileByName(String name) {
+        File file = new File("src/test/resources/pyyaml/" + name);
+        assertTrue("Folder not found: " + file.getAbsolutePath(), file.exists());
+        assertTrue(file.isFile());
+        return file;
+    }
+
     private class PyFilenameFilter implements FilenameFilter {
         private String extension;
 
