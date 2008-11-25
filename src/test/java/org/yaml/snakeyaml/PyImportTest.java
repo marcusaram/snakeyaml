@@ -1,4 +1,4 @@
-package org.pyyaml;
+package org.yaml.snakeyaml;
 
 import java.io.File;
 import java.io.FilenameFilter;
@@ -7,7 +7,6 @@ import java.io.InputStream;
 
 import junit.framework.TestCase;
 
-import org.yaml.snakeyaml.Util;
 import org.yaml.snakeyaml.Yaml;
 
 public abstract class PyImportTest extends TestCase {

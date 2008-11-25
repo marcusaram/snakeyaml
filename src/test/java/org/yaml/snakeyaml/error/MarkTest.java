@@ -1,4 +1,4 @@
-package org.jvyaml;
+package org.yaml.snakeyaml.error;
 
 import junit.framework.TestCase;
 

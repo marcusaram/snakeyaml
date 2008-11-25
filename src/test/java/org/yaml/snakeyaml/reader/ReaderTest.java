@@ -1,9 +1,10 @@
-package org.pyyaml;
+package org.yaml.snakeyaml.reader;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 
+import org.yaml.snakeyaml.PyImportTest;
 import org.yaml.snakeyaml.reader.Reader;
 import org.yaml.snakeyaml.reader.ReaderException;
 

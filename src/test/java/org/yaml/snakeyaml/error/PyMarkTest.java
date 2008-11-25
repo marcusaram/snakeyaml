@@ -1,11 +1,12 @@
-package org.pyyaml;
+package org.yaml.snakeyaml.error;
 
+import org.yaml.snakeyaml.PyImportTest;
 import org.yaml.snakeyaml.error.Mark;
 
 /**
  * @see imported from PyYAML
  */
-public class MarkTest extends PyImportTest {
+public class PyMarkTest extends PyImportTest {
 
     public void testMarks() {
         String content = getResource("test_mark.marks");
