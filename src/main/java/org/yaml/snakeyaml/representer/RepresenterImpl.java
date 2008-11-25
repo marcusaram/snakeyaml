@@ -66,22 +66,22 @@ public class RepresenterImpl implements Representer {
         return node;
     }
 
-    public Node scalar(final String tag, final String value, char style) throws IOException {
+    protected Node scalar(final String tag, final String value, char style) throws IOException {
         return representScalar(tag, value, style);
     }
 
-    public Node representScalar(final String tag, final String value, char style)
+    protected Node representScalar(final String tag, final String value, char style)
             throws IOException {
         char realStyle = style == 0 ? this.defaultStyle : style;
         return new ScalarNode(tag, value, null, null, style);
     }
 
-    public Node seq(final String tag, final List sequence, final boolean flowStyle)
+    protected Node seq(final String tag, final List sequence, final boolean flowStyle)
             throws IOException {
         return representSequence(tag, sequence, flowStyle);
     }
 
-    public Node representSequence(final String tag, final List sequence, final boolean flowStyle)
+    protected Node representSequence(final String tag, final List sequence, final boolean flowStyle)
             throws IOException {
         List value = new ArrayList(sequence.size());
         for (final Iterator iter = sequence.iterator(); iter.hasNext();) {
@@ -90,12 +90,12 @@ public class RepresenterImpl implements Representer {
         return new SequenceNode(tag, value, null, null, flowStyle);
     }
 
-    public Node map(final String tag, final Map mapping, final boolean flowStyle)
+    protected Node map(final String tag, final Map mapping, final boolean flowStyle)
             throws IOException {
         return representMapping(tag, mapping, flowStyle);
     }
 
-    public Node representMapping(final String tag, final Map mapping, final boolean flowStyle)
+    protected Node representMapping(final String tag, final Map mapping, final boolean flowStyle)
             throws IOException {
         Map value = new HashMap();
         for (final Iterator iter = mapping.keySet().iterator(); iter.hasNext();) {
@@ -144,7 +144,7 @@ public class RepresenterImpl implements Representer {
         }
     }
 
-    public static class DateYAMLNodeCreator implements YAMLNodeCreator {
+    private class DateYAMLNodeCreator implements YAMLNodeCreator {
         private final Calendar calendar;
 
         public DateYAMLNodeCreator(final Object data) {
@@ -202,11 +202,11 @@ public class RepresenterImpl implements Representer {
                 buffer.append(String.valueOf(millis));
             }
             buffer.append("Z");
-            return representer.scalar(taguri(), buffer.toString(), (char) 0);
+            return scalar(taguri(), buffer.toString(), (char) 0);
         }
     }
 
-    public static class SetYAMLNodeCreator implements YAMLNodeCreator {
+    private class SetYAMLNodeCreator implements YAMLNodeCreator {
         private final Set data;
 
         public SetYAMLNodeCreator(final Object data) {
@@ -222,11 +222,11 @@ public class RepresenterImpl implements Representer {
             for (final Iterator iter = data.iterator(); iter.hasNext();) {
                 entries.put(iter.next(), null);
             }
-            return representer.map(taguri(), entries, false);
+            return map(taguri(), entries, false);
         }
     }
 
-    public static class ArrayYAMLNodeCreator implements YAMLNodeCreator {
+    private class ArrayYAMLNodeCreator implements YAMLNodeCreator {
         private final Object data;
 
         public ArrayYAMLNodeCreator(final Object data) {
@@ -243,11 +243,11 @@ public class RepresenterImpl implements Representer {
             for (int i = 0; i < l; i++) {
                 lst.add(java.lang.reflect.Array.get(data, i));
             }
-            return representer.seq(taguri(), lst, false);
+            return seq(taguri(), lst, false);
         }
     }
 
-    public static class NumberYAMLNodeCreator implements YAMLNodeCreator {
+    private class NumberYAMLNodeCreator implements YAMLNodeCreator {
         private final Number data;
 
         public NumberYAMLNodeCreator(final Object data) {
@@ -272,11 +272,11 @@ public class RepresenterImpl implements Representer {
             } else if (str.equals("NaN")) {
                 str = ".nan";
             }
-            return representer.scalar(taguri(), str, (char) 0);
+            return scalar(taguri(), str, (char) 0);
         }
     }
 
-    public static class BinaryYAMLNodeCreator implements YAMLNodeCreator {
+    private class BinaryYAMLNodeCreator implements YAMLNodeCreator {
         private final ByteBuffer data;
 
         public BinaryYAMLNodeCreator(final Object data) {
@@ -291,11 +291,11 @@ public class RepresenterImpl implements Representer {
             byte[] array = data.array();
             char[] encoded = Base64Coder.encode(array);
             String str = String.valueOf(encoded);
-            return representer.scalar(taguri(), str, (char) 0);
+            return scalar(taguri(), str, (char) 0);
         }
     }
 
-    public static class ScalarYAMLNodeCreator implements YAMLNodeCreator {
+    private class ScalarYAMLNodeCreator implements YAMLNodeCreator {
         private final String tag;
         private final Object data;
 
@@ -309,11 +309,11 @@ public class RepresenterImpl implements Representer {
         }
 
         public Node toYamlNode(Representer representer) throws IOException {
-            return representer.scalar(taguri(), data.toString(), (char) 0);
+            return scalar(taguri(), data.toString(), (char) 0);
         }
     }
 
-    public static class StringYAMLNodeCreator implements YAMLNodeCreator {
+    private class StringYAMLNodeCreator implements YAMLNodeCreator {
         private final Object data;
 
         public StringYAMLNodeCreator(final Object data) {
@@ -329,11 +329,11 @@ public class RepresenterImpl implements Representer {
         }
 
         public Node toYamlNode(Representer representer) throws IOException {
-            return representer.scalar(taguri(), data.toString(), (char) 0);
+            return scalar(taguri(), data.toString(), (char) 0);
         }
     }
 
-    public static class SequenceYAMLNodeCreator implements YAMLNodeCreator {
+    private class SequenceYAMLNodeCreator implements YAMLNodeCreator {
         private final List data;
 
         public SequenceYAMLNodeCreator(final Object data) {
@@ -349,11 +349,11 @@ public class RepresenterImpl implements Representer {
         }
 
         public Node toYamlNode(Representer representer) throws IOException {
-            return representer.seq(taguri(), data, false);
+            return seq(taguri(), data, false);
         }
     }
 
-    public static class MappingYAMLNodeCreator implements YAMLNodeCreator {
+    private class MappingYAMLNodeCreator implements YAMLNodeCreator {
         private final Map data;
 
         public MappingYAMLNodeCreator(final Object data) {
@@ -369,11 +369,11 @@ public class RepresenterImpl implements Representer {
         }
 
         public Node toYamlNode(Representer representer) throws IOException {
-            return representer.map(taguri(), data, false);
+            return map(taguri(), data, false);
         }
     }
 
-    public static class JavaBeanYAMLNodeCreator implements YAMLNodeCreator {
+    private class JavaBeanYAMLNodeCreator implements YAMLNodeCreator {
         private final Object data;
 
         public JavaBeanYAMLNodeCreator(final Object data) {
@@ -408,7 +408,7 @@ public class RepresenterImpl implements Representer {
                     }
                 }
             }
-            return representer.map(taguri(), values, false);
+            return map(taguri(), values, false);
         }
     }
 
