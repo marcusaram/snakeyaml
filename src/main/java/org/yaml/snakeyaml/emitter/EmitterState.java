@@ -6,7 +6,7 @@ package org.yaml.snakeyaml.emitter;
 import java.io.IOException;
 
 /**
- * Python's methods are first class object. Java need a class.
+ * Python's methods are first class object. Java needs a class.
  * 
  * @see PyYAML 3.06 for more information
  */
