@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.yaml.snakeyaml.PyImportTest;
-import org.yaml.snakeyaml.error.YAMLException;
 
 /**
  * @see imported from PyYAML
@@ -89,7 +88,7 @@ public class ErrorsTest extends PyImportTest {
     }
 
     // TODO not imported: public void testEmitterErrors()
-    // TODO not imported: public void testDumperErrors()
+    // testDumperErrors() is implemented in SerializerTest.java
 
     @SuppressWarnings("unchecked")
     public void testLoaderErrors1() throws FileNotFoundException {
