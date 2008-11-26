@@ -25,10 +25,8 @@ public class Chapter2_1Test extends TestCase {
         assertEquals("Sammy Sosa", list.get(1));
         assertEquals("Ken Griffey", list.get(2));
         assertTrue(document.getPresentation().contains(document.getSource()));
-        /*
-         * TODO assertEquals("Must generate the same document.",
-         * document.getSource(), document .getPresentation());
-         */
+        assertEquals("Must generate the same document.", document.getSource(), document
+                .getPresentation());
     }
 
     @SuppressWarnings("unchecked")
