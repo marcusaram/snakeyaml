@@ -139,7 +139,6 @@ public class Yaml {
      * @return an iterator over the parsed Java objects in this String in proper
      *         sequence
      */
-    @SuppressWarnings("unchecked")
     public Iterable<Object> loadAll(final String yaml) {
         final Constructor ctor = new ConstructorImpl(new Composer(new ParserImpl(new ScannerImpl(
                 new Reader(yaml))), new Resolver()));
@@ -168,7 +167,6 @@ public class Yaml {
      * @return an iterator over the parsed Java objects in this stream in proper
      *         sequence
      */
-    @SuppressWarnings("unchecked")
     public Iterable<Object> loadAll(final InputStream yaml) {
         final Constructor ctor = new ConstructorImpl(new Composer(new ParserImpl(new ScannerImpl(
                 new Reader(yaml))), new Resolver()));
