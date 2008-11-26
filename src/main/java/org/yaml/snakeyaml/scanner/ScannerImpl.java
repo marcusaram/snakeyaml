@@ -78,11 +78,9 @@ public class ScannerImpl implements Scanner {
 
     private final static String NULL_BL_LINEBR = "\0 \r\n\u0085";
     private final static String NULL_BL_T_LINEBR = "\0 \t\r\n\u0085";
-    private final static String NULL_OR_OTHER = NULL_BL_T_LINEBR;
     private final static String NULL_OR_LINEBR = "\0\r\n\u0085";
     private final static String FULL_LINEBR = "\r\n\u0085";
     private final static String BLANK_OR_LINEBR = " \r\n\u0085";
-    private final static String S4 = "\0 \t\r\n\u0028[]{}";
     private final static String ALPHA = "abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ-_";
     private final static String STRANGE_CHAR = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789][-';/?:@&=+$,.!~*()%";
     private final static String RN = "\r\n";
@@ -93,13 +91,8 @@ public class ScannerImpl implements Scanner {
 
     private final static Pattern NOT_HEXA = Pattern.compile("[^0-9A-Fa-f]");
     private final static Pattern NON_ALPHA = Pattern.compile("[^-0-9A-Za-z_]");
-    private final static Pattern R_FLOWZERO = Pattern
-            .compile("[\0 \t\r\n\u0085]|(:[\0 \t\r\n\u0028])");
-    private final static Pattern R_FLOWNONZERO = Pattern.compile("[\0 \t\r\n\u0085\\[\\]{},:?]");
     private final static Pattern END_OR_START = Pattern
             .compile("^(---|\\.\\.\\.)[\0 \t\r\n\u0085]$");
-    private final static Pattern ENDING = Pattern.compile("^---[\0 \t\r\n\u0085]$");
-    private final static Pattern START = Pattern.compile("^\\.\\.\\.[\0 \t\r\n\u0085]$");
 
     private final static Map<Character, String> ESCAPE_REPLACEMENTS = new HashMap<Character, String>();
     private final static Map<Character, Integer> ESCAPE_CODES = new HashMap<Character, Integer>();
@@ -885,11 +878,12 @@ public class ScannerImpl implements Scanner {
         }
     }
 
+    private static final String SPACES = "\0 \t\r\n\u0085\u2028\u2029";
+
     private boolean checkDocumentStart() {
         // DOCUMENT-START: ^ '---' (' '|'\n')
         if (reader.getColumn() == 0) {
-            // TODO looks like deviation from PyYAML
-            if (ENDING.matcher(reader.prefix(4)).matches()) {
+            if ("---".equals(reader.prefix(3)) && SPACES.indexOf(reader.peek(3)) != -1) {
                 return true;
             }
         }
@@ -899,8 +893,7 @@ public class ScannerImpl implements Scanner {
     private boolean checkDocumentEnd() {
         // DOCUMENT-END: ^ '...' (' '|'\n')
         if (reader.getColumn() == 0) {
-            // TODO looks like deviation from PyYAML
-            if (START.matcher(reader.prefix(4)).matches()) {
+            if ("...".equals(reader.prefix(3)) && SPACES.indexOf(reader.peek(3)) != -1) {
                 return true;
             }
         }
@@ -909,7 +902,7 @@ public class ScannerImpl implements Scanner {
 
     private boolean checkBlockEntry() {
         // BLOCK-ENTRY: '-' (' '|'\n')
-        return NULL_OR_OTHER.indexOf(reader.peek(1)) != -1;
+        return SPACES.indexOf(reader.peek(1)) != -1;
     }
 
     private boolean checkKey() {
@@ -918,7 +911,7 @@ public class ScannerImpl implements Scanner {
             return true;
         } else {
             // KEY(block context): '?' (' '|'\n')
-            return NULL_OR_OTHER.indexOf(reader.peek(1)) != -1;
+            return SPACES.indexOf(reader.peek(1)) != -1;
         }
     }
 
@@ -928,7 +921,7 @@ public class ScannerImpl implements Scanner {
             return true;
         } else {
             // VALUE(block context): ':' (' '|'\n')
-            return (NULL_OR_OTHER.indexOf(reader.peek(1)) != -1);
+            return (SPACES.indexOf(reader.peek(1)) != -1);
         }
     }
 
@@ -954,6 +947,8 @@ public class ScannerImpl implements Scanner {
                 .indexOf(reader.peek(1)) == -1 && (ch == '-' || (this.flowLevel == 0 && "?:"
                 .indexOf(ch) != -1))));
     }
+
+    // Scanners.
 
     /**
      * <pre>
