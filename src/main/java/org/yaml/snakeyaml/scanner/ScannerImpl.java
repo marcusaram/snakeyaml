@@ -517,17 +517,16 @@ public class ScannerImpl implements Scanner {
      * We always add STREAM-START as the first token and STREAM-END as the last
      * token.
      */
-    private Token fetchStreamStart() {
+    private void fetchStreamStart() {
         // Read the token.
         Mark mark = reader.getMark();
 
         // Add STREAM-START.
         Token token = new StreamStartToken(mark, mark, reader.getEncoding());
         this.tokens.add(token);
-        return token;
     }
 
-    private Token fetchStreamEnd() {
+    private void fetchStreamEnd() {
         // Set the current intendation to -1.
         unwindIndent(-1);
 
@@ -544,32 +543,33 @@ public class ScannerImpl implements Scanner {
 
         // The stream is finished.
         this.done = true;
-        return token;
     }
 
-    private Token fetchDirective() {
+    private void fetchDirective() {
         // Set the current intendation to -1.
         unwindIndent(-1);
+
         // Reset simple keys.
         removePossibleSimpleKey();
         this.allowSimpleKey = false;
+
         // Scan and add DIRECTIVE.
-        final Token tok = scanDirective();
+        Token tok = scanDirective();
         this.tokens.add(tok);
-        return tok;
     }
 
-    private Token fetchDocumentStart() {
-        return fetchDocumentIndicator(true);
+    private void fetchDocumentStart() {
+        fetchDocumentIndicator(true);
     }
 
-    private Token fetchDocumentEnd() {
-        return fetchDocumentIndicator(false);
+    private void fetchDocumentEnd() {
+        fetchDocumentIndicator(false);
     }
 
-    private Token fetchDocumentIndicator(final boolean isDocumentStart) {
+    private void fetchDocumentIndicator(final boolean isDocumentStart) {
         // Set the current intendation to -1.
         unwindIndent(-1);
+
         // Reset simple keys. Note that there could not be a block collection
         // after '---'.
         removePossibleSimpleKey();
@@ -586,24 +586,26 @@ public class ScannerImpl implements Scanner {
             token = new DocumentEndToken(startMark, endMark);
         }
         this.tokens.add(token);
-        return token;
     }
 
-    private Token fetchFlowSequenceStart() {
-        return fetchFlowCollectionStart(false);
+    private void fetchFlowSequenceStart() {
+        fetchFlowCollectionStart(false);
     }
 
-    private Token fetchFlowMappingStart() {
-        return fetchFlowCollectionStart(true);
+    private void fetchFlowMappingStart() {
+        fetchFlowCollectionStart(true);
     }
 
-    private Token fetchFlowCollectionStart(boolean isMappingStart) {
+    private void fetchFlowCollectionStart(boolean isMappingStart) {
         // '[' and '{' may start a simple key.
         savePossibleSimpleKey();
+
         // Increase the flow level.
         this.flowLevel++;
+
         // Simple keys are allowed after '[' and '{'.
         this.allowSimpleKey = true;
+
         // Add FLOW-SEQUENCE-START or FLOW-MAPPING-START.
         Mark startMark = reader.getMark();
         reader.forward(1);
@@ -615,27 +617,29 @@ public class ScannerImpl implements Scanner {
             token = new FlowSequenceStartToken(startMark, endMark);
         }
         this.tokens.add(token);
-        return token;
     }
 
-    private Token fetchFlowSequenceEnd() {
-        return fetchFlowCollectionEnd(false);
+    private void fetchFlowSequenceEnd() {
+        fetchFlowCollectionEnd(false);
     }
 
-    private Token fetchFlowMappingEnd() {
-        return fetchFlowCollectionEnd(true);
+    private void fetchFlowMappingEnd() {
+        fetchFlowCollectionEnd(true);
     }
 
-    private Token fetchFlowCollectionEnd(final boolean isMappingEnd) {
+    private void fetchFlowCollectionEnd(final boolean isMappingEnd) {
         // Reset possible simple key on the current level.
         removePossibleSimpleKey();
+
         // Decrease the flow level.
         this.flowLevel--;
+
         // No simple keys after ']' or '}'.
         this.allowSimpleKey = false;
+
         // Add FLOW-SEQUENCE-END or FLOW-MAPPING-END.
         Mark startMark = reader.getMark();
-        reader.forward(1);
+        reader.forward();
         Mark endMark = reader.getMark();
         Token token;
         if (isMappingEnd) {
@@ -644,24 +648,24 @@ public class ScannerImpl implements Scanner {
             token = new FlowSequenceEndToken(startMark, endMark);
         }
         this.tokens.add(token);
-        return token;
     }
 
-    private Token fetchFlowEntry() {
+    private void fetchFlowEntry() {
         // Simple keys are allowed after ','.
         this.allowSimpleKey = true;
+
         // Reset possible simple key on the current level.
         removePossibleSimpleKey();
+
         // Add FLOW-ENTRY.
         Mark startMark = reader.getMark();
-        reader.forward(1);
+        reader.forward();
         Mark endMark = reader.getMark();
         Token token = new FlowEntryToken(startMark, endMark);
         this.tokens.add(token);
-        return token;
     }
 
-    private Token fetchBlockEntry() {
+    private void fetchBlockEntry() {
         // Block context needs additional checks.
         if (this.flowLevel == 0) {
             // Are we allowed to start a new entry?
@@ -669,6 +673,7 @@ public class ScannerImpl implements Scanner {
                 throw new ScannerException(null, null, "sequence entries are not allowed here",
                         reader.getMark());
             }
+
             // We may need to add BLOCK-SEQUENCE-START.
             if (addIndent(this.reader.getColumn())) {
                 Mark mark = reader.getMark();
@@ -680,18 +685,19 @@ public class ScannerImpl implements Scanner {
         }
         // Simple keys are allowed after '-'.
         this.allowSimpleKey = true;
+
         // Reset possible simple key on the current level.
         removePossibleSimpleKey();
+
         // Add BLOCK-ENTRY.
         Mark startMark = reader.getMark();
         reader.forward();
         Mark endMark = reader.getMark();
         Token token = new BlockEntryToken(startMark, endMark);
         this.tokens.add(token);
-        return token;
     }
 
-    private Token fetchKey() {
+    private void fetchKey() {
         // Block context needs additional checks.
         if (this.flowLevel == 0) {
             // Are we allowed to start a key (not necessary a simple)?
@@ -707,32 +713,30 @@ public class ScannerImpl implements Scanner {
         }
         // Simple keys are allowed after '?' in the block context.
         this.allowSimpleKey = this.flowLevel == 0;
+
         // Reset possible simple key on the current level.
         removePossibleSimpleKey();
+
         // Add KEY.
         Mark startMark = reader.getMark();
         reader.forward();
         Mark endMark = reader.getMark();
         Token token = new KeyToken(startMark, endMark);
         this.tokens.add(token);
-        return token;
     }
 
-    private Token fetchValue() {
+    private void fetchValue() {
         // Do we determine a simple key?
-        final SimpleKey key = (SimpleKey) this.possibleSimpleKeys.get(new Integer(this.flowLevel));
-        if (key != null) {
+        if (this.possibleSimpleKeys.keySet().contains(this.flowLevel)) {
             // Add KEY.
-            this.possibleSimpleKeys.remove(new Integer(this.flowLevel));
+            SimpleKey key = this.possibleSimpleKeys.get(this.flowLevel);
+            this.possibleSimpleKeys.remove(this.flowLevel);
             this.tokens.add(key.getTokenNumber() - this.tokensTaken, new KeyToken(key.getMark(),
                     key.getMark()));
-            if (this.flowLevel == 0 && addIndent(key.getColumn())) {
-                this.tokens.add(key.getTokenNumber() - this.tokensTaken,
-                        new BlockMappingStartToken(key.getMark(), key.getMark()));
-            }
+
             // If this key starts a new block mapping, we need to add
             // BLOCK-MAPPING-START.
-            if (flowLevel == 0) {
+            if (this.flowLevel == 0) {
                 if (addIndent(key.getColumn())) {
                     this.tokens.add(key.getTokenNumber() - this.tokensTaken,
                             new BlockMappingStartToken(key.getMark(), key.getMark()));
@@ -746,6 +750,7 @@ public class ScannerImpl implements Scanner {
             // They
             // will be catched by the parser anyway.)
             if (this.flowLevel == 0) {
+
                 // We are allowed to start a complex value if and only if we can
                 // start a simple key.
                 if (!this.allowSimpleKey) {
@@ -753,6 +758,7 @@ public class ScannerImpl implements Scanner {
                             reader.getMark());
                 }
             }
+
             // If this value starts a new block mapping, we need to add
             // BLOCK-MAPPING-START. It will be detected as an error later by
             // the parser.
@@ -762,8 +768,10 @@ public class ScannerImpl implements Scanner {
                     this.tokens.add(new BlockMappingStartToken(mark, mark));
                 }
             }
+
             // Simple keys are allowed after ':' in the block context.
             allowSimpleKey = (flowLevel == 0);
+
             // Reset possible simple key on the current level.
             removePossibleSimpleKey();
         }
@@ -773,7 +781,6 @@ public class ScannerImpl implements Scanner {
         Mark endMark = reader.getMark();
         Token token = new ValueToken(startMark, endMark);
         this.tokens.add(token);
-        return token;
     }
 
     private Token fetchAlias() {
