@@ -75,24 +75,22 @@ import org.yaml.snakeyaml.tokens.ValueToken;
  * </pre>
  */
 public class ScannerImpl implements Scanner {
-
-    private final static String NULL_BL_LINEBR = "\0 \r\n\u0085";
-    private final static String NULL_BL_T_LINEBR = "\0 \t\r\n\u0085";
-    private final static String NULL_OR_LINEBR = "\0\r\n\u0085";
-    private final static String FULL_LINEBR = "\r\n\u0085";
-    private final static String BLANK_OR_LINEBR = " \r\n\u0085";
+    private final static String NULL_BL_LINEBR = "\0 \r\n\u0085\u2028\u2029";
+    private final static String NULL_BL_T_LINEBR = "\0 \t\r\n\u0085\u2028\u2029";
+    private final static String NULL_OR_LINEBR = "\0\r\n\u0085\u2028\u2029";
+    private final static String FULL_LINEBR = "\r\n\u0085\u2028\u2029";
     private final static String ALPHA = "abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ-_";
     private final static String STRANGE_CHAR = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789][-';/?:@&=+$,.!~*()%";
     private final static String RN = "\r\n";
     private final static String BLANK_T = " \t";
-    private final static String SPACES_AND_STUFF = "'\"\\\0 \t\r\n\u0085";
+    private final static String SPACES_AND_STUFF = "'\"\\\0 \t\r\n\u0085\u2028\u2029";
     private final static String DOUBLE_ESC = "\"\\";
-    private final static String NON_ALPHA_OR_NUM = "\0 \t\r\n\u0085?:,]}%@`";
+    private final static String NON_ALPHA_OR_NUM = "\0 \t\r\n\u0085\u2028\u2029?:,]}%@`";
 
     private final static Pattern NOT_HEXA = Pattern.compile("[^0-9A-Fa-f]");
     private final static Pattern NON_ALPHA = Pattern.compile("[^-0-9A-Za-z_]");
     private final static Pattern END_OR_START = Pattern
-            .compile("^(---|\\.\\.\\.)[\0 \t\r\n\u0085]$");
+            .compile("^(---|\\.\\.\\.)[\0 \t\r\n\u0085\u2028\u2029]$");
 
     private final static Map<Character, String> ESCAPE_REPLACEMENTS = new HashMap<Character, String>();
     private final static Map<Character, Integer> ESCAPE_CODES = new HashMap<Character, Integer>();
@@ -981,7 +979,7 @@ public class ScannerImpl implements Scanner {
                 reader.forward();
             }
             if (reader.peek() == '#') {
-                while (NULL_OR_LINEBR.indexOf(reader.peek()) == -1) {
+                while ("\0\r\n\u0085\u2028\u2029".indexOf(reader.peek()) == -1) {
                     reader.forward();
                 }
             }
@@ -1010,7 +1008,7 @@ public class ScannerImpl implements Scanner {
             endMark = reader.getMark();
         } else {
             endMark = reader.getMark();
-            while (NULL_OR_LINEBR.indexOf(reader.peek()) == -1) {
+            while ("\0\r\n\u0085\u2028\u2029".indexOf(reader.peek()) == -1) {
                 reader.forward();
             }
         }
@@ -1087,11 +1085,11 @@ public class ScannerImpl implements Scanner {
         while (reader.peek() == ' ') {
             reader.forward();
         }
-        final String handle = scanTagDirectiveHandle(startMark);
+        String handle = scanTagDirectiveHandle(startMark);
         while (reader.peek() == ' ') {
             reader.forward();
         }
-        final String prefix = scanTagDirectivePrefix(startMark);
+        String prefix = scanTagDirectivePrefix(startMark);
         List<String> result = new ArrayList<String>(2);
         result.add(handle);
         result.add(prefix);
@@ -1100,18 +1098,18 @@ public class ScannerImpl implements Scanner {
 
     private String scanTagDirectiveHandle(Mark startMark) {
         // See the specification for details.
-        final String value = scanTagHandle("directive", startMark);
-        if (reader.peek() != ' ') {
+        String value = scanTagHandle("directive", startMark);
+        char ch = reader.peek();
+        if (ch != ' ') {
             throw new ScannerException("while scanning a directive", startMark,
-                    "expected ' ', but found " + reader.peek() + "(" + ((int) reader.peek()) + ")",
-                    reader.getMark());
+                    "expected ' ', but found " + reader.peek() + "(" + ch + ")", reader.getMark());
         }
         return value;
     }
 
     private String scanTagDirectivePrefix(Mark startMark) {
         // See the specification for details.
-        final String value = scanTagUri("directive", startMark);
+        String value = scanTagUri("directive", startMark);
         if (NULL_BL_LINEBR.indexOf(reader.peek()) == -1) {
             throw new ScannerException("while scanning a directive", startMark,
                     "expected ' ', but found " + reader.peek() + "(" + ((int) reader.peek()) + ")",
@@ -1153,17 +1151,14 @@ public class ScannerImpl implements Scanner {
      */
     private Token scanAnchor(final boolean isAnchor) {
         Mark startMark = reader.getMark();
-        final char indicator = reader.peek();
-        final String name = indicator == '*' ? "alias" : "anchor";
+        char indicator = reader.peek();
+        String name = indicator == '*' ? "alias" : "anchor";
         reader.forward();
         int length = 0;
-        char[] chArray = new char[1];
         char ch = reader.peek(length);
-        chArray[0] = ch;
-        while (!(NON_ALPHA.matcher(new String(chArray))).find()) {
+        while (ALPHA.indexOf(ch) != -1) {
             length++;
             ch = reader.peek(length);
-            chArray[0] = ch;
         }
         if (length == 0) {
             throw new ScannerException("while scanning an " + name, startMark,
@@ -1173,7 +1168,7 @@ public class ScannerImpl implements Scanner {
         String value = reader.prefix(length);
         reader.forward(length);
         ch = reader.peek();
-        if (NON_ALPHA_OR_NUM.indexOf(ch) == -1) {
+        if ("\0 \t\r\n\u0085\u2028\u2029?:,]}%@`".indexOf(ch) == -1) {
             throw new ScannerException("while scanning an " + name, startMark,
                     "expected alphabetic or numeric character, but found " + ch + "("
                             + ((int) reader.peek()) + ")", reader.getMark());
@@ -1209,7 +1204,7 @@ public class ScannerImpl implements Scanner {
         } else {
             int length = 1;
             boolean useHandle = false;
-            while (NULL_BL_T_LINEBR.indexOf(ch) == -1) {
+            while ("\0 \r\n\u0085\u2028\u2029".indexOf(ch) == -1) {
                 if (ch == '!') {
                     useHandle = true;
                     break;
@@ -1244,14 +1239,15 @@ public class ScannerImpl implements Scanner {
         } else {
             folded = false;
         }
-        final StringBuffer chunks = new StringBuffer();
+        StringBuffer chunks = new StringBuffer();
         Mark startMark = reader.getMark();
         // Scan the header.
         reader.forward();
-        final Object[] chompi = scanBlockScalarIndicators(startMark);
-        final Boolean chomping = (Boolean) chompi[0];
-        final int increment = ((Integer) chompi[1]).intValue();
+        Object[] chompi = scanBlockScalarIndicators(startMark);
+        Boolean chomping = (Boolean) chompi[0];
+        int increment = ((Integer) chompi[1]).intValue();
         scanBlockScalarIgnoredLine(startMark);
+
         // Determine the indentation level and go to the first non-empty line.
         int minIndent = this.indent + 1;
         if (minIndent < 1) {
@@ -1262,23 +1258,24 @@ public class ScannerImpl implements Scanner {
         int indent = 0;
         Mark endMark;
         if (increment == -1) {
-            final Object[] brme = scanBlockScalarIndentation();
+            Object[] brme = scanBlockScalarIndentation();
             breaks = (String) brme[0];
             maxIndent = ((Integer) brme[1]).intValue();
             endMark = (Mark) brme[2];
             indent = Math.max(minIndent, maxIndent);
         } else {
             indent = minIndent + increment - 1;
-            final Object[] brme = scanBlockScalarBreaks(indent);
+            Object[] brme = scanBlockScalarBreaks(indent);
             breaks = (String) brme[0];
             endMark = (Mark) brme[1];
         }
 
         String lineBreak = "";
+
         // Scan the inner part of the block scalar.
         while (this.reader.getColumn() == indent && reader.peek() != '\0') {
             chunks.append(breaks);
-            final boolean leadingNonSpace = BLANK_T.indexOf(reader.peek()) == -1;
+            boolean leadingNonSpace = " \t".indexOf(reader.peek()) == -1;
             int length = 0;
             while (NULL_OR_LINEBR.indexOf(reader.peek(length)) == -1) {
                 length++;
@@ -1286,15 +1283,16 @@ public class ScannerImpl implements Scanner {
             chunks.append(reader.prefix(length));
             reader.forward(length);
             lineBreak = scanLineBreak();
-            final Object[] brme = scanBlockScalarBreaks(indent);
+            Object[] brme = scanBlockScalarBreaks(indent);
             breaks = (String) brme[0];
             endMark = (Mark) brme[1];
             if (this.reader.getColumn() == indent && reader.peek() != '\0') {
+
                 // Unfortunately, folding rules are ambiguous.
                 //
                 // This is the folding according to the specification:
                 if (folded && lineBreak.equals("\n") && leadingNonSpace
-                        && BLANK_T.indexOf(reader.peek()) == -1) {
+                        && " \t".indexOf(reader.peek()) == -1) {
                     if (breaks.length() == 0) {
                         chunks.append(" ");
                     }
@@ -1361,8 +1359,8 @@ public class ScannerImpl implements Scanner {
         ch = reader.peek();
         if (NULL_BL_LINEBR.indexOf(ch) == -1) {
             throw new ScannerException("while scanning a block scalar", startMark,
-                    "expected chomping or indentation indicators, but found " + ch + "("
-                            + ((int) reader.peek()) + ")", reader.getMark());
+                    "expected chomping or indentation indicators, but found " + ch, reader
+                            .getMark());
         }
         return new Object[] { chomping, new Integer(increment) };
     }
@@ -1380,18 +1378,17 @@ public class ScannerImpl implements Scanner {
         char ch = reader.peek();
         if (NULL_OR_LINEBR.indexOf(ch) == -1) {
             throw new ScannerException("while scanning a block scalar", startMark,
-                    "expected a comment or a line break, but found " + ch + "(" + ((int) ch) + ")",
-                    reader.getMark());
+                    "expected a comment or a line break, but found " + ch, reader.getMark());
         }
         return scanLineBreak();
     }
 
     private Object[] scanBlockScalarIndentation() {
         // See the specification for details.
-        final StringBuffer chunks = new StringBuffer();
+        StringBuffer chunks = new StringBuffer();
         int maxIndent = 0;
         Mark endMark = reader.getMark();
-        while (BLANK_OR_LINEBR.indexOf(reader.peek()) != -1) {
+        while (" \r\n\u0085\u2028\u2029".indexOf(reader.peek()) != -1) {
             if (reader.peek() != ' ') {
                 chunks.append(scanLineBreak());
                 endMark = reader.getMark();
@@ -1407,7 +1404,7 @@ public class ScannerImpl implements Scanner {
 
     private Object[] scanBlockScalarBreaks(final int indent) {
         // See the specification for details.
-        final StringBuffer chunks = new StringBuffer();
+        StringBuffer chunks = new StringBuffer();
         Mark endMark = reader.getMark();
         while (this.reader.getColumn() < indent && reader.peek() == ' ') {
             reader.forward();
@@ -1439,9 +1436,9 @@ public class ScannerImpl implements Scanner {
         } else {
             _double = false;
         }
-        final StringBuffer chunks = new StringBuffer();
+        StringBuffer chunks = new StringBuffer();
         Mark startMark = reader.getMark();
-        final char quote = reader.peek();
+        char quote = reader.peek();
         reader.forward();
         chunks.append(scanFlowScalarNonSpaces(_double, startMark));
         while (reader.peek() != quote) {
@@ -1453,12 +1450,12 @@ public class ScannerImpl implements Scanner {
         return new ScalarToken(chunks.toString(), false, startMark, endMark, style);
     }
 
-    private String scanFlowScalarNonSpaces(final boolean _double, Mark startMark) {
+    private String scanFlowScalarNonSpaces(boolean _double, Mark startMark) {
         // See the specification for details.
-        final StringBuffer chunks = new StringBuffer();
+        StringBuffer chunks = new StringBuffer();
         while (true) {
             int length = 0;
-            while (SPACES_AND_STUFF.indexOf(reader.peek(length)) == -1) {
+            while ("\'\"\\\0 \t\r\n\u0085\u2028\u2029".indexOf(reader.peek(length)) == -1) {
                 length++;
             }
             if (length != 0) {
@@ -1469,7 +1466,7 @@ public class ScannerImpl implements Scanner {
             if (!_double && ch == '\'' && reader.peek(1) == '\'') {
                 chunks.append("'");
                 reader.forward(2);
-            } else if ((_double && ch == '\'') || (!_double && DOUBLE_ESC.indexOf(ch) != -1)) {
+            } else if ((_double && ch == '\'') || (!_double && "\"\\".indexOf(ch) != -1)) {
                 chunks.append(ch);
                 reader.forward();
             } else if (_double && ch == '\\') {
@@ -1481,12 +1478,12 @@ public class ScannerImpl implements Scanner {
                 } else if (ESCAPE_CODES.containsKey(new Character(ch))) {
                     length = ((Integer) ESCAPE_CODES.get(new Character(ch))).intValue();
                     reader.forward();
-                    final String val = reader.prefix(length);
+                    String val = reader.prefix(length);
                     if (NOT_HEXA.matcher(val).find()) {
                         throw new ScannerException("while scanning a double-quoted scalar",
                                 startMark, "expected escape sequence of " + length
-                                        + " hexadecimal numbers, but found something else: " + val,
-                                reader.getMark());
+                                        + " hexadecimal numbers, but found: " + val, reader
+                                        .getMark());
                     }
                     char unicode = (char) Integer.parseInt(val, 16);
                     chunks.append(unicode);
@@ -1507,20 +1504,20 @@ public class ScannerImpl implements Scanner {
 
     private String scanFlowScalarSpaces(Mark startMark) {
         // See the specification for details.
-        final StringBuffer chunks = new StringBuffer();
+        StringBuffer chunks = new StringBuffer();
         int length = 0;
-        while (BLANK_T.indexOf(reader.peek(length)) != -1) {
+        while (" \t".indexOf(reader.peek(length)) != -1) {
             length++;
         }
-        final String whitespaces = reader.prefix(length);
+        String whitespaces = reader.prefix(length);
         reader.forward(length);
         char ch = reader.peek();
         if (ch == '\0') {
             throw new ScannerException("while scanning a quoted scalar", startMark,
                     "found unexpected end of stream", reader.getMark());
         } else if (FULL_LINEBR.indexOf(ch) != -1) {
-            final String lineBreak = scanLineBreak();
-            final String breaks = scanFlowScalarBreaks(startMark);
+            String lineBreak = scanLineBreak();
+            String breaks = scanFlowScalarBreaks(startMark);
             if (!lineBreak.equals("\n")) {
                 chunks.append(lineBreak);
             } else if (breaks.length() == 0) {
@@ -1535,7 +1532,7 @@ public class ScannerImpl implements Scanner {
 
     private String scanFlowScalarBreaks(Mark startMark) {
         // See the specification for details.
-        final StringBuffer chunks = new StringBuffer();
+        StringBuffer chunks = new StringBuffer();
         while (true) {
             // Instead of checking indentation, we check for document
             // separators.
@@ -1545,7 +1542,7 @@ public class ScannerImpl implements Scanner {
                 throw new ScannerException("while scanning a quoted scalar", startMark,
                         "found unexpected document separator", reader.getMark());
             }
-            while (BLANK_T.indexOf(reader.peek()) != -1) {
+            while (" \t".indexOf(reader.peek()) != -1) {
                 reader.forward();
             }
             if (FULL_LINEBR.indexOf(reader.peek()) != -1) {
@@ -1566,7 +1563,7 @@ public class ScannerImpl implements Scanner {
      * </pre>
      */
     private Token scanPlain() {
-        final StringBuffer chunks = new StringBuffer();
+        StringBuffer chunks = new StringBuffer();
         Mark startMark = reader.getMark();
         Mark endMark = startMark;
         int indent = this.indent + 1;
@@ -1620,27 +1617,31 @@ public class ScannerImpl implements Scanner {
      * </pre>
      */
     private String scanPlainSpaces() {
-        final StringBuffer chunks = new StringBuffer();
+        StringBuffer chunks = new StringBuffer();
         int length = 0;
         while (reader.peek(length) == ' ') {
             length++;
         }
-        final String whitespaces = reader.prefix(length);
+        String whitespaces = reader.prefix(length);
         reader.forward(length);
         char ch = reader.peek();
         if (FULL_LINEBR.indexOf(ch) != -1) {
-            final String lineBreak = scanLineBreak();
+            String lineBreak = scanLineBreak();
             this.allowSimpleKey = true;
-            if (END_OR_START.matcher(reader.prefix(4)).matches()) {
+            String prefix = reader.prefix(3);
+            if ("---".equals(prefix) || "...".equals(prefix)
+                    && NULL_BL_T_LINEBR.indexOf(reader.peek(3)) != -1) {
                 return "";
             }
-            final StringBuffer breaks = new StringBuffer();
-            while (BLANK_OR_LINEBR.indexOf(reader.peek()) != -1) {
-                if (' ' == reader.peek()) {
+            StringBuffer breaks = new StringBuffer();
+            while (" \r\n\u0085\u2028\u2029".indexOf(reader.peek()) != -1) {
+                if (reader.peek() == ' ') {
                     reader.forward();
                 } else {
                     breaks.append(scanLineBreak());
-                    if (END_OR_START.matcher(reader.prefix(4)).matches()) {
+                    prefix = reader.prefix(3);
+                    if ("---".equals(prefix) || "...".equals(prefix)
+                            && NULL_BL_T_LINEBR.indexOf(reader.peek(3)) != -1) {
                         return "";
                     }
                 }
