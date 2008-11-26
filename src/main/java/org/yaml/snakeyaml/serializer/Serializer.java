@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.yaml.snakeyaml.YamlConfig;
+import org.yaml.snakeyaml.Dumper;
 import org.yaml.snakeyaml.emitter.Emitter;
 import org.yaml.snakeyaml.events.AliasEvent;
 import org.yaml.snakeyaml.events.DocumentEndEvent;
@@ -36,7 +36,6 @@ import org.yaml.snakeyaml.resolver.Resolver;
 public class Serializer {
     private Emitter emitter;
     private Resolver resolver;
-    private YamlConfig options;
     private boolean explicitStart;
     private boolean explicitEnd;
     private Integer[] useVersion;
@@ -46,10 +45,9 @@ public class Serializer {
     private int lastAnchorId;
     private Boolean closed;
 
-    public Serializer(Emitter emitter, Resolver resolver, YamlConfig opts) {
+    public Serializer(Emitter emitter, Resolver resolver, Dumper opts) {
         this.emitter = emitter;
         this.resolver = resolver;
-        this.options = opts;
         this.explicitStart = opts.explicitStart();
         this.explicitEnd = opts.explicitEnd();
         this.useVersion = opts.version();

@@ -14,7 +14,7 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.regex.Pattern;
 
-import org.yaml.snakeyaml.YamlConfig;
+import org.yaml.snakeyaml.Dumper;
 import org.yaml.snakeyaml.events.AliasEvent;
 import org.yaml.snakeyaml.events.CollectionEndEvent;
 import org.yaml.snakeyaml.events.CollectionStartEvent;
@@ -122,7 +122,7 @@ public class Emitter {
     private ScalarAnalysis analysis;
     private char style = 0;
 
-    public Emitter(Writer stream, YamlConfig opts) {
+    public Emitter(Writer stream, Dumper opts) {
         // The stream should have the methods `write` and possibly `flush`.
         this.stream = stream;
         // Emitter is a state machine with a stack of states to handle nested
