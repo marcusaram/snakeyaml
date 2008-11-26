@@ -14,8 +14,6 @@ public class YamlConfig {
     private Integer[] version = null;
     private boolean expStart = false;
     private boolean expEnd = false;
-    // TODO should expTypes be removed ?
-    private boolean expTypes = false;
     private boolean canonical = false;
     private int bestWidth = 80;
     private boolean useBlock = false;
@@ -68,15 +66,6 @@ public class YamlConfig {
 
     public boolean explicitEnd() {
         return this.expEnd;
-    }
-
-    public YamlConfig explicitTypes(final boolean expTypes) {
-        this.expTypes = expTypes;
-        return this;
-    }
-
-    public boolean explicitTypes() {
-        return this.expTypes;
     }
 
     public YamlConfig canonical(final boolean canonical) {

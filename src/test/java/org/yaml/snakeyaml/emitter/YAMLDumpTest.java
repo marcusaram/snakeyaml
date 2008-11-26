@@ -13,7 +13,6 @@ import junit.framework.TestCase;
 
 import org.jvyaml.TestBean;
 import org.yaml.snakeyaml.Yaml;
-import org.yaml.snakeyaml.YamlConfig;
 
 /**
  * @author <a href="mailto:ola.bini@ki.se">Ola Bini</a>
@@ -42,16 +41,6 @@ public class YAMLDumpTest extends TestCase {
         ex.add("b");
         ex.add("c");
         assertEquals("- a\n- b\n- c\n", yaml.dump(ex));
-    }
-
-    public void testVersionDumps() {
-        Yaml yaml = new Yaml(new YamlConfig().explicitTypes(true));
-        assertEquals("!!int '1'\n", yaml.dump(new Integer(1)));
-        /*
-         * TODO yaml = new Yaml(new
-         * DefaultYAMLConfig().version("1.0").explicitTypes(true));
-         * assertEquals("!int 1\n", yaml.dump(new Integer(1)));
-         */
     }
 
     public void testDumpJavaBean() {

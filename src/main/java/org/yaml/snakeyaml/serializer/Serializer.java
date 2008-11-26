@@ -144,17 +144,14 @@ public class Serializer {
                 String defaultTag = this.resolver.resolve(ScalarNode.class, (String) node
                         .getValue(), false);
                 boolean[] implicit = new boolean[] { false, false };
-                if (!options.explicitTypes()) {
-                    implicit[0] = node.getTag().equals(detectedTag);
-                    implicit[1] = node.getTag().equals(defaultTag);
-                }
+                implicit[0] = node.getTag().equals(detectedTag);
+                implicit[1] = node.getTag().equals(defaultTag);
                 ScalarEvent event = new ScalarEvent(tAlias, node.getTag(), implicit, (String) node
                         .getValue(), null, null, ((ScalarNode) node).getStyle());
                 this.emitter.emit(event);
             } else if (node instanceof SequenceNode) {
-                boolean implicit = !options.explicitTypes()
-                        && (node.getTag().equals(this.resolver.resolve(SequenceNode.class, null,
-                                true)));
+                boolean implicit = (node.getTag().equals(this.resolver.resolve(SequenceNode.class,
+                        null, true)));
                 this.emitter.emit(new SequenceStartEvent(tAlias, node.getTag(), implicit, null,
                         null, ((CollectionNode) node).getFlowStyle()));
                 int indexCounter = 0;
@@ -165,9 +162,8 @@ public class Serializer {
                 }
                 this.emitter.emit(new SequenceEndEvent(null, null));
             } else if (node instanceof MappingNode) {
-                boolean implicit = !options.explicitTypes()
-                        && (node.getTag().equals(this.resolver.resolve(MappingNode.class, null,
-                                true)));
+                boolean implicit = (node.getTag().equals(this.resolver.resolve(MappingNode.class,
+                        null, true)));
                 this.emitter.emit(new MappingStartEvent(tAlias, node.getTag(), implicit, null,
                         null, ((CollectionNode) node).getFlowStyle()));
                 Map<Node, Node> map = (Map<Node, Node>) node.getValue();
