@@ -34,7 +34,7 @@ public class Representer {
 
     public Representer(final Serializer serializer, final YamlConfig opts) {
         this.serializer = serializer;
-        this.defaultStyle = opts.useDouble() ? '"' : (opts.useSingle() ? '\'' : 0);
+        this.defaultStyle = opts.getDefaultStyle();
         this.representedObjects = new HashMap();
     }
 
