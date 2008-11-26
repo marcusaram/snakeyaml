@@ -859,20 +859,22 @@ public class ScannerImpl implements Scanner {
         this.tokens.add(tok);
     }
 
-    private Token fetchPlain() {
+    private void fetchPlain() {
         // A plain scalar could be a simple key.
         savePossibleSimpleKey();
+
         // No simple keys after plain scalars. But note that `scan_plain` will
         // change this flag if the scan is finished at the beginning of the
         // line.
         this.allowSimpleKey = false;
+
         // Scan and add SCALAR. May change `allow_simple_key`.
-        final Token tok = scanPlain();
+        Token tok = scanPlain();
         this.tokens.add(tok);
-        return tok;
     }
 
     // Checkers.
+
     private boolean checkDirective() {
         // DIRECTIVE: ^ '%' ...
         // The '%' indicator is already checked.
