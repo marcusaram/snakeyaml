@@ -145,7 +145,7 @@ public class ScannerImpl implements Scanner {
     private int indent = -1;
 
     // Past indentation levels.
-    private List<Integer> indents;
+    private LinkedList<Integer> indents;
 
     // Variables related to simple keys treatment. See PyYAML.
 
@@ -444,17 +444,13 @@ public class ScannerImpl implements Scanner {
      * Remove the saved possible key position at the current flow level.
      */
     private void removePossibleSimpleKey() {
-        // copy keys to avoid java.util.ConcurrentModificationException
-        Set<Integer> keys = new HashSet<Integer>(this.possibleSimpleKeys.keySet());
-        for (Integer i : keys) {
-            if (flowLevel == i) {
-                SimpleKey key = possibleSimpleKeys.get(i);
-                if (key.isRequired()) {
-                    throw new ScannerException("while scanning a simple key", key.getMark(),
-                            "could not found expected ':'", reader.getMark());
-                }
-                possibleSimpleKeys.remove(flowLevel);
+        if (this.possibleSimpleKeys.keySet().contains(new Integer(flowLevel))) {
+            SimpleKey key = possibleSimpleKeys.get(new Integer(flowLevel));
+            if (key.isRequired()) {
+                throw new ScannerException("while scanning a simple key", key.getMark(),
+                        "could not found expected ':'", reader.getMark());
             }
+            possibleSimpleKeys.remove(flowLevel);
         }
     }
 
@@ -480,7 +476,7 @@ public class ScannerImpl implements Scanner {
         // In block context, we may need to issue the BLOCK-END tokens.
         while (this.indent > col) {
             Mark mark = reader.getMark();
-            this.indent = ((Integer) (this.indents.remove(0))).intValue();
+            this.indent = this.indents.pop();
             this.tokens.add(new BlockEndToken(mark, mark));
         }
     }
@@ -488,10 +484,10 @@ public class ScannerImpl implements Scanner {
     /**
      * Check if we need to increase indentation.
      */
-    private boolean addIndent(final int col) {
-        if (this.indent < col) {
-            this.indents.add(0, new Integer(this.indent));
-            this.indent = col;
+    private boolean addIndent(final int column) {
+        if (this.indent < column) {
+            this.indents.push(this.indent);
+            this.indent = column;
             return true;
         }
         return false;
