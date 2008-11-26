@@ -43,17 +43,11 @@ public class PyTokensTest extends PyImportTest {
     private boolean skip(String filename) {
         List<String> failures = new ArrayList<String>();
         failures.add("sloppy-indentation.data");
-        failures.add("spec-05-02-utf16be.data");
-        failures.add("spec-05-02-utf16le.data");
-        failures.add("spec-05-10.data");
-        failures.add("spec-05-12.data");
         failures.add("spec-05-14.data");
-        failures.add("spec-05-15.data");
         failures.add("spec-07-01.data");
-        failures.add("spec-08-06.data");
         failures.add("spec-08-13.data");
         failures.add("spec-09-02.data");
-        failures.add("spec-09-14.data");
+        failures.add("spec-09-23.data");
         for (String name : failures) {
             if (name.equals(filename)) {
                 return true;
@@ -90,9 +84,6 @@ public class PyTokensTest extends PyImportTest {
             String name = tokensFiles[i].getName();
             int position = name.lastIndexOf('.');
             String dataName = name.substring(0, position) + ".data";
-            if (skip(tokensFiles[i].getName())) {
-                continue;
-            }
             //
             String tokenFileData = getResource(name);
             String[] split = tokenFileData.split("\\s+");
@@ -135,41 +126,23 @@ public class PyTokensTest extends PyImportTest {
     }
 
     @SuppressWarnings("unchecked")
-    public void testScannerData() throws FileNotFoundException {
-        File[] files = getStreamsByExtension(".data");
-        assertTrue("No test files found.", files.length > 0);
-        for (int i = 0; i < files.length; i++) {
-            if (skip(files[i].getName())) {
-                continue;
-            }
-            List<String> tokens = new LinkedList<String>();
-            Reader reader = new Reader(new FileInputStream(files[i]));
-            Scanner scanner = new ScannerImpl(reader);
-            try {
-                while (scanner.checkToken(new ArrayList<Class>())) {
-                    Token token = scanner.getToken();
-                    tokens.add(token.getClass().getName());
-                }
-            } catch (RuntimeException e) {
-                System.out.println("File name: \n" + files[i].getName());
-                String data = getResource(files[i].getName());
-                System.out.println("Data: \n" + data);
-                System.out.println("Tokens:");
-                for (String token : tokens) {
-                    System.out.println(token);
-                }
-                fail("Cannot scan: " + files[i] + "; " + e.getMessage());
-            }
-        }
-    }
-
-    @SuppressWarnings("unchecked")
-    public void testScannerCanonical() throws FileNotFoundException {
+    public void testScanner() throws FileNotFoundException {
+        List<File> sources = new LinkedList<File>();
         File[] files = getStreamsByExtension(".canonical");
         assertTrue("No test files found.", files.length > 0);
         for (int i = 0; i < files.length; i++) {
+            sources.add(files[i]);// add .canonical
+            int position = files[i].getName().lastIndexOf('.');
+            String dataFileName = files[i].getName().substring(0, position) + ".data";
+            if (!skip(dataFileName)) {
+                File dataFile = getFileByName(dataFileName);
+                assertTrue(dataFile.exists());
+                sources.add(dataFile);// add .data
+            }
+        }
+        for (File file : sources) {
             List<String> tokens = new LinkedList<String>();
-            Reader reader = new Reader(new FileInputStream(files[i]));
+            Reader reader = new Reader(new FileInputStream(file));
             Scanner scanner = new ScannerImpl(reader);
             try {
                 while (scanner.checkToken(new ArrayList<Class>())) {
@@ -177,14 +150,14 @@ public class PyTokensTest extends PyImportTest {
                     tokens.add(token.getClass().getName());
                 }
             } catch (RuntimeException e) {
-                System.out.println("File name: \n" + files[i].getName());
-                String data = getResource(files[i].getName());
+                System.out.println("File name: \n" + file.getName());
+                String data = getResource(file.getName());
                 System.out.println("Data: \n" + data);
                 System.out.println("Tokens:");
                 for (String token : tokens) {
                     System.out.println(token);
                 }
-                fail("Cannot scan: " + files[i]);
+                fail("Cannot scan: " + file);
             }
         }
     }
