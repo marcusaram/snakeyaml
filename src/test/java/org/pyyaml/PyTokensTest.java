@@ -6,9 +6,11 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.yaml.snakeyaml.reader.Reader;
 import org.yaml.snakeyaml.scanner.Scanner;
@@ -41,19 +43,14 @@ import org.yaml.snakeyaml.tokens.ValueToken;
 public class PyTokensTest extends PyImportTest {
     // TODO these exceptions must be fixed
     private boolean skip(String filename) {
-        List<String> failures = new ArrayList<String>();
+        Set<String> failures = new HashSet<String>();
         failures.add("sloppy-indentation.data");
         failures.add("spec-05-14.data");
         failures.add("spec-07-01.data");
         failures.add("spec-08-13.data");
         failures.add("spec-09-02.data");
         failures.add("spec-09-23.data");
-        for (String name : failures) {
-            if (name.equals(filename)) {
-                return true;
-            }
-        }
-        return false;
+        return failures.contains(filename);
     }
 
     @SuppressWarnings("unchecked")
