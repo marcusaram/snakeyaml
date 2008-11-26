@@ -783,75 +783,80 @@ public class ScannerImpl implements Scanner {
         this.tokens.add(token);
     }
 
-    private Token fetchAlias() {
+    private void fetchAlias() {
         // ALIAS could be a simple key.
         savePossibleSimpleKey();
+
         // No simple keys after ALIAS.
         this.allowSimpleKey = false;
+
         // Scan and add ALIAS.
-        final Token tok = scanAnchor(false);
+        Token tok = scanAnchor(false);
         this.tokens.add(tok);
-        return tok;
     }
 
-    private Token fetchAnchor() {
+    private void fetchAnchor() {
         // ANCHOR could start a simple key.
         savePossibleSimpleKey();
+
         // No simple keys after ANCHOR.
         this.allowSimpleKey = false;
+
         // Scan and add ANCHOR.
-        final Token tok = scanAnchor(true);
+        Token tok = scanAnchor(true);
         this.tokens.add(tok);
-        return tok;
     }
 
-    private Token fetchTag() {
+    private void fetchTag() {
         // TAG could start a simple key.
         savePossibleSimpleKey();
+
         // No simple keys after TAG.
         this.allowSimpleKey = false;
+
         // Scan and add TAG.
         final Token tok = scanTag();
         this.tokens.add(tok);
-        return tok;
     }
 
-    private Token fetchLiteral() {
-        return fetchBlockScalar('|');
+    private void fetchLiteral() {
+        fetchBlockScalar('|');
     }
 
-    private Token fetchFolded() {
-        return fetchBlockScalar('>');
+    private void fetchFolded() {
+        fetchBlockScalar('>');
     }
 
-    private Token fetchBlockScalar(final char style) {
+    private void fetchBlockScalar(final char style) {
         // A simple key may follow a block scalar.
         this.allowSimpleKey = true;
+
         // Reset possible simple key on the current level.
         removePossibleSimpleKey();
+
         // Scan and add SCALAR.
-        final Token tok = scanBlockScalar(style);
+        Token tok = scanBlockScalar(style);
         this.tokens.add(tok);
-        return tok;
     }
 
-    private Token fetchSingle() {
-        return fetchFlowScalar('\'');
+    private void fetchSingle() {
+        fetchFlowScalar('\'');
     }
 
-    private Token fetchDouble() {
-        return fetchFlowScalar('"');
+    private void fetchDouble() {
+        fetchFlowScalar('"');
     }
 
-    private Token fetchFlowScalar(final char style) {
+    private void fetchFlowScalar(final char style) {
         // A flow scalar could be a simple key.
         savePossibleSimpleKey();
+
         // No simple keys after flow scalars.
         this.allowSimpleKey = false;
+
         // Scan and add SCALAR.
         final Token tok = scanFlowScalar(style);
         this.tokens.add(tok);
-        return tok;
     }
 
     private Token fetchPlain() {
