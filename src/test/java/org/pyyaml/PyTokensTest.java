@@ -43,12 +43,7 @@ public class PyTokensTest extends PyImportTest {
     // TODO these exceptions must be fixed
     private boolean skip(String filename) {
         Set<String> failures = new HashSet<String>();
-        failures.add("spec-05-14.data");
         failures.add("spec-07-01.data");
-        failures.add("spec-08-13.data");
-        failures.add("spec-09-02.data");
-        failures.add("spec-09-16.data");
-        failures.add("spec-09-23.data");
         return failures.contains(filename);
     }
 
