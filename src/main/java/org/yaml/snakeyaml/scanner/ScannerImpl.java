@@ -80,18 +80,7 @@ public class ScannerImpl implements Scanner {
     private final static String NULL_OR_LINEBR = "\0\r\n\u0085\u2028\u2029";
     private final static String FULL_LINEBR = "\r\n\u0085\u2028\u2029";
     private final static String ALPHA = "abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ-_";
-    private final static String STRANGE_CHAR = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789][-';/?:@&=+$,.!~*()%";
-    private final static String RN = "\r\n";
-    private final static String BLANK_T = " \t";
-    private final static String SPACES_AND_STUFF = "'\"\\\0 \t\r\n\u0085\u2028\u2029";
-    private final static String DOUBLE_ESC = "\"\\";
-    private final static String NON_ALPHA_OR_NUM = "\0 \t\r\n\u0085\u2028\u2029?:,]}%@`";
-
     private final static Pattern NOT_HEXA = Pattern.compile("[^0-9A-Fa-f]");
-    private final static Pattern NON_ALPHA = Pattern.compile("[^-0-9A-Za-z_]");
-    private final static Pattern END_OR_START = Pattern
-            .compile("^(---|\\.\\.\\.)[\0 \t\r\n\u0085\u2028\u2029]$");
-
     private final static Map<Character, String> ESCAPE_REPLACEMENTS = new HashMap<Character, String>();
     private final static Map<Character, Integer> ESCAPE_CODES = new HashMap<Character, Integer>();
 
@@ -1678,14 +1667,14 @@ public class ScannerImpl implements Scanner {
                 length++;
                 ch = reader.peek(length);
             }
-            if ('!' != ch) {
+            if (ch != '!') {
                 reader.forward(length);
                 throw new ScannerException("while scanning a " + name, startMark,
                         "expected '!', but found " + ch + "(" + ((int) ch) + ")", reader.getMark());
             }
             length++;
         }
-        final String value = reader.prefix(length);
+        String value = reader.prefix(length);
         reader.forward(length);
         return value;
     }
@@ -1693,11 +1682,11 @@ public class ScannerImpl implements Scanner {
     private String scanTagUri(final String name, Mark startMark) {
         // See the specification for details.
         // Note: we do not check if URI is well-formed.
-        final StringBuffer chunks = new StringBuffer();
+        StringBuffer chunks = new StringBuffer();
         int length = 0;
         char ch = reader.peek(length);
-        while (STRANGE_CHAR.indexOf(ch) != -1) {
-            if ('%' == ch) {
+        while (ALPHA.indexOf(ch) != -1 || "-;/?:@&=+$,_.!~*\'()[]%".indexOf(ch) != -1) {
+            if (ch == '%') {
                 chunks.append(reader.prefix(length));
                 reader.forward(length);
                 length = 0;
@@ -1721,12 +1710,12 @@ public class ScannerImpl implements Scanner {
 
     private String scanUriEscapes(final String name, Mark startMark) {
         // See the specification for details.
-        final StringBuffer bytes = new StringBuffer();
+        StringBuffer bytes = new StringBuffer();
         while (reader.peek() == '%') {
             reader.forward();
             try {
                 bytes.append(Integer.parseInt(reader.prefix(2), 16));
-            } catch (final NumberFormatException nfe) {
+            } catch (NumberFormatException nfe) {
                 throw new ScannerException("while scanning a " + name, startMark,
                         "expected URI escape sequence of 2 hexadecimal numbers, but found "
                                 + reader.peek(1) + "(" + ((int) reader.peek(1)) + ") and "
@@ -1745,16 +1734,18 @@ public class ScannerImpl implements Scanner {
         // '\n' : '\n'
         // '\x85' : '\n'
         // default : ''
-        final char val = reader.peek();
-        if (FULL_LINEBR.indexOf(val) != -1) {
-            if (RN.equals(reader.prefix(2))) {
+        char ch = reader.peek();
+        if ("\r\n\u0085".indexOf(ch) != -1) {
+            if ("\r\n".equals(reader.prefix(2))) {
                 reader.forward(2);
             } else {
                 reader.forward();
             }
             return "\n";
-        } else {
-            return "";
+        } else if ("\u2028\u2029".indexOf(ch) != -1) {
+            reader.forward();
+            return String.valueOf(ch);
         }
+        return "";
     }
 }
