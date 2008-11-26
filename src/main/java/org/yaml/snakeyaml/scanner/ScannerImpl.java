@@ -261,7 +261,7 @@ public class ScannerImpl implements Scanner {
         return nextPossibleSimpleKey() == this.tokensTaken;
     }
 
-    private Token fetchMoreTokens() {
+    private void fetchMoreTokens() {
         // Eat whitespaces and comments until we reach the next token.
         scanToNextToken();
         // Remove obsolete possible simple keys.
@@ -274,88 +274,108 @@ public class ScannerImpl implements Scanner {
         switch (ch) {
         case '\0':
             // Is it the end of stream?
-            return fetchStreamEnd();
+            fetchStreamEnd();
+            return;
         case '%':
             // Is it a directive?
             if (checkDirective()) {
-                return fetchDirective();
+                fetchDirective();
+                return;
             }
             break;
         case '-':
             // Is it the document start?
             if (checkDocumentStart()) {
-                return fetchDocumentStart();
+                fetchDocumentStart();
+                return;
                 // Is it the block entry indicator?
             } else if (checkBlockEntry()) {
-                return fetchBlockEntry();
+                fetchBlockEntry();
+                return;
             }
             break;
         case '.':
             // Is it the document end?
             if (checkDocumentEnd()) {
-                return fetchDocumentEnd();
+                fetchDocumentEnd();
+                return;
             }
             break;
         // TODO support for BOM within a stream. (not implemented in PyYAML)
         case '[':
             // Is it the flow sequence start indicator?
-            return fetchFlowSequenceStart();
+            fetchFlowSequenceStart();
+            return;
         case '{':
             // Is it the flow mapping start indicator?
-            return fetchFlowMappingStart();
+            fetchFlowMappingStart();
+            return;
         case ']':
             // Is it the flow sequence end indicator?
-            return fetchFlowSequenceEnd();
+            fetchFlowSequenceEnd();
+            return;
         case '}':
             // Is it the flow mapping end indicator?
-            return fetchFlowMappingEnd();
+            fetchFlowMappingEnd();
+            return;
         case ',':
             // Is it the flow entry indicator?
-            return fetchFlowEntry();
+            fetchFlowEntry();
+            return;
             // see block entry indicator above
         case '?':
             // Is it the key indicator?
             if (checkKey()) {
-                return fetchKey();
+                fetchKey();
+                return;
             }
             break;
         case ':':
             // Is it the value indicator?
             if (checkValue()) {
-                return fetchValue();
+                fetchValue();
+                return;
             }
             break;
         case '*':
             // Is it an alias?
-            return fetchAlias();
+            fetchAlias();
+            return;
         case '&':
             // Is it an anchor?
-            return fetchAnchor();
+            fetchAnchor();
+            return;
         case '!':
             // Is it a tag?
-            return fetchTag();
+            fetchTag();
+            return;
         case '|':
             // Is it a literal scalar?
             if (this.flowLevel == 0) {
-                return fetchLiteral();
+                fetchLiteral();
+                return;
             }
             break;
         case '>':
             // Is it a folded scalar?
             if (this.flowLevel == 0) {
-                return fetchFolded();
+                fetchFolded();
+                return;
             }
             break;
         case '\'':
             // Is it a single quoted scalar?
-            return fetchSingle();
+            fetchSingle();
+            return;
         case '"':
             // Is it a double quoted scalar?
-            return fetchDouble();
+            fetchDouble();
+            return;
         }
         // It must be a plain scalar then.
         if (checkPlain()) {
-            return fetchPlain();
+            fetchPlain();
+            return;
         }
         // No? It's an error. Let's produce a nice error message.
         throw new ScannerException("while scanning for the next token", null, "found character "
@@ -500,6 +520,7 @@ public class ScannerImpl implements Scanner {
     private Token fetchStreamStart() {
         // Read the token.
         Mark mark = reader.getMark();
+
         // Add STREAM-START.
         Token token = new StreamStartToken(mark, mark, reader.getEncoding());
         this.tokens.add(token);
@@ -509,14 +530,18 @@ public class ScannerImpl implements Scanner {
     private Token fetchStreamEnd() {
         // Set the current intendation to -1.
         unwindIndent(-1);
+
         // Reset everything (not really needed).
         this.allowSimpleKey = false;
         this.possibleSimpleKeys = new HashMap<Integer, SimpleKey>();
+
         // Read the token.
         Mark mark = reader.getMark();
+
         // Add STREAM-END.
         Token token = new StreamEndToken(mark, mark);
         this.tokens.add(token);
+
         // The stream is finished.
         this.done = true;
         return token;
