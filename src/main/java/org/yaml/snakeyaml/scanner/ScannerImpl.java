@@ -101,8 +101,6 @@ public class ScannerImpl implements Scanner {
             .compile("^(---|\\.\\.\\.)[\0 \t\r\n\u0085]$");
     private final static Pattern ENDING = Pattern.compile("^---[\0 \t\r\n\u0085]$");
     private final static Pattern START = Pattern.compile("^\\.\\.\\.[\0 \t\r\n\u0085]$");
-    private final static Pattern BEG = Pattern
-            .compile("^([^\0 \t\r\n\u0085\\-?:,\\[\\]{}#&*!|>'\"%@]|([\\-?:][^\0 \t\r\n\u0085]))");
 
     private final static Map<Character, String> ESCAPE_REPLACEMENTS = new HashMap<Character, String>();
     private final static Map<Character, Integer> ESCAPE_CODES = new HashMap<Character, Integer>();
@@ -921,8 +919,10 @@ public class ScannerImpl implements Scanner {
          * independent.
          * </pre>
          */
-        // TODO looks like deviation from PyYAML (JvYamlb is also different)
-        return BEG.matcher(reader.prefix(2)).find();
+        char ch = reader.peek();
+        return ("\0 \t\r\n\u0085\u2028\u2029-?:,[]{}#&*!|>\'\"%@`".indexOf(ch) == -1 || ("\0 \t\r\n\u0085\u2028\u2029"
+                .indexOf(reader.peek(1)) == -1 && (ch == '-' || (this.flowLevel == 0 && "?:"
+                .indexOf(ch) != -1))));
     }
 
     /**
