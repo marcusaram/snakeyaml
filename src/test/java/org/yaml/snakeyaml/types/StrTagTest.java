@@ -25,10 +25,6 @@ public class StrTagTest extends AbstractTest {
         assertEquals("abcd", getData("string: abcd", "string"));
     }
 
-    public void testString2() throws IOException {
-        assertEquals("abcd", getData("string: @text", "string"));
-    }
-
     public void testStringShorthand() throws IOException {
         assertEquals("abcd", getData("string: !!str abcd", "string"));
     }
