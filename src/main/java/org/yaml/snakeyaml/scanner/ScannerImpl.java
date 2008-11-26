@@ -11,7 +11,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.yaml.snakeyaml.error.Mark;
@@ -1544,27 +1543,27 @@ public class ScannerImpl implements Scanner {
         final StringBuffer chunks = new StringBuffer();
         Mark startMark = reader.getMark();
         Mark endMark = startMark;
+        int indent = this.indent + 1;
         String spaces = "";
-        boolean f_nzero;
-        Pattern r_check;
-        if (this.flowLevel == 0) {
-            f_nzero = false;
-            r_check = R_FLOWZERO;
-        } else {
-            f_nzero = true;
-            r_check = R_FLOWNONZERO;
-        }
-        while (reader.peek() != '#') {
+        while (true) {
+            char ch;
             int length = 0;
-            int chunkSize = 32;
-            Matcher m = null;
-            while (!(m = r_check.matcher(reader.prefix(chunkSize))).find()) {
-                chunkSize += 32;
+            if (reader.peek() == '#') {
+                break;
             }
-            length = m.start();
-            final char ch = reader.peek(length);
+            while (true) {
+                ch = reader.peek(length);
+                if ("\0 \t\r\n\u0085\u2028\u2029".indexOf(ch) != -1
+                        || (this.flowLevel == 0 && ch == ':' && "\0 \t\r\n\u0085\u2028\u2029"
+                                .indexOf(reader.peek(length + 1)) != -1)
+                        || (this.flowLevel != 0 && ",:?[]{}".indexOf(ch) != -1)) {
+                    break;
+                }
+                length++;
+            }
             // It's not clear what we should do with ':' in the flow context.
-            if (f_nzero && ch == ':' && S4.indexOf(reader.peek(length + 1)) == -1) {
+            if (this.flowLevel != 0 && ch == ':'
+                    && "\0 \t\r\n\u0085\u2028\u2029,[]{}".indexOf(reader.peek(length + 1)) == -1) {
                 reader.forward(length);
                 throw new ScannerException("while scanning a plain scalar", startMark,
                         "found unexpected ':'", reader.getMark(),
@@ -1579,8 +1578,8 @@ public class ScannerImpl implements Scanner {
             reader.forward(length);
             endMark = reader.getMark();
             spaces = scanPlainSpaces();
-            if (spaces == null || reader.peek() == '#'
-                    || (this.flowLevel == 0 && this.reader.getColumn() < this.indent + 1)) {
+            if ("".equals(spaces) || reader.peek() == '#'
+                    || (this.flowLevel == 0 && this.reader.getColumn() < indent)) {
                 break;
             }
         }
