@@ -182,8 +182,6 @@ public class ScannerImpl implements Scanner {
      */
     private Map<Integer, SimpleKey> possibleSimpleKeys;
 
-    private boolean docStart = false;// only JvYAML ???
-
     public ScannerImpl(org.yaml.snakeyaml.reader.Reader reader) {
         this.reader = reader;
         this.tokens = new LinkedList<Token>();
@@ -500,7 +498,6 @@ public class ScannerImpl implements Scanner {
      * token.
      */
     private Token fetchStreamStart() {
-        this.docStart = true;
         // Read the token.
         Mark mark = reader.getMark();
         // Add STREAM-START.
@@ -538,7 +535,6 @@ public class ScannerImpl implements Scanner {
     }
 
     private Token fetchDocumentStart() {
-        this.docStart = false;
         return fetchDocumentIndicator(true);
     }
 
@@ -852,7 +848,7 @@ public class ScannerImpl implements Scanner {
 
     private boolean checkDocumentStart() {
         // DOCUMENT-START: ^ '---' (' '|'\n')
-        if (reader.getColumn() == 0 || docStart) {
+        if (reader.getColumn() == 0) {
             // TODO looks like deviation from PyYAML
             if (ENDING.matcher(reader.prefix(4)).matches()) {
                 return true;
