@@ -26,10 +26,10 @@ import org.yaml.snakeyaml.serializer.Serializer;
  * Public YAML interface
  */
 public class Yaml {
-    private Dumper config;
+    private Dumper dumper;
 
     public Yaml(Dumper config) {
-        this.config = config;
+        this.dumper = config;
     }
 
     public Yaml() {
@@ -85,10 +85,10 @@ public class Yaml {
      *            - stream to write to
      */
     public void dumpAll(final Iterable<Object> data, final Writer output) {
-        Serializer s = new Serializer(new Emitter(output, config), new Resolver(), config);
+        Serializer s = new Serializer(new Emitter(output, dumper), new Resolver(), dumper);
         try {
             s.open();
-            Representer r = new Representer(s, config.getDefaultStyle());
+            Representer r = new Representer(s, dumper.getDefaultStyle());
             for (Iterator<Object> iter = data.iterator(); iter.hasNext();) {
                 r.represent(iter.next());
             }
