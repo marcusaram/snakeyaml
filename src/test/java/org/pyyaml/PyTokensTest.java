@@ -5,11 +5,9 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.yaml.snakeyaml.reader.Reader;
 import org.yaml.snakeyaml.scanner.Scanner;
@@ -40,12 +38,6 @@ import org.yaml.snakeyaml.tokens.ValueToken;
  * @see imported from PyYAML
  */
 public class PyTokensTest extends PyImportTest {
-    // TODO these exceptions must be fixed
-    private boolean skip(String filename) {
-        Set<String> failures = new HashSet<String>();
-        failures.add("spec-07-01.data");
-        return failures.contains(filename);
-    }
 
     @SuppressWarnings("unchecked")
     public void testTokens() throws FileNotFoundException {
@@ -125,11 +117,9 @@ public class PyTokensTest extends PyImportTest {
             sources.add(files[i]);// add .canonical
             int position = files[i].getName().lastIndexOf('.');
             String dataFileName = files[i].getName().substring(0, position) + ".data";
-            if (!skip(dataFileName)) {
-                File dataFile = getFileByName(dataFileName);
-                assertTrue(dataFile.exists());
-                sources.add(dataFile);// add .data
-            }
+            File dataFile = getFileByName(dataFileName);
+            assertTrue(dataFile.exists());
+            sources.add(dataFile);// add .data
         }
         for (File file : sources) {
             List<String> tokens = new LinkedList<String>();
@@ -152,5 +142,4 @@ public class PyTokensTest extends PyImportTest {
             }
         }
     }
-
 }

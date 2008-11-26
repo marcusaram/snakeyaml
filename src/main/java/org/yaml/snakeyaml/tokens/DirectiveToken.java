@@ -19,7 +19,7 @@ public class DirectiveToken extends Token {
             final Mark endMark) {
         super(startMark, endMark);
         this.name = name;
-        if (value.size() != 2) {
+        if (value != null && value.size() != 2) {
             throw new YAMLException("Two strings must be provided instead of "
                     + String.valueOf(value.size()));
         }
