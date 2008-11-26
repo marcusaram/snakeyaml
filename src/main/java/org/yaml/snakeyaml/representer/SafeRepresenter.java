@@ -3,15 +3,14 @@
  */
 package org.yaml.snakeyaml.representer;
 
-import org.yaml.snakeyaml.YamlConfig;
 import org.yaml.snakeyaml.serializer.Serializer;
 
 /**
  * @see PyYAML 3.06 for more information
  */
 public class SafeRepresenter extends Representer {
-    public SafeRepresenter(final Serializer serializer, final YamlConfig opts) {
-        super(serializer, opts);
+    public SafeRepresenter(final Serializer serializer, final char defaultStyle) {
+        super(serializer, defaultStyle);
     }
 
     protected boolean ignoreAliases(final Object data) {

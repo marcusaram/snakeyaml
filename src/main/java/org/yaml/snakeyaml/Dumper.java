@@ -8,7 +8,7 @@ import java.util.Map;
 /**
  * @see PyYAML 3.06 for more information
  */
-public class YamlConfig {
+public class Dumper {
     private char defaultStyle = '\'';
     private boolean canonical = false;
     private int indent = 2;
@@ -27,7 +27,7 @@ public class YamlConfig {
         this.defaultStyle = defaultStyle;
     }
 
-    public YamlConfig indent(final int indent) {
+    public Dumper indent(final int indent) {
         this.indent = indent;
         return this;
     }
@@ -36,7 +36,7 @@ public class YamlConfig {
         return this.indent;
     }
 
-    public YamlConfig version(final Integer[] version) {
+    public Dumper version(final Integer[] version) {
         this.version = version;
         return this;
     }
@@ -45,7 +45,7 @@ public class YamlConfig {
         return this.version;
     }
 
-    public YamlConfig explicitStart(final boolean expStart) {
+    public Dumper explicitStart(final boolean expStart) {
         this.expStart = expStart;
         return this;
     }
@@ -54,7 +54,7 @@ public class YamlConfig {
         return this.expStart;
     }
 
-    public YamlConfig explicitEnd(final boolean expEnd) {
+    public Dumper explicitEnd(final boolean expEnd) {
         this.expEnd = expEnd;
         return this;
     }
@@ -63,7 +63,7 @@ public class YamlConfig {
         return this.expEnd;
     }
 
-    public YamlConfig canonical(final boolean canonical) {
+    public Dumper canonical(final boolean canonical) {
         this.canonical = canonical;
         return this;
     }
@@ -72,7 +72,7 @@ public class YamlConfig {
         return this.canonical;
     }
 
-    public YamlConfig bestWidth(final int bestWidth) {
+    public Dumper bestWidth(final int bestWidth) {
         this.bestWidth = bestWidth;
         return this;
     }

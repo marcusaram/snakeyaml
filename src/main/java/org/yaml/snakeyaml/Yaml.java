@@ -26,14 +26,14 @@ import org.yaml.snakeyaml.serializer.Serializer;
  * Public YAML interface
  */
 public class Yaml {
-    private YamlConfig config;
+    private Dumper config;
 
-    public Yaml(YamlConfig config) {
+    public Yaml(Dumper config) {
         this.config = config;
     }
 
     public Yaml() {
-        this(new YamlConfig());
+        this(new Dumper());
     }
 
     /**
@@ -88,7 +88,7 @@ public class Yaml {
         Serializer s = new Serializer(new Emitter(output, config), new Resolver(), config);
         try {
             s.open();
-            Representer r = new Representer(s, config);
+            Representer r = new Representer(s, config.getDefaultStyle());
             for (Iterator<Object> iter = data.iterator(); iter.hasNext();) {
                 r.represent(iter.next());
             }

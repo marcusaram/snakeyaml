@@ -16,7 +16,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TimeZone;
 
-import org.yaml.snakeyaml.YamlConfig;
 import org.yaml.snakeyaml.nodes.MappingNode;
 import org.yaml.snakeyaml.nodes.Node;
 import org.yaml.snakeyaml.nodes.ScalarNode;
@@ -32,9 +31,9 @@ public class Representer {
     private final char defaultStyle;
     private final Map representedObjects;
 
-    public Representer(final Serializer serializer, final YamlConfig opts) {
+    public Representer(final Serializer serializer, final char defaultStyle) {
         this.serializer = serializer;
-        this.defaultStyle = opts.getDefaultStyle();
+        this.defaultStyle = defaultStyle;
         this.representedObjects = new HashMap();
     }
 
