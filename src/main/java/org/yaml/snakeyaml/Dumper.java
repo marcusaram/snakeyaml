@@ -3,7 +3,9 @@
  */
 package org.yaml.snakeyaml;
 
+import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 /**
  * @see PyYAML 3.06 for more information
@@ -87,5 +89,51 @@ public class Dumper {
 
     public Map<String, String> tags() {
         return tags;
+    }
+
+    /**
+     * Add a representer for the given type. Representer is a function accepting
+     * a Dumper instance and an instance of the given data type and producing
+     * the corresponding representation node.
+     * 
+     * @param clazz
+     * @param representer
+     */
+    public void addRepresenter(Class clazz, Represent representer) {
+    }
+
+    /**
+     * Add a representer for the given type. Multi-representer is a function
+     * accepting a Dumper instance and an instance of the given data type or
+     * subtype and producing the corresponding representation node.
+     * 
+     * @param clazz
+     * @param representer
+     */
+    public void addMultiRepresenter(Class clazz, Represent representer) {
+    }
+
+    /**
+     * Add an implicit scalar detector. If an implicit scalar value matches the
+     * given regexp, the corresponding tag is assigned to the scalar. first is a
+     * sequence of possible initial characters or None.
+     * 
+     * @param tag
+     * @param regexp
+     * @param first
+     */
+    public void addImplicitResolver(String tag, Pattern regexp, String first) {
+    }
+
+    /**
+     * Add a path based resolver for the given tag. A path is a list of keys
+     * that forms a path to a node in the representation tree. Keys can be
+     * string values, integers, or None.
+     * 
+     * @param tag
+     * @param path
+     * @param kind
+     */
+    public void addPathResolver(String tag, List path, Object kind) {
     }
 }
