@@ -21,6 +21,10 @@ public abstract class CollectionNode extends Node {
         return flowStyle;
     }
 
+    public void setFlowStyle(Boolean flowStyle) {
+        this.flowStyle = flowStyle;
+    }
+
     public void setEndMark(Mark endMark) {
         this.endMark = endMark;
     }
