@@ -18,8 +18,15 @@ import org.yaml.snakeyaml.serializer.Serializer;
 public class BaseRepresenter implements Represent {
     @SuppressWarnings("unchecked")
     protected Map<Class, Represent> representers = new HashMap<Class, Represent>();
+    /**
+     * in Java 'null' is not a type. So we have keep the null representer
+     * separately otherwise it will coincide with the default representer which
+     * is stored with the key null.
+     */
+    protected Represent nullRepresenter;
     @SuppressWarnings("unchecked")
     protected Map<Class, Represent> multiRepresenters = new HashMap<Class, Represent>();
+    protected Represent nullMultiRepresenter;
     protected char defaultStyle;
     protected Boolean defaultFlowStyle;
     protected Map<Object, Node> representedObjects = new HashMap<Object, Node>();
@@ -54,9 +61,19 @@ public class BaseRepresenter implements Represent {
                 return node;
             }
         }
-        Class clazz = data.getClass();
+        // check for null first
+        if (data == null) {
+            if (nullRepresenter != null) {
+                Node node = nullRepresenter.representData(data);
+                return node;
+            } else if (nullMultiRepresenter != null) {
+                Node node = nullMultiRepresenter.representData(data);
+                return node;
+            }
+        }
         // check the same class
         Node node;
+        Class clazz = data.getClass();
         if (representers.containsKey(clazz)) {
             Represent representer = representers.get(clazz);
             node = representer.representData(data);
@@ -66,6 +83,7 @@ public class BaseRepresenter implements Represent {
                 Represent representer = multiRepresenters.get(clazz);
                 node = representer.representData(data);
             } else {
+                // check defaults
                 if (multiRepresenters.containsKey(null)) {
                     Represent representer = multiRepresenters.get(null);
                     node = representer.representData(data);
@@ -74,7 +92,8 @@ public class BaseRepresenter implements Represent {
                         Represent representer = representers.get(null);
                         node = representer.representData(data);
                     } else {
-                        node = new ScalarNode(null, data.toString());
+                        String value = (data == null ? "" : data.toString());
+                        node = new ScalarNode(null, value);
                     }
                 }
             }
@@ -91,6 +110,10 @@ public class BaseRepresenter implements Represent {
             representedObjects.put(aliasKey, node);
         }
         return node;
+    }
+
+    protected Node representScalar(String tag, String value) {
+        return representScalar(tag, value, null);
     }
 
     protected Node representSequence(String tag, List<Object> sequence, Boolean flowStyle) {
@@ -146,7 +169,7 @@ public class BaseRepresenter implements Represent {
         return node;
     }
 
-    private boolean ignoreAliases(Object data) {
+    protected boolean ignoreAliases(Object data) {
         return false;
     }
 }
