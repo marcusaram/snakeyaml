@@ -92,25 +92,27 @@ public class Dumper {
     }
 
     /**
-     * Add a representer for the given type. Representer is a function accepting
-     * a Dumper instance and an instance of the given data type and producing
-     * the corresponding representation node.
+     * Add a representer for the given type. Representer is accepting an
+     * instance of the given data type and producing the corresponding
+     * representation node.
      * 
      * @param clazz
      * @param representer
      */
     public void addRepresenter(Class clazz, Represent representer) {
+        throw new UnsupportedOperationException();
     }
 
     /**
-     * Add a representer for the given type. Multi-representer is a function
-     * accepting a Dumper instance and an instance of the given data type or
-     * subtype and producing the corresponding representation node.
+     * Add a representer for the given type. Multi-representer is accepting an
+     * instance of the given data type or subtype and producing the
+     * corresponding representation node.
      * 
      * @param clazz
      * @param representer
      */
     public void addMultiRepresenter(Class clazz, Represent representer) {
+        throw new UnsupportedOperationException();
     }
 
     /**
@@ -118,11 +120,15 @@ public class Dumper {
      * given regexp, the corresponding tag is assigned to the scalar. first is a
      * sequence of possible initial characters or None.
      * 
-     * @param tag
-     * @param regexp
-     * @param first
+     * @param tag -
+     *            tag to assifgn to the node
+     * @param regexp -
+     *            regular expression to match against
+     * @param first -
+     *            a sequence of possible initial characters or None
      */
     public void addImplicitResolver(String tag, Pattern regexp, String first) {
+        throw new UnsupportedOperationException();
     }
 
     /**
