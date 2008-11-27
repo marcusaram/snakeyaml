@@ -13,10 +13,13 @@ import org.yaml.snakeyaml.error.Mark;
 public class SequenceNode extends CollectionNode {
     public static final String id = "sequence";
 
-    @SuppressWarnings("unchecked")
-    public SequenceNode(final String tag, final List value, final Mark startMark,
-            final Mark endMark, final Boolean flowStyle) {
+    public SequenceNode(String tag, List<Object> value, Mark startMark, Mark endMark,
+            Boolean flowStyle) {
         super(tag, value, startMark, endMark, flowStyle);
+    }
+
+    public SequenceNode(String tag, List<Object> value, Boolean flowStyle) {
+        super(tag, value, null, null, flowStyle);
     }
 
     @Override

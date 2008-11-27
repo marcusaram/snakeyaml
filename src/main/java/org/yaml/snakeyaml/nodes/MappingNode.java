@@ -3,6 +3,7 @@
  */
 package org.yaml.snakeyaml.nodes;
 
+import java.util.List;
 import java.util.Map;
 
 import org.yaml.snakeyaml.error.Mark;
@@ -15,9 +16,12 @@ public class MappingNode extends CollectionNode {
 
     @SuppressWarnings("unchecked")
     // TODO MAp must be list !!!
-    public MappingNode(final String tag, final Map value, final Mark startMark, final Mark endMark,
-            final Boolean flowStyle) {
+    public MappingNode(String tag, Map value, Mark startMark, Mark endMark, Boolean flowStyle) {
         super(tag, value, startMark, endMark, flowStyle);
+    }
+
+    public MappingNode(String tag, List<Object[]> value, Boolean flowStyle) {
+        super(tag, value, null, null, flowStyle);
     }
 
     @Override
