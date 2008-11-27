@@ -140,6 +140,7 @@ public class Dumper {
      * @param path
      * @param kind
      */
-    public void addPathResolver(String tag, List path, Object kind) {
+    public void addPathResolver(String tag, List<Object> path, Object kind) {
+        throw new UnsupportedOperationException();
     }
 }
