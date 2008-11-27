@@ -30,6 +30,7 @@ import org.yaml.snakeyaml.serializer.Serializer;
  */
 public class Yaml {
     private DumperOptions dumperOptions;
+    @SuppressWarnings("unchecked")
     private Map<Class, Represent> representers = new HashMap<Class, Represent>();
 
     public Yaml(DumperOptions options) {
@@ -214,6 +215,7 @@ public class Yaml {
      * @param clazz
      * @param representer
      */
+    @SuppressWarnings("unchecked")
     public void addRepresenter(Class clazz, Represent representer) {
         representers.put(clazz, representer);
     }
@@ -226,6 +228,7 @@ public class Yaml {
      * @param clazz
      * @param representer
      */
+    @SuppressWarnings("unchecked")
     public void addMultiRepresenter(Class clazz, Represent representer) {
         throw new UnsupportedOperationException();
     }
