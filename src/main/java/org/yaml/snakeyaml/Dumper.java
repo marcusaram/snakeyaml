@@ -19,7 +19,7 @@ public class Dumper {
     private boolean expStart = false;
     private boolean expEnd = false;
     private Integer[] version = null;
-    private Map<String, String> tags;
+    private Map<String, String> tags = null;
 
     public char getDefaultStyle() {
         return defaultStyle;
