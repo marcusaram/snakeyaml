@@ -10,7 +10,7 @@ import java.util.Map;
 
 import junit.framework.TestCase;
 
-import org.yaml.snakeyaml.Dumper;
+import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.emitter.Emitter;
 import org.yaml.snakeyaml.representer.Representer;
 import org.yaml.snakeyaml.resolver.Resolver;
@@ -23,7 +23,7 @@ public class RepresenterImplTest extends TestCase {
     }
 
     public static void main(final String[] args) throws IOException {
-        final Dumper cfg = new Dumper();
+        final DumperOptions cfg = new DumperOptions();
         final Serializer s = new Serializer(new Emitter(new java.io.OutputStreamWriter(System.out),
                 cfg), new Resolver(), cfg);
         s.open();
