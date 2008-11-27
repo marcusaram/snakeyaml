@@ -7,8 +7,10 @@ import java.io.InputStream;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 import org.yaml.snakeyaml.composer.Composer;
@@ -28,6 +30,7 @@ import org.yaml.snakeyaml.serializer.Serializer;
  */
 public class Yaml {
     private DumperOptions dumperOptions;
+    private Map<Class, Represent> representers = new HashMap<Class, Represent>();
 
     public Yaml(DumperOptions options) {
         this.dumperOptions = options;
@@ -212,7 +215,7 @@ public class Yaml {
      * @param representer
      */
     public void addRepresenter(Class clazz, Represent representer) {
-        throw new UnsupportedOperationException();
+        representers.put(clazz, representer);
     }
 
     /**
