@@ -17,7 +17,9 @@ public class PyErrorsTest extends PyImportTest {
         List<String> failures = new ArrayList<String>();
         failures.add("invalid-uri-escapes-2.loader-error");
         failures.add("invalid-uri-escapes-3.loader-error");
+        // TODO what to do with unknoun tag ?
         failures.add("undefined-constructor.loader-error");
+        // in python list cannot be a key in a dictionary.
         failures.add("unacceptable-key.loader-error");
         // TODO these are against the specification but I like it :)
         failures.add("invalid-omap-1.loader-error");
@@ -93,7 +95,7 @@ public class PyErrorsTest extends PyImportTest {
     @SuppressWarnings("unchecked")
     public void testLoaderErrors1() throws FileNotFoundException {
         // TODO this test for debugging only
-        File[] files = getStreamsByExtension("unacceptable-key.loader-error");
+        File[] files = getStreamsByExtension("invalid-uri-escapes-2.loader-error");
         try {
             for (Object document : loadAll(new FileInputStream(files[0]))) {
                 assertNotNull(document);
