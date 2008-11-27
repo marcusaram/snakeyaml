@@ -8,7 +8,7 @@ import java.util.Map;
 /**
  * @see PyYAML 3.06 for more information
  */
-public class Dumper {
+public class DumperOptions {
     private char defaultStyle = '\'';
     private boolean canonical = false;
     private int indent = 2;
@@ -27,7 +27,7 @@ public class Dumper {
         this.defaultStyle = defaultStyle;
     }
 
-    public Dumper indent(final int indent) {
+    public DumperOptions indent(final int indent) {
         this.indent = indent;
         return this;
     }
@@ -36,7 +36,7 @@ public class Dumper {
         return this.indent;
     }
 
-    public Dumper version(final Integer[] version) {
+    public DumperOptions version(final Integer[] version) {
         this.version = version;
         return this;
     }
@@ -45,7 +45,7 @@ public class Dumper {
         return this.version;
     }
 
-    public Dumper explicitStart(final boolean expStart) {
+    public DumperOptions explicitStart(final boolean expStart) {
         this.expStart = expStart;
         return this;
     }
@@ -54,7 +54,7 @@ public class Dumper {
         return this.expStart;
     }
 
-    public Dumper explicitEnd(final boolean expEnd) {
+    public DumperOptions explicitEnd(final boolean expEnd) {
         this.expEnd = expEnd;
         return this;
     }
@@ -63,7 +63,7 @@ public class Dumper {
         return this.expEnd;
     }
 
-    public Dumper canonical(final boolean canonical) {
+    public DumperOptions canonical(final boolean canonical) {
         this.canonical = canonical;
         return this;
     }
@@ -72,7 +72,7 @@ public class Dumper {
         return this.canonical;
     }
 
-    public Dumper bestWidth(final int bestWidth) {
+    public DumperOptions bestWidth(final int bestWidth) {
         this.bestWidth = bestWidth;
         return this;
     }

@@ -7,7 +7,7 @@ import java.io.IOException;
 
 import junit.framework.TestCase;
 
-import org.yaml.snakeyaml.Dumper;
+import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.emitter.Emitter;
 import org.yaml.snakeyaml.events.Event;
 import org.yaml.snakeyaml.parser.Parser;
@@ -36,7 +36,7 @@ public class EmitterImplTest extends TestCase {
         read.close();
         System.out.println("--------------------------------");
         final Emitter emitter = new Emitter(new java.io.OutputStreamWriter(System.out),
-                new Dumper());
+                new DumperOptions());
         final Parser pars = new ParserImpl(new ScannerImpl(new org.yaml.snakeyaml.reader.Reader(
                 new FileInputStream(filename))));
         while (pars.peekEvent() != null) {

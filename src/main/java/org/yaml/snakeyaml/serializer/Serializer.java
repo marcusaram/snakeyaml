@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.yaml.snakeyaml.Dumper;
+import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.emitter.Emitter;
 import org.yaml.snakeyaml.events.AliasEvent;
 import org.yaml.snakeyaml.events.DocumentEndEvent;
@@ -45,7 +45,7 @@ public class Serializer {
     private int lastAnchorId;
     private Boolean closed;
 
-    public Serializer(Emitter emitter, Resolver resolver, Dumper opts) {
+    public Serializer(Emitter emitter, Resolver resolver, DumperOptions opts) {
         this.emitter = emitter;
         this.resolver = resolver;
         this.explicitStart = opts.explicitStart();

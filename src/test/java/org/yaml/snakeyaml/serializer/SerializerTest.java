@@ -6,7 +6,7 @@ import java.text.NumberFormat;
 
 import junit.framework.TestCase;
 
-import org.yaml.snakeyaml.Dumper;
+import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.emitter.Emitter;
 import org.yaml.snakeyaml.nodes.ScalarNode;
 import org.yaml.snakeyaml.resolver.Resolver;
@@ -16,7 +16,7 @@ public class SerializerTest extends TestCase {
 
     @Override
     protected void setUp() throws Exception {
-        Dumper config = new Dumper();
+        DumperOptions config = new DumperOptions();
         StringWriter writer = new StringWriter();
         serializer = new Serializer(new Emitter(writer, config), new Resolver(), config);
     }
