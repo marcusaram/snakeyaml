@@ -121,7 +121,7 @@ public class Dumper {
      * sequence of possible initial characters or None.
      * 
      * @param tag -
-     *            tag to assifgn to the node
+     *            tag to assign to the node
      * @param regexp -
      *            regular expression to match against
      * @param first -
