@@ -22,7 +22,7 @@ public class ComposerImplTest extends TestCase {
         String data2 = "---\namerican:\n- Boston Red Sox";
         Node node2 = compose(data2);
         assertNotNull(node2);
-        assertEquals(node, node2);
+        assertFalse(node.equals(node2));
     }
 
     private Node compose(String data) {
