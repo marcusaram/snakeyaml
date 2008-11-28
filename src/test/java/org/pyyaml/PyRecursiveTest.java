@@ -14,7 +14,6 @@ import junit.framework.TestCase;
 
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.ConstructorException;
-import org.yaml.snakeyaml.scanner.ScannerException;
 
 public class PyRecursiveTest extends TestCase {
 
@@ -28,7 +27,7 @@ public class PyRecursiveTest extends TestCase {
             String output1 = yaml.dump(value);
             Map<AnInstance, AnInstance> value2 = (Map<AnInstance, AnInstance>) yaml.load(output1);
             assertEquals(value, value2);
-        } catch (ScannerException e) {
+        } catch (ConstructorException e) {
             // TODO recursive objects are not allowed
         }
     }
@@ -57,7 +56,7 @@ public class PyRecursiveTest extends TestCase {
             String output1 = yaml.dump(value);
             List value2 = (List) yaml.load(output1);
             assertEquals(value, value2);
-        } catch (ScannerException e) {
+        } catch (ConstructorException e) {
             // TODO recursive objects are not allowed
         }
     }
