@@ -32,10 +32,10 @@ public class BaseRepresenter implements Represent {
     protected Represent nullMultiRepresenter;
     protected Character defaultStyle;
     protected Boolean defaultFlowStyle;
-    protected Map<Object, Node> representedObjects = new HashMap<Object, Node>();
+    protected Map<Integer, Node> representedObjects = new HashMap<Integer, Node>();
     protected Set<Object> objectKeeper = new HashSet<Object>();
     private Serializer serializer;
-    private Object aliasKey;
+    private Integer aliasKey;// internal memory address
 
     @SuppressWarnings("unchecked")
     public BaseRepresenter(Serializer serializer, Map<Class, Represent> representers,
@@ -55,17 +55,13 @@ public class BaseRepresenter implements Represent {
 
     @SuppressWarnings("unchecked")
     public Node representData(Object data) {
-        aliasKey = data;
+        aliasKey = System.identityHashCode(data);// take memory address
         if (!ignoreAliases(data)) {
             // check for identity
-            System.out.println("start identity");
-            Object obj = representedObjects.get(aliasKey);
-            System.out.println("asked identity");
-            if (obj != null && aliasKey == obj) {
+            if (representedObjects.containsKey(aliasKey)) {
                 Node node = representedObjects.get(aliasKey);
                 return node;
             }
-            System.out.println("stop identity");
         }
         // check for null first
         if (data == null) {
