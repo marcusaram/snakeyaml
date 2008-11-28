@@ -49,7 +49,7 @@ public class YAMLDumpTest extends TestCase {
         cal.set(1982, 5 - 1, 3); // Java's months are zero-based...
 
         final TestBean toDump = new TestBean("Ola Bini", 24, cal.getTime());
-        // TODO remove the angle brackets from claass name '<, >'
+        // TODO remove the angle brackets from class name '<, >'
         assertEquals(
                 "!<org.jvyaml.TestBean> {born: !!timestamp '1982-05-02T22:00:00Z', age: 24, name: Ola Bini}\n",
                 yaml.dump(toDump));
