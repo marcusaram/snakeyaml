@@ -3,9 +3,6 @@
  */
 package org.yaml.snakeyaml.constructor;
 
-import java.nio.ByteBuffer;
-import java.nio.CharBuffer;
-import java.nio.charset.Charset;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -293,9 +290,8 @@ public class SafeConstructorImpl extends BaseConstructorImpl {
 
     public static Object constructYamlBinary(final Constructor ctor, final Node node) {
         char[] decoded = Base64Coder.decode(ctor.constructScalar(node).toString().toCharArray());
-        Charset charset = Charset.forName("ISO-8859-1");
-        ByteBuffer buffer = charset.encode(CharBuffer.wrap(decoded));
-        return buffer;
+        String value = new String(decoded);
+        return value;
     }
 
     public static Object constructSpecializedSequence(final Constructor ctor, final String pref,

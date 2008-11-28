@@ -4,7 +4,6 @@
 package org.yaml.snakeyaml;
 
 import java.io.IOException;
-import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -104,10 +103,8 @@ public class Chapter2_4Test extends TestCase {
         YamlDocument document = new YamlDocument("example2_23_picture.yaml");
         Map<String, Object> map = (Map<String, Object>) document.getNativeData();
         assertEquals(1, map.size());
-        ByteBuffer picture = (ByteBuffer) map.get("picture");
-        byte[] gif = picture.array();
-        String str = new String(gif);
-        assertTrue(str.startsWith("GIF89"));
+        String picture = (String) map.get("picture");
+        assertTrue(picture.startsWith("GIF89"));
     }
 
     public void testExample_2_23_application() throws IOException {

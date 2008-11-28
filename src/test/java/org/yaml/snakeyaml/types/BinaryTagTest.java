@@ -4,8 +4,6 @@
 package org.yaml.snakeyaml.types;
 
 import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.nio.CharBuffer;
 import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,31 +19,24 @@ public class BinaryTagTest extends AbstractTest {
     String content = line1 + line2 + line3 + line4;
 
     public void testBinary() throws IOException {
-
-        ByteBuffer binary = (ByteBuffer) getMapValue("canonical: !!binary " + content, "canonical");
-        Charset charset = Charset.forName("ISO-8859-1");
-        CharBuffer buffer = charset.decode(binary);
-        String result = buffer.toString();
-        assertTrue(result.startsWith("GIF89"));
+        String binary = (String) getMapValue("canonical: !!binary " + content, "canonical");
+        assertTrue(binary.startsWith("GIF89"));
     }
 
     public void testBinaryTag() throws IOException {
-        ByteBuffer binary = (ByteBuffer) getMapValue("canonical: !<tag:yaml.org,2002:binary> "
-                + content, "canonical");
-        Charset charset = Charset.forName("ISO-8859-1");
-        CharBuffer buffer = charset.decode(binary);
-        String result = buffer.toString();
-        assertTrue(result.startsWith("GIF89"));
+        String binary = (String) getMapValue("canonical: !<tag:yaml.org,2002:binary> " + content,
+                "canonical");
+        assertTrue(binary.startsWith("GIF89"));
     }
 
     public void testBinaryOut() throws IOException {
-        byte[] data = "GIF89\tbinary\nimage\n".getBytes("ISO-8859-1");
-        ByteBuffer buffer = ByteBuffer.wrap(data);
-        //
-        Map<String, ByteBuffer> map = new HashMap<String, ByteBuffer>();
-        map.put("canonical", buffer);
+        byte[] data = "GIF89\tbi\u0003\u0000nary\n\u001Fimage\n".getBytes("ISO-8859-1");
+        Map<String, String> map = new HashMap<String, String>();
+        Charset cs = Charset.forName("ISO-8859-1");
+        String value = new String(data, cs);
+        map.put("canonical", value);
         String output = dump(map);
-        assertEquals(output, "canonical: !!binary 'R0lGODkJYmluYXJ5CmltYWdlCg=='\n");
+        assertEquals("canonical: !!binary |-\n  R0lGODkJYmkDAG5hcnkKH2ltYWdlCg==\n", output);
     }
 
 }
