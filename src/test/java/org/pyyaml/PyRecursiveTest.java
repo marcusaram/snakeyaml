@@ -13,7 +13,8 @@ import java.util.Set;
 import junit.framework.TestCase;
 
 import org.yaml.snakeyaml.Yaml;
-import org.yaml.snakeyaml.representer.RepresenterException;
+import org.yaml.snakeyaml.constructor.ConstructorException;
+import org.yaml.snakeyaml.scanner.ScannerException;
 
 public class PyRecursiveTest extends TestCase {
 
@@ -27,7 +28,7 @@ public class PyRecursiveTest extends TestCase {
             String output1 = yaml.dump(value);
             Map<AnInstance, AnInstance> value2 = (Map<AnInstance, AnInstance>) yaml.load(output1);
             assertEquals(value, value2);
-        } catch (RepresenterException e) {
+        } catch (ScannerException e) {
             // TODO recursive objects are not allowed
         }
     }
@@ -39,9 +40,10 @@ public class PyRecursiveTest extends TestCase {
         Yaml yaml = new Yaml();
         try {
             String output1 = yaml.dump(value);
+            System.out.println(output1);
             List value2 = (List) yaml.load(output1);
             assertEquals(value, value2);
-        } catch (RepresenterException e) {
+        } catch (ConstructorException e) {
             // TODO recursive objects are not allowed
         }
     }
@@ -55,7 +57,7 @@ public class PyRecursiveTest extends TestCase {
             String output1 = yaml.dump(value);
             List value2 = (List) yaml.load(output1);
             assertEquals(value, value2);
-        } catch (RepresenterException e) {
+        } catch (ScannerException e) {
             // TODO recursive objects are not allowed
         }
     }
