@@ -713,21 +713,21 @@ public class Emitter {
         if (analysis == null) {
             analysis = analyzeScalar(ev.getValue());
         }
-        if (ev.getStyle() == '"' || this.canonical) {
+        if (ev.getStyle() != null && ev.getStyle() == '"' || this.canonical) {
             return '"';
         }
-        if (ev.getStyle() == 0 && ev.getImplicit()[0]) {
+        if (ev.getStyle() == null && ev.getImplicit()[0]) {
             if (!(simpleKeyContext && (analysis.empty || analysis.multiline))
                     && ((flowLevel != 0 && analysis.allowFlowPlain) || (flowLevel == 0 && analysis.allowBlockPlain))) {
                 return 0;
             }
         }
-        if (ev.getStyle() == '|' || ev.getStyle() == '>') {
+        if (ev.getStyle() != null && (ev.getStyle() == '|' || ev.getStyle() == '>')) {
             if (flowLevel == 0 && !simpleKeyContext && analysis.allowBlock) {
                 return ev.getStyle();
             }
         }
-        if (ev.getStyle() == 0 || ev.getStyle() == '\'') {
+        if (ev.getStyle() == null || ev.getStyle() == '\'') {
             if (analysis.allowSingleQuoted && !(simpleKeyContext && analysis.multiline)) {
                 return '\'';
             }

@@ -282,8 +282,12 @@ public class SafeConstructorImpl extends BaseConstructorImpl {
             }
             return new Double(sign * val);
         } else {
-            Double d = Double.valueOf(value);
-            return new Double(d.doubleValue() * sign);
+            try {
+                Double d = Double.valueOf(value);
+                return new Double(d.doubleValue() * sign);
+            } catch (NumberFormatException e) {
+                throw new YAMLException("Invalid number: '" + value + "'; in node " + node);
+            }
         }
     }
 

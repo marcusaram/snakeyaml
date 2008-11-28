@@ -27,7 +27,7 @@ public class RepresenterImplTest extends TestCase {
         final Serializer s = new Serializer(new Emitter(new java.io.OutputStreamWriter(System.out),
                 cfg), new Resolver(), cfg);
         s.open();
-        final Representer r = new Representer(s, cfg.getDefaultStyle());
+        final Representer r = new Representer(s, new HashMap(), cfg.getDefaultStyle(), null);
         final Map test1 = new HashMap();
         final List test1Val = new LinkedList();
         test1Val.add("hello");

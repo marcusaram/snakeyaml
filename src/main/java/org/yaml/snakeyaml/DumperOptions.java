@@ -9,7 +9,7 @@ import java.util.Map;
  * @see PyYAML 3.06 for more information
  */
 public class DumperOptions {
-    private char defaultStyle = '\'';
+    private Character defaultStyle = null;
     private boolean canonical = false;
     private int indent = 2;
     private int bestWidth = 80;
@@ -19,7 +19,7 @@ public class DumperOptions {
     private Integer[] version = null;
     private Map<String, String> tags = null;
 
-    public char getDefaultStyle() {
+    public Character getDefaultStyle() {
         return defaultStyle;
     }
 

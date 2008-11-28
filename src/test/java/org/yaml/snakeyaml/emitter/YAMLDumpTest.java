@@ -32,7 +32,7 @@ public class YAMLDumpTest extends TestCase {
     public void testBasicHashDump() {
         Map ex = new HashMap();
         ex.put("a", "b");
-        assertEquals("a: b\n", yaml.dump(ex));
+        assertEquals("{a: b}\n", yaml.dump(ex));
     }
 
     public void testBasicListDump() {
@@ -40,7 +40,7 @@ public class YAMLDumpTest extends TestCase {
         ex.add("a");
         ex.add("b");
         ex.add("c");
-        assertEquals("- a\n- b\n- c\n", yaml.dump(ex));
+        assertEquals("[a, b, c]\n", yaml.dump(ex));
     }
 
     public void testDumpJavaBean() {
