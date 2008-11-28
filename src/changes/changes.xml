@@ -5,6 +5,9 @@
 	</properties>
 	<body>
 	    <release version="0.5" date="in Mercurial" description="Fix issues in Parser">
+            <action dev="py4fun" type="update">
+                Re-write Representer classes from scratch (2008-11-28)
+            </action>
             <action dev="py4fun" type="fix">
                 'null' can be a key in a map (2008-11-21)
             </action>
