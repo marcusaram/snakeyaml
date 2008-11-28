@@ -5,6 +5,9 @@
 	</properties>
 	<body>
 	    <release version="0.5" date="in Mercurial" description="Fix issues in Parser">
+            <action dev="py4fun" type="fix">
+                Fix Node identity to avoid aliases for simple types - [1, 1]. (2008-11-28)
+            </action>
             <action dev="py4fun" type="update">
                 Recursive objects can be represented (but not yet constructed) (2008-11-28)
             </action>

@@ -47,8 +47,7 @@ public class ConstructorSequenceTest extends TestCase {
         l.add(1);
         Yaml yaml = new Yaml();
         String result = yaml.dump(l);
-        assertTrue(result, result.contains("id"));
-        // TODO assertTrue(result, result.contains("- 1\n- 1"));
+        assertEquals("[1, 1]\n", result);
     }
 
     @SuppressWarnings("unchecked")
