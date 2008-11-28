@@ -36,7 +36,7 @@ public class FloatTagTest extends AbstractTest {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("number", new Double(1));
         String output = dump(map);
-        assertTrue(output, output.contains("number: 1"));
+        assertEquals("{number: 1.0}\n", output);
     }
 
     public void testBasicDoubleScalarLoad() {
