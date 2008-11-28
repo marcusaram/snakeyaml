@@ -94,7 +94,7 @@ public class Yaml {
                 dumperOptions);
         try {
             s.open();
-            Representer r = new Representer(s, dumperOptions.getDefaultStyle());
+            Representer r = new Representer(s, representers, dumperOptions.getDefaultStyle(), null);
             for (Iterator<Object> iter = data.iterator(); iter.hasNext();) {
                 r.represent(iter.next());
             }

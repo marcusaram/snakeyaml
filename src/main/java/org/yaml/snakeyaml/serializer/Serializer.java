@@ -110,9 +110,10 @@ public class Serializer {
                     anchorNode(item);
                 }
             } else if (node instanceof MappingNode) {
-                Map<Node, Node> map = (Map<Node, Node>) node.getValue();
-                for (Node key : map.keySet()) {
-                    Node value = map.get(key);
+                List<Object[]> map = (List<Object[]>) node.getValue();
+                for (Object[] object : map) {
+                    Node key = (Node) object[0];
+                    Node value = (Node) object[1];
                     anchorNode(key);
                     anchorNode(value);
                 }
@@ -164,9 +165,10 @@ public class Serializer {
                         null, true)));
                 this.emitter.emit(new MappingStartEvent(tAlias, node.getTag(), implicit, null,
                         null, ((CollectionNode) node).getFlowStyle()));
-                Map<Node, Node> map = (Map<Node, Node>) node.getValue();
-                for (Node key : map.keySet()) {
-                    Node value = map.get(key);
+                List<Object[]> map = (List<Object[]>) node.getValue();
+                for (Object[] row : map) {
+                    Node key = (Node) row[0];
+                    Node value = (Node) row[1];
                     serializeNode(key, node, null);
                     serializeNode(value, node, key);
                 }

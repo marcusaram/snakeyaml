@@ -1,3 +1,6 @@
+/*
+ * See LICENSE file in distribution for copyright and licensing information.
+ */
 package org.yaml.snakeyaml.representer;
 
 import java.io.IOException;
@@ -27,7 +30,7 @@ public class BaseRepresenter implements Represent {
     @SuppressWarnings("unchecked")
     protected Map<Class, Represent> multiRepresenters = new HashMap<Class, Represent>();
     protected Represent nullMultiRepresenter;
-    protected char defaultStyle;
+    protected Character defaultStyle;
     protected Boolean defaultFlowStyle;
     protected Map<Object, Node> representedObjects = new HashMap<Object, Node>();
     protected Set<Object> objectKeeper = new HashSet<Object>();
@@ -36,14 +39,14 @@ public class BaseRepresenter implements Represent {
 
     @SuppressWarnings("unchecked")
     public BaseRepresenter(Serializer serializer, Map<Class, Represent> representers,
-            char default_style, Boolean default_flow_style) {
+            Character default_style, Boolean default_flow_style) {
         this.serializer = serializer;
         this.defaultStyle = default_style;
         this.defaultFlowStyle = default_flow_style;
         this.representers.putAll(representers);
     }
 
-    protected void represent(Object data) throws IOException {
+    public void represent(Object data) throws IOException {
         Node node = representData(data);
         serializer.serialize(node);
         representedObjects.clear();
@@ -55,11 +58,14 @@ public class BaseRepresenter implements Represent {
         aliasKey = data;
         if (!ignoreAliases(data)) {
             // check for identity
+            System.out.println("start identity");
             Object obj = representedObjects.get(aliasKey);
+            System.out.println("asked identity");
             if (obj != null && aliasKey == obj) {
                 Node node = representedObjects.get(aliasKey);
                 return node;
             }
+            System.out.println("stop identity");
         }
         // check for null first
         if (data == null) {
@@ -79,22 +85,24 @@ public class BaseRepresenter implements Represent {
             node = representer.representData(data);
         } else {
             // check the parents
-            if (multiRepresenters.containsKey(clazz)) {
-                Represent representer = multiRepresenters.get(clazz);
+            for (Class repr : multiRepresenters.keySet()) {
+                if (repr.isInstance(data)) {
+                    Represent representer = multiRepresenters.get(repr);
+                    node = representer.representData(data);
+                    return node;
+                }
+            }
+            // check defaults
+            if (multiRepresenters.containsKey(null)) {
+                Represent representer = multiRepresenters.get(null);
                 node = representer.representData(data);
             } else {
-                // check defaults
-                if (multiRepresenters.containsKey(null)) {
-                    Represent representer = multiRepresenters.get(null);
+                if (representers.containsKey(null)) {
+                    Represent representer = representers.get(null);
                     node = representer.representData(data);
                 } else {
-                    if (representers.containsKey(null)) {
-                        Represent representer = representers.get(null);
-                        node = representer.representData(data);
-                    } else {
-                        String value = (data == null ? "" : data.toString());
-                        node = new ScalarNode(null, value);
-                    }
+                    String value = (data == null ? "" : data.toString());
+                    node = new ScalarNode(null, value);
                 }
             }
         }
@@ -125,7 +133,7 @@ public class BaseRepresenter implements Represent {
         boolean bestStyle = true;
         for (Object item : sequence) {
             Node nodeItem = representData(item);
-            if (!((nodeItem instanceof ScalarNode && ((ScalarNode) nodeItem).getStyle() == 0))) {
+            if (!((nodeItem instanceof ScalarNode && ((ScalarNode) nodeItem).getStyle() == null))) {
                 bestStyle = false;
             }
             value.add(nodeItem);
@@ -151,10 +159,10 @@ public class BaseRepresenter implements Represent {
             Object itemValue = sequence.get(itemKey);
             Node nodeKey = representData(itemKey);
             Node nodeValue = representData(itemValue);
-            if (!((nodeKey instanceof ScalarNode && ((ScalarNode) nodeKey).getStyle() == 0))) {
+            if (!((nodeKey instanceof ScalarNode && ((ScalarNode) nodeKey).getStyle() == null))) {
                 bestStyle = false;
             }
-            if (!((nodeValue instanceof ScalarNode && ((ScalarNode) nodeValue).getStyle() == 0))) {
+            if (!((nodeValue instanceof ScalarNode && ((ScalarNode) nodeValue).getStyle() == null))) {
                 bestStyle = false;
             }
             value.add(new Object[] { nodeKey, nodeValue });

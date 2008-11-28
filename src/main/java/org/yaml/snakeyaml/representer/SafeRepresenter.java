@@ -3,12 +3,10 @@
  */
 package org.yaml.snakeyaml.representer;
 
-import java.lang.reflect.Method;
 import java.math.BigInteger;
 import java.nio.charset.Charset;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,7 +26,7 @@ public class SafeRepresenter extends BaseRepresenter {
 
     @SuppressWarnings("unchecked")
     public SafeRepresenter(Serializer serializer, Map<Class, Represent> representers,
-            char default_style, Boolean default_flow_style) {
+            Character default_style, Boolean default_flow_style) {
         super(serializer, representers, default_style, default_flow_style);
         this.nullRepresenter = new RepresentNull();
         this.representers.put(String.class, new RepresentString());
@@ -38,7 +36,6 @@ public class SafeRepresenter extends BaseRepresenter {
         this.multiRepresenters.put(Map.class, new RepresentMap());
         this.multiRepresenters.put(Set.class, new RepresentSet());
         this.representers.put(Date.class, new RepresentDate());
-        this.representers.put(null, new RepresentUndefined());
     }
 
     protected boolean ignoreAliases(Object data) {
@@ -103,14 +100,15 @@ public class SafeRepresenter extends BaseRepresenter {
             } else {
                 Number number = (Number) data;
                 tag = "tag:yaml.org,2002:float";
-                if (number.doubleValue() == Double.NaN) {
-                    value = ".nan";
-                } else if (number.doubleValue() == Double.POSITIVE_INFINITY) {
+                if (number.equals(Double.NaN)) {
+                    value = ".NaN";
+                } else if (number.equals(Double.POSITIVE_INFINITY)) {
                     value = ".inf";
-                } else if (number.doubleValue() == Double.NEGATIVE_INFINITY) {
+                } else if (number.equals(Double.NEGATIVE_INFINITY)) {
                     value = "-.inf";
+                } else {
+                    value = number.toString();
                 }
-                value = number.toString().toLowerCase();
             }
             return representScalar(tag, value);
         }
@@ -194,41 +192,4 @@ public class SafeRepresenter extends BaseRepresenter {
             return representScalar("tag:yaml.org,2002:timestamp", buffer.toString(), null);
         }
     }
-
-    private class RepresentJavaBean implements Represent {
-        @SuppressWarnings("unchecked")
-        public Node representData(Object data) {
-            Map values = new HashMap();
-            Method[] ems = data.getClass().getMethods();
-            for (int i = 0, j = ems.length; i < j; i++) {
-                if (ems[i].getParameterTypes().length == 0) {
-                    String name = ems[i].getName();
-                    if (name.equals("getClass")) {
-                        continue;
-                    }
-                    String pname = null;
-                    if (name.startsWith("get")) {
-                        pname = "" + Character.toLowerCase(name.charAt(3)) + name.substring(4);
-                    } else if (name.startsWith("is")) {
-                        pname = "" + Character.toLowerCase(name.charAt(2)) + name.substring(3);
-                    }
-                    if (null != pname) {
-                        try {
-                            values.put(pname, ems[i].invoke(data, (Object[]) null));
-                        } catch (Exception exe) {
-                            values.put(pname, null);
-                        }
-                    }
-                }
-            }
-            return representMapping(data.getClass().toString(), values, null);
-        }
-    }
-
-    private class RepresentUndefined implements Represent {
-        public Node representData(Object data) {
-            throw new RepresenterException("cannot represent an object: " + data.toString());
-        }
-    }
-
 }

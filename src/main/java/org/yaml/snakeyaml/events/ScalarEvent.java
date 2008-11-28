@@ -10,12 +10,12 @@ import org.yaml.snakeyaml.error.Mark;
  */
 public class ScalarEvent extends NodeEvent {
     private String tag;
-    private char style;
+    private Character style;
     private String value;
     private boolean[] implicit;
 
-    public ScalarEvent(final String anchor, final String tag, final boolean[] implicit,
-            final String value, final Mark startMark, final Mark endMark, final char style) {
+    public ScalarEvent(String anchor, String tag, boolean[] implicit, String value, Mark startMark,
+            Mark endMark, Character style) {
         super(anchor, startMark, endMark);
         this.tag = tag;
         this.implicit = implicit;
@@ -27,7 +27,7 @@ public class ScalarEvent extends NodeEvent {
         return this.tag;
     }
 
-    public char getStyle() {
+    public Character getStyle() {
         return this.style;
     }
 

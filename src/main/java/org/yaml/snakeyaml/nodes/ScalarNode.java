@@ -10,19 +10,19 @@ import org.yaml.snakeyaml.error.Mark;
  */
 public class ScalarNode extends Node {
     public static final String id = "scalar";
-    private char style;
+    private Character style;
 
-    public ScalarNode(String tag, String value, Mark startMark, Mark endMark, char style) {
+    public ScalarNode(String tag, String value, Mark startMark, Mark endMark, Character style) {
         super(tag, value, startMark, endMark);
         this.style = style;
     }
 
     public ScalarNode(String tag, String value) {
         super(tag, value, null, null);
-        this.style = 0;
+        this.style = null;
     }
 
-    public char getStyle() {
+    public Character getStyle() {
         return style;
     }
 

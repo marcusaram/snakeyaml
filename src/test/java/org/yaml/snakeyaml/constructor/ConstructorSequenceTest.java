@@ -38,7 +38,7 @@ public class ConstructorSequenceTest extends TestCase {
         l.add(2);
         Yaml yaml = new Yaml();
         String result = yaml.dump(l);
-        assertTrue(result.contains("- 1\n- 2"));
+        assertEquals("[1, 2]\n", result);
     }
 
     public void testDumpListSameIntegers() {
