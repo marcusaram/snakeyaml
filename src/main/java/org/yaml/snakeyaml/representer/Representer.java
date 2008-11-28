@@ -48,7 +48,8 @@ public class Representer extends SafeRepresenter {
                     }
                 }
             }
-            return representMapping(data.getClass().toString(), values, null);
+            String tag = data.getClass().getName();
+            return representMapping(tag, values, null);
         }
     }
 
