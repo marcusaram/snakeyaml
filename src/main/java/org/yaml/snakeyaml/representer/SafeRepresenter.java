@@ -58,8 +58,7 @@ public class SafeRepresenter extends BaseRepresenter {
         }
     }
 
-    public static Pattern BINARY_PATTERN = Pattern
-            .compile("^[\\x00-\\x08,\\x0B,\\x0C,\\x0E-\\x1F]");
+    public static Pattern BINARY_PATTERN = Pattern.compile("[\\x00-\\x08\\x0B\\x0C\\x0E-\\x1F]");
 
     private class RepresentString implements Represent {
         public Node representData(Object data) {
