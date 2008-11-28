@@ -32,7 +32,7 @@ public class MapTagTest extends AbstractTest {
         assertEquals("Ben-Kiki", map2.get("Oren"));
         //
         assertEquals(map1, map2);
-        // TODO why they are the same ? assertNotSame(map1, map2);
+        assertNotSame(map1, map2);
     }
 
     @SuppressWarnings("unchecked")
