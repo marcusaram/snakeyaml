@@ -5,6 +5,9 @@
 	</properties>
 	<body>
 	    <release version="0.5" date="in Mercurial" description="Fix issues in Parser">
+            <action dev="py4fun" type="update">
+                Import change 300 for Emitter from PyYAML. (2008-12-01)
+            </action>
             <action dev="py4fun" type="fix">
                 Fix Node identity to avoid aliases for simple types - [1, 1]. (2008-11-28)
             </action>
@@ -31,7 +34,7 @@
                 Constructor: because Java does not have generators 'deep' is not 
                 imported from PyYAML (2008-11-19)
             </action>
-            <action dev="py4fun" type="remove">
+            <action dev="py4fun" type="update">
                 Composer imported from PyYAML (2008-11-17)
             </action>
             <action dev="py4fun" type="update">
