@@ -23,10 +23,10 @@ import org.yaml.snakeyaml.util.Base64Coder;
 /**
  * @see PyYAML 3.06 for more information
  */
-public class SafeRepresenter extends BaseRepresenter {
+class SafeRepresenter extends BaseRepresenter {
 
     @SuppressWarnings("unchecked")
-    public SafeRepresenter(Serializer serializer, Map<Class, Represent> representers,
+    public SafeRepresenter(Serializer serializer, Map<Class, ? extends Represent> representers,
             Character default_style, Boolean default_flow_style) {
         super(serializer, representers, default_style, default_flow_style);
         this.nullRepresenter = new RepresentNull();
