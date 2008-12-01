@@ -5,6 +5,7 @@ package org.yaml.snakeyaml.representer;
 
 import java.math.BigInteger;
 import java.nio.charset.Charset;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedHashMap;
@@ -35,6 +36,7 @@ public class SafeRepresenter extends BaseRepresenter {
         this.multiRepresenters.put(List.class, new RepresentList());
         this.multiRepresenters.put(Map.class, new RepresentMap());
         this.multiRepresenters.put(Set.class, new RepresentSet());
+        this.multiRepresenters.put(new Object[0].getClass(), new RepresentArray());
         this.representers.put(Date.class, new RepresentDate());
     }
 
@@ -117,6 +119,15 @@ public class SafeRepresenter extends BaseRepresenter {
         @SuppressWarnings("unchecked")
         public Node representData(Object data) {
             return representSequence("tag:yaml.org,2002:seq", (List<Object>) data, null);
+        }
+    }
+
+    private class RepresentArray implements Represent {
+        @SuppressWarnings("unchecked")
+        public Node representData(Object data) {
+            Object[] array = (Object[]) data;
+            List<Object> list = Arrays.asList(array);
+            return representSequence("tag:yaml.org,2002:seq", list, null);
         }
     }
 

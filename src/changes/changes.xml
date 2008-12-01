@@ -6,6 +6,10 @@
 	<body>
 	    <release version="0.5" date="in Mercurial" description="Fix issues in Parser">
             <action dev="py4fun" type="update">
+                Support arrays of reference types. Arrays of primitives are not supported
+                because Arrays.asList() does not work. (2008-12-01)
+            </action>
+            <action dev="py4fun" type="update">
                 Import change 300 for Emitter from PyYAML. (2008-12-01)
             </action>
             <action dev="py4fun" type="fix">
