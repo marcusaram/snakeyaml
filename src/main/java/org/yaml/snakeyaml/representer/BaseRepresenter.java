@@ -39,7 +39,7 @@ public class BaseRepresenter implements Represent {
     private Integer aliasKey;// internal memory address
 
     @SuppressWarnings("unchecked")
-    public BaseRepresenter(Serializer serializer, Map<Class, Represent> representers,
+    public BaseRepresenter(Serializer serializer, Map<Class, ? extends Represent> representers,
             Character default_style, Boolean default_flow_style) {
         this.serializer = serializer;
         this.defaultStyle = default_style;
@@ -121,7 +121,7 @@ public class BaseRepresenter implements Represent {
         return node;
     }
 
-    protected Node representScalar(String tag, String value) {
+    public Node representScalar(String tag, String value) {
         return representScalar(tag, value, null);
     }
 

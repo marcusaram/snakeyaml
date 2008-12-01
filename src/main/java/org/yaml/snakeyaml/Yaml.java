@@ -31,7 +31,7 @@ import org.yaml.snakeyaml.serializer.Serializer;
 public class Yaml {
     private DumperOptions dumperOptions;
     @SuppressWarnings("unchecked")
-    private Map<Class, Represent> representers = new HashMap<Class, Represent>();
+    private Map<Class, AbstractRepresenter> representers = new HashMap<Class, AbstractRepresenter>();
 
     public Yaml(DumperOptions options) {
         this.dumperOptions = options;
@@ -95,6 +95,9 @@ public class Yaml {
         try {
             s.open();
             Representer r = new Representer(s, representers, dumperOptions.getDefaultStyle(), null);
+            for (AbstractRepresenter customRepresenter : representers.values()) {
+                customRepresenter.setParent(r);
+            }
             for (Iterator<Object> iter = data.iterator(); iter.hasNext();) {
                 r.represent(iter.next());
             }
@@ -216,7 +219,7 @@ public class Yaml {
      * @param representer
      */
     @SuppressWarnings("unchecked")
-    public void addRepresenter(Class clazz, Represent representer) {
+    public void addRepresenter(Class clazz, AbstractRepresenter representer) {
         representers.put(clazz, representer);
     }
 
