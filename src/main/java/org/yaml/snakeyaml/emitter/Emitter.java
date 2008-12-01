@@ -1008,17 +1008,15 @@ public class Emitter {
         boolean allowSingleQuoted = true;
         boolean allowDoubleQuoted = true;
         boolean allowBlock = true;
-        // Leading and trailing whitespace are bad for plain scalars. We also
-        // do not want to mess with leading whitespaces for block scalars.
-        if (leadingSpaces || leadingBreaks || trailingSpaces) {
-            allowFlowPlain = allowBlockPlain = allowBlock = false;
-        }
-        // Trailing breaks are fine for block scalars, but unacceptable for
-        // plain scalars.
-        if (trailingBreaks) {
+        // Leading and trailing whitespaces are bad for plain scalars.
+        if (leadingSpaces || leadingBreaks || trailingSpaces || trailingBreaks) {
             allowFlowPlain = allowBlockPlain = false;
         }
-        // The combination of (space+ break+) is only acceptable for block
+        // We do not permit trailing spaces for block scalars.
+        if (trailingSpaces) {
+            allowBlock = false;
+        }
+        // Spaces at the beginning of a new line are only acceptable for block
         // scalars.
         if (inlineBreaksSpaces) {
             allowFlowPlain = allowBlockPlain = allowSingleQuoted = false;
@@ -1240,7 +1238,12 @@ public class Emitter {
         writeIndicator("\"", false, false, false);
     }
 
-    private String determineChomp(String text) {
+    private String determineBlockHints(String text) {
+        StringBuffer hints = new StringBuffer();
+        if (text != null && text.length() > 0
+                && " \n\u0085\u2028\u2029".indexOf(text.charAt(0)) != -1) {
+            hints.append(bestIndent);
+        }
         String tail = text.substring(text.length() - 2);
         while (tail.length() < 2) {
             tail = " " + tail;
@@ -1249,18 +1252,17 @@ public class Emitter {
         char ch2 = tail.charAt(tail.length() - 2);
         if ("\n\0085\u2028\u2029".indexOf(ch1) != -1) {
             if ("\n\0085\u2028\u2029".indexOf(ch2) != -1) {
-                return "+";
-            } else {
-                return "";
+                hints.append("+");
             }
         } else {
-            return "-";
+            hints.append("-");
         }
+        return hints.toString();
     }
 
     void writeFolded(String text) throws IOException {
-        String chomp = determineChomp(text);
-        writeIndicator(">" + chomp, true, false, false);
+        String hints = determineBlockHints(text);
+        writeIndicator(">" + hints, true, false, false);
         writeIndent();
         boolean leadingSpace = false;
         boolean spaces = false;
@@ -1321,7 +1323,7 @@ public class Emitter {
     }
 
     void writeLiteral(String text) throws IOException {
-        String chomp = determineChomp(text);
+        String chomp = determineBlockHints(text);
         writeIndicator("|" + chomp, true, false, false);
         writeIndent();
         boolean breaks = false;
