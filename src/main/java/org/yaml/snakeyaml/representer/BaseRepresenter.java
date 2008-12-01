@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.yaml.snakeyaml.Represent;
+import org.yaml.snakeyaml.error.YAMLException;
 import org.yaml.snakeyaml.nodes.MappingNode;
 import org.yaml.snakeyaml.nodes.Node;
 import org.yaml.snakeyaml.nodes.ScalarNode;
@@ -87,6 +88,10 @@ public class BaseRepresenter implements Represent {
                     node = representer.representData(data);
                     return node;
                 }
+            }
+            // check array of primitives
+            if (clazz.getName().startsWith("[")) {
+                throw new YAMLException("Arrays of primitives are not supported.");
             }
             // check defaults
             if (multiRepresenters.containsKey(null)) {

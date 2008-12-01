@@ -45,4 +45,26 @@ public class SeqTagTest extends AbstractTest {
         assertEquals(list1, list2);
         // TODO assertNotSame(list1, list2);
     }
+
+    public void testArray() {
+        Integer[] array = new Integer[3];
+        array[0] = new Integer(1);
+        array[1] = new Integer(1);
+        array[2] = new Integer(2);
+        String output = dump(array);
+        assertEquals("[1, 1, 2]\n", output);
+    }
+
+    public void testArrayPrimitives() {
+        int[] array = new int[3];
+        array[0] = 1;
+        array[1] = 1;
+        array[2] = 2;
+        try {
+            dump(array);
+            fail("Arrays of primitives are not supported.");
+        } catch (RuntimeException e) {
+            assertEquals("Arrays of primitives are not supported.", e.getMessage());
+        }
+    }
 }
