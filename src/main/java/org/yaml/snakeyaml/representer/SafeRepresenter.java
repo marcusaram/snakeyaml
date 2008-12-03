@@ -123,7 +123,6 @@ class SafeRepresenter extends BaseRepresenter {
     }
 
     private class RepresentArray implements Represent {
-        @SuppressWarnings("unchecked")
         public Node representData(Object data) {
             Object[] array = (Object[]) data;
             List<Object> list = Arrays.asList(array);
@@ -151,7 +150,6 @@ class SafeRepresenter extends BaseRepresenter {
     }
 
     private class RepresentDate implements Represent {
-        @SuppressWarnings("unchecked")
         public Node representData(Object data) {
             // because SimpleDateFormat ignores timezone we have to use Calendar
             Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));

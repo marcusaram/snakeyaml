@@ -51,7 +51,7 @@ public class YAMLDumpTest extends TestCase {
         final TestBean toDump = new TestBean("Ola Bini", 24, cal.getTime());
         // TODO remove the angle brackets from class name '<, >'
         assertEquals(
-                "!<org.jvyaml.TestBean> {born: !!timestamp '1982-05-02T22:00:00Z', age: 24, name: Ola Bini}\n",
+                "!<org.jvyaml.TestBean> {born: !!timestamp '1982-05-02T22:00:00Z', name: Ola Bini,\n  age: 24}\n",
                 yaml.dump(toDump));
 
     }
