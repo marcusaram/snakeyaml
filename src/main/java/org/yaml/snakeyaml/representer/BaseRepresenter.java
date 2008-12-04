@@ -30,24 +30,19 @@ public class BaseRepresenter implements Represent {
     protected Represent nullRepresenter;
     @SuppressWarnings("unchecked")
     protected Map<Class, Represent> multiRepresenters = new HashMap<Class, Represent>();
-    protected Represent nullMultiRepresenter;
-    protected Character defaultStyle;
-    protected Boolean defaultFlowStyle;
+    private Represent nullMultiRepresenter;
+    private Character defaultStyle;
+    private Boolean defaultFlowStyle;
     protected Map<Integer, Node> representedObjects = new HashMap<Integer, Node>();
-    protected Set<Object> objectKeeper = new HashSet<Object>();
-    private Serializer serializer;
+    private Set<Object> objectKeeper = new HashSet<Object>();
     private Integer aliasKey;// internal memory address
 
-    @SuppressWarnings("unchecked")
-    public BaseRepresenter(Serializer serializer, Map<Class, ? extends Represent> representers,
-            Character default_style, Boolean default_flow_style) {
-        this.serializer = serializer;
+    public BaseRepresenter(Character default_style, Boolean default_flow_style) {
         this.defaultStyle = default_style;
         this.defaultFlowStyle = default_flow_style;
-        this.representers.putAll(representers);
     }
 
-    public void represent(Object data) throws IOException {
+    public void represent(Serializer serializer, Object data) throws IOException {
         Node node = representData(data);
         serializer.serialize(node);
         representedObjects.clear();

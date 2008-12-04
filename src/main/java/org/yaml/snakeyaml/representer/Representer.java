@@ -9,16 +9,13 @@ import java.util.Map;
 
 import org.yaml.snakeyaml.Represent;
 import org.yaml.snakeyaml.nodes.Node;
-import org.yaml.snakeyaml.serializer.Serializer;
 
 /**
  * @see PyYAML 3.06 for more information
  */
 public class Representer extends SafeRepresenter {
-    @SuppressWarnings("unchecked")
-    public Representer(Serializer serializer, Map<Class, ? extends Represent> representers,
-            Character default_style, Boolean default_flow_style) {
-        super(serializer, representers, default_style, default_flow_style);
+    public Representer(Character default_style, Boolean default_flow_style) {
+        super(default_style, default_flow_style);
         this.representers.put(null, new RepresentJavaBean());
     }
 
