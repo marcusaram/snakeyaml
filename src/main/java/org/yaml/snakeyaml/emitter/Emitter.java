@@ -1240,22 +1240,17 @@ public class Emitter {
 
     private String determineBlockHints(String text) {
         StringBuffer hints = new StringBuffer();
-        if (text != null && text.length() > 0
-                && " \n\u0085\u2028\u2029".indexOf(text.charAt(0)) != -1) {
-            hints.append(bestIndent);
-        }
-        String tail = text.substring(text.length() - 2);
-        while (tail.length() < 2) {
-            tail = " " + tail;
-        }
-        char ch1 = tail.charAt(tail.length() - 1);
-        char ch2 = tail.charAt(tail.length() - 2);
-        if ("\n\0085\u2028\u2029".indexOf(ch1) != -1) {
-            if ("\n\0085\u2028\u2029".indexOf(ch2) != -1) {
+        if (text != null && text.length() > 0) {
+            if (" \n\u0085\u2028\u2029".indexOf(text.charAt(0)) != -1) {
+                hints.append(bestIndent);
+            }
+            char ch1 = text.charAt(text.length() - 1);
+            if ("\n\u0085\u2028\u2029".indexOf(ch1) == -1) {
+                hints.append("-");
+            } else if (text.length() == 1
+                    || ("\n\u0085\u2028\u2029".indexOf(text.charAt(text.length() - 2)) != -1)) {
                 hints.append("+");
             }
-        } else {
-            hints.append("-");
         }
         return hints.toString();
     }
@@ -1263,10 +1258,10 @@ public class Emitter {
     void writeFolded(String text) throws IOException {
         String hints = determineBlockHints(text);
         writeIndicator(">" + hints, true, false, false);
-        writeIndent();
-        boolean leadingSpace = false;
+        writeLineBreak(null);
+        boolean leadingSpace = true;
         boolean spaces = false;
-        boolean breaks = false;
+        boolean breaks = true;
         int start = 0, end = 0;
         while (end <= text.length()) {
             char ch = 0;
@@ -1325,8 +1320,8 @@ public class Emitter {
     void writeLiteral(String text) throws IOException {
         String chomp = determineBlockHints(text);
         writeIndicator("|" + chomp, true, false, false);
-        writeIndent();
-        boolean breaks = false;
+        writeLineBreak(null);
+        boolean breaks = true;
         int start = 0, end = 0;
         while (end <= text.length()) {
             char ch = 0;
