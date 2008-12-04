@@ -27,7 +27,7 @@ public class RepresenterImplTest extends TestCase {
         final Serializer s = new Serializer(new Emitter(new java.io.OutputStreamWriter(System.out),
                 cfg), new Resolver(), cfg);
         s.open();
-        final Representer r = new Representer(s, new HashMap(), cfg.getDefaultStyle(), null);
+        final Representer r = new Representer(cfg.getDefaultStyle(), null);
         final Map test1 = new HashMap();
         final List test1Val = new LinkedList();
         test1Val.add("hello");
@@ -45,7 +45,7 @@ public class RepresenterImplTest extends TestCase {
         bean1.setSurName("Bini");
         bean1.setAge(24);
         test1.put(new Integer(25), bean1);
-        r.represent(test1);
+        r.represent(s, test1);
         s.close();
     }
 

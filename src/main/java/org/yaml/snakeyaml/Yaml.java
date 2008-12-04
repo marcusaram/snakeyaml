@@ -7,10 +7,8 @@ import java.io.InputStream;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Pattern;
 
 import org.yaml.snakeyaml.composer.Composer;
@@ -30,8 +28,6 @@ import org.yaml.snakeyaml.serializer.Serializer;
  */
 public class Yaml {
     private DumperOptions dumperOptions;
-    @SuppressWarnings("unchecked")
-    private Map<Class, AbstractRepresenter> representers = new HashMap<Class, AbstractRepresenter>();
 
     public Yaml(DumperOptions options) {
         this.dumperOptions = options;
@@ -44,8 +40,8 @@ public class Yaml {
     /**
      * Serialize a Java object into a YAML String.
      * 
-     * @param data -
-     *            Java object to be Serialized to YAML
+     * @param data
+     *            - Java object to be Serialized to YAML
      * @return YAML String
      */
     public String dump(final Object data) {
@@ -57,8 +53,8 @@ public class Yaml {
     /**
      * Serialize a sequence of Java objects into a YAML String.
      * 
-     * @param data -
-     *            Iterator with Objects
+     * @param data
+     *            - Iterator with Objects
      * @return - YAML String with all the objects in proper sequence
      */
     public String dumpAll(final Iterable<Object> data) {
@@ -70,10 +66,10 @@ public class Yaml {
     /**
      * Serialize a Java object into a YAML stream.
      * 
-     * @param data -
-     *            Java object to be Serialized to YAML
-     * @param output -
-     *            stream to write to
+     * @param data
+     *            - Java object to be Serialized to YAML
+     * @param output
+     *            - stream to write to
      */
     public void dump(final Object data, final Writer output) {
         final List<Object> lst = new ArrayList<Object>(1);
@@ -84,22 +80,19 @@ public class Yaml {
     /**
      * Serialize a sequence of Java objects into a YAML stream.
      * 
-     * @param data -
-     *            Iterator with Objects
-     * @param output -
-     *            stream to write to
+     * @param data
+     *            - Iterator with Objects
+     * @param output
+     *            - stream to write to
      */
     public void dumpAll(final Iterable<Object> data, final Writer output) {
         Serializer s = new Serializer(new Emitter(output, dumperOptions), new Resolver(),
                 dumperOptions);
         try {
             s.open();
-            Representer r = new Representer(s, representers, dumperOptions.getDefaultStyle(), null);
-            for (AbstractRepresenter customRepresenter : representers.values()) {
-                customRepresenter.setParent(r);
-            }
+            Representer r = new Representer(dumperOptions.getDefaultStyle(), null);
             for (Iterator<Object> iter = data.iterator(); iter.hasNext();) {
-                r.represent(iter.next());
+                r.represent(s, iter.next());
             }
         } catch (java.io.IOException e) {
             throw new YAMLException(e);
@@ -115,8 +108,8 @@ public class Yaml {
      * Parse the first YAML document in a String and produce the corresponding
      * Java object. (Because the encoding in known BOM is not respected.)
      * 
-     * @param yaml -
-     *            YAML data to load from (BOM must not be present)
+     * @param yaml
+     *            - YAML data to load from (BOM must not be present)
      * @return parsed object
      */
     public Object load(final String yaml) {
@@ -129,8 +122,8 @@ public class Yaml {
      * Parse the first YAML document in a stream and produce the corresponding
      * Java object.
      * 
-     * @param io -
-     *            data to load from (BOM is respected and ignored)
+     * @param io
+     *            - data to load from (BOM is respected and ignored)
      * @return parsed object
      */
     public Object load(final InputStream io) {
@@ -143,8 +136,8 @@ public class Yaml {
      * Parse all YAML documents in a String and produce corresponding Java
      * objects. (Because the encoding in known BOM is not respected.)
      * 
-     * @param yaml -
-     *            YAML data to load from (BOM must not be present)
+     * @param yaml
+     *            - YAML data to load from (BOM must not be present)
      * @return an iterator over the parsed Java objects in this String in proper
      *         sequence
      */
@@ -171,8 +164,8 @@ public class Yaml {
      * Parse all YAML documents in a stream and produce corresponding Java
      * objects.
      * 
-     * @param yaml -
-     *            YAML data to load from (BOM is respected and ignored)
+     * @param yaml
+     *            - YAML data to load from (BOM is respected and ignored)
      * @return an iterator over the parsed Java objects in this stream in proper
      *         sequence
      */
@@ -211,19 +204,6 @@ public class Yaml {
     // Customisers
 
     /**
-     * Add a representer for the given type. Representer is accepting an
-     * instance of the given data type and producing the corresponding
-     * representation node.
-     * 
-     * @param clazz
-     * @param representer
-     */
-    @SuppressWarnings("unchecked")
-    public void addRepresenter(Class clazz, AbstractRepresenter representer) {
-        representers.put(clazz, representer);
-    }
-
-    /**
      * Add a representer for the given type. Multi-representer is accepting an
      * instance of the given data type or subtype and producing the
      * corresponding representation node.
@@ -241,12 +221,12 @@ public class Yaml {
      * given regexp, the corresponding tag is assigned to the scalar. first is a
      * sequence of possible initial characters or None.
      * 
-     * @param tag -
-     *            tag to assign to the node
-     * @param regexp -
-     *            regular expression to match against
-     * @param first -
-     *            a sequence of possible initial characters or None
+     * @param tag
+     *            - tag to assign to the node
+     * @param regexp
+     *            - regular expression to match against
+     * @param first
+     *            - a sequence of possible initial characters or None
      */
     public void addImplicitResolver(String tag, Pattern regexp, String first) {
         throw new UnsupportedOperationException();
