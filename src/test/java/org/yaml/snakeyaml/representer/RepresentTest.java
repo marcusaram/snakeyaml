@@ -1,7 +1,8 @@
-package org.yaml.snakeyaml;
+package org.yaml.snakeyaml.representer;
 
 import junit.framework.TestCase;
 
+import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.nodes.Node;
 import org.yaml.snakeyaml.representer.Representer;
 

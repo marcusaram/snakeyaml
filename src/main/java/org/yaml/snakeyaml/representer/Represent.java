@@ -1,4 +1,4 @@
-package org.yaml.snakeyaml;
+package org.yaml.snakeyaml.representer;
 
 import org.yaml.snakeyaml.nodes.Node;
 
