@@ -57,7 +57,8 @@ public class ConstructorSequenceTest extends TestCase {
         Parser parser = new ParserImpl(scanner);
         Resolver resolver = new Resolver();
         Composer composer = new Composer(parser, resolver);
-        IConstructor constructor = new ConstructorImpl(composer);
+        Constructor constructor = new Constructor();
+        constructor.setComposer(composer);
         List result = (List) constructor.getSingleData();
         return result;
     }

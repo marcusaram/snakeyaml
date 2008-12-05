@@ -3,8 +3,7 @@ package org.jvyaml;
 import junit.framework.TestCase;
 
 import org.yaml.snakeyaml.composer.Composer;
-import org.yaml.snakeyaml.constructor.BaseConstructorImpl;
-import org.yaml.snakeyaml.constructor.IConstructor;
+import org.yaml.snakeyaml.constructor.BaseConstructor;
 import org.yaml.snakeyaml.parser.ParserImpl;
 import org.yaml.snakeyaml.resolver.Resolver;
 import org.yaml.snakeyaml.scanner.ScannerImpl;
@@ -39,8 +38,10 @@ public class BaseConstructorImplTest extends TestCase {
         final String str = input.toString();
         // final long before = System.currentTimeMillis();
         // for(int i=0;i<1;i++) {
-        final IConstructor ctor = new BaseConstructorImpl(new Composer(new ParserImpl(
-                new ScannerImpl(new org.yaml.snakeyaml.reader.Reader(str))), new Resolver()));
+        Composer composer = new Composer(new ParserImpl(new ScannerImpl(
+                new org.yaml.snakeyaml.reader.Reader(str))), new Resolver());
+        BaseConstructor ctor = new BaseConstructor();
+        ctor.setComposer(composer);
         while (ctor.checkData()) {
             System.out.println(ctor.getData());
         }
@@ -51,5 +52,4 @@ public class BaseConstructorImplTest extends TestCase {
         // System.out.println("Walking through the nodes for the file: " +
         // filename + " took " + time + "ms, or " + timeS + " seconds");
     }
-
 }
