@@ -19,7 +19,7 @@ import org.yaml.snakeyaml.nodes.ScalarNode;
 import org.yaml.snakeyaml.nodes.SequenceNode;
 import org.yaml.snakeyaml.serializer.Serializer;
 
-public class BaseRepresenter implements Represent {
+public class BaseRepresenter {
     @SuppressWarnings("unchecked")
     protected Map<Class, Represent> representers = new HashMap<Class, Represent>();
     /**
@@ -50,7 +50,7 @@ public class BaseRepresenter implements Represent {
     }
 
     @SuppressWarnings("unchecked")
-    public Node representData(Object data) {
+    private Node representData(Object data) {
         aliasKey = System.identityHashCode(data);// take memory address
         if (!ignoreAliases(data)) {
             // check for identity
@@ -116,7 +116,7 @@ public class BaseRepresenter implements Represent {
         return node;
     }
 
-    public Node representScalar(String tag, String value) {
+    protected Node representScalar(String tag, String value) {
         return representScalar(tag, value, null);
     }
 
