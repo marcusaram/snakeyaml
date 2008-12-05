@@ -41,7 +41,7 @@ public class ParserImplTest extends TestCase {
         etalonEvents.add(new MappingEndEvent(dummyMark, dummyMark));
         etalonEvents.add(new DocumentEndEvent(dummyMark, dummyMark, false));
         etalonEvents.add(new StreamEndEvent(dummyMark, dummyMark));
-        while (parser.checkEvent(new ArrayList<Class<Event>>())) {
+        while (parser.checkEvent(new ArrayList<Class<? extends Event>>())) {
             Event event = parser.getEvent();
             if (etalonEvents.isEmpty()) {
                 fail("unexpected event: " + event);
@@ -50,7 +50,7 @@ public class ParserImplTest extends TestCase {
             // System.out.println(event);
         }
         assertFalse("Must contain no more events: " + parser.getEvent(), parser
-                .checkEvent(new ArrayList<Class<Event>>()));
+                .checkEvent(new ArrayList<Class<? extends Event>>()));
     }
 
     public void testGetEvent2() {
@@ -75,7 +75,7 @@ public class ParserImplTest extends TestCase {
         etalonEvents.add(new MappingEndEvent(dummyMark, dummyMark));
         etalonEvents.add(new DocumentEndEvent(dummyMark, dummyMark, false));
         etalonEvents.add(new StreamEndEvent(dummyMark, dummyMark));
-        while (parser.checkEvent(new ArrayList<Class<Event>>())) {
+        while (parser.checkEvent(new ArrayList<Class<? extends Event>>())) {
             Event event = parser.getEvent();
             if (etalonEvents.isEmpty()) {
                 fail("unexpected event: " + event);
@@ -84,6 +84,6 @@ public class ParserImplTest extends TestCase {
             // System.out.println(event);
         }
         assertFalse("Must contain no more events: " + parser.getEvent(), parser
-                .checkEvent(new ArrayList<Class<Event>>()));
+                .checkEvent(new ArrayList<Class<? extends Event>>()));
     }
 }
