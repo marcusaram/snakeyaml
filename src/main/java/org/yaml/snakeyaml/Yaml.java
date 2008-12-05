@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 import org.yaml.snakeyaml.composer.Composer;
-import org.yaml.snakeyaml.constructor.Constructor;
+import org.yaml.snakeyaml.constructor.IConstructor;
 import org.yaml.snakeyaml.constructor.ConstructorImpl;
 import org.yaml.snakeyaml.parser.ParserImpl;
 import org.yaml.snakeyaml.reader.Reader;
@@ -99,7 +99,7 @@ public class Yaml {
      * @return parsed object
      */
     public Object load(final String yaml) {
-        Constructor ctor = new ConstructorImpl(new Composer(new ParserImpl(new ScannerImpl(
+        IConstructor ctor = new ConstructorImpl(new Composer(new ParserImpl(new ScannerImpl(
                 new Reader(yaml))), new Resolver()));
         return ctor.getSingleData();
     }
@@ -113,7 +113,7 @@ public class Yaml {
      * @return parsed object
      */
     public Object load(final InputStream io) {
-        Constructor ctor = new ConstructorImpl(new Composer(new ParserImpl(new ScannerImpl(
+        IConstructor ctor = new ConstructorImpl(new Composer(new ParserImpl(new ScannerImpl(
                 new Reader(io))), new Resolver()));
         return ctor.getSingleData();
     }
@@ -128,7 +128,7 @@ public class Yaml {
      *         sequence
      */
     public Iterable<Object> loadAll(final String yaml) {
-        final Constructor ctor = new ConstructorImpl(new Composer(new ParserImpl(new ScannerImpl(
+        final IConstructor ctor = new ConstructorImpl(new Composer(new ParserImpl(new ScannerImpl(
                 new Reader(yaml))), new Resolver()));
         Iterator<Object> result = new Iterator<Object>() {
             public boolean hasNext() {
@@ -156,7 +156,7 @@ public class Yaml {
      *         sequence
      */
     public Iterable<Object> loadAll(final InputStream yaml) {
-        final Constructor ctor = new ConstructorImpl(new Composer(new ParserImpl(new ScannerImpl(
+        final IConstructor ctor = new ConstructorImpl(new Composer(new ParserImpl(new ScannerImpl(
                 new Reader(yaml))), new Resolver()));
         Iterator<Object> result = new Iterator<Object>() {
             public boolean hasNext() {

@@ -71,7 +71,7 @@ public class ConstructorTest extends TestCase {
         Parser parser = new ParserImpl(scanner);
         Resolver resolver = new Resolver();
         Composer composer = new Composer(parser, resolver);
-        Constructor constructor = new ConstructorImpl(composer);
+        IConstructor constructor = new ConstructorImpl(composer);
         Object result = constructor.getSingleData();
         return result;
     }

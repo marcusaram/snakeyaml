@@ -23,7 +23,7 @@ import org.yaml.snakeyaml.nodes.SequenceNode;
  * 
  * @see PyYAML 3.06 for more information
  */
-public class BaseConstructorImpl implements Constructor {
+public class BaseConstructorImpl implements IConstructor {
     private final static Map<String, YamlConstructor> yamlConstructors = new HashMap<String, YamlConstructor>();
     private final static Map<String, YamlMultiConstructor> yamlMultiConstructors = new HashMap<String, YamlMultiConstructor>();
     private final static Map<String, Pattern> yamlMultiRegexps = new HashMap<String, Pattern>();
@@ -145,7 +145,7 @@ public class BaseConstructorImpl implements Constructor {
             this.prefix = prefix;
         }
 
-        public Object call(final Constructor self, final Node node) {
+        public Object call(final IConstructor self, final Node node) {
             return ctor.call(self, this.prefix, node);
         }
     }
@@ -250,27 +250,27 @@ public class BaseConstructorImpl implements Constructor {
     }
 
     public final static YamlConstructor CONSTRUCT_PRIMITIVE = new YamlConstructor() {
-        public Object call(final Constructor self, final Node node) {
+        public Object call(final IConstructor self, final Node node) {
             return self.constructPrimitive(node);
         }
     };
     public final static YamlConstructor CONSTRUCT_SCALAR = new YamlConstructor() {
-        public Object call(final Constructor self, final Node node) {
+        public Object call(final IConstructor self, final Node node) {
             return self.constructScalar(node);
         }
     };
     public final static YamlConstructor CONSTRUCT_PRIVATE = new YamlConstructor() {
-        public Object call(final Constructor self, final Node node) {
+        public Object call(final IConstructor self, final Node node) {
             return self.constructPrivateType(node);
         }
     };
     public final static YamlConstructor CONSTRUCT_SEQUENCE = new YamlConstructor() {
-        public Object call(final Constructor self, final Node node) {
+        public Object call(final IConstructor self, final Node node) {
             return self.constructSequence(node);
         }
     };
     public final static YamlConstructor CONSTRUCT_MAPPING = new YamlConstructor() {
-        public Object call(final Constructor self, final Node node) {
+        public Object call(final IConstructor self, final Node node) {
             return self.constructMapping(node);
         }
     };

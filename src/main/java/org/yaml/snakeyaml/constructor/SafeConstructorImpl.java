@@ -82,41 +82,41 @@ public class SafeConstructorImpl extends BaseConstructorImpl {
         BOOL_VALUES.put("off", Boolean.FALSE);
     }
 
-    public static Object constructYamlNull(final Constructor ctor, final Node node) {
+    public static Object constructYamlNull(final IConstructor ctor, final Node node) {
         return null;
     }
 
-    public static Object constructYamlBool(final Constructor ctor, final Node node) {
+    public static Object constructYamlBool(final IConstructor ctor, final Node node) {
         final String val = (String) ctor.constructScalar(node);
         return BOOL_VALUES.get(val.toLowerCase());
     }
 
-    public static Object constructYamlOmap(final Constructor ctor, final Node node) {
+    public static Object constructYamlOmap(final IConstructor ctor, final Node node) {
         return ctor.constructPairs(node);
     }
 
-    public static Object constructYamlPairs(final Constructor ctor, final Node node) {
+    public static Object constructYamlPairs(final IConstructor ctor, final Node node) {
         return constructYamlOmap(ctor, node);
     }
 
-    public static Object constructYamlSet(final Constructor ctor, final Node node) {
+    public static Object constructYamlSet(final IConstructor ctor, final Node node) {
         return ((Map) ctor.constructMapping(node)).keySet();
     }
 
-    public static Object constructYamlStr(final Constructor ctor, final Node node) {
+    public static Object constructYamlStr(final IConstructor ctor, final Node node) {
         final String value = (String) ctor.constructScalar(node);
         return value.length() == 0 ? (String) null : value;
     }
 
-    public static Object constructYamlSeq(final Constructor ctor, final Node node) {
+    public static Object constructYamlSeq(final IConstructor ctor, final Node node) {
         return ctor.constructSequence(node);
     }
 
-    public static Object constructYamlMap(final Constructor ctor, final Node node) {
+    public static Object constructYamlMap(final IConstructor ctor, final Node node) {
         return ctor.constructMapping(node);
     }
 
-    public static Object constructUndefined(final Constructor ctor, final Node node) {
+    public static Object constructUndefined(final IConstructor ctor, final Node node) {
         throw new ConstructorException(null, null, "could not determine a constructor for the tag "
                 + node.getTag(), node.getStartMark());
     }
@@ -126,7 +126,7 @@ public class SafeConstructorImpl extends BaseConstructorImpl {
     private final static Pattern YMD_REGEXP = Pattern
             .compile("^([0-9][0-9][0-9][0-9])-([0-9][0-9]?)-([0-9][0-9]?)$");
 
-    public static Object constructYamlTimestamp(final Constructor ctor, final Node node) {
+    public static Object constructYamlTimestamp(final IConstructor ctor, final Node node) {
         Matcher match = YMD_REGEXP.matcher((String) node.getValue());
         if (match.matches()) {
             final String year_s = match.group(1);
@@ -213,7 +213,7 @@ public class SafeConstructorImpl extends BaseConstructorImpl {
         return cal.getTime();
     }
 
-    public static Object constructYamlInt(final Constructor ctor, final Node node) {
+    public static Object constructYamlInt(final IConstructor ctor, final Node node) {
         String value = ctor.constructScalar(node).toString().replaceAll("_", "");
         int sign = +1;
         char first = value.charAt(0);
@@ -254,7 +254,7 @@ public class SafeConstructorImpl extends BaseConstructorImpl {
     private final static Double INF_VALUE_NEG = new Double(Double.NEGATIVE_INFINITY);
     private final static Double NAN_VALUE = new Double(Double.NaN);
 
-    public static Object constructYamlFloat(final Constructor ctor, final Node node) {
+    public static Object constructYamlFloat(final IConstructor ctor, final Node node) {
         String value = ctor.constructScalar(node).toString().replaceAll("_", "");
         int sign = +1;
         char first = value.charAt(0);
@@ -288,13 +288,13 @@ public class SafeConstructorImpl extends BaseConstructorImpl {
         }
     }
 
-    public static Object constructYamlBinary(final Constructor ctor, final Node node) {
+    public static Object constructYamlBinary(final IConstructor ctor, final Node node) {
         char[] decoded = Base64Coder.decode(ctor.constructScalar(node).toString().toCharArray());
         String value = new String(decoded);
         return value;
     }
 
-    public static Object constructSpecializedSequence(final Constructor ctor, final String pref,
+    public static Object constructSpecializedSequence(final IConstructor ctor, final String pref,
             final Node node) {
         List outp = null;
         try {
@@ -308,7 +308,7 @@ public class SafeConstructorImpl extends BaseConstructorImpl {
         return outp;
     }
 
-    public static Object constructSpecializedMap(final Constructor ctor, final String pref,
+    public static Object constructSpecializedMap(final IConstructor ctor, final String pref,
             final Node node) {
         Map outp = null;
         try {
@@ -345,7 +345,7 @@ public class SafeConstructorImpl extends BaseConstructorImpl {
         return inp;
     }
 
-    public static Object constructJava(final Constructor ctor, final String pref, final Node node) {
+    public static Object constructJava(final IConstructor ctor, final String pref, final Node node) {
         Object outp = null;
         try {
             final Class cl = Class.forName(pref);
@@ -375,88 +375,88 @@ public class SafeConstructorImpl extends BaseConstructorImpl {
 
     static {
         BaseConstructorImpl.addConstructor("tag:yaml.org,2002:null", new YamlConstructor() {
-            public Object call(final Constructor self, final Node node) {
+            public Object call(final IConstructor self, final Node node) {
                 return constructYamlNull(self, node);
             }
         });
         addConstructor("tag:yaml.org,2002:bool", new YamlConstructor() {
-            public Object call(final Constructor self, final Node node) {
+            public Object call(final IConstructor self, final Node node) {
                 return constructYamlBool(self, node);
             }
         });
         addConstructor("tag:yaml.org,2002:omap", new YamlConstructor() {
-            public Object call(final Constructor self, final Node node) {
+            public Object call(final IConstructor self, final Node node) {
                 return constructYamlOmap(self, node);
             }
         });
         addConstructor("tag:yaml.org,2002:pairs", new YamlConstructor() {
-            public Object call(final Constructor self, final Node node) {
+            public Object call(final IConstructor self, final Node node) {
                 return constructYamlPairs(self, node);
             }
         });
         addConstructor("tag:yaml.org,2002:set", new YamlConstructor() {
-            public Object call(final Constructor self, final Node node) {
+            public Object call(final IConstructor self, final Node node) {
                 return constructYamlSet(self, node);
             }
         });
         addConstructor("tag:yaml.org,2002:int", new YamlConstructor() {
-            public Object call(final Constructor self, final Node node) {
+            public Object call(final IConstructor self, final Node node) {
                 return constructYamlInt(self, node);
             }
         });
         addConstructor("tag:yaml.org,2002:float", new YamlConstructor() {
-            public Object call(final Constructor self, final Node node) {
+            public Object call(final IConstructor self, final Node node) {
                 return constructYamlFloat(self, node);
             }
         });
         addConstructor("tag:yaml.org,2002:timestamp", new YamlConstructor() {
-            public Object call(final Constructor self, final Node node) {
+            public Object call(final IConstructor self, final Node node) {
                 return constructYamlTimestamp(self, node);
             }
         });
         addConstructor("tag:yaml.org,2002:timestamp#ymd", new YamlConstructor() {
-            public Object call(final Constructor self, final Node node) {
+            public Object call(final IConstructor self, final Node node) {
                 return constructYamlTimestamp(self, node);
             }
         });
         addConstructor("tag:yaml.org,2002:str", new YamlConstructor() {
-            public Object call(final Constructor self, final Node node) {
+            public Object call(final IConstructor self, final Node node) {
                 return constructYamlStr(self, node);
             }
         });
         addConstructor("tag:yaml.org,2002:binary", new YamlConstructor() {
-            public Object call(final Constructor self, final Node node) {
+            public Object call(final IConstructor self, final Node node) {
                 return constructYamlBinary(self, node);
             }
         });
         addConstructor("tag:yaml.org,2002:seq", new YamlConstructor() {
-            public Object call(final Constructor self, final Node node) {
+            public Object call(final IConstructor self, final Node node) {
                 return constructYamlSeq(self, node);
             }
         });
         addConstructor("tag:yaml.org,2002:map", new YamlConstructor() {
-            public Object call(final Constructor self, final Node node) {
+            public Object call(final IConstructor self, final Node node) {
                 return constructYamlMap(self, node);
             }
         });
         addConstructor(null, new YamlConstructor() {
-            public Object call(final Constructor self, final Node node) {
+            public Object call(final IConstructor self, final Node node) {
                 return self.constructPrivateType(node);
             }
         });
 
         addMultiConstructor("tag:yaml.org,2002:seq:", new YamlMultiConstructor() {
-            public Object call(final Constructor self, final String pref, final Node node) {
+            public Object call(final IConstructor self, final String pref, final Node node) {
                 return constructSpecializedSequence(self, pref, node);
             }
         });
         addMultiConstructor("tag:yaml.org,2002:map:", new YamlMultiConstructor() {
-            public Object call(final Constructor self, final String pref, final Node node) {
+            public Object call(final IConstructor self, final String pref, final Node node) {
                 return constructSpecializedMap(self, pref, node);
             }
         });
         addMultiConstructor("!java/object:", new YamlMultiConstructor() {
-            public Object call(final Constructor self, final String pref, final Node node) {
+            public Object call(final IConstructor self, final String pref, final Node node) {
                 return constructJava(self, pref, node);
             }
         });

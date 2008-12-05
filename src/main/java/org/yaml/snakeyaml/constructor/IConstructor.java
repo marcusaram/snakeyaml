@@ -8,7 +8,7 @@ import org.yaml.snakeyaml.nodes.Node;
 /**
  * @see PyYAML 3.06 for more information
  */
-public interface Constructor {
+public interface IConstructor {
     boolean checkData();
 
     Object getData();
