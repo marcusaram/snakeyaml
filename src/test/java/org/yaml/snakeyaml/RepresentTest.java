@@ -33,8 +33,7 @@ public class RepresentTest extends TestCase {
     }
 
     class MyRepresenter extends Representer {
-        public MyRepresenter(Character default_style, Boolean default_flow_style) {
-            super(default_style, default_flow_style);
+        public MyRepresenter() {
             this.representers.put(Dice.class, new RepresentDice());
         }
 
