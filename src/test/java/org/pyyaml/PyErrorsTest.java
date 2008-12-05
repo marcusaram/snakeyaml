@@ -46,7 +46,7 @@ public class PyErrorsTest extends PyImportTest {
                 fail("Loading must fail for " + files[i].getAbsolutePath());
                 // System.err.println("Loading must fail for " +
                 // files[i].getAbsolutePath());
-            } catch (YAMLException e) {
+            } catch (Exception e) {
                 assertTrue(true);
             }
         }
@@ -67,7 +67,7 @@ public class PyErrorsTest extends PyImportTest {
                 fail("Loading must fail for " + files[i].getAbsolutePath());
                 // System.err.println("Loading must fail for " +
                 // files[i].getAbsolutePath());
-            } catch (YAMLException e) {
+            } catch (Exception e) {
                 assertTrue(true);
             }
         }
@@ -92,7 +92,6 @@ public class PyErrorsTest extends PyImportTest {
     // TODO not imported: public void testEmitterErrors()
     // testDumperErrors() is implemented in SerializerTest.java
 
-    @SuppressWarnings("unchecked")
     public void testLoaderErrors1() throws FileNotFoundException {
         // TODO this test for debugging only
         File[] files = getStreamsByExtension("invalid-uri-escapes-2.loader-error");
@@ -102,7 +101,7 @@ public class PyErrorsTest extends PyImportTest {
                 System.out.println(document);
             }
             // System.out.println(data);
-        } catch (YAMLException e) {
+        } catch (Exception e) {
             System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!");
             assertTrue(true);
         }

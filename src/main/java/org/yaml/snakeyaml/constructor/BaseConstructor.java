@@ -70,7 +70,7 @@ public class BaseConstructor {
         return data;
     }
 
-    private Object constructObject(Node node) {
+    protected Object constructObject(Node node) {
         if (constructedObjects.containsKey(node)) {
             return constructedObjects.get(node);
         }
@@ -88,7 +88,7 @@ public class BaseConstructor {
             } else if (node instanceof ScalarNode) {
                 data = constructScalar((ScalarNode) node);
             } else if (node instanceof SequenceNode) {
-                data = constructSequence(node);
+                data = constructSequence((SequenceNode) node);
             } else if (node instanceof MappingNode) {
                 data = constructMapping((MappingNode) node);
             } else {
@@ -107,11 +107,7 @@ public class BaseConstructor {
     }
 
     @SuppressWarnings("unchecked")
-    protected List<Object> constructSequence(Node node) {
-        if (!(node instanceof SequenceNode)) {
-            throw new ConstructorException(null, null, "expected a sequence node, but found "
-                    + node.getNodeId(), node.getStartMark());
-        }
+    protected List<Object> constructSequence(SequenceNode node) {
         List<Node> nodeValue = (List<Node>) node.getValue();
         List<Object> result = new ArrayList<Object>(nodeValue.size());
         for (Iterator<Node> iter = nodeValue.iterator(); iter.hasNext();) {
@@ -131,10 +127,13 @@ public class BaseConstructor {
             Node keyNode = tuple[0];
             Node valueNode = tuple[1];
             Object key = constructObject(keyNode);
-            int hash = key.hashCode();
-            if (hash == 0) {
-                throw new ConstructorException("while constructing a mapping", node.getStartMark(),
-                        "found unacceptable key " + key, tuple[0].getStartMark());
+            if (key != null) {
+                int hash = key.hashCode();
+                if (hash == 0) {
+                    throw new ConstructorException("while constructing a mapping", node
+                            .getStartMark(), "found unacceptable key " + key, tuple[0]
+                            .getStartMark());
+                }
             }
             Object value = constructObject(valueNode);
             mapping.put(key, value);
