@@ -120,7 +120,7 @@ public class BaseRepresenter {
     }
 
     protected Node representSequence(String tag, List<Object> sequence, Boolean flowStyle) {
-        List<Object> value = new LinkedList<Object>();
+        List<Node> value = new LinkedList<Node>();
         SequenceNode node = new SequenceNode(tag, value, flowStyle);
         if (aliasKey != null) {
             representedObjects.put(aliasKey, node);
@@ -144,7 +144,7 @@ public class BaseRepresenter {
     }
 
     protected Node representMapping(String tag, Map<Object, Object> sequence, Boolean flowStyle) {
-        List<Object[]> value = new LinkedList<Object[]>();
+        List<Node[]> value = new LinkedList<Node[]>();
         MappingNode node = new MappingNode(tag, value, flowStyle);
         if (aliasKey != null) {
             representedObjects.put(aliasKey, node);
@@ -160,7 +160,7 @@ public class BaseRepresenter {
             if (!((nodeValue instanceof ScalarNode && ((ScalarNode) nodeValue).getStyle() == null))) {
                 bestStyle = false;
             }
-            value.add(new Object[] { nodeKey, nodeValue });
+            value.add(new Node[] { nodeKey, nodeValue });
         }
         if (flowStyle == null) {
             if (defaultFlowStyle != null) {

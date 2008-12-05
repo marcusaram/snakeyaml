@@ -13,17 +13,22 @@ import org.yaml.snakeyaml.error.Mark;
 public class SequenceNode extends CollectionNode {
     public static final String id = "sequence";
 
-    public SequenceNode(String tag, List<Object> value, Mark startMark, Mark endMark,
+    public SequenceNode(String tag, List<Node> value, Mark startMark, Mark endMark,
             Boolean flowStyle) {
         super(tag, value, startMark, endMark, flowStyle);
     }
 
-    public SequenceNode(String tag, List<Object> value, Boolean flowStyle) {
+    public SequenceNode(String tag, List<Node> value, Boolean flowStyle) {
         super(tag, value, null, null, flowStyle);
     }
 
     @Override
     public String getNodeId() {
         return id;
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<Node> getValue() {
+        return (List<Node>) super.getValue();
     }
 }

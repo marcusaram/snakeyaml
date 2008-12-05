@@ -86,11 +86,11 @@ public class BaseConstructor {
                 constructor = yamlConstructors.get(null);
                 data = constructor.construct(node);
             } else if (node instanceof ScalarNode) {
-                data = constructScalar(node);
+                data = constructScalar((ScalarNode) node);
             } else if (node instanceof SequenceNode) {
                 data = constructSequence(node);
             } else if (node instanceof MappingNode) {
-                data = constructMapping(node);
+                data = constructMapping((MappingNode) node);
             } else {
                 throw new YAMLException("Unknown node: " + node);
             }
@@ -102,11 +102,7 @@ public class BaseConstructor {
         return data;
     }
 
-    protected Object constructScalar(Node node) {
-        if (!(node instanceof ScalarNode)) {
-            throw new ConstructorException(null, null, "expected a scalar node, but found "
-                    + node.getNodeId(), node.getStartMark());
-        }
+    protected Object constructScalar(ScalarNode node) {
         return node.getValue();
     }
 
@@ -125,36 +121,28 @@ public class BaseConstructor {
         return result;
     }
 
-    @SuppressWarnings("unchecked")
-    protected Map<Object, Object> constructMapping(final Node node) {
-        if (!(node instanceof MappingNode)) {
-            throw new ConstructorException(null, null, "expected a mapping node, but found "
-                    + node.getNodeId(), node.getStartMark());
-        }
+    protected Map<Object, Object> constructMapping(MappingNode node) {
         // TODO should it be possible to customise Map implementation ?
         // respect order from YAML document
         Map<Object, Object> mapping = new LinkedHashMap<Object, Object>();
         List<Node[]> nodeValue = (List<Node[]>) node.getValue();
         for (Iterator<Node[]> iter = nodeValue.iterator(); iter.hasNext();) {
             Node[] tuple = iter.next();
-            Object key = constructObject(tuple[0]);
+            Node keyNode = tuple[0];
+            Node valueNode = tuple[1];
+            Object key = constructObject(keyNode);
             int hash = key.hashCode();
             if (hash == 0) {
                 throw new ConstructorException("while constructing a mapping", node.getStartMark(),
                         "found unacceptable key " + key, tuple[0].getStartMark());
             }
-            Object value = constructObject(tuple[1]);
+            Object value = constructObject(valueNode);
             mapping.put(key, value);
         }
         return mapping;
     }
 
-    @SuppressWarnings("unchecked")
-    protected List<Object[]> constructPairs(Node node) {
-        if (!(node instanceof MappingNode)) {
-            throw new ConstructorException(null, null, "expected a mapping node, but found "
-                    + node.getNodeId(), node.getStartMark());
-        }
+    protected List<Object[]> constructPairs(MappingNode node) {
         List<Object[]> pairs = new LinkedList<Object[]>();
         List<Node[]> nodeValue = (List<Node[]>) node.getValue();
         for (Iterator<Node[]> iter = nodeValue.iterator(); iter.hasNext();) {
@@ -165,5 +153,4 @@ public class BaseConstructor {
         }
         return pairs;
     }
-
 }
