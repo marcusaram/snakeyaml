@@ -3,7 +3,7 @@ package org.jvyaml;
 import junit.framework.TestCase;
 
 import org.yaml.snakeyaml.composer.Composer;
-import org.yaml.snakeyaml.constructor.Constructor;
+import org.yaml.snakeyaml.constructor.IConstructor;
 import org.yaml.snakeyaml.constructor.SafeConstructorImpl;
 import org.yaml.snakeyaml.parser.ParserImpl;
 import org.yaml.snakeyaml.resolver.Resolver;
@@ -39,7 +39,7 @@ public class SafeConstructorImplTest extends TestCase {
         final String str = input.toString();
         // final long before = System.currentTimeMillis();
         // for(int i=0;i<1;i++) {
-        final Constructor ctor = new SafeConstructorImpl(new Composer(new ParserImpl(
+        final IConstructor ctor = new SafeConstructorImpl(new Composer(new ParserImpl(
                 new ScannerImpl(new org.yaml.snakeyaml.reader.Reader(str))), new Resolver()));
         while (ctor.checkData()) {
             System.out.println(ctor.getData());
