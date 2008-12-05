@@ -19,6 +19,10 @@ public class Representer extends SafeRepresenter {
         this.representers.put(null, new RepresentJavaBean());
     }
 
+    public Representer() {
+        super(null, null);
+    }
+
     private class RepresentJavaBean implements Represent {
         @SuppressWarnings("unchecked")
         public Node representData(Object data) {
