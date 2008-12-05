@@ -14,27 +14,28 @@ import java.util.regex.Pattern;
 import org.yaml.snakeyaml.composer.Composer;
 import org.yaml.snakeyaml.constructor.Constructor;
 import org.yaml.snakeyaml.constructor.ConstructorImpl;
-import org.yaml.snakeyaml.emitter.Emitter;
-import org.yaml.snakeyaml.error.YAMLException;
 import org.yaml.snakeyaml.parser.ParserImpl;
 import org.yaml.snakeyaml.reader.Reader;
-import org.yaml.snakeyaml.representer.Representer;
+import org.yaml.snakeyaml.representer.Represent;
 import org.yaml.snakeyaml.resolver.Resolver;
 import org.yaml.snakeyaml.scanner.ScannerImpl;
-import org.yaml.snakeyaml.serializer.Serializer;
 
 /**
  * Public YAML interface
  */
 public class Yaml {
-    private DumperOptions dumperOptions;
+    private Dumper dumper;
 
     public Yaml(DumperOptions options) {
-        this.dumperOptions = options;
+        this.dumper = new Dumper(options);
+    }
+
+    public Yaml(Dumper dumper) {
+        this.dumper = dumper;
     }
 
     public Yaml() {
-        this(new DumperOptions());
+        this(new Dumper(new DumperOptions()));
     }
 
     /**
@@ -86,22 +87,7 @@ public class Yaml {
      *            - stream to write to
      */
     public void dumpAll(final Iterable<Object> data, final Writer output) {
-        Serializer s = new Serializer(new Emitter(output, dumperOptions), new Resolver(),
-                dumperOptions);
-        try {
-            s.open();
-            Representer r = new Representer(dumperOptions.getDefaultStyle(), null);
-            for (Iterator<Object> iter = data.iterator(); iter.hasNext();) {
-                r.represent(s, iter.next());
-            }
-        } catch (java.io.IOException e) {
-            throw new YAMLException(e);
-        }
-        try {
-            s.close();
-        } catch (java.io.IOException e) {
-            throw new YAMLException(e);
-        }
+        dumper.dump(data, output);
     }
 
     /**
