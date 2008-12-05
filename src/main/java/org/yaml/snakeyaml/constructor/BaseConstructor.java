@@ -25,7 +25,7 @@ import org.yaml.snakeyaml.nodes.SequenceNode;
  * @see PyYAML 3.06 for more information
  */
 public class BaseConstructor {
-    private final static Map<String, Construct> yamlConstructors = new HashMap<String, Construct>();
+    protected Map<String, Construct> yamlConstructors = new HashMap<String, Construct>();
 
     private Composer composer;
     private Map<Node, Object> constructedObjects;

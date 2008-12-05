@@ -26,6 +26,11 @@ import org.yaml.snakeyaml.util.Base64Coder;
  */
 public class SafeConstructor extends BaseConstructor {
 
+    public SafeConstructor() {
+        super();
+        this.yamlConstructors.put("tag:yaml.org,2002:null", new ConstuctYamlNull());
+    }
+
     @SuppressWarnings("unchecked")
     protected Object constructScalar(Node node) {
         if (node instanceof MappingNode) {
@@ -97,9 +102,11 @@ public class SafeConstructor extends BaseConstructor {
         return super.constructMapping(node);
     }
 
-    protected Object constuctYamlNull(ScalarNode node) {
-        constructScalar(node);
-        return null;
+    private class ConstuctYamlNull implements Construct {
+        public Object construct(Node node) {
+            constructScalar(node);
+            return null;
+        }
     }
 
     private final static Map<String, Boolean> BOOL_VALUES = new HashMap<String, Boolean>();
