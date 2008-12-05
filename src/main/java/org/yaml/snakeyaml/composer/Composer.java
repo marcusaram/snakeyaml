@@ -3,8 +3,8 @@
  */
 package org.yaml.snakeyaml.composer;
 
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -144,7 +144,7 @@ public class Composer {
         if (tag == null || tag.equals("!")) {
             tag = resolver.resolve(SequenceNode.class, null, startEvent.getImplicit());
         }
-        CollectionNode node = new SequenceNode(tag, new ArrayList<Object>(), startEvent
+        CollectionNode node = new SequenceNode(tag, new LinkedList<Node>(), startEvent
                 .getStartMark(), null, startEvent.getFlowStyle());
         if (anchor != null) {
             anchors.put(anchor, node);
@@ -165,18 +165,15 @@ public class Composer {
         if (tag == null || tag.equals("!")) {
             tag = resolver.resolve(MappingNode.class, null, startEvent.getImplicit());
         }
-        // TODO must be list instead !!!
-        MappingNode node = new MappingNode(tag, new HashMap(), startEvent.getStartMark(), null,
-                startEvent.getFlowStyle());
+        MappingNode node = new MappingNode(tag, new LinkedList<Node[]>(),
+                startEvent.getStartMark(), null, startEvent.getFlowStyle());
         if (anchor != null) {
             anchors.put(anchor, node);
         }
         while (!parser.checkEvent(MappingEndEvent.class)) {
-            // final Event key = parser.peekEvent();
             Node itemKey = composeNode(node, null);
             Node itemValue = composeNode(node, itemKey);
-            // TODO unclear,different from PyYAML, it must be List !!!
-            ((Map) node.getValue()).put(itemKey, itemValue);// 
+            node.getValue().add(new Node[] { itemKey, itemValue });// 
         }
         Event endEvent = parser.getEvent();
         node.setEndMark(endEvent.getEndMark());

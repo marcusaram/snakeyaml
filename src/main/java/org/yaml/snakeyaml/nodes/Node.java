@@ -10,16 +10,13 @@ import org.yaml.snakeyaml.error.Mark;
  */
 public abstract class Node {
     private String tag;
-    private Object value;
+    protected Object value;
     private int hash = -1;
     private Mark startMark;
     protected Mark endMark;
 
     public Node(final String tag, final Object value, final Mark startMark, final Mark endMark) {
-        if (tag == null) {
-            throw new NullPointerException("tag in a Node is required.");
-        }
-        this.tag = tag;
+        setTag(tag);
         if (value == null) {
             throw new NullPointerException("value in a Node is required.");
         }
@@ -55,5 +52,12 @@ public abstract class Node {
 
     public Mark getEndMark() {
         return endMark;
+    }
+
+    public void setTag(String tag) {
+        if (tag == null) {
+            throw new NullPointerException("tag in a Node is required.");
+        }
+        this.tag = tag;
     }
 }
