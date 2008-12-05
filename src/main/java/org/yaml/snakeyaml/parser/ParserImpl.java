@@ -138,13 +138,13 @@ public class ParserImpl implements Parser {
     /**
      * Check the type of the next event.
      */
-    public boolean checkEvent(List<Class<Event>> choices) {
+    public boolean checkEvent(List<Class<? extends Event>> choices) {
         peekEvent();
         if (currentEvent != null) {
             if (choices.size() == 0) {
                 return true;
             }
-            for (Class<Event> class1 : choices) {
+            for (Class<? extends Event> class1 : choices) {
                 if (class1.isInstance(currentEvent)) {
                     return true;
                 }
@@ -156,8 +156,8 @@ public class ParserImpl implements Parser {
     /**
      * Check the type of the next event.
      */
-    public boolean checkEvent(Class<?> cls) {
-        List list = new ArrayList(1);
+    public boolean checkEvent(Class<? extends Event> cls) {
+        List<Class<? extends Event>> list = new ArrayList<Class<? extends Event>>(1);
         list.add(cls);
         return checkEvent(list);
     }
@@ -657,7 +657,6 @@ public class ParserImpl implements Parser {
      * </pre>
      */
     private class ParseFlowSequenceFirstEntry implements Production {
-        @SuppressWarnings("unchecked")
         public Event produce() {
             Token token = scanner.getToken();
             marks.add(token.getStartMark());
@@ -672,7 +671,6 @@ public class ParserImpl implements Parser {
             this.first = first;
         }
 
-        @SuppressWarnings("unchecked")
         public Event produce() {
             if (!scanner.checkToken(FlowSequenceEndToken.class)) {
                 if (!first) {
@@ -746,7 +744,6 @@ public class ParserImpl implements Parser {
     }
 
     private class ParseFlowSequenceEntryMappingEnd implements Production {
-        @SuppressWarnings("unchecked")
         public Event produce() {
             state = new ParseFlowSequenceEntry(false);
             Token token = scanner.peekToken();
@@ -764,7 +761,6 @@ public class ParserImpl implements Parser {
      * </pre>
      */
     private class ParseFlowMappingFirstKey implements Production {
-        @SuppressWarnings("unchecked")
         public Event produce() {
             Token token = scanner.getToken();
             marks.add(token.getStartMark());
@@ -842,7 +838,6 @@ public class ParserImpl implements Parser {
     }
 
     private class ParseFlowMappingEmptyValue implements Production {
-        @SuppressWarnings("unchecked")
         public Event produce() {
             state = new ParseFlowMappingKey(false);
             return processEmptyScalar(scanner.peekToken().getStartMark());
