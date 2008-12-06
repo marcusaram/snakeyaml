@@ -106,7 +106,6 @@ public class BaseConstructor {
         return node.getValue();
     }
 
-    @SuppressWarnings("unchecked")
     protected List<Object> constructSequence(SequenceNode node) {
         List<Node> nodeValue = (List<Node>) node.getValue();
         List<Object> result = new ArrayList<Object>(nodeValue.size());
