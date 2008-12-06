@@ -105,6 +105,10 @@ public class BaseConstructor {
         return node.getValue();
     }
 
+    protected List<Object> createDefaultList(int initSize) {
+        return new LinkedList<Object>();
+    }
+
     protected List<Object> constructSequence(SequenceNode node) {
         List<Node> nodeValue = (List<Node>) node.getValue();
         List<Object> result = createDefaultList(nodeValue.size());
@@ -115,14 +119,13 @@ public class BaseConstructor {
         return result;
     }
 
-    protected List<Object> createDefaultList(int initSize) {
-        return new LinkedList<Object>();
+    protected Map<Object, Object> createDefaultMap() {
+        // respect order from YAML document
+        return new LinkedHashMap<Object, Object>();
     }
 
     protected Map<Object, Object> constructMapping(MappingNode node) {
-        // TODO should it be possible to customise Map implementation ?
-        // respect order from YAML document
-        Map<Object, Object> mapping = new LinkedHashMap<Object, Object>();
+        Map<Object, Object> mapping = createDefaultMap();
         List<Node[]> nodeValue = (List<Node[]>) node.getValue();
         for (Iterator<Node[]> iter = nodeValue.iterator(); iter.hasNext();) {
             Node[] tuple = iter.next();
