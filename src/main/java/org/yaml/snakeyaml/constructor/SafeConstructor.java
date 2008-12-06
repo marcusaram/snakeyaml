@@ -29,7 +29,6 @@ import org.yaml.snakeyaml.util.Base64Coder;
 public class SafeConstructor extends BaseConstructor {
 
     public SafeConstructor() {
-        super();
         this.yamlConstructors.put("tag:yaml.org,2002:null", new ConstuctYamlNull());
         this.yamlConstructors.put("tag:yaml.org,2002:bool", new ConstuctYamlBool());
         this.yamlConstructors.put("tag:yaml.org,2002:int", new ConstuctYamlInt());
@@ -111,7 +110,7 @@ public class SafeConstructor extends BaseConstructor {
         }
     }
 
-    protected Map<Object, Object> constuctMapping(MappingNode node) {
+    protected Map<Object, Object> constructMapping(MappingNode node) {
         flattenMapping(node);
         return super.constructMapping(node);
     }
