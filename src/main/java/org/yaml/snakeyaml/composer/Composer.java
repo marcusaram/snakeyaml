@@ -110,7 +110,7 @@ public class Composer {
                         "second occurence", event.getStartMark());
             }
         }
-        resolver.descendResolver(parent, index);
+        // resolver.descendResolver(parent, index);
         Node node = null;
         if (parser.checkEvent(ScalarEvent.class)) {
             node = composeScalarNode(anchor);
@@ -119,7 +119,7 @@ public class Composer {
         } else if (parser.checkEvent(MappingStartEvent.class)) {
             node = composeMappingNode(anchor);
         }
-        resolver.ascendResolver();
+        // resolver.ascendResolver();
         return node;
     }
 
