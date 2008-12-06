@@ -136,7 +136,7 @@ public class Serializer {
             this.emitter.emit(new AliasEvent(tAlias, null, null));
         } else {
             this.serializedNodes.add(node);
-            this.resolver.descendResolver(parent, index);
+            // this.resolver.descendResolver(parent, index);
             if (node instanceof ScalarNode) {
                 String detectedTag = this.resolver.resolve(ScalarNode.class, (String) node
                         .getValue(), true);

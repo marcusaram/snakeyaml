@@ -11,7 +11,6 @@ import org.yaml.snakeyaml.error.Mark;
 public abstract class Node {
     private String tag;
     protected Object value;
-    private int hash = -1;
     private Mark startMark;
     protected Mark endMark;
 
