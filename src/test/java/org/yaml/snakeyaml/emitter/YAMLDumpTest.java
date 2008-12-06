@@ -11,8 +11,8 @@ import java.util.TimeZone;
 
 import junit.framework.TestCase;
 
-import org.jvyaml.TestBean;
 import org.yaml.snakeyaml.Yaml;
+import org.yaml.snakeyaml.constructor.TestBean;
 
 /**
  * @author <a href="mailto:ola.bini@ki.se">Ola Bini</a>
@@ -51,7 +51,7 @@ public class YAMLDumpTest extends TestCase {
         final TestBean toDump = new TestBean("Ola Bini", 24, cal.getTime());
         // TODO remove the angle brackets from class name '<, >'
         assertEquals(
-                "!<org.jvyaml.TestBean> {born: !!timestamp '1982-05-02T22:00:00Z', name: Ola Bini,\n  age: 24}\n",
+                "!<org.yaml.snakeyaml.constructor.TestBean> {born: !!timestamp '1982-05-02T22:00:00Z',\n  name: Ola Bini, age: 24}\n",
                 yaml.dump(toDump));
 
     }

@@ -1,6 +1,7 @@
 package org.yaml.snakeyaml.constructor;
 
 import java.util.LinkedHashMap;
+import java.util.TimeZone;
 
 import junit.framework.TestCase;
 
@@ -58,6 +59,18 @@ public class ConstructorTest extends TestCase {
         assertEquals("Andrey", person.getFirstName());
         assertNull(person.getLastName());
         assertEquals(99, person.getAge());
+    }
+
+    // TODO fix test
+    public void qtestJavaBeanLoad() {
+        final java.util.Calendar cal = java.util.Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+        cal.clear();
+        cal.set(1982, 5 - 1, 3); // Java's months are zero-based...
+
+        final TestBean expected = new TestBean("Ola Bini", 24, cal.getTime());
+        assertEquals(
+                expected,
+                construct("--- !java/object:org.jvyaml.TestBean\nname: Ola Bini\nage: 24\nborn: 1982-05-03\n"));
     }
 
     private Object construct(String data) {
