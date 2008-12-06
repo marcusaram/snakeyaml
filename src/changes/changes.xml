@@ -6,6 +6,9 @@
 	<body>
 	    <release version="0.5" date="in Mercurial" description="Fix issues in Parser">
             <action dev="py4fun" type="add">
+                Implement possibility to define a default List implementation {331}. (2008-12-06)
+            </action>
+            <action dev="py4fun" type="add">
                 Path resolver is removed because it is not imported properly {330}. (2008-12-06)
             </action>
             <action dev="py4fun" type="add">

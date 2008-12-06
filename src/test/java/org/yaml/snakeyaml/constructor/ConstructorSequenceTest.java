@@ -19,14 +19,13 @@ public class ConstructorSequenceTest extends TestCase {
 
     public void testGetList() {
         String data = "[ 1, 2, 3 ]";
-        List<Object> list = construct(data);
+        List<Object> list = construct(new CustomConstructor(), data);
         assertNotNull(list);
         assertTrue(list.getClass().toString(), list instanceof ArrayList);
     }
 
-    // TODO should it be possible to change default List implementation ?
     public void testGetLinkedList() {
-        String data = "!!seq:java.util.LinkedList [ 1, 2, 3 ]";
+        String data = "[ 1, 2, 3 ]";
         List<Object> list = construct(data);
         assertNotNull(list);
         assertTrue(list.getClass().toString(), list instanceof LinkedList);
@@ -50,16 +49,26 @@ public class ConstructorSequenceTest extends TestCase {
         assertEquals("[1, 1]\n", result);
     }
 
-    @SuppressWarnings("unchecked")
     private List<Object> construct(String data) {
+        return construct(new Constructor(), data);
+    }
+
+    @SuppressWarnings("unchecked")
+    private List<Object> construct(Constructor constructor, String data) {
         Reader reader = new Reader(data);
         Scanner scanner = new ScannerImpl(reader);
         Parser parser = new ParserImpl(scanner);
         Resolver resolver = new Resolver();
         Composer composer = new Composer(parser, resolver);
-        Constructor constructor = new Constructor();
         constructor.setComposer(composer);
         List result = (List) constructor.getSingleData();
         return result;
+    }
+
+    class CustomConstructor extends Constructor {
+        @Override
+        protected List<Object> createDefaultList(int initSize) {
+            return new ArrayList<Object>(initSize);
+        }
     }
 }

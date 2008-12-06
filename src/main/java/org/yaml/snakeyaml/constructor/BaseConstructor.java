@@ -3,7 +3,6 @@
  */
 package org.yaml.snakeyaml.constructor;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -108,12 +107,16 @@ public class BaseConstructor {
 
     protected List<Object> constructSequence(SequenceNode node) {
         List<Node> nodeValue = (List<Node>) node.getValue();
-        List<Object> result = new ArrayList<Object>(nodeValue.size());
+        List<Object> result = createDefaultList(nodeValue.size());
         for (Iterator<Node> iter = nodeValue.iterator(); iter.hasNext();) {
             Node child = iter.next();
             result.add(constructObject(child));
         }
         return result;
+    }
+
+    protected List<Object> createDefaultList(int initSize) {
+        return new LinkedList<Object>();
     }
 
     protected Map<Object, Object> constructMapping(MappingNode node) {
