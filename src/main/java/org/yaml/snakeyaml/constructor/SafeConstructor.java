@@ -449,7 +449,9 @@ public class SafeConstructor extends BaseConstructor {
 
     private class ConstuctUndefined implements Construct {
         public Object construct(Node node) {
-            return constructMapping((MappingNode) node);
+            throw new ConstructorException(null, null,
+                    "could not determine a constructor for the tag " + node.getTag(), node
+                            .getStartMark());
         }
     }
 }
