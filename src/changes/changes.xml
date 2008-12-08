@@ -5,6 +5,12 @@
 	</properties>
 	<body>
 	    <release version="0.5" date="in Mercurial" description="Fix issues in Parser">
+            <action dev="py4fun" type="fix">
+                pairs tag works properly. (2008-12-08)
+            </action>
+            <action dev="py4fun" type="fix">
+                omap tag works properly. (2008-12-08)
+            </action>
             <action dev="py4fun" type="add">
                 Implement possibility to define a custom Map implementation {332}. (2008-12-06)
             </action>

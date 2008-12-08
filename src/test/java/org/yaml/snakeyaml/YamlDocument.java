@@ -16,7 +16,7 @@ public class YamlDocument {
     private String presentation;
     private Object nativeData;
 
-    public YamlDocument(String sourceName) {
+    public YamlDocument(String sourceName, boolean check) {
         InputStream input = YamlDocument.class.getClassLoader().getResourceAsStream(
                 ROOT + sourceName);
         Yaml yaml = new Yaml();
@@ -35,9 +35,13 @@ public class YamlDocument {
         // try to read generated presentation to prove that the presentation
         // is identical to the source
         Object result = yaml.load(presentation);
-        if (!nativeData.equals(result)) {
+        if (check && !nativeData.equals(result)) {
             throw new RuntimeException("Generated presentation is not valid: " + presentation);
         }
+    }
+
+    public YamlDocument(String sourceName) {
+        this(sourceName, true);
     }
 
     public String getSource() {

@@ -360,10 +360,10 @@ public class SafeConstructor extends BaseConstructor {
             }
             SequenceNode snode = (SequenceNode) node;
             for (Node subnode : snode.getValue()) {
-                if (!(node instanceof MappingNode)) {
+                if (!(subnode instanceof MappingNode)) {
                     throw new ConstructorException("while constructingpairs", node.getStartMark(),
-                            "expected a mapping of length 1, but found " + node.getNodeId(), node
-                                    .getStartMark());
+                            "expected a mapping of length 1, but found " + subnode.getNodeId(),
+                            subnode.getStartMark());
                 }
                 MappingNode mnode = (MappingNode) subnode;
                 if (mnode.getValue().size() != 1) {
