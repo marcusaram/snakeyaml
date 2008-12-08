@@ -25,8 +25,6 @@ public class Resolver {
 
     private final static Map<String, List<ResolverTuple>> yamlImplicitResolvers = new HashMap<String, List<ResolverTuple>>();
 
-    private LinkedList<Map<? extends Node, String>> resolverExactPaths = new LinkedList<Map<? extends Node, String>>();
-
     public static void addImplicitResolver(final String tag, final Pattern regexp,
             final String first) {
         if (first == null) {
