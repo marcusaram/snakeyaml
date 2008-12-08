@@ -7,6 +7,7 @@ import java.io.InputStream;
 
 import junit.framework.TestCase;
 
+import org.yaml.snakeyaml.Loader;
 import org.yaml.snakeyaml.Util;
 import org.yaml.snakeyaml.Yaml;
 
@@ -15,6 +16,12 @@ public abstract class PyImportTest extends TestCase {
 
     protected Object load(String data) {
         Yaml yaml = new Yaml();
+        Object obj = yaml.load(data);
+        return obj;
+    }
+
+    protected Object load(Loader loader, String data) {
+        Yaml yaml = new Yaml(loader);
         Object obj = yaml.load(data);
         return obj;
     }
@@ -29,6 +36,11 @@ public abstract class PyImportTest extends TestCase {
         return yaml.loadAll(data);
     }
 
+    protected Iterable<Object> loadAll(Loader loader, String data) {
+        Yaml yaml = new Yaml(loader);
+        return yaml.loadAll(data);
+    }
+
     protected String getResource(String theName) {
         try {
             String content;
@@ -40,10 +52,14 @@ public abstract class PyImportTest extends TestCase {
     }
 
     protected File[] getStreamsByExtension(String extention) {
+        return getStreamsByExtension(extention, false);
+    }
+
+    protected File[] getStreamsByExtension(String extention, boolean onlyIfCanonicalPresent) {
         File file = new File("src/test/resources/pyyaml");
         assertTrue("Folder not found: " + file.getAbsolutePath(), file.exists());
         assertTrue(file.isDirectory());
-        File[] files = file.listFiles(new PyFilenameFilter(extention));
+        File[] files = file.listFiles(new PyFilenameFilter(extention, onlyIfCanonicalPresent));
         return files;
     }
 
@@ -56,13 +72,22 @@ public abstract class PyImportTest extends TestCase {
 
     private class PyFilenameFilter implements FilenameFilter {
         private String extension;
+        private boolean onlyIfCanonicalPresent;
 
-        public PyFilenameFilter(String extension) {
+        public PyFilenameFilter(String extension, boolean onlyIfCanonicalPresent) {
             this.extension = extension;
+            this.onlyIfCanonicalPresent = onlyIfCanonicalPresent;
         }
 
         public boolean accept(File dir, String name) {
-            return name.endsWith(extension);
+            int position = name.lastIndexOf('.');
+            String canonicalFileName = name.substring(0, position) + ".canonical";
+            File canonicalFile = new File(dir, canonicalFileName);
+            if (onlyIfCanonicalPresent && !canonicalFile.exists()) {
+                return false;
+            } else {
+                return name.endsWith(extension);
+            }
         }
     }
 }
