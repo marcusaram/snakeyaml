@@ -1227,8 +1227,6 @@ public class Emitter {
                 }
                 this.column += data.length();
                 stream.write(data);
-                this.column += data.length();
-                stream.write(data);
                 writeIndent();
                 this.whitespace = false;
                 this.indention = false;
