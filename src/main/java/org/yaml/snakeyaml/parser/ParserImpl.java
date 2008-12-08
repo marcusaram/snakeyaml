@@ -248,9 +248,12 @@ public class ParserImpl implements Parser {
                 }
                 token = scanner.getToken();
                 Mark endMark = token.getEndMark();
-                Integer[] versionInteger = new Integer[2];
+                Integer[] versionInteger;
                 if (version != null) {
+                    versionInteger = new Integer[2];
                     versionInteger = version.toArray(versionInteger);
+                } else {
+                    versionInteger = null;
                 }
                 event = new DocumentStartEvent(startMark, endMark, true, versionInteger, tags);
                 states.add(new ParseDocumentEnd());

@@ -110,18 +110,9 @@ public class PyTokensTest extends PyImportTest {
 
     @SuppressWarnings("unchecked")
     public void testScanner() throws FileNotFoundException {
-        List<File> sources = new LinkedList<File>();
-        File[] files = getStreamsByExtension(".canonical");
+        File[] files = getStreamsByExtension(".data", true);
         assertTrue("No test files found.", files.length > 0);
-        for (int i = 0; i < files.length; i++) {
-            sources.add(files[i]);// add .canonical
-            int position = files[i].getName().lastIndexOf('.');
-            String dataFileName = files[i].getName().substring(0, position) + ".data";
-            File dataFile = getFileByName(dataFileName);
-            assertTrue(dataFile.exists());
-            sources.add(dataFile);// add .data
-        }
-        for (File file : sources) {
+        for (File file : files) {
             List<String> tokens = new LinkedList<String>();
             Reader reader = new Reader(new FileInputStream(file));
             Scanner scanner = new ScannerImpl(reader);
