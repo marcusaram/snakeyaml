@@ -43,7 +43,7 @@ public class SeqTagTest extends AbstractTest {
         assertEquals("Pluto", list2.get(8));
         //
         assertEquals(list1, list2);
-        // TODO assertNotSame(list1, list2);
+        assertNotSame(list1, list2);
     }
 
     public void testArray() {

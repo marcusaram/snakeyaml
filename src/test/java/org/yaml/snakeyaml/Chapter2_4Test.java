@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -129,22 +130,19 @@ public class Chapter2_4Test extends TestCase {
 
     @SuppressWarnings("unchecked")
     public void testExample_2_26() {
-        try {
-            YamlDocument document = new YamlDocument("example2_26.yaml");
-            Map<String, String> map = (Map<String, String>) document.getNativeData();
-            assertEquals(3, map.size());
-            assertEquals("65", map.get("Mark McGwire").toString());
-            assertEquals("63", map.get("Sammy Sosa").toString());
-            assertEquals("58", map.get("Ken Griffy").toString());
-            List list = new ArrayList();
-            for (String key : map.keySet()) {
-                list.add(key);
-            }
-            assertEquals("Mark McGwire", list.get(0));
-            assertEquals("Sammy Sosa", list.get(1));
-            assertEquals("Ken Griffy", list.get(2));
-        } catch (RuntimeException e) {
-            // TODO fail("!!omap is not implemented.");
+        YamlDocument document = new YamlDocument("example2_26.yaml");
+        Map<String, String> map = (Map<String, String>) document.getNativeData();
+        assertEquals(3, map.size());
+        assertTrue(map instanceof LinkedHashMap);
+        assertEquals(new Long(65), map.get("Mark McGwire"));
+        assertEquals(new Long(63), map.get("Sammy Sosa"));
+        assertEquals(new Long(58), map.get("Ken Griffy"));
+        List list = new ArrayList();
+        for (String key : map.keySet()) {
+            list.add(key);
         }
+        assertEquals("Mark McGwire", list.get(0));
+        assertEquals("Sammy Sosa", list.get(1));
+        assertEquals("Ken Griffy", list.get(2));
     }
 }
