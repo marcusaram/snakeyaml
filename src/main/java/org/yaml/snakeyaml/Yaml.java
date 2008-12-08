@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import org.yaml.snakeyaml.constructor.Constructor;
 import org.yaml.snakeyaml.representer.Represent;
 
 /**
@@ -25,7 +24,7 @@ public class Yaml {
     }
 
     public Yaml(Dumper dumper) {
-        this(new Loader(new Constructor()), dumper);
+        this(new Loader(), dumper);
     }
 
     public Yaml(Loader loader) {
@@ -38,7 +37,7 @@ public class Yaml {
     }
 
     public Yaml() {
-        this(new Loader(new Constructor()), new Dumper(new DumperOptions()));
+        this(new Loader(), new Dumper(new DumperOptions()));
     }
 
     /**

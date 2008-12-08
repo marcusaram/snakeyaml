@@ -11,11 +11,15 @@ import org.yaml.snakeyaml.resolver.Resolver;
 import org.yaml.snakeyaml.scanner.ScannerImpl;
 
 public class Loader {
-    private Constructor constructor;
+    protected Constructor constructor;
 
     public Loader(Constructor constructor) {
         super();
         this.constructor = constructor;
+    }
+
+    public Loader() {
+        this(new Constructor());
     }
 
     public Object load(InputStream io) {

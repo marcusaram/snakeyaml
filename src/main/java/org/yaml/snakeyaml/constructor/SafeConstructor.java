@@ -7,12 +7,11 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.SortedMap;
 import java.util.TimeZone;
-import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -320,7 +319,7 @@ public class SafeConstructor extends BaseConstructor {
         public Object construct(Node node) {
             // Note: we do not check for duplicate keys, because it's too
             // CPU-expensive.
-            SortedMap<Object, Object> omap = new TreeMap<Object, Object>();
+            Map<Object, Object> omap = new LinkedHashMap<Object, Object>();
             if (!(node instanceof SequenceNode)) {
                 throw new ConstructorException("while constructing an ordered map", node
                         .getStartMark(), "expected a sequence, but found " + node.getNodeId(), node
@@ -328,10 +327,10 @@ public class SafeConstructor extends BaseConstructor {
             }
             SequenceNode snode = (SequenceNode) node;
             for (Node subnode : snode.getValue()) {
-                if (!(node instanceof MappingNode)) {
+                if (!(subnode instanceof MappingNode)) {
                     throw new ConstructorException("while constructing an ordered map", node
                             .getStartMark(), "expected a mapping of length 1, but found "
-                            + node.getNodeId(), node.getStartMark());
+                            + subnode.getNodeId(), subnode.getStartMark());
                 }
                 MappingNode mnode = (MappingNode) subnode;
                 if (mnode.getValue().size() != 1) {
