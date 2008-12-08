@@ -1216,7 +1216,12 @@ public class Emitter {
             }
             if ((0 < end && end < (text.length() - 1)) && (ch == ' ' || start >= end)
                     && (this.column + (end - start)) > this.bestWidth && split) {
-                String data = text.substring(start, end) + "\\";
+                String data;
+                if (start >= end) {
+                    data = "\\";
+                } else {
+                    data = text.substring(start, end) + "\\";
+                }
                 if (start < end) {
                     start = end;
                 }

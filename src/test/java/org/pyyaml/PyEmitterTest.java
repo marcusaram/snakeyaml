@@ -21,8 +21,8 @@ import org.yaml.snakeyaml.scanner.ScannerImpl;
  */
 public class PyEmitterTest extends PyImportTest {
 
-    public void testEmitterOnData() throws IOException {
-        File[] files = getStreamsByExtension(".data", true);
+    private void process(String mask, boolean canonical) throws IOException {
+        File[] files = getStreamsByExtension(mask, true);
         assertTrue("No test files found.", files.length > 0);
         for (File file : files) {
             try {
@@ -37,16 +37,28 @@ public class PyEmitterTest extends PyImportTest {
                 //
                 StringWriter stream = new StringWriter();
                 DumperOptions options = new DumperOptions();
-                options.canonical(false);
+                options.canonical(canonical);
                 Emitter emitter = new Emitter(stream, new DumperOptions());
                 for (Event event : events) {
                     emitter.emit(event);
                 }
             } catch (Exception e) {
                 System.out.println("Failed File: " + file);
-                fail("Failed File: " + file + "; " + e.getMessage());
+                // fail("Failed File: " + file + "; " + e.getMessage());
+                throw new RuntimeException(e);
             }
         }
     }
 
+    public void testEmitterOnData() throws IOException {
+        process(".data", false);
+    }
+
+    public void testEmitterOnCanonicalNormally() throws IOException {
+        process(".canonical", false);
+    }
+
+    public void testEmitterOnCanonicalCanonically() throws IOException {
+        process(".canonical", true);
+    }
 }
