@@ -1186,11 +1186,11 @@ public class Emitter {
         int start = 0;
         int end = 0;
         while (end <= text.length()) {
-            char ch = 0;
+            Character ch = null;
             if (end < text.length()) {
                 ch = text.charAt(end);
             }
-            if (ch == 0 || "\"\\\u0085\u2028\u2029\uFEFF".indexOf(ch) != -1
+            if (ch == null || "\"\\\u0085\u2028\u2029\uFEFF".indexOf(ch) != -1
                     || !('\u0020' <= ch && ch <= '\u007E')) {
                 if (start < end) {
                     String data = text.substring(start, end);
@@ -1198,7 +1198,7 @@ public class Emitter {
                     stream.write(data);
                     start = end;
                 }
-                if (ch != 0) {
+                if (ch != null) {
                     String data;
                     if (ESCAPE_REPLACEMENTS.containsKey(new Character(ch))) {
                         data = "\\" + ESCAPE_REPLACEMENTS.get(new Character(ch));
