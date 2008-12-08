@@ -25,6 +25,9 @@ public class PyEmitterTest extends PyImportTest {
         File[] files = getStreamsByExtension(mask, true);
         assertTrue("No test files found.", files.length > 0);
         for (File file : files) {
+            if (!file.getName().contains("spec-05-14.data")) {
+                continue;
+            }
             try {
                 List<Event> events = new LinkedList<Event>();
                 Reader reader = new Reader(new FileInputStream(file));
@@ -33,15 +36,28 @@ public class PyEmitterTest extends PyImportTest {
                 while (parser.peekEvent() != null) {
                     Event event = parser.getEvent();
                     events.add(event);
+                    System.out.println("Event: " + event);
                 }
                 //
                 StringWriter stream = new StringWriter();
                 DumperOptions options = new DumperOptions();
                 options.canonical(canonical);
-                Emitter emitter = new Emitter(stream, new DumperOptions());
+                Emitter emitter = new Emitter(stream, options);
                 for (Event event : events) {
                     emitter.emit(event);
                 }
+                //
+                String data = stream.toString();
+                System.out.println("Reading: " + data);
+                List<Event> newEvents = new LinkedList<Event>();
+                reader = new Reader(data);
+                scanner = new ScannerImpl(reader);
+                parser = new ParserImpl(scanner);
+                while (parser.peekEvent() != null) {
+                    Event event = parser.getEvent();
+                    newEvents.add(event);
+                }
+                assertEquals(events.size(), newEvents.size());
             } catch (Exception e) {
                 System.out.println("Failed File: " + file);
                 // fail("Failed File: " + file + "; " + e.getMessage());
