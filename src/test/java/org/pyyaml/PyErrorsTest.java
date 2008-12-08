@@ -20,18 +20,10 @@ import org.yaml.snakeyaml.events.Event;
  * @see imported from PyYAML
  */
 public class PyErrorsTest extends PyImportTest {
-    // TODO these exceptions must be fixed
     private boolean skip(String filename) {
         List<String> failures = new ArrayList<String>();
-        failures.add("invalid-uri-escapes-2.loader-error");
-        failures.add("invalid-uri-escapes-3.loader-error");
-        // TODO what to do with unknoun tag ?
-        failures.add("undefined-constructor.loader-error");
         // in python list cannot be a key in a dictionary.
         failures.add("unacceptable-key.loader-error");
-        // TODO these are against the specification but I like it :)
-        failures.add("invalid-omap-1.loader-error");
-        failures.add("invalid-pairs-1.loader-error");
         for (String name : failures) {
             if (name.equals(filename)) {
                 return true;
@@ -122,20 +114,4 @@ public class PyErrorsTest extends PyImportTest {
     }
 
     // testDumperErrors() is implemented in SerializerTest.java
-
-    public void testLoaderErrors1() throws FileNotFoundException {
-        // TODO this test for debugging only
-        File[] files = getStreamsByExtension("invalid-uri-escapes-2.loader-error");
-        try {
-            for (Object document : loadAll(new FileInputStream(files[0]))) {
-                assertNotNull(document);
-                System.out.println(document);
-            }
-            // System.out.println(data);
-        } catch (Exception e) {
-            System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!");
-            assertTrue(true);
-        }
-    }
-
 }
