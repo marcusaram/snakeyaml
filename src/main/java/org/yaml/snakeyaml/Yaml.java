@@ -7,34 +7,38 @@ import java.io.InputStream;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import org.yaml.snakeyaml.composer.Composer;
 import org.yaml.snakeyaml.constructor.Constructor;
-import org.yaml.snakeyaml.parser.ParserImpl;
-import org.yaml.snakeyaml.reader.Reader;
 import org.yaml.snakeyaml.representer.Represent;
-import org.yaml.snakeyaml.resolver.Resolver;
-import org.yaml.snakeyaml.scanner.ScannerImpl;
 
 /**
  * Public YAML interface
  */
 public class Yaml {
     private Dumper dumper;
+    private Loader loader;
 
     public Yaml(DumperOptions options) {
         this.dumper = new Dumper(options);
     }
 
     public Yaml(Dumper dumper) {
+        this(new Loader(new Constructor()), dumper);
+    }
+
+    public Yaml(Loader loader) {
+        this(loader, new Dumper(new DumperOptions()));
+    }
+
+    public Yaml(Loader loader, Dumper dumper) {
+        this.loader = loader;
         this.dumper = dumper;
     }
 
     public Yaml() {
-        this(new Dumper(new DumperOptions()));
+        this(new Loader(new Constructor()), new Dumper(new DumperOptions()));
     }
 
     /**
@@ -97,12 +101,8 @@ public class Yaml {
      *            - YAML data to load from (BOM must not be present)
      * @return parsed object
      */
-    public Object load(final String yaml) {
-        Composer composer = new Composer(new ParserImpl(new ScannerImpl(new Reader(yaml))),
-                new Resolver());
-        Constructor ctor = new Constructor();
-        ctor.setComposer(composer);
-        return ctor.getSingleData();
+    public Object load(String yaml) {
+        return loader.load(yaml);
     }
 
     /**
@@ -113,12 +113,8 @@ public class Yaml {
      *            - data to load from (BOM is respected and ignored)
      * @return parsed object
      */
-    public Object load(final InputStream io) {
-        Composer composer = new Composer(new ParserImpl(new ScannerImpl(new Reader(io))),
-                new Resolver());
-        Constructor ctor = new Constructor();
-        ctor.setComposer(composer);
-        return ctor.getSingleData();
+    public Object load(InputStream io) {
+        return loader.load(io);
     }
 
     /**
@@ -130,25 +126,8 @@ public class Yaml {
      * @return an iterator over the parsed Java objects in this String in proper
      *         sequence
      */
-    public Iterable<Object> loadAll(final String yaml) {
-        Composer composer = new Composer(new ParserImpl(new ScannerImpl(new Reader(yaml))),
-                new Resolver());
-        final Constructor ctor = new Constructor();
-        ctor.setComposer(composer);
-        Iterator<Object> result = new Iterator<Object>() {
-            public boolean hasNext() {
-                return ctor.checkData();
-            }
-
-            public Object next() {
-                return ctor.getData();
-            }
-
-            public void remove() {
-                throw new UnsupportedOperationException();
-            }
-        };
-        return new YamlIterable(result);
+    public Iterable<Object> loadAll(String yaml) {
+        return loader.loadAll(yaml);
     }
 
     /**
@@ -160,38 +139,8 @@ public class Yaml {
      * @return an iterator over the parsed Java objects in this stream in proper
      *         sequence
      */
-    public Iterable<Object> loadAll(final InputStream yaml) {
-        Composer composer = new Composer(new ParserImpl(new ScannerImpl(new Reader(yaml))),
-                new Resolver());
-        final Constructor ctor = new Constructor();
-        ctor.setComposer(composer);
-        Iterator<Object> result = new Iterator<Object>() {
-            public boolean hasNext() {
-                return ctor.checkData();
-            }
-
-            public Object next() {
-                return ctor.getData();
-            }
-
-            public void remove() {
-                throw new UnsupportedOperationException();
-            }
-        };
-        return new YamlIterable(result);
-    }
-
-    private class YamlIterable implements Iterable<Object> {
-        private Iterator<Object> iterator;
-
-        public YamlIterable(Iterator<Object> iterator) {
-            this.iterator = iterator;
-        }
-
-        public Iterator<Object> iterator() {
-            return iterator;
-        }
-
+    public Iterable<Object> loadAll(InputStream yaml) {
+        return loader.loadAll(yaml);
     }
 
     // Customisers
