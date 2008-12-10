@@ -1,6 +1,8 @@
 package org.yaml.snakeyaml.constructor;
 
+import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.TimeZone;
 
 import junit.framework.TestCase;
@@ -15,11 +17,19 @@ import org.yaml.snakeyaml.scanner.ScannerImpl;
 
 public class ConstructorTest extends TestCase {
 
-    public void testGetSingleData() {
-        String data = "american:\n  - Boston Red Sox";
+    @SuppressWarnings("unchecked")
+    public void testMapOrder() {
+        String data = "one: zzz\ntwo: ccc\nthree: bbb\nfour: aaa";
         Object map = construct(data);
         assertNotNull(map);
         assertTrue(map.getClass().toString(), map instanceof LinkedHashMap);
+        Map<String, String> m = (Map<String, String>) map;
+        assertEquals(4, m.keySet().size());
+        Iterator<String> iter = m.keySet().iterator();
+        assertEquals("one", iter.next());
+        assertEquals("two", iter.next());
+        assertEquals("three", iter.next());
+        assertEquals("four", iter.next());
     }
 
     // TODO fix test
