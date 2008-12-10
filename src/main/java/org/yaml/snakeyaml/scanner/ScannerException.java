@@ -7,7 +7,7 @@ import org.yaml.snakeyaml.error.Mark;
 import org.yaml.snakeyaml.error.MarkedYAMLException;
 
 /**
- * @see PyYAML 3.06 for more information
+ * @see PyYAML for more information
  */
 public class ScannerException extends MarkedYAMLException {
 

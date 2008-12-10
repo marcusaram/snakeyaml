@@ -21,7 +21,7 @@ import org.yaml.snakeyaml.nodes.SequenceNode;
  * because Java does not have generators 'deep' is dropped. Multi constructors
  * are not supported.
  * 
- * @see PyYAML 3.06 for more information
+ * @see PyYAML for more information
  */
 public class BaseConstructor {
     protected Map<String, Construct> yamlConstructors = new HashMap<String, Construct>();

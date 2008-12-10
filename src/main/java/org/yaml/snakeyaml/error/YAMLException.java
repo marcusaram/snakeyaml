@@ -4,7 +4,7 @@
 package org.yaml.snakeyaml.error;
 
 /**
- * @see PyYAML 3.06 for more information
+ * @see PyYAML for more information
  */
 public class YAMLException extends RuntimeException {
     private static final long serialVersionUID = -4738336175050337570L;

@@ -31,7 +31,7 @@ import org.yaml.snakeyaml.nodes.SequenceNode;
 import org.yaml.snakeyaml.resolver.Resolver;
 
 /**
- * @see PyYAML 3.06 for more information
+ * @see PyYAML for more information
  */
 public class Serializer {
     private Emitter emitter;
