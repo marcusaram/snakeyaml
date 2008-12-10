@@ -11,7 +11,7 @@ import org.yaml.snakeyaml.error.Mark;
 public class DocumentEndEvent extends Event {
     private boolean explicit;
 
-    public DocumentEndEvent(final Mark startMark, final Mark endMark, final boolean explicit) {
+    public DocumentEndEvent(Mark startMark, Mark endMark, boolean explicit) {
         super(startMark, endMark);
         this.explicit = explicit;
     }
