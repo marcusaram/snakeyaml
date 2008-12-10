@@ -8,7 +8,7 @@ import java.util.List;
 import org.yaml.snakeyaml.error.Mark;
 
 /**
- * @see PyYAML 3.06 for more information
+ * @see PyYAML for more information
  */
 public class SequenceNode extends CollectionNode {
     public static final String id = "sequence";

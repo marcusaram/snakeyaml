@@ -5,9 +5,6 @@ package org.yaml.snakeyaml.util;
 
 import org.yaml.snakeyaml.error.YAMLException;
 
-/**
- * @see PyYAML 3.06 for more information
- */
 public class Base64Coder {
     // Mapping table from 6-bit nibbles to Base64 characters.
     private final static char[] map1 = new char[64];

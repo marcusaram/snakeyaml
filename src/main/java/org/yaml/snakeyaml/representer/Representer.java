@@ -10,7 +10,7 @@ import java.util.Map;
 import org.yaml.snakeyaml.nodes.Node;
 
 /**
- * @see PyYAML 3.06 for more information
+ * @see PyYAML for more information
  */
 public class Representer extends SafeRepresenter {
     public Representer(Character default_style, Boolean default_flow_style) {

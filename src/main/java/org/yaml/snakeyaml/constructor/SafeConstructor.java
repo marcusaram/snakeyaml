@@ -23,7 +23,7 @@ import org.yaml.snakeyaml.nodes.SequenceNode;
 import org.yaml.snakeyaml.util.Base64Coder;
 
 /**
- * @see PyYAML 3.06 for more information
+ * @see PyYAML for more information
  */
 public class SafeConstructor extends BaseConstructor {
 

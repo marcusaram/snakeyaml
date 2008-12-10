@@ -6,7 +6,7 @@ package org.yaml.snakeyaml.serializer;
 import org.yaml.snakeyaml.error.YAMLException;
 
 /**
- * @see PyYAML 3.06 for more information
+ * @see PyYAML for more information
  */
 public class SerializerException extends YAMLException {
     private static final long serialVersionUID = 2632638197498912433L;
