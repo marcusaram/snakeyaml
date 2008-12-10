@@ -6,12 +6,19 @@ package org.yaml.snakeyaml.constructor;
 public class Person {
     private String firstName;
     private String lastName;
-    private int age;
+    private Long age;
 
-    public Person(String firstName, String lastName, int age) {
+    public Person(String firstName, String lastName, Long age) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.age = age;
+    }
+
+    public Person() {
+    }
+
+    public Person(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getFirstName() {
@@ -30,11 +37,11 @@ public class Person {
         this.lastName = lastName;
     }
 
-    public int getAge() {
+    public Long getAge() {
         return age;
     }
 
-    public void setAge(int age) {
+    public void setAge(Long age) {
         this.age = age;
     }
 

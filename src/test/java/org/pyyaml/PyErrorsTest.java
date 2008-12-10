@@ -41,7 +41,7 @@ public class PyErrorsTest extends PyImportTest {
             }
             try {
                 for (Object document : loadAll(new FileInputStream(files[i]))) {
-                    assertNotNull(document);
+                    assertNotNull("File " + files[i], document);
                 }
                 fail("Loading must fail for " + files[i].getAbsolutePath());
                 // System.err.println("Loading must fail for " +

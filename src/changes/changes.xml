@@ -5,6 +5,10 @@
 	</properties>
 	<body>
 	    <release version="0.5" date="in Mercurial" description="Fix issues in Parser">
+            <action dev="py4fun" type="update">
+                Java objects can be constructed from mapping (JavaBeans), from sequence (constrictor)
+                from scalar (constructor). (2008-12-10)
+            </action>
             <action dev="py4fun" type="fix">
                 pairs tag works properly. (2008-12-08)
             </action>
