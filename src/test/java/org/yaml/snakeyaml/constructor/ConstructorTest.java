@@ -32,20 +32,7 @@ public class ConstructorTest extends TestCase {
         assertEquals("four", iter.next());
     }
 
-    // TODO fix test
-    public void qtestGetBean() {
-        String data = "--- !java/object:org.yaml.snakeyaml.constructor.Person\nfirstName: Andrey\nage: 99";
-        Object obj = construct(data);
-        assertNotNull(obj);
-        assertTrue(obj.getClass().toString(), obj instanceof Person);
-        Person person = (Person) obj;
-        assertEquals("Andrey", person.getFirstName());
-        assertNull(person.getLastName());
-        assertEquals(99, person.getAge());
-    }
-
-    // TODO fix test
-    public void qtestGetBeanAssumeClass() {
+    public void testGetBeanAssumeClass() {
         String data = "--- !org.yaml.snakeyaml.constructor.Person\nfirstName: Andrey\nage: 99";
         Object obj = construct(data);
         assertNotNull(obj);
@@ -53,26 +40,35 @@ public class ConstructorTest extends TestCase {
         Person person = (Person) obj;
         assertEquals("Andrey", person.getFirstName());
         assertNull(person.getLastName());
-        assertEquals(99, person.getAge());
+        assertEquals(99, person.getAge().intValue());
     }
 
     /**
      * create instance from constructor
      */
-    // TODO fix test
-    public void qtestGetConstructorBean() {
-        String data = "--- !java/object:org.yaml.snakeyaml.constructor.Person [ Andrey, Somov, 99 ]";
+    public void testGetConstructorBean() {
+        String data = "--- !org.yaml.snakeyaml.constructor.Person [ Andrey, Somov, 99 ]";
         Object obj = construct(data);
         assertNotNull(obj);
         assertTrue(obj.getClass().toString(), obj instanceof Person);
         Person person = (Person) obj;
         assertEquals("Andrey", person.getFirstName());
-        assertNull(person.getLastName());
-        assertEquals(99, person.getAge());
+        assertEquals("Somov", person.getLastName());
+        assertEquals(99, person.getAge().intValue());
     }
 
-    // TODO fix test
-    public void qtestJavaBeanLoad() {
+    public void testGetConstructorFromScalar() {
+        String data = "--- !org.yaml.snakeyaml.constructor.Person 'Somov'";
+        Object obj = construct(data);
+        assertNotNull(obj);
+        assertTrue(obj.getClass().toString(), obj instanceof Person);
+        Person person = (Person) obj;
+        assertNull("Andrey", person.getFirstName());
+        assertEquals("Somov", person.getLastName());
+        assertNull(person.getAge());
+    }
+
+    public void testJavaBeanLoad() {
         final java.util.Calendar cal = java.util.Calendar.getInstance(TimeZone.getTimeZone("UTC"));
         cal.clear();
         cal.set(1982, 5 - 1, 3); // Java's months are zero-based...
@@ -80,7 +76,7 @@ public class ConstructorTest extends TestCase {
         final TestBean expected = new TestBean("Ola Bini", 24, cal.getTime());
         assertEquals(
                 expected,
-                construct("--- !java/object:org.jvyaml.TestBean\nname: Ola Bini\nage: 24\nborn: 1982-05-03\n"));
+                construct("--- !org.yaml.snakeyaml.constructor.TestBean\nname: Ola Bini\nage: 24\nborn: 1982-05-03\n"));
     }
 
     private Object construct(String data) {
