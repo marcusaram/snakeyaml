@@ -12,7 +12,7 @@ public abstract class Event {
     private Mark startMark;
     private Mark endMark;
 
-    public Event(final Mark startMark, final Mark endMark) {
+    public Event(Mark startMark, Mark endMark) {
         this.startMark = startMark;
         this.endMark = endMark;
     }

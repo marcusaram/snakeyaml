@@ -10,7 +10,7 @@ import org.yaml.snakeyaml.error.Mark;
  */
 public abstract class CollectionEndEvent extends Event {
 
-    public CollectionEndEvent(final Mark startMark, final Mark endMark) {
+    public CollectionEndEvent(Mark startMark, Mark endMark) {
         super(startMark, endMark);
     }
 }

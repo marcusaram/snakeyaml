@@ -9,8 +9,8 @@ import org.yaml.snakeyaml.error.Mark;
  * @see PyYAML 3.06 for more information
  */
 public class SequenceStartEvent extends CollectionStartEvent {
-    public SequenceStartEvent(final String anchor, final String tag, final boolean implicit,
-            final Mark startMark, final Mark endMark, final Boolean flowStyle) {
+    public SequenceStartEvent(String anchor, String tag, boolean implicit, Mark startMark,
+            Mark endMark, Boolean flowStyle) {
         super(anchor, tag, implicit, startMark, endMark, flowStyle);
     }
 }

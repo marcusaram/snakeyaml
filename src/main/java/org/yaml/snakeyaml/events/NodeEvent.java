@@ -12,7 +12,7 @@ public abstract class NodeEvent extends Event {
 
     private String anchor;
 
-    public NodeEvent(final String anchor, final Mark startMark, final Mark endMark) {
+    public NodeEvent(String anchor, Mark startMark, Mark endMark) {
         super(startMark, endMark);
         this.anchor = anchor;
     }
