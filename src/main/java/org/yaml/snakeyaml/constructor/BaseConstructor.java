@@ -133,8 +133,9 @@ public class BaseConstructor {
             Node valueNode = tuple[1];
             Object key = constructObject(keyNode);
             if (key != null) {
-                int hash = key.hashCode();
-                if (hash == 0) {
+                try {
+                    key.hashCode();// check circular dependencies
+                } catch (Exception e) {
                     throw new ConstructorException("while constructing a mapping", node
                             .getStartMark(), "found unacceptable key " + key, tuple[0]
                             .getStartMark());
