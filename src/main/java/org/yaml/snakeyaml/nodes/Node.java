@@ -14,7 +14,7 @@ public abstract class Node {
     private Mark startMark;
     protected Mark endMark;
 
-    public Node(final String tag, final Object value, final Mark startMark, final Mark endMark) {
+    public Node(String tag, Object value, Mark startMark, Mark endMark) {
         setTag(tag);
         if (value == null) {
             throw new NullPointerException("value in a Node is required.");
