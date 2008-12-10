@@ -11,8 +11,7 @@ import org.yaml.snakeyaml.error.Mark;
 public abstract class CollectionNode extends Node {
     private Boolean flowStyle;
 
-    public CollectionNode(final String tag, final Object value, final Mark startMark,
-            final Mark endMark, final Boolean flowStyle) {
+    public CollectionNode(String tag, Object value, Mark startMark, Mark endMark, Boolean flowStyle) {
         super(tag, value, startMark, endMark);
         this.flowStyle = flowStyle;
     }
