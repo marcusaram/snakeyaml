@@ -22,8 +22,8 @@ public class Dumper {
         this(new Representer(options.getDefaultStyle(), null), options);
     }
 
-    public void dump(Iterable<Object> data, Writer output) {
-        Serializer s = new Serializer(new Emitter(output, options), new Resolver(), options);
+    public void dump(Iterable<Object> data, Writer output, Resolver resolver) {
+        Serializer s = new Serializer(new Emitter(output, options), resolver, options);
         try {
             s.open();
             for (Iterator<Object> iter = data.iterator(); iter.hasNext();) {

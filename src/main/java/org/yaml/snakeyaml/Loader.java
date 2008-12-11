@@ -12,10 +12,12 @@ import org.yaml.snakeyaml.scanner.ScannerImpl;
 
 public class Loader {
     protected Constructor constructor;
+    private Resolver resolver;
 
     public Loader(Constructor constructor) {
         super();
         this.constructor = constructor;
+        this.resolver = new Resolver();
     }
 
     public Loader() {
@@ -23,22 +25,21 @@ public class Loader {
     }
 
     public Object load(InputStream io) {
-        Composer composer = new Composer(new ParserImpl(new ScannerImpl(new Reader(io))),
-                new Resolver());
+        Composer composer = new Composer(new ParserImpl(new ScannerImpl(new Reader(io))), resolver);
         constructor.setComposer(composer);
         return constructor.getSingleData();
     }
 
     public Object load(String yaml) {
         Composer composer = new Composer(new ParserImpl(new ScannerImpl(new Reader(yaml))),
-                new Resolver());
+                resolver);
         constructor.setComposer(composer);
         return constructor.getSingleData();
     }
 
     public Iterable<Object> loadAll(final InputStream yaml) {
         Composer composer = new Composer(new ParserImpl(new ScannerImpl(new Reader(yaml))),
-                new Resolver());
+                resolver);
         this.constructor.setComposer(composer);
         Iterator<Object> result = new Iterator<Object>() {
             public boolean hasNext() {
@@ -58,7 +59,7 @@ public class Loader {
 
     public Iterable<Object> loadAll(final String yaml) {
         Composer composer = new Composer(new ParserImpl(new ScannerImpl(new Reader(yaml))),
-                new Resolver());
+                resolver);
         constructor.setComposer(composer);
         Iterator<Object> result = new Iterator<Object>() {
             public boolean hasNext() {
@@ -87,5 +88,9 @@ public class Loader {
             return iterator;
         }
 
+    }
+
+    public void setResolver(Resolver resolver) {
+        this.resolver = resolver;
     }
 }
