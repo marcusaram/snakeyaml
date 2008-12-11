@@ -8,6 +8,9 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
+
+import org.yaml.snakeyaml.resolver.Resolver;
 
 /**
  * Public YAML interface
@@ -15,9 +18,10 @@ import java.util.List;
 public class Yaml {
     private Dumper dumper;
     private Loader loader;
+    private Resolver resolver;
 
     public Yaml(DumperOptions options) {
-        this.dumper = new Dumper(options);
+        this(new Loader(), new Dumper(options));
     }
 
     public Yaml(Dumper dumper) {
@@ -31,6 +35,8 @@ public class Yaml {
     public Yaml(Loader loader, Dumper dumper) {
         this.loader = loader;
         this.dumper = dumper;
+        this.resolver = new Resolver();
+        this.loader.setResolver(resolver);
     }
 
     public Yaml() {
@@ -86,7 +92,7 @@ public class Yaml {
      *            - stream to write to
      */
     public void dumpAll(final Iterable<Object> data, final Writer output) {
-        dumper.dump(data, output);
+        dumper.dump(data, output, resolver);
     }
 
     /**
@@ -137,5 +143,21 @@ public class Yaml {
      */
     public Iterable<Object> loadAll(InputStream yaml) {
         return loader.loadAll(yaml);
+    }
+
+    /**
+     * Add an implicit scalar detector. If an implicit scalar value matches the
+     * given regexp, the corresponding tag is assigned to the scalar. first is a
+     * sequence of possible initial characters or null (which means any).
+     * 
+     * @param tag
+     *            - tag to assign to the node
+     * @param regexp
+     *            - regular expression to match against
+     * @param first
+     *            - a sequence of possible initial characters or None
+     */
+    public void addImplicitResolver(String tag, Pattern regexp, String first) {
+        resolver.addImplicitResolver(tag, regexp, first);
     }
 }

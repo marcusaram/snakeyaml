@@ -21,4 +21,9 @@ class ResolverTuple {
     public Pattern getRegexp() {
         return regexp;
     }
+
+    @Override
+    public String toString() {
+        return "Tuple tag=" + tag + " regexp=" + regexp;
+    }
 }
