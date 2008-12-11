@@ -6,7 +6,7 @@
 	<body>
 	    <release version="0.5" date="in Mercurial" description="Fix issues in Parser">
             <action dev="py4fun" type="add">
-                Add possibility to define an explicit constructor. {} (2008-12-11)
+                Add possibility to define an explicit constructor. {356:ccaa0df9ca98} (2008-12-11)
             </action>
             <action dev="py4fun" type="update">
                 Java objects can be constructed from mapping (JavaBeans), from sequence (constructor)
