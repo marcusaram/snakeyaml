@@ -16,11 +16,13 @@ public class RepresentTest extends TestCase {
         Dumper dumper = new Dumper(new MyRepresenter(), new DumperOptions());
         Loader loader = new Loader(new MyConstructor());
         Yaml yaml = new Yaml(loader, dumper);
-        String output = yaml.dump(new CustomBean("A", 1));
+        CustomBean etalon = new CustomBean("A", 1);
+        String output = yaml.dump(etalon);
         assertEquals("!!Dice 'Ad1'\n", output);
         CustomBean bean = (CustomBean) yaml.load(output);
         assertEquals("A", bean.getPrefix());
         assertEquals(1, bean.getSuffix());
+        assertEquals(etalon, bean);
     }
 
     class CustomBean {
@@ -38,6 +40,12 @@ public class RepresentTest extends TestCase {
 
         public int getSuffix() {
             return suffix;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            CustomBean bean = (CustomBean) obj;
+            return prefix.equals(bean.getPrefix()) && suffix == bean.getSuffix();
         }
     }
 
