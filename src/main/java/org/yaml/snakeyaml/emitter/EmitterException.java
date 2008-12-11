@@ -15,7 +15,4 @@ public class EmitterException extends YAMLException {
         super(msg);
     }
 
-    public EmitterException(final Throwable thr) {
-        super(thr);
-    }
 }
