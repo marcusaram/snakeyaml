@@ -10,6 +10,7 @@ import java.util.Map;
  */
 public class DumperOptions {
     private Character defaultStyle = null;
+    private Boolean defaultFlowStyle = null;
     private boolean canonical = false;
     private int indent = 2;
     private int bestWidth = 80;
@@ -87,6 +88,14 @@ public class DumperOptions {
 
     public Map<String, String> tags() {
         return tags;
+    }
+
+    public void setDefaultFlowStyle(Boolean defaultFlowStyle) {
+        this.defaultFlowStyle = defaultFlowStyle;
+    }
+
+    public Boolean isDefaultFlowStyle() {
+        return defaultFlowStyle;
     }
 
 }

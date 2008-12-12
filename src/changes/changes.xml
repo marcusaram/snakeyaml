@@ -4,6 +4,11 @@
 		<author email="py4fun@gmail.com">Andrey Somov</author>
 	</properties>
 	<body>
+	    <release version="0.6" date="in Mercurial" description="Development">
+            <action dev="py4fun" type="fix">
+                defaultFlowStyle for Dumper is configurable in DumperOptions (2008-12-12)
+            </action>
+        </release>
 	    <release version="0.5" date="2008-12-12" description="Import PyYAML 3.06">
             <action dev="py4fun" type="add">
                 Add possibility to define an implicit resolver. {359:63190d5bcd10} (2008-12-11)
