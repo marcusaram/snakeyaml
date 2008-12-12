@@ -41,4 +41,16 @@ public class LoadExampleTest extends TestCase {
         data = yaml.load(new ByteArrayInputStream("test2".getBytes()));
         assertEquals("test2", data);
     }
+
+    public void testLoadManyDocuments() throws FileNotFoundException {
+        InputStream input = new FileInputStream(new File(
+                "src/test/resources/specification/example2_28.yaml"));
+        Yaml yaml = new Yaml();
+        int counter = 0;
+        for (Object data : yaml.loadAll(input)) {
+            System.out.println(data);
+            counter++;
+        }
+        assertEquals(3, counter);
+    }
 }
