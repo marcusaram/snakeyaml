@@ -19,7 +19,7 @@ public class Dumper {
     }
 
     public Dumper(DumperOptions options) {
-        this(new Representer(options.getDefaultStyle(), null), options);
+        this(new Representer(options.getDefaultStyle(), options.isDefaultFlowStyle()), options);
     }
 
     public void dump(Iterable<Object> data, Writer output, Resolver resolver) {
