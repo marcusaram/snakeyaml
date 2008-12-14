@@ -4,8 +4,8 @@
 package org.yaml.snakeyaml.representer;
 
 import java.lang.reflect.Method;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 import org.yaml.snakeyaml.nodes.Node;
 
@@ -25,7 +25,7 @@ public class Representer extends SafeRepresenter {
     private class RepresentJavaBean implements Represent {
         @SuppressWarnings("unchecked")
         public Node representData(Object data) {
-            Map values = new HashMap();
+            Map values = new TreeMap();// sort names
             Method[] ems = data.getClass().getMethods();
             for (int i = 0, j = ems.length; i < j; i++) {
                 if (ems[i].getParameterTypes().length == 0) {

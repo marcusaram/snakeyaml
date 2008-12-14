@@ -5,6 +5,9 @@
 	</properties>
 	<body>
 	    <release version="0.6" date="in Mercurial" description="Development">
+            <action dev="py4fun" type="update">
+                Sort names when JavaBeans are represented (2008-12-15)
+            </action>
             <action dev="py4fun" type="fix">
                 defaultFlowStyle for Dumper is configurable in DumperOptions (2008-12-12)
             </action>
