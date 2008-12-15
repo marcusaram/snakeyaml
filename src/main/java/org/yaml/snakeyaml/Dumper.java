@@ -1,3 +1,6 @@
+/*
+ * See LICENSE file in distribution for copyright and licensing information.
+ */
 package org.yaml.snakeyaml;
 
 import java.io.Writer;
@@ -9,6 +12,9 @@ import org.yaml.snakeyaml.representer.Representer;
 import org.yaml.snakeyaml.resolver.Resolver;
 import org.yaml.snakeyaml.serializer.Serializer;
 
+/**
+ * @see PyYAML for more information
+ */
 public class Dumper {
     private Representer representer;
     private DumperOptions options;

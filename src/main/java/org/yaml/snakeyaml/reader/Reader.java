@@ -1,3 +1,6 @@
+/*
+ * See LICENSE file in distribution for copyright and licensing information.
+ */
 package org.yaml.snakeyaml.reader;
 
 import java.io.IOException;
@@ -11,10 +14,9 @@ import org.yaml.snakeyaml.error.YAMLException;
 
 /**
  * Reader: determines the data encoding and converts it to unicode, checks if
- * characters are in allowed range, adds '\0' to the end. <br/> Yeah, it's ugly
- * and slow.
+ * characters are in allowed range, adds '\0' to the end.
  * 
- * @see yaml.reader in PyYAML 3.06
+ * @see PyYAML for more information
  */
 public class Reader {
     // NON_PRINTABLE changed from PyYAML: \uFFFD excluded because Java returns

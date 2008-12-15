@@ -1,3 +1,6 @@
+/*
+ * See LICENSE file in distribution for copyright and licensing information.
+ */
 package org.yaml.snakeyaml;
 
 import java.io.InputStream;
@@ -10,6 +13,9 @@ import org.yaml.snakeyaml.reader.Reader;
 import org.yaml.snakeyaml.resolver.Resolver;
 import org.yaml.snakeyaml.scanner.ScannerImpl;
 
+/**
+ * @see PyYAML for more information
+ */
 public class Loader {
     protected Constructor constructor;
     private Resolver resolver;
