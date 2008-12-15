@@ -8,7 +8,7 @@ import java.nio.charset.Charset;
 import org.yaml.snakeyaml.error.Mark;
 
 /**
- * @see PyYAML for more information
+ * @see <a href="http://pyyaml.org/wiki/PyYAML">PyYAML</a> for more information
  */
 public class StreamStartEvent extends Event {
     private Charset encoding;

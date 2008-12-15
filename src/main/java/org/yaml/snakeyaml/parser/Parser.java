@@ -8,7 +8,7 @@ import java.util.List;
 import org.yaml.snakeyaml.events.Event;
 
 /**
- * @see PyYAML for more information
+ * @see <a href="http://pyyaml.org/wiki/PyYAML">PyYAML</a> for more information
  */
 public interface Parser {
     public boolean checkEvent(List<Class<? extends Event>> choices);

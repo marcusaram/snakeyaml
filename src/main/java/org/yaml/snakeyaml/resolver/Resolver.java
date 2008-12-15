@@ -16,7 +16,7 @@ import org.yaml.snakeyaml.nodes.ScalarNode;
 import org.yaml.snakeyaml.nodes.SequenceNode;
 
 /**
- * @see PyYAML for more information
+ * @see <a href="http://pyyaml.org/wiki/PyYAML">PyYAML</a> for more information
  */
 public class Resolver {
     private static final String DEFAULT_SCALAR_TAG = "tag:yaml.org,2002:str";

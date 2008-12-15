@@ -13,7 +13,7 @@ import org.yaml.snakeyaml.resolver.Resolver;
 import org.yaml.snakeyaml.serializer.Serializer;
 
 /**
- * @see PyYAML for more information
+ * @see <a href="http://pyyaml.org/wiki/PyYAML">PyYAML</a> for more information
  */
 public class Dumper {
     private Representer representer;

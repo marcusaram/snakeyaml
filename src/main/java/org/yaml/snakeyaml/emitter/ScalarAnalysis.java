@@ -4,7 +4,7 @@
 package org.yaml.snakeyaml.emitter;
 
 /**
- * @see PyYAML for more information
+ * @see <a href="http://pyyaml.org/wiki/PyYAML">PyYAML</a> for more information
  */
 class ScalarAnalysis {
     public String scalar;

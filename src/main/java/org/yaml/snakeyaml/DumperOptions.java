@@ -6,7 +6,7 @@ package org.yaml.snakeyaml;
 import java.util.Map;
 
 /**
- * @see PyYAML for more information
+ * @see <a href="http://pyyaml.org/wiki/PyYAML">PyYAML</a> for more information
  */
 public class DumperOptions {
     private Character defaultStyle = null;
