@@ -182,33 +182,53 @@ dict: {hp: 13, sp: 5}
 list=[LITE, RES_ACID, SUS_DEXT], dict={hp=13, sp=5}}
 }}}
 
-Even instances of Java classes can be constructed using the '''`!!python/object`''' tag.
+Even instances of Java classes [http://trac-hg.assembla.com/snakeyaml/browser/src/test/java/org/yaml/snakeyaml/constructor/ConstructorTest.java can be constructed].
 {{{
-#!python
->>> class Hero:
-...     def __init__(self, name, hp, sp):
-...         self.name = name
-...         self.hp = hp
-...         self.sp = sp
-...     def __repr__(self):
-...         return "%s(name=%r, hp=%r, sp=%r)" % (
-...             self.__class__.__name__, self.name, self.hp, self.sp)
+    /**
+     * create JavaBean
+     */
+    public void testGetBeanAssumeClass() {
+        String data = "--- !org.yaml.snakeyaml.constructor.Person\nfirstName: Andrey\nage: 99";
+        Object obj = construct(data);
+        assertNotNull(obj);
+        assertTrue("Unexpected: " + obj.getClass().toString(), obj instanceof Person);
+        Person person = (Person) obj;
+        assertEquals("Andrey", person.getFirstName());
+        assertNull(person.getLastName());
+        assertEquals(99, person.getAge().intValue());
+    }
 
->>> yaml.load("""
-... !!python/object:__main__.Hero
-... name: Welthyr Syxgon
-... hp: 1200
-... sp: 0
-... """)
+    /**
+     * create instance using constructor arguments
+     */
+    public void testGetConstructorBean() {
+        String data = "--- !org.yaml.snakeyaml.constructor.Person [ Andrey, Somov, 99 ]";
+        Object obj = construct(data);
+        assertNotNull(obj);
+        assertTrue(obj.getClass().toString(), obj instanceof Person);
+        Person person = (Person) obj;
+        assertEquals("Andrey", person.getFirstName());
+        assertEquals("Somov", person.getLastName());
+        assertEquals(99, person.getAge().intValue());
+    }
 
-Hero(name='Welthyr Syxgon', hp=1200, sp=0)
+    /**
+     * create instance using scalar argument
+     */
+    public void testGetConstructorFromScalar() {
+        String data = "--- !org.yaml.snakeyaml.constructor.Person 'Somov'";
+        Object obj = construct(data);
+        assertNotNull(obj);
+        assertTrue(obj.getClass().toString(), obj instanceof Person);
+        Person person = (Person) obj;
+        assertNull("Andrey", person.getFirstName());
+        assertEquals("Somov", person.getLastName());
+        assertNull(person.getAge());
+    }
 }}}
 
-Note that the ability to construct an arbitrary Python object may be dangerous
-if you receive a YAML document from an untrusted source such as Internet.
-The function '''`yaml.safe_load`''' limits this ability to simple Python objects
-like integers or lists.
-
+Note if you want to limit objects to standrd Java objects like List or Long you need to use
+SafeConstructor.
 
 === Dumping YAML ===
 

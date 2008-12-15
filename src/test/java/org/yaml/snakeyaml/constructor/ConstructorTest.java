@@ -7,13 +7,7 @@ import java.util.TimeZone;
 
 import junit.framework.TestCase;
 
-import org.yaml.snakeyaml.composer.Composer;
-import org.yaml.snakeyaml.parser.Parser;
-import org.yaml.snakeyaml.parser.ParserImpl;
-import org.yaml.snakeyaml.reader.Reader;
-import org.yaml.snakeyaml.resolver.Resolver;
-import org.yaml.snakeyaml.scanner.Scanner;
-import org.yaml.snakeyaml.scanner.ScannerImpl;
+import org.yaml.snakeyaml.Yaml;
 
 public class ConstructorTest extends TestCase {
 
@@ -32,6 +26,9 @@ public class ConstructorTest extends TestCase {
         assertEquals("four", iter.next());
     }
 
+    /**
+     * create JavaBean
+     */
     public void testGetBeanAssumeClass() {
         String data = "--- !org.yaml.snakeyaml.constructor.Person\nfirstName: Andrey\nage: 99";
         Object obj = construct(data);
@@ -44,7 +41,7 @@ public class ConstructorTest extends TestCase {
     }
 
     /**
-     * create instance from constructor
+     * create instance using constructor arguments
      */
     public void testGetConstructorBean() {
         String data = "--- !org.yaml.snakeyaml.constructor.Person [ Andrey, Somov, 99 ]";
@@ -57,6 +54,9 @@ public class ConstructorTest extends TestCase {
         assertEquals(99, person.getAge().intValue());
     }
 
+    /**
+     * create instance using scalar argument
+     */
     public void testGetConstructorFromScalar() {
         String data = "--- !org.yaml.snakeyaml.constructor.Person 'Somov'";
         Object obj = construct(data);
@@ -69,25 +69,18 @@ public class ConstructorTest extends TestCase {
     }
 
     public void testJavaBeanLoad() {
-        final java.util.Calendar cal = java.util.Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+        java.util.Calendar cal = java.util.Calendar.getInstance(TimeZone.getTimeZone("UTC"));
         cal.clear();
         cal.set(1982, 5 - 1, 3); // Java's months are zero-based...
 
-        final TestBean expected = new TestBean("Ola Bini", 24, cal.getTime());
+        TestBean expected = new TestBean("Ola Bini", 24, cal.getTime());
         assertEquals(
                 expected,
                 construct("--- !org.yaml.snakeyaml.constructor.TestBean\nname: Ola Bini\nage: 24\nborn: 1982-05-03\n"));
     }
 
     private Object construct(String data) {
-        Reader reader = new Reader(data);
-        Scanner scanner = new ScannerImpl(reader);
-        Parser parser = new ParserImpl(scanner);
-        Resolver resolver = new Resolver();
-        Composer composer = new Composer(parser, resolver);
-        Constructor constructor = new Constructor();
-        constructor.setComposer(composer);
-        Object result = constructor.getSingleData();
-        return result;
+        Yaml yaml = new Yaml();
+        return yaml.load(data);
     }
 }
