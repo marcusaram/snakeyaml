@@ -18,9 +18,6 @@ import org.yaml.snakeyaml.nodes.ScalarNode;
 import org.yaml.snakeyaml.nodes.SequenceNode;
 
 /**
- * because Java does not have generators 'deep' is dropped. Multi constructors
- * are not supported.
- * 
  * @see PyYAML for more information
  */
 public class BaseConstructor {
@@ -30,6 +27,10 @@ public class BaseConstructor {
     private Map<Node, Object> constructedObjects;
     private Map<Node, Object> recursiveObjects;
 
+    /*
+     * because Java does not have generators 'deep' is dropped. Multi
+     * constructors are not supported.
+     */
     public BaseConstructor() {
         constructedObjects = new HashMap<Node, Object>();
         recursiveObjects = new HashMap<Node, Object>();
