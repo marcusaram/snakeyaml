@@ -6,7 +6,7 @@ package org.yaml.snakeyaml.events;
 import org.yaml.snakeyaml.error.Mark;
 
 /**
- * @see PyYAML for more information
+ * @see <a href="http://pyyaml.org/wiki/PyYAML">PyYAML</a> for more information
  */
 public class MappingStartEvent extends CollectionStartEvent {
     public MappingStartEvent(String anchor, String tag, boolean implicit, Mark startMark,

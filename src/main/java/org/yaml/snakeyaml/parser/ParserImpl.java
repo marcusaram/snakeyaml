@@ -108,7 +108,7 @@ import org.yaml.snakeyaml.tokens.ValueToken;
  * Since writing a recursive-descendant parser is a straightforward task, we do
  * not give many comments here.
  * 
- * @see PyYAML for more information
+ * @see <a href="http://pyyaml.org/wiki/PyYAML">PyYAML</a> for more information
  */
 public class ParserImpl implements Parser {
     private static final Map<String, String> DEFAULT_TAGS = new HashMap<String, String>();

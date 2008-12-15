@@ -7,7 +7,7 @@ import org.yaml.snakeyaml.error.Mark;
 import org.yaml.snakeyaml.error.MarkedYAMLException;
 
 /**
- * @see PyYAML for more information
+ * @see <a href="http://pyyaml.org/wiki/PyYAML">PyYAML</a> for more information
  */
 public class ComposerException extends MarkedYAMLException {
     private static final long serialVersionUID = 2146314636913113935L;

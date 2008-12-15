@@ -10,7 +10,7 @@ import org.yaml.snakeyaml.tokens.Token;
 /**
  * Produce <code>Token<code>s.
  * 
- * @see PyYAML for more information
+ * @see <a href="http://pyyaml.org/wiki/PyYAML">PyYAML</a> for more information
  */
 public interface Scanner {
     /**

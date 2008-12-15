@@ -16,7 +16,7 @@ import org.yaml.snakeyaml.error.YAMLException;
  * Reader: determines the data encoding and converts it to unicode, checks if
  * characters are in allowed range, adds '\0' to the end.
  * 
- * @see PyYAML for more information
+ * @see <a href="http://pyyaml.org/wiki/PyYAML">PyYAML</a> for more information
  */
 public class Reader {
     // NON_PRINTABLE changed from PyYAML: \uFFFD excluded because Java returns

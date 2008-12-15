@@ -10,7 +10,7 @@ import java.util.TreeMap;
 import org.yaml.snakeyaml.nodes.Node;
 
 /**
- * @see PyYAML for more information
+ * @see <a href="http://pyyaml.org/wiki/PyYAML">PyYAML</a> for more information
  */
 public class Representer extends SafeRepresenter {
     public Representer(Character default_style, Boolean default_flow_style) {

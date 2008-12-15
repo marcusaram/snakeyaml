@@ -6,7 +6,7 @@ package org.yaml.snakeyaml.nodes;
 import org.yaml.snakeyaml.error.Mark;
 
 /**
- * @see PyYAML for more information
+ * @see <a href="http://pyyaml.org/wiki/PyYAML">PyYAML</a> for more information
  */
 public abstract class CollectionNode extends Node {
     private Boolean flowStyle;
