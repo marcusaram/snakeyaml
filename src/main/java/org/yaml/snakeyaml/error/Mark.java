@@ -7,7 +7,7 @@ package org.yaml.snakeyaml.error;
  * It's just a record and its only use is producing nice error messages. Parser
  * does not use it for any other purposes.
  * 
- * @see imported from PyYAML
+ * @see <a href="http://pyyaml.org/wiki/PyYAML">PyYAML</a> for more information
  */
 public class Mark {
     private String name;
