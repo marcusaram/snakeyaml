@@ -29,7 +29,7 @@ public class SafeConstructorExampleTest extends TestCase {
         Yaml yaml = new Yaml(loader);
         try {
             yaml.load(doc);
-            fail("Custom Java classes should be created.");
+            fail("Custom Java classes should not be created.");
         } catch (Exception e) {
             assertEquals(
                     "null; could not determine a constructor for the tag !org.yaml.snakeyaml.constructor.Person",
