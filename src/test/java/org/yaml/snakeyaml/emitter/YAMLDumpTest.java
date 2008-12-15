@@ -3,10 +3,6 @@
  */
 package org.yaml.snakeyaml.emitter;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.TimeZone;
 
 import junit.framework.TestCase;
@@ -27,20 +23,6 @@ public class YAMLDumpTest extends TestCase {
 
     public void testBasicStringDump() {
         assertEquals("str\n", yaml.dump("str"));
-    }
-
-    public void testBasicHashDump() {
-        Map ex = new HashMap();
-        ex.put("a", "b");
-        assertEquals("{a: b}\n", yaml.dump(ex));
-    }
-
-    public void testBasicListDump() {
-        List ex = new ArrayList();
-        ex.add("a");
-        ex.add("b");
-        ex.add("c");
-        assertEquals("[a, b, c]\n", yaml.dump(ex));
     }
 
     public void testDumpJavaBean() {
