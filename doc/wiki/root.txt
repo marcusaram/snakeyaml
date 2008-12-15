@@ -227,8 +227,12 @@ Even instances of Java classes [http://trac-hg.assembla.com/snakeyaml/browser/sr
     }
 }}}
 
-Note if you want to limit objects to standrd Java objects like List or Long you need to use
-SafeConstructor.
+Note if you want to limit objects to standard Java objects like List or Long you need 
+[http://trac-hg.assembla.com/snakeyaml/browser/src/test/java/examples/SafeConstructorExampleTest.java to use SafeConstructor].
+{{{
+Loader loader = new Loader(new SafeConstructor());
+Yaml yaml = new Yaml(loader);
+}}}
 
 === Dumping YAML ===
 
