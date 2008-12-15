@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.util.Iterator;
 
 import org.yaml.snakeyaml.composer.Composer;
+import org.yaml.snakeyaml.constructor.BaseConstructor;
 import org.yaml.snakeyaml.constructor.Constructor;
 import org.yaml.snakeyaml.parser.ParserImpl;
 import org.yaml.snakeyaml.reader.Reader;
@@ -17,10 +18,10 @@ import org.yaml.snakeyaml.scanner.ScannerImpl;
  * @see <a href="http://pyyaml.org/wiki/PyYAML">PyYAML</a> for more information
  */
 public class Loader {
-    protected Constructor constructor;
+    protected BaseConstructor constructor;
     private Resolver resolver;
 
-    public Loader(Constructor constructor) {
+    public Loader(BaseConstructor constructor) {
         super();
         this.constructor = constructor;
         this.resolver = new Resolver();
