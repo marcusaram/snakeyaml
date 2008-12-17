@@ -35,5 +35,4 @@ public class Dice {
     public String toString() {
         return "Dice " + a + "d" + b;
     }
-
 }
