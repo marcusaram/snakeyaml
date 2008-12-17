@@ -271,7 +271,7 @@ the specified file/stream.
 }}}
 
 If you need to dump several YAML documents to a single stream, use the method
-'''`Yaml.dumpAll(Iterable<Object> data)`'''. It accepts an Iterator of
+'''`Yaml.dumpAll(Iterator<Object> data)`'''. It accepts an Iterator of
 Java objects to be serialized into a YAML document. A Writer can also be used.
 
 {{{
@@ -295,7 +295,7 @@ Java objects to be serialized into a YAML document. A Writer can also be used.
 --- 3
 }}}
 
-You may even dump instances of Java classes. 
+You may even dump instances of JavaBeans. 
 
 {{{
     public void testDumpCustomJavaClass() {
@@ -325,7 +325,6 @@ force preferred style for scalars and collections.
         Yaml yaml = new Yaml();
         String output = yaml.dump(data);
         System.out.println(output);
-        assertTrue(output.contains("[0, 1, 2, 3, 4, 5, 6, 7, 8"));
         //
         DumperOptions options = new DumperOptions();
         options.setWidth(50);
@@ -345,6 +344,7 @@ force preferred style for scalars and collections.
     28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39,
     40, 41, 42, 43, 44, 45, 46, 47, 48, 49]
 }}}
+Canonical output:
 {{{
     public void testDumperOptionsCanonical() {
         List<Integer> data = new LinkedList<Integer>();
@@ -399,9 +399,6 @@ force preferred style for scalars and collections.
         Yaml yaml = new Yaml(options);
         String output = yaml.dump(data);
         System.out.println(output);
-        assertTrue(output.contains("- !!int \"0\""));
-        assertTrue(output.contains("- !!int \"1\""));
-        assertTrue(output.contains("- !!int \"4\""));
     }
 }}}
 {{{
