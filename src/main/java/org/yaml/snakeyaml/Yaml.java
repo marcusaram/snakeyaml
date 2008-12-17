@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -53,7 +54,7 @@ public class Yaml {
     public String dump(Object data) {
         List<Object> lst = new ArrayList<Object>(1);
         lst.add(data);
-        return dumpAll(lst);
+        return dumpAll(lst.iterator());
     }
 
     /**
@@ -63,7 +64,7 @@ public class Yaml {
      *            - Iterator with Objects
      * @return - YAML String with all the objects in proper sequence
      */
-    public String dumpAll(Iterable<Object> data) {
+    public String dumpAll(Iterator<? extends Object> data) {
         StringWriter buffer = new StringWriter();
         dumpAll(data, buffer);
         return buffer.toString();
@@ -80,7 +81,7 @@ public class Yaml {
     public void dump(Object data, Writer output) {
         List<Object> lst = new ArrayList<Object>(1);
         lst.add(data);
-        dumpAll(lst, output);
+        dumpAll(lst.iterator(), output);
     }
 
     /**
@@ -91,7 +92,7 @@ public class Yaml {
      * @param output
      *            - stream to write to
      */
-    public void dumpAll(Iterable<Object> data, Writer output) {
+    public void dumpAll(Iterator<? extends Object> data, Writer output) {
         dumper.dump(data, output, resolver);
     }
 
