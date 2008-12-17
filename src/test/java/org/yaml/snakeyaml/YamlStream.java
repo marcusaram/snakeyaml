@@ -14,7 +14,6 @@ import java.util.Map;
 
 import junit.framework.AssertionFailedError;
 
-
 public class YamlStream {
     private List<Object> nativeData = new ArrayList<Object>();
 
@@ -27,7 +26,7 @@ public class YamlStream {
             nativeData.add(document);
         }
         ByteArrayOutputStream output = new ByteArrayOutputStream();
-        yaml.dumpAll(nativeData, new OutputStreamWriter(output));
+        yaml.dumpAll(nativeData.iterator(), new OutputStreamWriter(output));
         String presentation;
         try {
             presentation = output.toString("UTF-8");

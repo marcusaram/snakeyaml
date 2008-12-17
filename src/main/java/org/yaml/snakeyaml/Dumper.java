@@ -28,11 +28,11 @@ public class Dumper {
         this(new Representer(options.getDefaultStyle(), options.isDefaultFlowStyle()), options);
     }
 
-    public void dump(Iterable<Object> data, Writer output, Resolver resolver) {
+    public void dump(Iterator<? extends Object> iter, Writer output, Resolver resolver) {
         Serializer s = new Serializer(new Emitter(output, options), resolver, options);
         try {
             s.open();
-            for (Iterator<Object> iter = data.iterator(); iter.hasNext();) {
+            while (iter.hasNext()) {
                 representer.represent(s, iter.next());
             }
         } catch (java.io.IOException e) {
