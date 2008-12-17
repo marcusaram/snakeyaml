@@ -89,23 +89,23 @@ stream. If no '''BOM''' is present, the '''utf-8''' encoding is assumed.
 '''`Yaml.load()`''' returns a Java object.
 
 {{{
-    public void testLoadFromString() {
-        Yaml yaml = new Yaml();
-        String document = "hello: 25";
-        Map map = (Map) yaml.load(document);
-        assertEquals("{hello=25}", map.toString());
-        assertEquals(new Long(25), map.get("hello"));
-    }
+public void testLoadFromString() {
+    Yaml yaml = new Yaml();
+    String document = "hello: 25";
+    Map map = (Map) yaml.load(document);
+    assertEquals("{hello=25}", map.toString());
+    assertEquals(new Long(25), map.get("hello"));
+}
 
-    public void testLoadFromStream() throws FileNotFoundException {
-        InputStream input = new FileInputStream(new File("src/test/resources/reader/utf-8.txt"));
-        Yaml yaml = new Yaml();
-        Object data = yaml.load(input);
-        assertEquals("test", data);
-        //
-        data = yaml.load(new ByteArrayInputStream("test2".getBytes()));
-        assertEquals("test2", data);
-    }
+public void testLoadFromStream() throws FileNotFoundException {
+    InputStream input = new FileInputStream(new File("src/test/resources/reader/utf-8.txt"));
+    Yaml yaml = new Yaml();
+    Object data = yaml.load(input);
+    assertEquals("test", data);
+    //
+    data = yaml.load(new ByteArrayInputStream("test2".getBytes()));
+    assertEquals("test2", data);
+}
 }}}
 
 If a String or a stream contains several documents, you may load them all with the
@@ -140,15 +140,15 @@ Stack:
 }}}
 {{{
 public void testLoadManyDocuments() throws FileNotFoundException {
-        InputStream input = new FileInputStream(new File(
-                "src/test/resources/specification/example2_28.yaml"));
-        Yaml yaml = new Yaml();
-        int counter = 0;
-        for (Object data : yaml.loadAll(input)) {
-            System.out.println(data);
-            counter++;
-        }
-        assertEquals(3, counter);
+    InputStream input = new FileInputStream(new File(
+            "src/test/resources/specification/example2_28.yaml"));
+    Yaml yaml = new Yaml();
+    int counter = 0;
+    for (Object data : yaml.loadAll(input)) {
+        System.out.println(data);
+        counter++;
+    }
+    assertEquals(3, counter);
 }
 }}}
 {{{
@@ -170,12 +170,12 @@ dict: {hp: 13, sp: 5}
 }}}
 
 {{{
-    public void testLoad() throws IOException {
-        String doc = Util.getLocalResource("examples/any-object-example.yaml");
-        Yaml yaml = new Yaml();
-        Map<String, Object> object = (Map<String, Object>) yaml.load(doc);
-        System.out.println(object);
-    }
+public void testLoad() throws IOException {
+    String doc = Util.getLocalResource("examples/any-object-example.yaml");
+    Yaml yaml = new Yaml();
+    Map<String, Object> object = (Map<String, Object>) yaml.load(doc);
+    System.out.println(object);
+}
 }}}
 {{{
 {none=[null, null], bool=[true, false, true, false], int=42, float=3.14159, 
@@ -184,47 +184,47 @@ list=[LITE, RES_ACID, SUS_DEXT], dict={hp=13, sp=5}}
 
 Even instances of custom Java classes [http://trac-hg.assembla.com/snakeyaml/browser/src/test/java/org/yaml/snakeyaml/constructor/ConstructorTest.java can be constructed].
 {{{
-    /**
-     * create JavaBean
-     */
-    public void testGetBeanAssumeClass() {
-        String data = "--- !org.yaml.snakeyaml.constructor.Person\nfirstName: Andrey\nage: 99";
-        Object obj = construct(data);
-        assertNotNull(obj);
-        assertTrue("Unexpected: " + obj.getClass().toString(), obj instanceof Person);
-        Person person = (Person) obj;
-        assertEquals("Andrey", person.getFirstName());
-        assertNull(person.getLastName());
-        assertEquals(99, person.getAge().intValue());
-    }
+/**
+ * create JavaBean
+ */
+public void testGetBeanAssumeClass() {
+    String data = "--- !org.yaml.snakeyaml.constructor.Person\nfirstName: Andrey\nage: 99";
+    Object obj = construct(data);
+    assertNotNull(obj);
+    assertTrue("Unexpected: " + obj.getClass().toString(), obj instanceof Person);
+    Person person = (Person) obj;
+    assertEquals("Andrey", person.getFirstName());
+    assertNull(person.getLastName());
+    assertEquals(99, person.getAge().intValue());
+}
 
-    /**
-     * create instance using constructor arguments
-     */
-    public void testGetConstructorBean() {
-        String data = "--- !org.yaml.snakeyaml.constructor.Person [ Andrey, Somov, 99 ]";
-        Object obj = construct(data);
-        assertNotNull(obj);
-        assertTrue(obj.getClass().toString(), obj instanceof Person);
-        Person person = (Person) obj;
-        assertEquals("Andrey", person.getFirstName());
-        assertEquals("Somov", person.getLastName());
-        assertEquals(99, person.getAge().intValue());
-    }
+/**
+ * create instance using constructor arguments
+ */
+public void testGetConstructorBean() {
+    String data = "--- !org.yaml.snakeyaml.constructor.Person [ Andrey, Somov, 99 ]";
+    Object obj = construct(data);
+    assertNotNull(obj);
+    assertTrue(obj.getClass().toString(), obj instanceof Person);
+    Person person = (Person) obj;
+    assertEquals("Andrey", person.getFirstName());
+    assertEquals("Somov", person.getLastName());
+    assertEquals(99, person.getAge().intValue());
+}
 
-    /**
-     * create instance using scalar argument
-     */
-    public void testGetConstructorFromScalar() {
-        String data = "--- !org.yaml.snakeyaml.constructor.Person 'Somov'";
-        Object obj = construct(data);
-        assertNotNull(obj);
-        assertTrue(obj.getClass().toString(), obj instanceof Person);
-        Person person = (Person) obj;
-        assertNull("Andrey", person.getFirstName());
-        assertEquals("Somov", person.getLastName());
-        assertNull(person.getAge());
-    }
+/**
+ * create instance using scalar argument
+ */
+public void testGetConstructorFromScalar() {
+    String data = "--- !org.yaml.snakeyaml.constructor.Person 'Somov'";
+    Object obj = construct(data);
+    assertNotNull(obj);
+    assertTrue(obj.getClass().toString(), obj instanceof Person);
+    Person person = (Person) obj;
+    assertNull("Andrey", person.getFirstName());
+    assertEquals("Somov", person.getLastName());
+    assertNull(person.getAge());
+}
 }}}
 
 Note if you want to limit objects to standard Java objects like List or Long you need 
@@ -237,16 +237,17 @@ Yaml yaml = new Yaml(loader);
 === Dumping YAML ===
 
 The '''`Yaml.dump(Object data)`''' function accepts a Java object and produces a YAML document.
+(the source is [http://trac-hg.assembla.com/snakeyaml/browser/src/test/java/examples/DumpExampleTest.java here])
 {{{
-    public void testDump() {
-        Map<String, Object> data = new HashMap<String, Object>();
-        data.put("name", "Silenthand Olleander");
-        data.put("race", "Human");
-        data.put("traits", new String[] { "ONE_HAND", "ONE_EYE" });
-        Yaml yaml = new Yaml();
-        String output = yaml.dump(data);
-        System.out.println(output);
-    }
+public void testDump() {
+    Map<String, Object> data = new HashMap<String, Object>();
+    data.put("name", "Silenthand Olleander");
+    data.put("race", "Human");
+    data.put("traits", new String[] { "ONE_HAND", "ONE_EYE" });
+    Yaml yaml = new Yaml();
+    String output = yaml.dump(data);
+    System.out.println(output);
+}
 }}}
 {{{
 name: Silenthand Olleander
@@ -258,16 +259,16 @@ race: Human
 the specified file/stream.
 
 {{{
-    public void testDumpWriter() {
-        Map<String, Object> data = new HashMap<String, Object>();
-        data.put("name", "Silenthand Olleander");
-        data.put("race", "Human");
-        data.put("traits", new String[] { "ONE_HAND", "ONE_EYE" });
-        Yaml yaml = new Yaml();
-        StringWriter writer = new StringWriter();
-        yaml.dump(data, writer);
-        System.out.println(writer.toString());
-    }
+public void testDumpWriter() {
+    Map<String, Object> data = new HashMap<String, Object>();
+    data.put("name", "Silenthand Olleander");
+    data.put("race", "Human");
+    data.put("traits", new String[] { "ONE_HAND", "ONE_EYE" });
+    Yaml yaml = new Yaml();
+    StringWriter writer = new StringWriter();
+    yaml.dump(data, writer);
+    System.out.println(writer.toString());
+}
 }}}
 
 If you need to dump several YAML documents to a single stream, use the method
@@ -275,17 +276,17 @@ If you need to dump several YAML documents to a single stream, use the method
 Java objects to be serialized into a YAML document. A Writer can also be used.
 
 {{{
-    public void testDumpMany() {
-        List<Integer> docs = new LinkedList<Integer>();
-        for (int i = 1; i < 4; i++) {
-            docs.add(i);
-        }
-        DumperOptions options = new DumperOptions();
-        options.explicitStart(true);
-        Yaml yaml = new Yaml(options);
-        System.out.println(yaml.dump(docs));
-        System.out.println(yaml.dumpAll(docs.iterator()));
+public void testDumpMany() {
+    List<Integer> docs = new LinkedList<Integer>();
+    for (int i = 1; i < 4; i++) {
+        docs.add(i);
     }
+    DumperOptions options = new DumperOptions();
+    options.explicitStart(true);
+    Yaml yaml = new Yaml(options);
+    System.out.println(yaml.dump(docs));
+    System.out.println(yaml.dumpAll(docs.iterator()));
+}
 }}}
 {{{
 --- [1, 2, 3]
@@ -298,13 +299,13 @@ Java objects to be serialized into a YAML document. A Writer can also be used.
 You may even dump instances of `JavaBeans`. 
 
 {{{
-    public void testDumpCustomJavaClass() {
-        Hero hero = new Hero("Galain Ysseleg", -3, 2);
-        Yaml yaml = new Yaml();
-        String output = yaml.dump(hero);
-        System.out.println(output);
-        assertEquals("!<examples.Hero> {hp: -3, name: Galain Ysseleg, sp: 2}\n", output);
-    }
+public void testDumpCustomJavaClass() {
+    Hero hero = new Hero("Galain Ysseleg", -3, 2);
+    Yaml yaml = new Yaml();
+    String output = yaml.dump(hero);
+    System.out.println(output);
+    assertEquals("!<examples.Hero> {hp: -3, name: Galain Ysseleg, sp: 2}\n", output);
+}
 }}}
 {{{
 !<examples.Hero> {hp: -3, name: Galain Ysseleg, sp: 2}
@@ -317,22 +318,22 @@ formatting details for the emitter. For instance, you may set the
 preferred intendation and width, use the canonical YAML format or
 force preferred style for scalars and collections.
 {{{
-    public void testDumperOptions() {
-        List<Integer> data = new LinkedList<Integer>();
-        for (int i = 0; i < 50; i++) {
-            data.add(i);
-        }
-        Yaml yaml = new Yaml();
-        String output = yaml.dump(data);
-        System.out.println(output);
-        //
-        DumperOptions options = new DumperOptions();
-        options.setWidth(50);
-        options.setIndent(4);
-        yaml = new Yaml(options);
-        output = yaml.dump(data);
-        System.out.println(output);
+public void testDumperOptions() {
+    List<Integer> data = new LinkedList<Integer>();
+    for (int i = 0; i < 50; i++) {
+        data.add(i);
     }
+    Yaml yaml = new Yaml();
+    String output = yaml.dump(data);
+    System.out.println(output);
+    //
+    DumperOptions options = new DumperOptions();
+    options.setWidth(50);
+    options.setIndent(4);
+    yaml = new Yaml(options);
+    output = yaml.dump(data);
+    System.out.println(output);
+}
 }}}
 {{{
 [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22,
@@ -346,17 +347,17 @@ force preferred style for scalars and collections.
 }}}
 Canonical output:
 {{{
-    public void testDumperOptionsCanonical() {
-        List<Integer> data = new LinkedList<Integer>();
-        for (int i = 0; i < 5; i++) {
-            data.add(i);
-        }
-        DumperOptions options = new DumperOptions();
-        options.setCanonical(true);
-        Yaml yaml = new Yaml(options);
-        String output = yaml.dump(data);
-        System.out.println(output);
+public void testDumperOptionsCanonical() {
+    List<Integer> data = new LinkedList<Integer>();
+    for (int i = 0; i < 5; i++) {
+        data.add(i);
     }
+    DumperOptions options = new DumperOptions();
+    options.setCanonical(true);
+    Yaml yaml = new Yaml(options);
+    String output = yaml.dump(data);
+    System.out.println(output);
+}
 }}}
 {{{
 ---
@@ -409,82 +410,69 @@ Canonical output:
 - !!int "4"
 }}}
 
-
 === Constructors, representers, resolvers ===
 
-You may define your own application-specific tags. The easiest way to do it is
-to define a subclass of '''`yaml.YAMLObject`''':
+You may define your own application-specific tags. (an example is 
+[http://trac-hg.assembla.com/snakeyaml/browser/src/test/java/examples/DiceExampleTest.java here])
+
+For instance, you may want to add a constructor
+and a representer for the following ['''`Dice`''' http://trac-hg.assembla.com/snakeyaml/browser/src/test/java/examples/Dice.java] class:
 {{{
->>> class Monster(yaml.YAMLObject):
-...     yaml_tag = u'!Monster'
-...     def __init__(self, name, hp, ac, attacks):
-...         self.name = name
-...         self.hp = hp
-...         self.ac = ac
-...         self.attacks = attacks
-...     def __repr__(self):
-...         return "%s(name=%r, hp=%r, ac=%r, attacks=%r)" % (
+public class Dice {
+    private Integer a;
+    private Integer b;
 
-...             self.__class__.__name__, self.name, self.hp, self.ac, self.attacks)
-}}}
+    public Dice(Integer a, Integer b) {
+        super();
+        this.a = a;
+        this.b = b;
+    }
 
-The above definition is enough to automatically load and dump `Monster` objects:
-{{{
-#!python
->>> yaml.load("""
-... --- !Monster
-... name: Cave spider
-... hp: [2,6]    # 2d6
-... ac: 16
-... attacks: [BITE, HURT]
-... """)
+    public Integer getA() {
+        return a;
+    }
 
-Monster(name='Cave spider', hp=[2, 6], ac=16, attacks=['BITE', 'HURT'])
+    public Integer getB() {
+        return b;
+    }
 
->>> print yaml.dump(Monster(
-...     name='Cave lizard', hp=[3,6], ac=16, attacks=['BITE','HURT']))
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Dice) {
+            return toString().equals(obj.toString());
+        }
+        return false;
+    }
 
-!Monster
-ac: 16
-attacks: [BITE, HURT]
-hp: [3, 6]
-name: Cave lizard
-}}}
+    @Override
+    public int hashCode() {
+        return toString().hashCode();
+    }
 
-'''`yaml.YAMLObject`''' uses metaclass magic to register a constructor, which
-transforms a YAML node to a class instance, and a representer, which serializes
-a class instance to a YAML node.
-
-If you don't want to use metaclasses, you may register your constructors
-and representers using the functions '''`yaml.add_constructor`''' and
-'''`yaml.add_representer`'''. For instance, you may want to add a constructor
-and a representer for the following '''`Dice`''' class:
-{{{
-#!python
->>> class Dice(tuple):
-...     def __new__(cls, a, b):
-...         return tuple.__new__(cls, [a, b])
-...     def __repr__(self):
-...         return "Dice(%s,%s)" % self
-
->>> print Dice(3,6)
-Dice(3,6)
+    @Override
+    public String toString() {
+        return "Dice " + a + "d" + b;
+    }
+}
 }}}
 
 
 The default representation for '''`Dice`''' objects is not nice:
 {{{
-#!python
->>> print yaml.dump(Dice(3,6))
-
-!!python/object/new:__main__.Dice
-- !!python/tuple [3, 6]
+public void testRepresenter() throws IOException {
+    Dice dice = new Dice(3, 6);
+    Yaml yaml = new Yaml();
+    String output = yaml.dump(dice);
+    System.out.println(output);
+}
+}}}
+{{{
+!<examples.Dice> {a: 3, b: 6}
 }}}
 
 Suppose you want a '''`Dice`''' object to represented as '''`AdB`''' in YAML:
 {{{
-#!python
->>> print yaml.dump(Dice(3,6))
+System.out.println(yaml.dump(new Dice(3,6)));
 
 3d6
 }}}
@@ -492,63 +480,88 @@ Suppose you want a '''`Dice`''' object to represented as '''`AdB`''' in YAML:
 First we define a representer that convert a dice object to scalar node
 with the tag `!dice` and register it.
 {{{
-#!python
->>> def dice_representer(dumper, data):
-...     return dumper.represent_scalar(u'!dice', u'%sd%s' % data)
+class DiceRepresenter extends Representer {
+    public DiceRepresenter() {
+        this.representers.put(Dice.class, new RepresentDice());
+    }
 
->>> yaml.add_representer(Dice, dice_representer)
+    private class RepresentDice implements Represent {
+        public Node representData(Object data) {
+            Dice dice = (Dice) data;
+            String value = dice.getA() + "d" + dice.getB();
+            return representScalar("!dice", value);
+        }
+    }
+}
 }}}
 
 Now you may dump an instance of the `Dice` object:
 {{{
-#!python
->>> print yaml.dump({'gold': Dice(10,6)})
+public void testDiceRepresenter() throws IOException {
+    Dice dice = new Dice(3, 6);
+    Map<String, Dice> data = new HashMap<String, Dice>();
+    data.put("gold", dice);
+    Yaml yaml = new Yaml(new Dumper(new DiceRepresenter(), new DumperOptions()));
+    String output = yaml.dump(data);
+    System.out.println(output);
+}
+}}}
+{{{
 {gold: !dice '10d6'}
 }}}
 
 Let us add the code to construct a Dice object:
 {{{
-#!python
->>> def dice_constructor(loader, node):
-...     value = loader.construct_scalar(node)
-...     a, b = map(int, value.split('d'))
-...     return Dice(a, b)
+class DiceConstructor extends Constructor {
+    public DiceConstructor() {
+        this.yamlConstructors.put("!dice", new ConstructDice());
+    }
 
->>> yaml.add_constructor(u'!dice', dice_constructor)
+    private class ConstructDice implements Construct {
+        public Object construct(Node node) {
+            String val = (String) constructScalar(node);
+            int position = val.indexOf('d');
+            Integer a = Integer.parseInt(val.substring(0, position));
+            Integer b = Integer.parseInt(val.substring(position + 1));
+            return new Dice(a, b);
+        }
+    }
+}
 }}}
 
 Then you may load a `Dice` object as well:
 {{{
-#!python
->>> print yaml.load("""
-... initial hit points: !dice 8d4
-... """)
-
-{'initial hit points': Dice(8,4)}
+public void testConstructor() throws IOException {
+    Yaml yaml = new Yaml(new Loader(new DiceConstructor()));
+    Object data = yaml.load("{initial hit points: !dice '8d4'}");
+    Map<String, Dice> map = (Map<String, Dice>) data;
+    assertEquals(new Dice(8, 4), map.get("initial hit points"));
+}
 }}}
 
 You might want to not specify the tag `!dice` everywhere. There is a way
 to teach PyYAML that any untagged plain scalar that looks like XdY has
-the implicit tag `!dice`. Use '''`add_implicit_resolver`''':
+the implicit tag `!dice`. Use '''`Yaml.addImplicitResolver(String tag, Pattern regexp, String first)`'''
+then you don't have to specify the tag to define a `Dice` object::
 {{{
-#!python
->>> import re
->>> pattern = re.compile(r'^\d+d\d+$')
->>> yaml.add_implicit_resolver(u'!dice', pattern)
+public void testImplicitResolver() throws IOException {
+    Yaml yaml = new Yaml(new Loader(new DiceConstructor()), new Dumper(new DiceRepresenter(),
+            new DumperOptions()));
+    yaml.addImplicitResolver("!dice", Pattern.compile("\\d+d\\d+"), "123456789");
+    // dump
+    Map<String, Dice> treasure = (Map<String, Dice>) new HashMap<String, Dice>();
+    treasure.put("treasure", new Dice(10, 20));
+    String output = yaml.dump(treasure);
+    System.out.println(output);
+    assertEquals("{treasure: 10d20}\n", output);
+    // load
+    Object data = yaml.load("{damage: 5d10}");
+    Map<String, Dice> map = (Map<String, Dice>) data;
+    assertEquals(new Dice(5, 10), map.get("damage"));
+}
 }}}
-
-Now you don't have to specify the tag to define a `Dice` object:
 {{{
-#!python
->>> print yaml.dump({'treasure': Dice(10,20)})
-
 {treasure: 10d20}
-
->>> print yaml.load("""
-... damage: 5d10
-... """)
-
-{'damage': Dice(5,10)}
 }}}
 
 
@@ -914,3 +927,4 @@ block: {
 
 To do and long-term goals:
  * better `JavaBeans` support
+ * import path resolver
