@@ -46,7 +46,7 @@ public class PyEmitterTest extends PyImportTest {
                 //
                 StringWriter stream = new StringWriter();
                 DumperOptions options = new DumperOptions();
-                options.canonical(canonical);
+                options.setCanonical(canonical);
                 Emitter emitter = new Emitter(stream, options);
                 for (Event event : events) {
                     emitter.emit(event);

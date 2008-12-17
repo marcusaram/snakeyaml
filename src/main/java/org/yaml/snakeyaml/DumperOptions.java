@@ -28,7 +28,7 @@ public class DumperOptions {
         this.defaultStyle = defaultStyle;
     }
 
-    public DumperOptions indent(final int indent) {
+    public DumperOptions setIndent(final int indent) {
         this.indent = indent;
         return this;
     }
@@ -64,7 +64,7 @@ public class DumperOptions {
         return this.expEnd;
     }
 
-    public DumperOptions canonical(final boolean canonical) {
+    public DumperOptions setCanonical(boolean canonical) {
         this.canonical = canonical;
         return this;
     }
@@ -73,7 +73,7 @@ public class DumperOptions {
         return this.canonical;
     }
 
-    public DumperOptions bestWidth(final int bestWidth) {
+    public DumperOptions setWidth(int bestWidth) {
         this.bestWidth = bestWidth;
         return this;
     }
