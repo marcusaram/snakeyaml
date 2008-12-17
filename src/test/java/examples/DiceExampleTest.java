@@ -51,7 +51,7 @@ public class DiceExampleTest extends TestCase {
 
     class DiceConstructor extends Constructor {
         public DiceConstructor() {
-            this.yamlConstructors.put("tag:yaml.org,2002:dice", new ConstructDice());
+            this.yamlConstructors.put("!dice", new ConstructDice());
         }
 
         private class ConstructDice implements Construct {
@@ -67,8 +67,7 @@ public class DiceExampleTest extends TestCase {
     @SuppressWarnings("unchecked")
     public void testConstructor() throws IOException {
         Yaml yaml = new Yaml(new Loader(new DiceConstructor()));
-        // FIXME single ! must be used
-        Object data = yaml.load("{initial hit points: !!dice '8d4'}");
+        Object data = yaml.load("{initial hit points: !dice '8d4'}");
         Map<String, Dice> map = (Map<String, Dice>) data;
         assertEquals(new Dice(8, 4), map.get("initial hit points"));
     }
