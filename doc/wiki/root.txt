@@ -82,9 +82,9 @@ System.out.println(list);
 You can find an example [http://trac-hg.assembla.com/snakeyaml/browser/src/test/java/examples/LoadExampleTest.java here]
 
 '''`Yaml.load()`''' accepts a String or
-an InputStream object. '''`Yaml.load()`''' detects the encoding
+an InputStream object. '''`Yaml.load(InputStream stream)`''' detects the encoding
 by checking the '''BOM''' (byte order mark) sequence at the beginning of the
-String/stream. If no '''BOM''' is present, the '''utf-8''' encoding is assumed.
+stream. If no '''BOM''' is present, the '''utf-8''' encoding is assumed.
 
 '''`Yaml.load()`''' returns a Java object.
 
@@ -182,7 +182,7 @@ dict: {hp: 13, sp: 5}
 list=[LITE, RES_ACID, SUS_DEXT], dict={hp=13, sp=5}}
 }}}
 
-Even instances of Java classes [http://trac-hg.assembla.com/snakeyaml/browser/src/test/java/org/yaml/snakeyaml/constructor/ConstructorTest.java can be constructed].
+Even instances of custom Java classes [http://trac-hg.assembla.com/snakeyaml/browser/src/test/java/org/yaml/snakeyaml/constructor/ConstructorTest.java can be constructed].
 {{{
     /**
      * create JavaBean
@@ -236,7 +236,7 @@ Yaml yaml = new Yaml(loader);
 
 === Dumping YAML ===
 
-The '''`yaml.dump`''' function accepts a Java object and produces a YAML document.
+The '''`Yaml.dump()`''' function accepts a Java object and produces a YAML document.
 {{{
 #!python
 >>> print yaml.dump({'name': 'Silenthand Olleander', 'race': 'Human',
@@ -802,7 +802,7 @@ to Java objects.
 || `!!timestamp`                   || `java.util.Date`    ||
 || `!!omap`, ``!!pairs``           || `List` of `Object[]`||
 || `!!set`                         || `Set`               ||
-|| `!!str`                         || `Srting`            ||
+|| `!!str`                         || `String`            ||
 || `!!seq`                         || `List`              ||
 || `!!map`                         || `Map`               ||
 
