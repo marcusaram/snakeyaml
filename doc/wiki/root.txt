@@ -416,7 +416,7 @@ You may define your own application-specific tags. (the example's source is
 [http://trac-hg.assembla.com/snakeyaml/browser/src/test/java/examples/DiceExampleTest.java here])
 
 For instance, you may want to add a constructor
-and a representer for the following [http://trac-hg.assembla.com/snakeyaml/browser/src/test/java/examples/Dice.java `Dice`] class:
+and a representer for the following [http://trac-hg.assembla.com/snakeyaml/browser/src/test/java/examples/Dice.java Dice] class:
 {{{
 public class Dice {
     private Integer a;
