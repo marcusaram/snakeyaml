@@ -6,6 +6,9 @@
 	<body>
 	    <release version="0.6" date="in Mercurial" description="Development">
             <action dev="py4fun" type="update">
+                Public interface is using Iterator instead of Iterable (2008-12-17)
+            </action>
+            <action dev="py4fun" type="update">
                 Sort names when JavaBeans are represented (2008-12-15)
             </action>
             <action dev="py4fun" type="fix">
