@@ -236,80 +236,129 @@ Yaml yaml = new Yaml(loader);
 
 === Dumping YAML ===
 
-The '''`Yaml.dump()`''' function accepts a Java object and produces a YAML document.
+The '''`Yaml.dump(Object data)`''' function accepts a Java object and produces a YAML document.
 {{{
-#!python
->>> print yaml.dump({'name': 'Silenthand Olleander', 'race': 'Human',
-... 'traits': ['ONE_HAND', 'ONE_EYE']})
-
+    public void testDump() {
+        Map<String, Object> data = new HashMap<String, Object>();
+        data.put("name", "Silenthand Olleander");
+        data.put("race", "Human");
+        data.put("traits", new String[] { "ONE_HAND", "ONE_EYE" });
+        Yaml yaml = new Yaml();
+        String output = yaml.dump(data);
+        System.out.println(output);
+    }
+}}}
+{{{
 name: Silenthand Olleander
-race: Human
 traits: [ONE_HAND, ONE_EYE]
+race: Human
 }}}
 
-'''`yaml.dump`''' accepts the second optional argument, which must be an open file.
-In this case, '''`yaml.dump`''' will write the produced YAML document into the file.
-Otherwise, '''`yaml.dump`''' returns the produced document.
+'''`Yaml.dump(Object data, Writer output)`''' will write the produced YAML document into 
+the specified file/stream.
 
 {{{
-#!python
->>> stream = file('document.yaml', 'w')
->>> yaml.dump(data, stream)    # Write a YAML representation of data to 'document.yaml'.
->>> print yaml.dump(data)      # Output the document to the screen.
+    public void testDumpWriter() {
+        Map<String, Object> data = new HashMap<String, Object>();
+        data.put("name", "Silenthand Olleander");
+        data.put("race", "Human");
+        data.put("traits", new String[] { "ONE_HAND", "ONE_EYE" });
+        Yaml yaml = new Yaml();
+        StringWriter writer = new StringWriter();
+        yaml.dump(data, writer);
+        System.out.println(writer.toString());
+    }
 }}}
 
-If you need to dump several YAML documents to a single stream, use the function
-'''`yaml.dump_all`'''. '''`yaml.dump_all`''' accepts a list or a generator producing
-Java objects to be serialized into a YAML document. The second optional argument is
-an open file.
+If you need to dump several YAML documents to a single stream, use the method
+'''`Yaml.dumpAll(Iterable<Object> data)`'''. It accepts an Iterator of
+Java objects to be serialized into a YAML document. A Writer can also be used.
 
 {{{
-#!python
->>> print yaml.dump([1,2,3], explicit_start=True)
+    public void testDumpMany() {
+        List<Integer> docs = new LinkedList<Integer>();
+        for (int i = 1; i < 4; i++) {
+            docs.add(i);
+        }
+        DumperOptions options = new DumperOptions();
+        options.explicitStart(true);
+        Yaml yaml = new Yaml(options);
+        System.out.println(yaml.dump(docs));
+        System.out.println(yaml.dumpAll(docs.iterator()));
+    }
+}}}
+{{{
 --- [1, 2, 3]
 
->>> print yaml.dump_all([1,2,3], explicit_start=True)
 --- 1
 --- 2
 --- 3
 }}}
 
-You may even dump instances of Java classes.
+You may even dump instances of Java classes. 
 
 {{{
-#!python
->>> class Hero:
-...     def __init__(self, name, hp, sp):
-...         self.name = name
-...         self.hp = hp
-...         self.sp = sp
-...     def __repr__(self):
-...         return "%s(name=%r, hp=%r, sp=%r)" % (
-...             self.__class__.__name__, self.name, self.hp, self.sp)
-
->>> print yaml.dump(Hero("Galain Ysseleg", hp=-3, sp=2))
-
-!!python/object:__main__.Hero {hp: -3, name: Galain Ysseleg, sp: 2}
+    public void testDumpCustomJavaClass() {
+        Hero hero = new Hero("Galain Ysseleg", -3, 2);
+        Yaml yaml = new Yaml();
+        String output = yaml.dump(hero);
+        System.out.println(output);
+        assertEquals("!<examples.Hero> {hp: -3, name: Galain Ysseleg, sp: 2}\n", output);
+    }
+}}}
+{{{
+!<examples.Hero> {hp: -3, name: Galain Ysseleg, sp: 2}
 }}}
 
-'''`yaml.dump`''' supports a number of keyword arguments that specify
+As you can see the JavaBean data is sorted althabetically.
+
+'''`DumperOptions`''' specifies
 formatting details for the emitter. For instance, you may set the
 preferred intendation and width, use the canonical YAML format or
 force preferred style for scalars and collections.
 {{{
-#!python
->>> print yaml.dump(range(50))
+    public void testDumperOptions() {
+        List<Integer> data = new LinkedList<Integer>();
+        for (int i = 0; i < 50; i++) {
+            data.add(i);
+        }
+        Yaml yaml = new Yaml();
+        String output = yaml.dump(data);
+        System.out.println(output);
+        assertTrue(output.contains("[0, 1, 2, 3, 4, 5, 6, 7, 8"));
+        //
+        DumperOptions options = new DumperOptions();
+        options.setWidth(50);
+        options.setIndent(4);
+        yaml = new Yaml(options);
+        output = yaml.dump(data);
+        System.out.println(output);
+    }
+}}}
+{{{
 [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22,
   23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42,
   43, 44, 45, 46, 47, 48, 49]
 
->>> print yaml.dump(range(50), width=50, indent=4)
 [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
     16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27,
     28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39,
     40, 41, 42, 43, 44, 45, 46, 47, 48, 49]
-
->>> print yaml.dump(range(5), canonical=True)
+}}}
+{{{
+    public void testDumperOptionsCanonical() {
+        List<Integer> data = new LinkedList<Integer>();
+        for (int i = 0; i < 5; i++) {
+            data.add(i);
+        }
+        DumperOptions options = new DumperOptions();
+        options.setCanonical(true);
+        Yaml yaml = new Yaml(options);
+        String output = yaml.dump(data);
+        System.out.println(output);
+    }
+}}}
+{{{
 ---
 !!seq [
   !!int "0",
@@ -318,16 +367,49 @@ force preferred style for scalars and collections.
   !!int "3",
   !!int "4",
 ]
-
->>> print yaml.dump(range(5), default_flow_style=False)
+}}}
+{{{
+    public void testDumperOptionsFlowStyle() {
+        List<Integer> data = new LinkedList<Integer>();
+        for (int i = 0; i < 5; i++) {
+            data.add(i);
+        }
+        DumperOptions options = new DumperOptions();
+        options.setDefaultFlowStyle(Boolean.FALSE);
+        Yaml yaml = new Yaml(options);
+        String output = yaml.dump(data);
+        System.out.println(output);
+    }
+}}}
+{{{
 - 0
 - 1
 - 2
 - 3
 - 4
-
->>> print yaml.dump(range(5), default_flow_style=True, default_style='"')
-[!!int "0", !!int "1", !!int "2", !!int "3", !!int "4"]
+}}}
+{{{
+    public void testDumperOptionsStyle() {
+        List<Integer> data = new LinkedList<Integer>();
+        for (int i = 0; i < 5; i++) {
+            data.add(i);
+        }
+        DumperOptions options = new DumperOptions();
+        options.setDefaultStyle('"');
+        Yaml yaml = new Yaml(options);
+        String output = yaml.dump(data);
+        System.out.println(output);
+        assertTrue(output.contains("- !!int \"0\""));
+        assertTrue(output.contains("- !!int \"1\""));
+        assertTrue(output.contains("- !!int \"4\""));
+    }
+}}}
+{{{
+- !!int "0"
+- !!int "1"
+- !!int "2"
+- !!int "3"
+- !!int "4"
 }}}
 
 
