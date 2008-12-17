@@ -3,6 +3,7 @@ package examples;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import junit.framework.TestCase;
 
@@ -57,8 +58,9 @@ public class DiceExampleTest extends TestCase {
         private class ConstructDice implements Construct {
             public Object construct(Node node) {
                 String val = (String) constructScalar(node);
-                Integer a = Integer.parseInt(val.substring(0, 1));
-                Integer b = Integer.parseInt(val.substring(2));
+                int position = val.indexOf('d');
+                Integer a = Integer.parseInt(val.substring(0, position));
+                Integer b = Integer.parseInt(val.substring(position + 1));
                 return new Dice(a, b);
             }
         }
@@ -70,5 +72,22 @@ public class DiceExampleTest extends TestCase {
         Object data = yaml.load("{initial hit points: !dice '8d4'}");
         Map<String, Dice> map = (Map<String, Dice>) data;
         assertEquals(new Dice(8, 4), map.get("initial hit points"));
+    }
+
+    @SuppressWarnings("unchecked")
+    public void testImplicitResolver() throws IOException {
+        Yaml yaml = new Yaml(new Loader(new DiceConstructor()), new Dumper(new DiceRepresenter(),
+                new DumperOptions()));
+        yaml.addImplicitResolver("!dice", Pattern.compile("\\d+d\\d+"), "123456789");
+        // dump
+        Map<String, Dice> treasure = (Map<String, Dice>) new HashMap<String, Dice>();
+        treasure.put("treasure", new Dice(10, 20));
+        String output = yaml.dump(treasure);
+        System.out.println(output);
+        assertEquals("{treasure: 10d20}\n", output);
+        // load
+        Object data = yaml.load("{damage: 5d10}");
+        Map<String, Dice> map = (Map<String, Dice>) data;
+        assertEquals(new Dice(5, 10), map.get("damage"));
     }
 }
