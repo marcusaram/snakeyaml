@@ -1,0 +1,202 @@
+<document>
+	<properties>
+		<title>YAML 1.1 parser and emitter</title>
+		<author email="py4fun@gmail.com">Andrey Somov</author>
+	</properties>
+	<body>
+	    <release version="0.6" date="2008-12-17" description="Documentation added">
+            <action dev="py4fun" type="add">
+                Many examples added to the Wiki page  (2008-12-17)
+            </action>
+            <action dev="py4fun" type="update">
+                Public interface is using Iterator instead of Iterable (2008-12-17)
+            </action>
+            <action dev="py4fun" type="update">
+                Sort names when JavaBeans are represented (2008-12-15)
+            </action>
+            <action dev="py4fun" type="fix">
+                defaultFlowStyle for Dumper is configurable in DumperOptions (2008-12-12)
+            </action>
+        </release>
+	    <release version="0.5" date="2008-12-12" description="Import PyYAML 3.06">
+            <action dev="py4fun" type="add">
+                Add possibility to define an implicit resolver. {359:63190d5bcd10} (2008-12-11)
+            </action>
+            <action dev="py4fun" type="add">
+                Add possibility to define an explicit constructor. {356:ccaa0df9ca98} (2008-12-11)
+            </action>
+            <action dev="py4fun" type="update">
+                Java objects can be constructed from mapping (JavaBeans), from sequence (constructor)
+                from scalar (constructor). (2008-12-10)
+            </action>
+            <action dev="py4fun" type="fix">
+                pairs tag works properly. (2008-12-08)
+            </action>
+            <action dev="py4fun" type="fix">
+                omap tag works properly. (2008-12-08)
+            </action>
+            <action dev="py4fun" type="add">
+                Implement possibility to define a custom Map implementation {332}. (2008-12-06)
+            </action>
+            <action dev="py4fun" type="add">
+                Implement possibility to define a custom List implementation {331:72c03254c184}. (2008-12-06)
+            </action>
+            <action dev="py4fun" type="add">
+                Path resolver is removed because it is not imported properly {330}. (2008-12-06)
+            </action>
+            <action dev="py4fun" type="add">
+                Constructor is overwritten completely. (2008-12-06)
+            </action>
+            <action dev="py4fun" type="add">
+                Implement possibility to define a custom Representer. (2008-12-01)
+            </action>
+            <action dev="py4fun" type="update">
+                Support arrays of reference types. Arrays of primitives are not supported
+                because Arrays.asList() does not work. (2008-12-01)
+            </action>
+            <action dev="py4fun" type="update">
+                Import change 300 for Emitter from PyYAML. (2008-12-01)
+            </action>
+            <action dev="py4fun" type="fix">
+                Fix Node identity to avoid aliases for simple types - [1, 1]. (2008-11-28)
+            </action>
+            <action dev="py4fun" type="update">
+                Recursive objects can be represented (but not yet constructed) (2008-11-28)
+            </action>
+            <action dev="py4fun" type="update">
+                Binary is represented back as String (2008-11-28)
+            </action>
+            <action dev="py4fun" type="update">
+                Re-write Representer classes from scratch (2008-11-28)
+            </action>
+            <action dev="py4fun" type="fix">
+                'null' can be a key in a map (2008-11-21)
+            </action>
+            <action dev="py4fun" type="fix">
+                !!set tag is parsed properly (2008-11-21)
+            </action>
+            <action dev="py4fun" type="update">
+                Single characters 'Y', 'N', 'y' and 'n' are parsed as String opposed to boolean
+                as it is defined in the specification. This is how it is done in PyYAML (2008-11-21)
+            </action>
+            <action dev="py4fun" type="remove">
+                Constructor: because Java does not have generators 'deep' is not 
+                imported from PyYAML (2008-11-19)
+            </action>
+            <action dev="py4fun" type="update">
+                Composer imported from PyYAML (2008-11-17)
+            </action>
+            <action dev="py4fun" type="update">
+                Resolver.resolve() is using simple boolean argument instead of array of booleans
+                as in PyYAML. (2008-11-18)
+            </action>
+            <action dev="py4fun" type="fix">
+                Fix: 'set' type works. (2008-11-18)
+            </action>
+            <action dev="py4fun" type="update">
+                Rewrite Parser from scratch. (2008-11-17)
+            </action>
+        </release>
+		<release version="0.4" date="2008-11-11" description="Fix issues in Scanner">
+            <action dev="py4fun" type="update">
+                Move constants from Yaml interface to appropriate classes (2008-11-10)
+            </action>
+            <action dev="py4fun" type="update">
+                Interface change: Yaml dumpAll() methods accept Iterable (2008-11-10)
+            </action>
+            <action dev="py4fun" type="update">
+                Interface change: Yaml loadAll() methods return Iterable (2008-11-10)
+            </action>
+            <action dev="py4fun" type="fix">
+                Scanner: copy keys to avoid java.util.ConcurrentModificationException when removing
+                possible simple key (2008-11-10)
+            </action>
+            <action dev="py4fun" type="update">
+                Tag v0.3.1 (2008-11-08)
+            </action>
+            <action dev="py4fun" type="update">
+                MappingNode requires Map as a value and SequenceNode requires
+                List as a value (2008-11-08)
+            </action>
+            <action dev="py4fun" type="update">
+                Marks in a Token are required (2008-11-08)
+            </action>
+            <action dev="py4fun" type="remove">
+                Remove prefixForward() method from Reader because it is not present
+                in PyYAML (2008-11-08)
+            </action>
+            <action dev="py4fun" type="fix">
+                Fix a deviation with PyYAML in method scanBlockScalar().
+                'chomping' can be null. Fix a bug in JvYaml that the trailing '\n' in a 
+                block scalar was removed.(2008-11-07)
+            </action>
+            <action dev="py4fun" type="fix">
+                Fix a deviation with PyYAML in method scanDirectiveIgnoredLine().
+                Put '#' instead of '"'. (2008-11-07)
+            </action>
+            <action dev="py4fun" type="add">
+                Restore from PyYAML the way the keys are parsed. (Restored methods are
+                stalePossibleSimpleKeys() and removePossibleSimpleKey().)
+                Fix issue http://code.google.com/p/jvyamlb/issues/detail?id=6. (2008-11-07)
+            </action>
+            <action dev="py4fun" type="update">
+                Refactor: put changed classes to 'org.yaml.snakeyaml' package. (2008-11-05)
+            </action>
+            <action dev="py4fun" type="update">
+                Move all the main() methods to the corresponding test classes. (2008-11-05)
+            </action>
+            <action dev="py4fun" type="update">
+                Change public interface. Rename YAML to Yaml. Remove all static methods from Yaml.
+                Factory and configuration must be injected at the constructor. This way is closer
+                to PyYAML API. (2008-11-05)
+            </action>
+            <action dev="py4fun" type="add">
+                Reader as in PyYAML is implemented. BOM is properly supported (2008-11-05)
+            </action>
+            <action dev="py4fun" type="add">
+                Restore Mark in Token as it is in PyYAML. Mark is not defined yet (2008-10-30)
+            </action>
+            <action dev="py4fun" type="fix">
+                Off-by-one in EmitterImpl.writeDoubleQuoted().
+                Fix issue: https://jvyaml.dev.java.net/issues/show_bug.cgi?id=11 (2008-10-28)
+            </action>
+            <action dev="py4fun" type="fix">
+                Respect Unicode characters.
+                Fix issue: https://jvyaml.dev.java.net/issues/show_bug.cgi?id=10 (2008-10-28)
+            </action>
+            <action dev="py4fun" type="fix">
+                Respect sign for float.
+                Fix issue: https://jvyaml.dev.java.net/issues/show_bug.cgi?id=13 (2008-10-28)
+            </action>
+			<action dev="py4fun" type="add">
+                Binary data is represented as ByteBuffer (2008-10-27)
+            </action>
+            <action dev="py4fun" type="fix">
+                When parsed, a timestamp in the canonical form (i.e, 2001-12-15T02:59:43.1Z) is
+                interpreted as if it is in the default time zone.
+                Fix issue: https://jvyaml.dev.java.net/issues/show_bug.cgi?id=7 (2008-10-27)
+            </action>
+            <action dev="py4fun" type="add">
+                Add Mark from PyYAML. It is not used yet. The JUnit test is migrated from PyYAML (2008-10-23)
+            </action>
+            <action dev="py4fun" type="update">
+                Apply SnakeYAML as the name of the library (2008-10-22)
+            </action>
+            <action dev="py4fun" type="update">
+                Reformat the source files (2008-10-22)
+            </action>
+            <action dev="py4fun" type="update">
+                Apply LICENSE info to source files (2008-10-22)
+            </action>
+            <action dev="py4fun" type="update">
+                Mavenize project. Apply standard Maven folder structure (2008-10-20)
+            </action>
+		</release>
+		<release version="0.2.1" date="2008-10-20" description="Import JvYaml from CVS">
+			<action dev="py4fun" type="add">
+				Import project from https://jvyaml.dev.java.net/ (2008-10-20)
+			</action>
+		</release>
+	</body>
+</document>
+
