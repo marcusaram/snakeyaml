@@ -50,7 +50,7 @@ public class Yaml {
      *            - Java object to be Serialized to YAML
      * @return YAML String
      */
-    public String dump(final Object data) {
+    public String dump(Object data) {
         List<Object> lst = new ArrayList<Object>(1);
         lst.add(data);
         return dumpAll(lst);
@@ -63,7 +63,7 @@ public class Yaml {
      *            - Iterator with Objects
      * @return - YAML String with all the objects in proper sequence
      */
-    public String dumpAll(final Iterable<Object> data) {
+    public String dumpAll(Iterable<Object> data) {
         StringWriter buffer = new StringWriter();
         dumpAll(data, buffer);
         return buffer.toString();
@@ -77,7 +77,7 @@ public class Yaml {
      * @param output
      *            - stream to write to
      */
-    public void dump(final Object data, final Writer output) {
+    public void dump(Object data, Writer output) {
         List<Object> lst = new ArrayList<Object>(1);
         lst.add(data);
         dumpAll(lst, output);
@@ -91,7 +91,7 @@ public class Yaml {
      * @param output
      *            - stream to write to
      */
-    public void dumpAll(final Iterable<Object> data, final Writer output) {
+    public void dumpAll(Iterable<Object> data, Writer output) {
         dumper.dump(data, output, resolver);
     }
 
