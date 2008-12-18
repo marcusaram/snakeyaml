@@ -31,7 +31,7 @@ import org.yaml.snakeyaml.nodes.SequenceNode;
 import org.yaml.snakeyaml.resolver.Resolver;
 
 /**
- * @see <a href="http://pyyaml.org/wiki/PyYAML">PyYAML</a> for more information
+ * @see <a href="http://pyyaml.org/wiki/PyYAML">PyYAML< /a> for more information
  */
 public class Serializer {
     private Emitter emitter;
@@ -160,7 +160,7 @@ public class Serializer {
                     indexCounter++;
                 }
                 this.emitter.emit(new SequenceEndEvent(null, null));
-            } else if (node instanceof MappingNode) {
+            } else { // instance of MappingNode
                 boolean implicit = (node.getTag().equals(this.resolver.resolve(MappingNode.class,
                         null, true)));
                 this.emitter.emit(new MappingStartEvent(tAlias, node.getTag(), implicit, null,

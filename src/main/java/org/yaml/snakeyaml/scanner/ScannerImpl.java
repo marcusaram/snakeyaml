@@ -209,16 +209,13 @@ public class ScannerImpl implements Scanner {
         while (needMoreTokens()) {
             fetchMoreTokens();
         }
-        return (Token) (this.tokens.isEmpty() ? null : this.tokens.get(0));
+        return this.tokens.get(0);
     }
 
     /**
      * Return the next token.
      */
     public Token getToken() {
-        while (needMoreTokens()) {
-            fetchMoreTokens();
-        }
         if (!this.tokens.isEmpty()) {
             this.tokensTaken++;
             return this.tokens.remove(0);

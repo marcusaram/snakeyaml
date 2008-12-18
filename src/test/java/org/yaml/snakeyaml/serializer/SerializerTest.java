@@ -53,6 +53,12 @@ public class SerializerTest extends TestCase {
         }
     }
 
+    public void testSerializerIsClosed3() throws IOException {
+        serializer.open();
+        serializer.close();
+        serializer.close();// no problem to close twice
+    }
+
     public void testSerializerIsNotOpened1() throws IOException {
         try {
             serializer.close();

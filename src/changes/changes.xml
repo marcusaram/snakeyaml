@@ -4,7 +4,15 @@
 		<author email="py4fun@gmail.com">Andrey Somov</author>
 	</properties>
 	<body>
-	    <release version="0.6" date="2008-12-17" description="Documentation added">
+	    <release version="0.7" date="in Mercurial" description="Development">
+            <action dev="py4fun" type="remove">
+                Remove unused code based on coverage report (2008-12-19)
+            </action>
+            <action dev="py4fun" type="remove">
+                Remove old tests (2008-12-18)
+            </action>
+        </release>
+        <release version="0.6" date="2008-12-17" description="Documentation added">
             <action dev="py4fun" type="add">
                 Many examples added to the Wiki page  (2008-12-17)
             </action>
