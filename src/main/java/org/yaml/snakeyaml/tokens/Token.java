@@ -12,7 +12,9 @@ public abstract class Token {
     private Mark startMark;
     private Mark endMark;
 
-    public Token(final Mark startMark, final Mark endMark) {
+    public Token(Mark startMark, Mark endMark) {
+        assert startMark != null;
+        assert endMark != null;
         this.startMark = startMark;
         this.endMark = endMark;
     }

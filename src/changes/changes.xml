@@ -5,6 +5,9 @@
 	</properties>
 	<body>
 	    <release version="0.7" date="in Mercurial" description="Development">
+            <action dev="py4fun" type="fix">
+                Fix dumping Date and better coverage for Representer (2008-12-19)
+            </action>
             <action dev="py4fun" type="remove">
                 Remove unused code based on coverage report (2008-12-19)
             </action>
