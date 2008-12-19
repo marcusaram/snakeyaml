@@ -49,10 +49,6 @@ public abstract class Node {
         return startMark;
     }
 
-    public Mark getEndMark() {
-        return endMark;
-    }
-
     public void setTag(String tag) {
         if (tag == null) {
             throw new NullPointerException("tag in a Node is required.");

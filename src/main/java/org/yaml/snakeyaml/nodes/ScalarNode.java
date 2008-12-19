@@ -17,11 +17,6 @@ public class ScalarNode extends Node {
         this.style = style;
     }
 
-    public ScalarNode(String tag, String value) {
-        super(tag, value, null, null);
-        this.style = null;
-    }
-
     public Character getStyle() {
         return style;
     }

@@ -90,8 +90,7 @@ public class BaseRepresenter {
                     Represent representer = representers.get(null);
                     node = representer.representData(data);
                 } else {
-                    String value = (data == null ? "" : data.toString());
-                    node = new ScalarNode(null, value);
+                    throw new UnsupportedOperationException();
                 }
             }
         }

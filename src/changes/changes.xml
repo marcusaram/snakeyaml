@@ -5,6 +5,9 @@
 	</properties>
 	<body>
 	    <release version="0.7" date="in Mercurial" description="Development">
+            <action dev="py4fun" type="update">
+                Improve test coverage for Nodes (2008-12-19)
+            </action>
             <action dev="py4fun" type="fix">
                 Fix dumping Date and better coverage for Representer (2008-12-19)
             </action>
