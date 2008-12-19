@@ -77,7 +77,7 @@ import org.yaml.snakeyaml.tokens.ValueToken;
 public class ScannerImpl implements Scanner {
     private final static String NULL_BL_LINEBR = "\0 \r\n\u0085\u2028\u2029";
     private final static String NULL_BL_T_LINEBR = "\0 \t\r\n\u0085\u2028\u2029";
-    private final static String NULL_OR_LINEBR = "\0\r\n\u0085\u2028\u2029";
+    public final static String NULL_OR_LINEBR = "\0\r\n\u0085\u2028\u2029";
     private final static String FULL_LINEBR = "\r\n\u0085\u2028\u2029";
     private final static String ALPHA = "abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ-_";
     private final static Pattern NOT_HEXA = Pattern.compile("[^0-9A-Fa-f]");
