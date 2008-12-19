@@ -117,10 +117,6 @@ public class Reader {
         return this.buffer.charAt(this.pointer + index);
     }
 
-    public String prefix() {
-        return prefix(1);
-    }
-
     /**
      * peek the next length characters
      * 
