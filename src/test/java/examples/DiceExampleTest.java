@@ -14,6 +14,7 @@ import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Construct;
 import org.yaml.snakeyaml.constructor.Constructor;
 import org.yaml.snakeyaml.nodes.Node;
+import org.yaml.snakeyaml.nodes.ScalarNode;
 import org.yaml.snakeyaml.representer.Represent;
 import org.yaml.snakeyaml.representer.Representer;
 
@@ -57,7 +58,7 @@ public class DiceExampleTest extends TestCase {
 
         private class ConstructDice implements Construct {
             public Object construct(Node node) {
-                String val = (String) constructScalar(node);
+                String val = (String) constructScalar((ScalarNode) node);
                 int position = val.indexOf('d');
                 Integer a = Integer.parseInt(val.substring(0, position));
                 Integer b = Integer.parseInt(val.substring(position + 1));

@@ -9,6 +9,7 @@ import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Construct;
 import org.yaml.snakeyaml.constructor.Constructor;
 import org.yaml.snakeyaml.nodes.Node;
+import org.yaml.snakeyaml.nodes.ScalarNode;
 
 public class RepresentTest extends TestCase {
 
@@ -71,7 +72,7 @@ public class RepresentTest extends TestCase {
 
         private class ConstuctDice implements Construct {
             public Object construct(Node node) {
-                String val = (String) constructScalar(node);
+                String val = (String) constructScalar((ScalarNode) node);
                 return new CustomBean(val.substring(0, 1), Integer.parseInt(val.substring(2)));
             }
         }

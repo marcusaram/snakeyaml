@@ -5,7 +5,10 @@
 	</properties>
 	<body>
 	    <release version="0.7" date="in Mercurial" description="Development">
-            <action dev="py4fun" type="update">
+            <action dev="py4fun" type="remove">
+                Remove support for "value" type because it is not used (2008-12-20)
+            </action>
+             <action dev="py4fun" type="update">
                 Require test coverage 95% (2008-12-19)
             </action>
             <action dev="py4fun" type="update">

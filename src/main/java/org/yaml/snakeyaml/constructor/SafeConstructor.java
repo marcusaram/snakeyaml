@@ -6,7 +6,6 @@ package org.yaml.snakeyaml.constructor;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -41,22 +40,6 @@ public class SafeConstructor extends BaseConstructor {
         this.yamlConstructors.put("tag:yaml.org,2002:seq", new ConstuctYamlSeq());
         this.yamlConstructors.put("tag:yaml.org,2002:map", new ConstuctYamlMap());
         this.yamlConstructors.put(null, new ConstuctUndefined());
-    }
-
-    @SuppressWarnings("unchecked")
-    protected Object constructScalar(Node node) {
-        if (node instanceof MappingNode) {
-            List<Node[]> nodeValue = (List<Node[]>) node.getValue();
-            for (Iterator<Node[]> iter = nodeValue.iterator(); iter.hasNext();) {
-                Node[] tuple = iter.next();
-                Node keyNode = tuple[0];
-                Node valueNode = tuple[1];
-                if (keyNode.getTag().equals("tag:yaml.org,2002:value")) {
-                    return constructScalar(valueNode);
-                }
-            }
-        }
-        return super.constructScalar((ScalarNode) node);
     }
 
     private void flattenMapping(MappingNode node) {
@@ -116,7 +99,7 @@ public class SafeConstructor extends BaseConstructor {
 
     private class ConstuctYamlNull implements Construct {
         public Object construct(Node node) {
-            constructScalar(node);
+            constructScalar((ScalarNode) node);
             return null;
         }
     }
@@ -133,14 +116,14 @@ public class SafeConstructor extends BaseConstructor {
 
     private class ConstuctYamlBool implements Construct {
         public Object construct(Node node) {
-            String val = (String) constructScalar(node);
+            String val = (String) constructScalar((ScalarNode) node);
             return BOOL_VALUES.get(val.toLowerCase());
         }
     }
 
     private class ConstuctYamlInt implements Construct {
         public Object construct(Node node) {
-            String value = constructScalar(node).toString().replaceAll("_", "");
+            String value = constructScalar((ScalarNode) node).toString().replaceAll("_", "");
             int sign = +1;
             char first = value.charAt(0);
             if (first == '-') {
@@ -179,7 +162,7 @@ public class SafeConstructor extends BaseConstructor {
 
     private class ConstuctYamlFloat implements Construct {
         public Object construct(Node node) {
-            String value = constructScalar(node).toString().replaceAll("_", "");
+            String value = constructScalar((ScalarNode) node).toString().replaceAll("_", "");
             int sign = +1;
             char first = value.charAt(0);
             if (first == '-') {
@@ -215,7 +198,8 @@ public class SafeConstructor extends BaseConstructor {
 
     private class ConstuctYamlBinary implements Construct {
         public Object construct(Node node) {
-            char[] decoded = Base64Coder.decode(constructScalar(node).toString().toCharArray());
+            char[] decoded = Base64Coder.decode(constructScalar((ScalarNode) node).toString()
+                    .toCharArray());
             String value = new String(decoded);
             return value;
         }
