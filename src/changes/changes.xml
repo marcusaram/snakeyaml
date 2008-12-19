@@ -9,6 +9,9 @@
                 Remove unused code based on coverage report (2008-12-19)
             </action>
             <action dev="py4fun" type="remove">
+                Tokens are 100% covered by tests (2008-12-19)
+            </action>
+            <action dev="py4fun" type="remove">
                 Remove old tests (2008-12-18)
             </action>
         </release>

@@ -13,9 +13,6 @@ public abstract class Token {
     private Mark endMark;
 
     public Token(final Mark startMark, final Mark endMark) {
-        if (startMark == null || endMark == null) {
-            throw new NullPointerException("Marks in a Token are required.");
-        }
         this.startMark = startMark;
         this.endMark = endMark;
     }

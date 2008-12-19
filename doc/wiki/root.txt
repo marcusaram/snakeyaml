@@ -928,3 +928,4 @@ block: {
 To do and long-term goals:
  * better `JavaBeans` support
  * import path resolver
+ * add example to change default List or Map implementation
