@@ -37,12 +37,12 @@ public class DumperOptions {
         return this.indent;
     }
 
-    public DumperOptions version(final Integer[] version) {
+    public DumperOptions setVersion(final Integer[] version) {
         this.version = version;
         return this;
     }
 
-    public Integer[] version() {
+    public Integer[] getVersion() {
         return this.version;
     }
 
