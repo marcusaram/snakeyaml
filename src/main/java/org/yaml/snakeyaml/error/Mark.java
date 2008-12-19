@@ -3,6 +3,8 @@
  */
 package org.yaml.snakeyaml.error;
 
+import org.yaml.snakeyaml.scanner.ScannerImpl;
+
 /**
  * It's just a record and its only use is producing nice error messages. Parser
  * does not use it for any other purposes.
@@ -26,21 +28,7 @@ public class Mark {
     }
 
     private boolean isLineBreak(char ch) {
-        switch (ch) {
-        case '\0':
-            return true;
-        case '\r':
-            return true;
-        case '\n':
-            return true;
-        case '\u0085':
-            return true;
-        case '\u2028':
-            return true;
-        case '\u2029':
-            return true;
-        }
-        return false;
+        return ScannerImpl.NULL_OR_LINEBR.indexOf(ch) != -1;
     }
 
     public String get_snippet(int indent, int max_length) {
