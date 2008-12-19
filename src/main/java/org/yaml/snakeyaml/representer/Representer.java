@@ -39,7 +39,7 @@ public class Representer extends SafeRepresenter {
                     } else if (name.startsWith("is")) {
                         pname = "" + Character.toLowerCase(name.charAt(2)) + name.substring(3);
                     }
-                    if (null != pname) {
+                    if (pname != null) {
                         try {
                             values.put(pname, ems[i].invoke(data, (Object[]) null));
                         } catch (Exception exe) {

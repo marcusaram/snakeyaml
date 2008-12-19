@@ -29,7 +29,6 @@ public class BaseRepresenter {
     protected Represent nullRepresenter;
     @SuppressWarnings("unchecked")
     protected Map<Class, Represent> multiRepresenters = new HashMap<Class, Represent>();
-    private Represent nullMultiRepresenter;
     private Character defaultStyle;
     private Boolean defaultFlowStyle;
     protected Map<Integer, Node> representedObjects = new HashMap<Integer, Node>();
@@ -60,13 +59,8 @@ public class BaseRepresenter {
         }
         // check for null first
         if (data == null) {
-            if (nullRepresenter != null) {
-                Node node = nullRepresenter.representData(data);
-                return node;
-            } else if (nullMultiRepresenter != null) {
-                Node node = nullMultiRepresenter.representData(data);
-                return node;
-            }
+            Node node = nullRepresenter.representData(data);
+            return node;
         }
         // check the same class
         Node node;
@@ -109,9 +103,8 @@ public class BaseRepresenter {
             style = this.defaultStyle;
         }
         Node node = new ScalarNode(tag, value, null, null, style);
-        if (aliasKey != null) {
-            representedObjects.put(aliasKey, node);
-        }
+        assert aliasKey != null;
+        representedObjects.put(aliasKey, node);
         return node;
     }
 
@@ -122,9 +115,8 @@ public class BaseRepresenter {
     protected Node representSequence(String tag, List<Object> sequence, Boolean flowStyle) {
         List<Node> value = new LinkedList<Node>();
         SequenceNode node = new SequenceNode(tag, value, flowStyle);
-        if (aliasKey != null) {
-            representedObjects.put(aliasKey, node);
-        }
+        assert aliasKey != null;
+        representedObjects.put(aliasKey, node);
         boolean bestStyle = true;
         for (Object item : sequence) {
             Node nodeItem = representData(item);
@@ -146,9 +138,8 @@ public class BaseRepresenter {
     protected Node representMapping(String tag, Map<Object, Object> sequence, Boolean flowStyle) {
         List<Node[]> value = new LinkedList<Node[]>();
         MappingNode node = new MappingNode(tag, value, flowStyle);
-        if (aliasKey != null) {
-            representedObjects.put(aliasKey, node);
-        }
+        assert aliasKey != null;
+        representedObjects.put(aliasKey, node);
         boolean bestStyle = true;
         for (Object itemKey : sequence.keySet()) {
             Object itemValue = sequence.get(itemKey);

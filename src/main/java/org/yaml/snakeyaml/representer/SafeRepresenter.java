@@ -185,11 +185,12 @@ class SafeRepresenter extends BaseRepresenter {
             buffer.append(String.valueOf(seconds));
             if (millis > 0) {
                 if (millis < 10) {
-                    buffer.append("00");
+                    buffer.append(".00");
                 } else if (millis < 100) {
-                    buffer.append("0");
+                    buffer.append(".0");
+                } else {
+                    buffer.append(".");
                 }
-                buffer.append(".");
                 buffer.append(String.valueOf(millis));
             }
             buffer.append("Z");
