@@ -98,11 +98,9 @@ public class Composer {
             }
             return (Node) anchors.get(anchor);
         }
-        Event event = parser.peekEvent();
+        NodeEvent event = (NodeEvent) parser.peekEvent();
         String anchor = null;
-        if (event instanceof NodeEvent) {
-            anchor = ((NodeEvent) event).getAnchor();
-        }
+        anchor = event.getAnchor();
         if (anchor != null) {
             if (anchors.containsKey(anchor)) {
                 throw new ComposerException("found duplicate anchor " + anchor
@@ -116,7 +114,7 @@ public class Composer {
             node = composeScalarNode(anchor);
         } else if (parser.checkEvent(SequenceStartEvent.class)) {
             node = composeSequenceNode(anchor);
-        } else if (parser.checkEvent(MappingStartEvent.class)) {
+        } else {
             node = composeMappingNode(anchor);
         }
         // resolver.ascendResolver();
