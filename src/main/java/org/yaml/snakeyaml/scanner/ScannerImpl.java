@@ -502,7 +502,7 @@ public class ScannerImpl implements Scanner {
         Mark mark = reader.getMark();
 
         // Add STREAM-START.
-        Token token = new StreamStartToken(mark, mark, reader.getEncoding());
+        Token token = new StreamStartToken(mark, mark);
         this.tokens.add(token);
     }
 

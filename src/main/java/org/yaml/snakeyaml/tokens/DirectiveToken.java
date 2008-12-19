@@ -15,8 +15,7 @@ public class DirectiveToken extends Token {
     private String name;
     private List<?> value;
 
-    public DirectiveToken(final String name, final List<?> value, final Mark startMark,
-            final Mark endMark) {
+    public DirectiveToken(String name, List<?> value, Mark startMark, Mark endMark) {
         super(startMark, endMark);
         this.name = name;
         if (value != null && value.size() != 2) {
@@ -36,7 +35,11 @@ public class DirectiveToken extends Token {
 
     @Override
     protected String getArguments() {
-        return "name=" + name + ", value=[" + value.get(0) + ", " + value.get(1) + "]";
+        if (value != null) {
+            return "name=" + name + ", value=[" + value.get(0) + ", " + value.get(1) + "]";
+        } else {
+            return "name=" + name;
+        }
     }
 
     @Override

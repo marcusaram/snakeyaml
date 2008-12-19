@@ -12,7 +12,7 @@ import org.yaml.snakeyaml.error.YAMLException;
 public class TagToken extends Token {
     private String[] value;
 
-    public TagToken(final String[] value, final Mark startMark, final Mark endMark) {
+    public TagToken(String[] value, Mark startMark, Mark endMark) {
         super(startMark, endMark);
         if (value.length != 2) {
             throw new YAMLException("Two strings must be provided instead of "

@@ -11,7 +11,7 @@ import org.yaml.snakeyaml.error.Mark;
 public class AliasToken extends Token {
     private String value;
 
-    public AliasToken(final String value, final Mark startMark, final Mark endMark) {
+    public AliasToken(String value, Mark startMark, Mark endMark) {
         super(startMark, endMark);
         this.value = value;
     }

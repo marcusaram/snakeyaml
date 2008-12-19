@@ -26,7 +26,7 @@ public class ScannerImplTest extends TestCase {
 
         Mark dummy = new Mark("dummy", 0, 0, 0, "", 0);
         LinkedList<Token> etalonTokens = new LinkedList<Token>();
-        etalonTokens.add(new StreamStartToken(dummy, dummy, null));
+        etalonTokens.add(new StreamStartToken(dummy, dummy));
         etalonTokens.add(new BlockMappingStartToken(dummy, dummy));
         etalonTokens.add(new KeyToken(dummy, dummy));
         etalonTokens.add(new ScalarToken("string", true, dummy, dummy, (char) 0));
