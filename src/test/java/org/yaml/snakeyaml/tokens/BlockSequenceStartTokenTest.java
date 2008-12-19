@@ -1,0 +1,14 @@
+package org.yaml.snakeyaml.tokens;
+
+import junit.framework.TestCase;
+
+import org.yaml.snakeyaml.error.Mark;
+
+public class BlockSequenceStartTokenTest extends TestCase {
+
+    public void testGetTokenId() {
+        Mark mark = new Mark("test1", 0, 0, 0, "*The first line.\nThe last line.", 0);
+        BlockSequenceStartToken token = new BlockSequenceStartToken(mark, mark);
+        assertEquals("<block sequence start>", token.getTokenId());
+    }
+}
