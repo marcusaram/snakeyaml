@@ -23,7 +23,7 @@ import org.yaml.snakeyaml.nodes.SequenceNode;
 import org.yaml.snakeyaml.util.Base64Coder;
 
 /**
- * @see <a href="http://pyyaml.org/wiki/PyYAML">PyYAML</a> for more information
+ * @see <a href="http://pyyaml.org/wiki/PyYAML">PyYAML< /a> for more information
  */
 public class SafeConstructor extends BaseConstructor {
 
@@ -230,88 +230,67 @@ public class SafeConstructor extends BaseConstructor {
         public Object construct(Node node) {
             Matcher match = YMD_REGEXP.matcher((String) node.getValue());
             if (match.matches()) {
-                final String year_s = match.group(1);
-                final String month_s = match.group(2);
-                final String day_s = match.group(3);
-                final Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+                String year_s = match.group(1);
+                String month_s = match.group(2);
+                String day_s = match.group(3);
+                Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
                 cal.clear();
-                if (year_s != null) {
-                    cal.set(Calendar.YEAR, Integer.parseInt(year_s));
+                cal.set(Calendar.YEAR, Integer.parseInt(year_s));
+                // Java's months are zero-based...
+                cal.set(Calendar.MONTH, Integer.parseInt(month_s) - 1); // x
+                cal.set(Calendar.DAY_OF_MONTH, Integer.parseInt(day_s));
+                return cal.getTime();
+            } else {
+                match = TIMESTAMP_REGEXP.matcher((String) node.getValue());
+                if (!match.matches()) {
+                    throw new YAMLException("Expected timestamp: " + node);
                 }
-                if (month_s != null) {
-                    cal.set(Calendar.MONTH, Integer.parseInt(month_s) - 1); // Java's
-                    // months
-                    // are
-                    // zero-based...
+                String year_s = match.group(1);
+                String month_s = match.group(2);
+                String day_s = match.group(3);
+                String hour_s = match.group(4);
+                String min_s = match.group(5);
+                String sec_s = match.group(6);
+                String fract_s = match.group(7);
+                String timezoneh_s = match.group(8);
+                String timezonem_s = match.group(9);
+
+                int usec = 0;
+                if (fract_s != null) {
+                    usec = Integer.parseInt(fract_s);
+                    if (usec != 0) {
+                        while (10 * usec < 1000) {
+                            usec *= 10;
+                        }
+                    }
                 }
-                if (day_s != null) {
-                    cal.set(Calendar.DAY_OF_MONTH, Integer.parseInt(day_s));
+                Calendar cal = Calendar.getInstance();
+                cal.set(Calendar.YEAR, Integer.parseInt(year_s));
+                // Java's months are zero-based...
+                cal.set(Calendar.MONTH, Integer.parseInt(month_s) - 1);
+                cal.set(Calendar.DAY_OF_MONTH, Integer.parseInt(day_s));
+                cal.set(Calendar.HOUR_OF_DAY, Integer.parseInt(hour_s));
+                cal.set(Calendar.MINUTE, Integer.parseInt(min_s));
+                cal.set(Calendar.SECOND, Integer.parseInt(sec_s));
+                cal.set(Calendar.MILLISECOND, usec);
+                if (timezoneh_s != null || timezonem_s != null) {
+                    int zone = 0;
+                    int sign = +1;
+                    if (timezoneh_s != null) {
+                        if (timezoneh_s.startsWith("-")) {
+                            sign = -1;
+                        }
+                        zone += Integer.parseInt(timezoneh_s.substring(1)) * 3600000;
+                    }
+                    if (timezonem_s != null) {
+                        zone += Integer.parseInt(timezonem_s) * 60000;
+                    }
+                    cal.set(Calendar.ZONE_OFFSET, sign * zone);
+                } else {
+                    cal.setTimeZone(TimeZone.getTimeZone("UTC"));
                 }
                 return cal.getTime();
             }
-            match = TIMESTAMP_REGEXP.matcher((String) node.getValue());
-            if (!match.matches()) {
-                throw new YAMLException("Expected timestamp: " + node);
-            }
-            final String year_s = match.group(1);
-            final String month_s = match.group(2);
-            final String day_s = match.group(3);
-            final String hour_s = match.group(4);
-            final String min_s = match.group(5);
-            final String sec_s = match.group(6);
-            final String fract_s = match.group(7);
-            final String timezoneh_s = match.group(8);
-            final String timezonem_s = match.group(9);
-
-            int usec = 0;
-            if (fract_s != null) {
-                usec = Integer.parseInt(fract_s);
-                if (usec != 0) {
-                    while (10 * usec < 1000) {
-                        usec *= 10;
-                    }
-                }
-            }
-            final Calendar cal = Calendar.getInstance();
-            if (year_s != null) {
-                cal.set(Calendar.YEAR, Integer.parseInt(year_s));
-            }
-            if (month_s != null) {
-                cal.set(Calendar.MONTH, Integer.parseInt(month_s) - 1); // Java's
-                // months
-                // are
-                // zero-based...
-            }
-            if (day_s != null) {
-                cal.set(Calendar.DAY_OF_MONTH, Integer.parseInt(day_s));
-            }
-            if (hour_s != null) {
-                cal.set(Calendar.HOUR_OF_DAY, Integer.parseInt(hour_s));
-            }
-            if (min_s != null) {
-                cal.set(Calendar.MINUTE, Integer.parseInt(min_s));
-            }
-            if (sec_s != null) {
-                cal.set(Calendar.SECOND, Integer.parseInt(sec_s));
-            }
-            cal.set(Calendar.MILLISECOND, usec);
-            if (timezoneh_s != null || timezonem_s != null) {
-                int zone = 0;
-                int sign = +1;
-                if (timezoneh_s != null) {
-                    if (timezoneh_s.startsWith("-")) {
-                        sign = -1;
-                    }
-                    zone += Integer.parseInt(timezoneh_s.substring(1)) * 3600000;
-                }
-                if (timezonem_s != null) {
-                    zone += Integer.parseInt(timezonem_s) * 60000;
-                }
-                cal.set(Calendar.ZONE_OFFSET, sign * zone);
-            } else {
-                cal.setTimeZone(TimeZone.getTimeZone("UTC"));
-            }
-            return cal.getTime();
         }
     }
 
