@@ -52,7 +52,6 @@ public class DumperTest extends TestCase {
         Writer writer = new ExceptionWriter1();
         try {
             yaml.dump("aaa1234567890", writer);
-            System.out.println(writer.toString());
             fail("Exception must be thrown.");
         } catch (Exception e) {
             assertEquals("java.io.IOException: write test failure.", e.getMessage());
@@ -71,34 +70,6 @@ public class DumperTest extends TestCase {
 
         @Override
         public void flush() throws IOException {
-        }
-
-        @Override
-        public void write(char[] cbuf, int off, int len) throws IOException {
-        }
-    }
-
-    public void testDumpCloseException() {
-        Yaml yaml = new Yaml();
-        Writer writer = new ExceptionWriter2();
-        try {
-            yaml.dump("aaa1234567890", writer);
-            System.out.println(writer.toString());
-            fail("Exception must be thrown.");
-        } catch (Exception e) {
-            assertEquals("java.io.IOException: close test failure.", e.getMessage());
-        }
-    }
-
-    private class ExceptionWriter2 extends Writer {
-        @Override
-        public void flush() throws IOException {
-            throw new IOException("close test failure.");
-        }
-
-        @Override
-        public void close() throws IOException {
-            throw new IOException("close test failure.");
         }
 
         @Override
