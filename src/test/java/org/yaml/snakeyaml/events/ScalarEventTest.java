@@ -14,4 +14,11 @@ public class ScalarEventTest extends TestCase {
                 event.toString());
     }
 
+    public void testNotEqual() {
+        boolean[] implicit = new boolean[2];
+        implicit[0] = true;
+        implicit[1] = true;
+        ScalarEvent event = new ScalarEvent("a2", "str", implicit, "text", null, null, '"');
+        assertFalse(event.equals(event.toString()));
+    }
 }
