@@ -137,7 +137,6 @@
 					<testWindowtitle>Test API for ${project.name} ${project.version}</testWindowtitle>
 				</configuration>
 			</plugin>
-
 		</plugins>
 	</reporting>
 </project>
