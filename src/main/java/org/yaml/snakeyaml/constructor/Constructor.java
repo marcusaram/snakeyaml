@@ -13,7 +13,7 @@ import org.yaml.snakeyaml.nodes.ScalarNode;
 import org.yaml.snakeyaml.nodes.SequenceNode;
 
 /**
- * @see <a href="http://pyyaml.org/wiki/PyYAML">PyYAML</a> for more information
+ * @see <a href="http://pyyaml.org/wiki/PyYAML">PyYAML< /a> for more information
  */
 public class Constructor extends SafeConstructor {
 
@@ -62,7 +62,7 @@ public class Constructor extends SafeConstructor {
                             .getConstructor(parameterTypes);
                     Object[] initargs = values.toArray();
                     result = javaConstructor.newInstance(initargs);
-                } else if (node instanceof ScalarNode) {
+                } else {
                     ScalarNode snode = (ScalarNode) node;
                     Class cl = Class.forName(pref);
                     Object value = constructScalar(snode);
@@ -80,9 +80,6 @@ public class Constructor extends SafeConstructor {
 
     @SuppressWarnings("unchecked")
     private Object fixValue(Object inp, Class outp) {
-        if (inp == null) {
-            return null;
-        }
         Class inClass = inp.getClass();
         if (outp.isAssignableFrom(inClass)) {
             return inp;
