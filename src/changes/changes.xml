@@ -29,6 +29,9 @@
             <action dev="py4fun" type="remove">
                 Remove old tests (2008-12-18)
             </action>
+            <action dev="py4fun" type="update">
+                Synchronized with PyYAML revision 307
+            </action>
         </release>
         <release version="0.6" date="2008-12-17" description="Documentation added">
             <action dev="py4fun" type="add">
