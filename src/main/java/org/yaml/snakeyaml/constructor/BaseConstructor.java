@@ -18,7 +18,7 @@ import org.yaml.snakeyaml.nodes.ScalarNode;
 import org.yaml.snakeyaml.nodes.SequenceNode;
 
 /**
- * @see <a href="http://pyyaml.org/wiki/PyYAML">PyYAML</a> for more information
+ * @see <a href="http://pyyaml.org/wiki/PyYAML">PyYAML< /a> for more information
  */
 public class BaseConstructor {
     protected Map<String, Construct> yamlConstructors = new HashMap<String, Construct>();
@@ -47,11 +47,9 @@ public class BaseConstructor {
 
     public Object getData() {
         // Construct and return the next document.
-        if (composer.checkNode()) {
-            Node node = composer.getNode();
-            return constructDocument(node);
-        }
-        return null;
+        composer.checkNode();
+        Node node = composer.getNode();
+        return constructDocument(node);
     }
 
     public Object getSingleData() {
