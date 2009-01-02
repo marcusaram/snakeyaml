@@ -47,11 +47,11 @@ public class Chapter2_5Test extends TestCase {
         List<Map<String, String>> list3 = (List<Map<String, String>>) data3.get("Stack");
         Map<String, String> map1 = list3.get(0);
         assertEquals("TopClass.py", map1.get("file"));
-        assertEquals(new Long(23), map1.get("line"));
+        assertEquals(new Integer(23), map1.get("line"));
         assertEquals("x = MoreObject(\"345\\n\")\n", map1.get("code"));
         Map<String, String> map2 = list3.get(1);
         assertEquals("MoreClass.py", map2.get("file"));
-        assertEquals(new Long(58), map2.get("line"));
+        assertEquals(new Integer(58), map2.get("line"));
         assertEquals("foo = bar", map2.get("code"));
     }
 }

@@ -28,7 +28,7 @@ public class AnyObjectExampleTest extends TestCase {
         assertEquals("[true, false, true, false]", object.get("bool").toString());
         assertEquals(4, ((List) object.get("bool")).size());
         //
-        assertEquals(new Long(42), object.get("int"));
+        assertEquals(new Integer(42), object.get("int"));
         assertEquals(new Double(3.14159), object.get("float"));
         //
         assertEquals("[LITE, RES_ACID, SUS_DEXT]", object.get("list").toString());
@@ -39,9 +39,9 @@ public class AnyObjectExampleTest extends TestCase {
         }
         //
         assertEquals("{hp=13, sp=5}", object.get("dict").toString());
-        Map<String, Long> map = (Map<String, Long>) object.get("dict");
+        Map<String, Integer> map = (Map<String, Integer>) object.get("dict");
         assertEquals(2, map.keySet().size());
-        assertEquals(new Long(13), map.get("hp"));
-        assertEquals(new Long(5), map.get("sp"));
+        assertEquals(new Integer(13), map.get("hp"));
+        assertEquals(new Integer(5), map.get("sp"));
     }
 }
