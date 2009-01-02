@@ -29,7 +29,7 @@ public class LoadExampleTest extends TestCase {
         String document = "hello: 25";
         Map map = (Map) yaml.load(document);
         assertEquals("{hello=25}", map.toString());
-        assertEquals(new Long(25), map.get("hello"));
+        assertEquals(new Integer(25), map.get("hello"));
     }
 
     public void testLoadFromStream() throws FileNotFoundException {

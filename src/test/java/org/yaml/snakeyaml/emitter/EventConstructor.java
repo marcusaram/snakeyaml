@@ -78,7 +78,7 @@ public class EventConstructor extends Constructor {
                 value = new DocumentEndEvent(null, null, false);
             } else if (className.equals("DocumentStartEvent")) {
                 Map<String, String> tags = (Map<String, String>) mapping.get("tags");
-                List<Long> versionList = (List<Long>) mapping.get("version");
+                List<Integer> versionList = (List<Integer>) mapping.get("version");
                 Integer[] version = null;
                 if (versionList != null) {
                     version = new Integer[2];

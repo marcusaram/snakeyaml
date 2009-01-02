@@ -28,12 +28,13 @@ public class Chapter2_4Test extends TestCase {
         YamlDocument document = new YamlDocument("example2_19.yaml");
         Map<String, Object> map = (Map<String, Object>) document.getNativeData();
         assertEquals(5, map.size());
-        assertEquals("Expect 12345 to be an Integer.", Long.class, map.get("canonical").getClass());
-        assertEquals(new Long(12345), map.get("canonical"));
-        assertEquals(new Long(12345), map.get("decimal"));
-        assertEquals(new Long(3 * 3600 + 25 * 60 + 45), map.get("sexagesimal"));
-        assertEquals(new Long(014), map.get("octal"));
-        assertEquals(new Long(0xC), map.get("hexadecimal"));
+        assertEquals("Expect 12345 to be an Integer.", Integer.class, map.get("canonical")
+                .getClass());
+        assertEquals(new Integer(12345), map.get("canonical"));
+        assertEquals(new Integer(12345), map.get("decimal"));
+        assertEquals(new Integer(3 * 3600 + 25 * 60 + 45), map.get("sexagesimal"));
+        assertEquals(new Integer(014), map.get("octal"));
+        assertEquals(new Integer(0xC), map.get("hexadecimal"));
     }
 
     @SuppressWarnings("unchecked")
@@ -134,9 +135,9 @@ public class Chapter2_4Test extends TestCase {
         Map<String, String> map = (Map<String, String>) document.getNativeData();
         assertEquals(3, map.size());
         assertTrue(map instanceof LinkedHashMap);
-        assertEquals(new Long(65), map.get("Mark McGwire"));
-        assertEquals(new Long(63), map.get("Sammy Sosa"));
-        assertEquals(new Long(58), map.get("Ken Griffy"));
+        assertEquals(new Integer(65), map.get("Mark McGwire"));
+        assertEquals(new Integer(63), map.get("Sammy Sosa"));
+        assertEquals(new Integer(58), map.get("Ken Griffy"));
         List list = new ArrayList();
         for (String key : map.keySet()) {
             list.add(key);

@@ -27,9 +27,9 @@ public class OmapTagTest extends AbstractTest {
         //
         Map<String, String> map2 = (Map<String, String>) map.get("Numbers");
         assertEquals(3, map2.size());
-        assertEquals(new Long(1), map2.get("one"));
-        assertEquals(new Long(2), map2.get("two"));
-        assertEquals(new Long(3), map2.get("three"));
+        assertEquals(new Integer(1), map2.get("one"));
+        assertEquals(new Integer(2), map2.get("two"));
+        assertEquals(new Integer(3), map2.get("three"));
     }
 
 }

@@ -6,9 +6,9 @@ package org.yaml.snakeyaml.constructor;
 public class Person {
     private String firstName;
     private String lastName;
-    private Long age;
+    private Integer age;
 
-    public Person(String firstName, String lastName, Long age) {
+    public Person(String firstName, String lastName, Integer age) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.age = age;
@@ -37,11 +37,11 @@ public class Person {
         this.lastName = lastName;
     }
 
-    public Long getAge() {
+    public Integer getAge() {
         return age;
     }
 
-    public void setAge(Long age) {
+    public void setAge(Integer age) {
         this.age = age;
     }
 

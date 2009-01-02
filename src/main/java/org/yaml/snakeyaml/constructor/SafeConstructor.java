@@ -3,6 +3,7 @@
  */
 package org.yaml.snakeyaml.constructor;
 
+import java.math.BigInteger;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
@@ -134,7 +135,7 @@ public class SafeConstructor extends BaseConstructor {
             }
             int base = 10;
             if (value.equals("0")) {
-                return new Long(0);
+                return new Integer(0);
             } else if (value.startsWith("0b")) {
                 value = value.substring(2);
                 base = 2;
@@ -145,19 +146,40 @@ public class SafeConstructor extends BaseConstructor {
                 value = value.substring(1);
                 base = 8;
             } else if (value.indexOf(':') != -1) {
-                final String[] digits = value.split(":");
+                String[] digits = value.split(":");
                 int bes = 1;
                 int val = 0;
                 for (int i = 0, j = digits.length; i < j; i++) {
                     val += (Long.parseLong(digits[(j - i) - 1]) * bes);
                     bes *= 60;
                 }
-                return new Long(sign * val);
+                return createNumber(sign, String.valueOf(val), 10);
             } else {
-                return new Long(sign * Long.parseLong(value));
+                return createNumber(sign, value, 10);
             }
-            return new Long(sign * Long.parseLong(value, base));
+            return createNumber(sign, value, base);
         }
+    }
+
+    private Number createNumber(int sign, String number, int radix) {
+        Number result;
+        try {
+            int integer = Integer.parseInt(number, radix);
+            result = new Integer(integer * sign);
+        } catch (NumberFormatException e) {
+            try {
+                long longValue = Long.parseLong(number, radix);
+                result = new Long(longValue * sign);
+            } catch (NumberFormatException e1) {
+                BigInteger big = new BigInteger(number, radix);
+                if (sign < 0) {
+                    result = big.negate();
+                } else {
+                    result = big;
+                }
+            }
+        }
+        return result;
     }
 
     private class ConstuctYamlFloat implements Construct {

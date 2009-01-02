@@ -32,13 +32,13 @@ public class Chapter2_1Test extends TestCase {
         YamlDocument document = new YamlDocument("example2_2.yaml");
         Map<String, Object> map = (Map<String, Object>) document.getNativeData();
         assertEquals(3, map.size());
-        assertEquals("Expect 65 to be a Long", Long.class, map.get("hr").getClass());
-        assertEquals(new Long(65), map.get("hr"));
+        assertEquals("Expect 65 to be a Integer", Integer.class, map.get("hr").getClass());
+        assertEquals(new Integer(65), map.get("hr"));
         assertEquals(new Float(0.278), new Float("0.278"));
         assertEquals("Expect 0.278 to be a Float", Double.class, map.get("avg").getClass());
         assertEquals(new Double(0.278), map.get("avg"));
-        assertEquals("Expect 147 to be an Long", Long.class, map.get("rbi").getClass());
-        assertEquals(new Long(147), map.get("rbi"));
+        assertEquals("Expect 147 to be an Integer", Integer.class, map.get("rbi").getClass());
+        assertEquals(new Integer(147), map.get("rbi"));
     }
 
     @SuppressWarnings("unchecked")

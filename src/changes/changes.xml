@@ -4,7 +4,12 @@
 		<author email="py4fun@gmail.com">Andrey Somov</author>
 	</properties>
 	<body>
-	    <release version="0.7" date="2008-12-20" description="Improve test coverage">
+	    <release version="0.8" date="in Mercurial" description="Development">
+	    	<action dev="py4fun" type="update">
+                'int' tries to construct Integer, Long, BigInteger in the sequence. (2009-01-02)
+            </action>
+        </release>
+        <release version="0.7" date="2008-12-20" description="Improve test coverage">
 	    	<action dev="py4fun" type="update">
                 Improve test coverage for constructor package (2008-12-20)
             </action>
