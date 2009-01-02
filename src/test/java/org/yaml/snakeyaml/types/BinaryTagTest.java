@@ -23,6 +23,11 @@ public class BinaryTagTest extends AbstractTest {
         assertTrue(binary.startsWith("GIF89"));
     }
 
+    public void testBinary2() throws IOException {
+        String binary = (String) load("!!binary \"MQ==\"");
+        assertEquals("1", binary);
+    }
+
     public void testBinaryTag() throws IOException {
         String binary = (String) getMapValue("canonical: !<tag:yaml.org,2002:binary> " + content,
                 "canonical");
@@ -38,5 +43,4 @@ public class BinaryTagTest extends AbstractTest {
         String output = dump(map);
         assertEquals("canonical: !!binary |-\n  R0lGODkJYmkDAG5hcnkKH2ltYWdlCg==\n", output);
     }
-
 }
