@@ -16,7 +16,7 @@ This release fixes minor bugs.
 Changes
 =======
 
-* when constructing integers try to create the first which succeeds in the following order:
+* when constructing integers try to create the first in the following order:
   Integer -> Long -> BigInteger
 
 Resources
