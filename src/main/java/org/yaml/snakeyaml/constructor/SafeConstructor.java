@@ -163,20 +163,18 @@ public class SafeConstructor extends BaseConstructor {
 
     private Number createNumber(int sign, String number, int radix) {
         Number result;
+        if (sign < 0) {
+            number = "-" + number;
+        }
         try {
             int integer = Integer.parseInt(number, radix);
-            result = new Integer(integer * sign);
+            result = new Integer(integer);
         } catch (NumberFormatException e) {
             try {
                 long longValue = Long.parseLong(number, radix);
-                result = new Long(longValue * sign);
+                result = new Long(longValue);
             } catch (NumberFormatException e1) {
-                BigInteger big = new BigInteger(number, radix);
-                if (sign < 0) {
-                    result = big.negate();
-                } else {
-                    result = big;
-                }
+                result = new BigInteger(number, radix);
             }
         }
         return result;

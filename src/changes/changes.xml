@@ -5,7 +5,10 @@
 	</properties>
 	<body>
 	    <release version="0.8" date="in Mercurial" description="Development">
-	    	<action dev="py4fun" type="update">
+	    	<action dev="py4fun" type="fix">
+                Fix parsing Long.MIN_VALUE: respect the sign when parsing integers. (2009-01-04)
+            </action>
+            <action dev="py4fun" type="update">
                 when constructing integers try to create the first in the following order: 
                 Integer -> Long -> BigInteger. (2009-01-02)
             </action>

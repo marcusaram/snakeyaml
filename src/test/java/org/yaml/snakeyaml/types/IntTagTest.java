@@ -26,12 +26,15 @@ public class IntTagTest extends AbstractTest {
         assertEquals(new Integer(0), load("0"));
         assertEquals(new Integer(0), load("-0"));
         assertEquals(new Integer(0), load("+0"));
+        assertEquals(Integer.MIN_VALUE, load(dump(Integer.MIN_VALUE)));
+        assertEquals(Integer.MAX_VALUE, load(dump(Integer.MAX_VALUE)));
     }
 
     public void testBigInt() throws IOException {
         assertEquals(new Long(922337203685477580L), load("922337203685477580"));
         assertEquals(new BigInteger("9223372036854775809999999999"),
                 load("9223372036854775809999999999"));
+        assertEquals(Long.MIN_VALUE, load("-9223372036854775808"));
     }
 
     public void testIntShorthand() throws IOException {
