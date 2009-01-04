@@ -898,6 +898,14 @@ to Java objects.
 || `!!seq`                         || `List`                      ||
 || `!!map`                         || `Map`                       ||
 
+== Collections ==
+
+Default implementations of collections are:
+List: LinkedList
+Map: LinkedHashMap
+
+It is possible to define other default implementations. An example can be found [here ]
+
 == Deviations from the specification ==
 
 ''need to update this section''
