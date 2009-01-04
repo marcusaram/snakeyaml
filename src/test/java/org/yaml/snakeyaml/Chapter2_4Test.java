@@ -139,11 +139,6 @@ public class Chapter2_4Test extends TestCase {
                 special);
     }
 
-    public void testExample_2_24() {
-        // TODO unclear how to test "Example 2.24. Global Tags"
-        // fail("Test not finished for: 'Example 2.24. Global Tags'");
-    }
-
     @SuppressWarnings("unchecked")
     public void testExample_2_25() {
         YamlDocument document = new YamlDocument("example2_25.yaml");
