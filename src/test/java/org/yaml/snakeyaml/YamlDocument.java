@@ -10,16 +10,22 @@ import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 
+import org.yaml.snakeyaml.constructor.Constructor;
+
 public class YamlDocument {
     public static final String ROOT = "specification/";
     private String source;
     private String presentation;
     private Object nativeData;
 
-    public YamlDocument(String sourceName, boolean check) {
+    public YamlDocument(String sourceName, boolean check, Constructor constructor) {
         InputStream input = YamlDocument.class.getClassLoader().getResourceAsStream(
                 ROOT + sourceName);
-        Yaml yaml = new Yaml();
+        if (constructor == null) {
+            constructor = new Constructor();
+        }
+        Loader loader = new Loader(constructor);
+        Yaml yaml = new Yaml(loader);
         nativeData = yaml.load(input);
         ByteArrayOutputStream output = new ByteArrayOutputStream();
         Charset charset = Charset.forName("UTF-8");
@@ -38,6 +44,10 @@ public class YamlDocument {
         if (check && !nativeData.equals(result)) {
             throw new RuntimeException("Generated presentation is not valid: " + presentation);
         }
+    }
+
+    public YamlDocument(String sourceName, boolean check) {
+        this(sourceName, check, null);
     }
 
     public YamlDocument(String sourceName) {

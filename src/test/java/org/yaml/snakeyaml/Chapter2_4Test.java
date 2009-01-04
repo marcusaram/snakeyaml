@@ -15,6 +15,11 @@ import java.util.TimeZone;
 
 import junit.framework.TestCase;
 
+import org.yaml.snakeyaml.constructor.Construct;
+import org.yaml.snakeyaml.constructor.Constructor;
+import org.yaml.snakeyaml.nodes.Node;
+import org.yaml.snakeyaml.nodes.ScalarNode;
+
 /**
  * Test Chapter 2.4 from the YAML specification
  * 
@@ -109,9 +114,29 @@ public class Chapter2_4Test extends TestCase {
         assertTrue(picture.startsWith("GIF89"));
     }
 
-    public void testExample_2_23_application() throws IOException {
-        // TODO unclear how to test "Example 2.23. Various Explicit Tags"
-        // fail("Test not finished for: 'Example 2.23. Various Explicit Tags'");
+    class SomethingConstructor extends Constructor {
+        public SomethingConstructor() {
+            this.yamlConstructors.put("!something", new ConstructSomething());
+        }
+
+        private class ConstructSomething implements Construct {
+            public Object construct(Node node) {
+                String val = (String) constructScalar((ScalarNode) node);
+                return val;
+            }
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    public void testExample_2_23() throws IOException {
+        YamlDocument document = new YamlDocument("example2_23.yaml", true,
+                new SomethingConstructor());
+        Map<String, Object> map = (Map<String, Object>) document.getNativeData();
+        assertEquals(3, map.size());
+        String special = (String) map.get("application specific tag");
+        assertEquals(
+                "The semantics of the tag\nabove may be different for\ndifferent documents.\n",
+                special);
     }
 
     public void testExample_2_24() {
