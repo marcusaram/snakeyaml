@@ -901,10 +901,12 @@ to Java objects.
 == Collections ==
 
 Default implementations of collections are:
-List: LinkedList
-Map: LinkedHashMap
+ * ''List'': `LinkedList`
+ * ''Map'': `LinkedHashMap` (the order is implicitly defined)
 
-It is possible to define other default implementations. An example can be found [here ]
+It is possible to define other default implementations. An example can be found 
+[http://trac-hg.assembla.com/snakeyaml/browser/src/test/java/examples/CustomListExampleTest.java here] for List and
+[http://trac-hg.assembla.com/snakeyaml/browser/src/test/java/examples/CustomMapExampleTest.java here] for Map
 
 == Deviations from the specification ==
 
@@ -935,5 +937,4 @@ block: {
 
 To do and long-term goals:
  * better `JavaBeans` support
- * import path resolver
- * add example to change default List or Map implementation
+ * import path resolver from PyYAML
