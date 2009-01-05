@@ -24,7 +24,7 @@ public class DiceExampleTest extends TestCase {
         Yaml yaml = new Yaml();
         String output = yaml.dump(dice);
         System.out.println(output);
-        assertEquals("!<examples.Dice> {a: 3, b: 6}\n", output);
+        assertEquals("!!examples.Dice {a: 3, b: 6}\n", output);
     }
 
     public void testDiceRepresenter() throws IOException {

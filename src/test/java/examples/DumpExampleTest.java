@@ -56,7 +56,7 @@ public class DumpExampleTest extends TestCase {
         Yaml yaml = new Yaml();
         String output = yaml.dump(hero);
         System.out.println(output);
-        assertEquals("!<examples.Hero> {hp: -3, name: Galain Ysseleg, sp: 2}\n", output);
+        assertEquals("!!examples.Hero {hp: -3, name: Galain Ysseleg, sp: 2}\n", output);
     }
 
     public void testDumperOptions() {
