@@ -30,7 +30,7 @@ public class ConstructorTest extends TestCase {
      * create JavaBean
      */
     public void testGetBeanAssumeClass() {
-        String data = "--- !org.yaml.snakeyaml.constructor.Person\nfirstName: Andrey\nage: 99";
+        String data = "--- !!org.yaml.snakeyaml.constructor.Person\nfirstName: Andrey\nage: 99";
         Object obj = construct(data);
         assertNotNull(obj);
         assertTrue("Unexpected: " + obj.getClass().toString(), obj instanceof Person);
@@ -44,7 +44,7 @@ public class ConstructorTest extends TestCase {
      * create instance using constructor arguments
      */
     public void testGetConstructorBean() {
-        String data = "--- !org.yaml.snakeyaml.constructor.Person [ Andrey, Somov, 99 ]";
+        String data = "--- !!org.yaml.snakeyaml.constructor.Person [ Andrey, Somov, 99 ]";
         Object obj = construct(data);
         assertNotNull(obj);
         assertTrue(obj.getClass().toString(), obj instanceof Person);
@@ -58,7 +58,7 @@ public class ConstructorTest extends TestCase {
      * create instance using scalar argument
      */
     public void testGetConstructorFromScalar() {
-        String data = "--- !org.yaml.snakeyaml.constructor.Person 'Somov'";
+        String data = "--- !!org.yaml.snakeyaml.constructor.Person 'Somov'";
         Object obj = construct(data);
         assertNotNull(obj);
         assertTrue(obj.getClass().toString(), obj instanceof Person);
@@ -76,7 +76,7 @@ public class ConstructorTest extends TestCase {
         TestBean expected = new TestBean("Ola Bini", 24, cal.getTime());
         assertEquals(
                 expected,
-                construct("--- !org.yaml.snakeyaml.constructor.TestBean\nname: Ola Bini\nage: 24\nborn: 1982-05-03\n"));
+                construct("--- !!org.yaml.snakeyaml.constructor.TestBean\nname: Ola Bini\nage: 24\nborn: 1982-05-03\n"));
     }
 
     private Object construct(String data) {

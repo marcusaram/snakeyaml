@@ -5,7 +5,10 @@
 	</properties>
 	<body>
 	    <release version="0.8" date="in Mercurial" description="Development">
-	    	<action dev="py4fun" type="add">
+	    	<action dev="py4fun" type="update">
+                Use global tags (with !!) to create Java custom instances. (2009-01-05)
+            </action>
+            <action dev="py4fun" type="add">
                 Add example of defining a custom List and Map implementations. (2009-01-04)
             </action>
             <action dev="py4fun" type="fix">

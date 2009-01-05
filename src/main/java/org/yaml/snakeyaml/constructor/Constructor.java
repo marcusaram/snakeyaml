@@ -25,7 +25,7 @@ public class Constructor extends SafeConstructor {
         @SuppressWarnings("unchecked")
         public Object construct(Node node) {
             Object result = null;
-            String pref = node.getTag().substring(1);
+            String pref = node.getTag().substring("tag:yaml.org,2002:".length());
             try {
                 if (node instanceof MappingNode) {
                     MappingNode mnode = (MappingNode) node;
@@ -72,7 +72,7 @@ public class Constructor extends SafeConstructor {
                 }
             } catch (Exception e) {
                 throw new ConstructorException(null, null, "Can't construct a java object for "
-                        + node.getTag(), node.getStartMark());
+                        + node.getTag() + "; exception=" + e.getMessage(), node.getStartMark());
             }
             return result;
         }

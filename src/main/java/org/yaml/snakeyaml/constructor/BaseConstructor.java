@@ -108,7 +108,7 @@ public class BaseConstructor {
         return new LinkedList<Object>();
     }
 
-    protected List<Object> constructSequence(SequenceNode node) {
+    protected List<? extends Object> constructSequence(SequenceNode node) {
         List<Node> nodeValue = (List<Node>) node.getValue();
         List<Object> result = createDefaultList(nodeValue.size());
         for (Iterator<Node> iter = nodeValue.iterator(); iter.hasNext();) {
