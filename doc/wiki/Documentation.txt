@@ -304,11 +304,11 @@ public void testDumpCustomJavaClass() {
     Yaml yaml = new Yaml();
     String output = yaml.dump(hero);
     System.out.println(output);
-    assertEquals("!<examples.Hero> {hp: -3, name: Galain Ysseleg, sp: 2}\n", output);
+    assertEquals("!!examples.Hero {hp: -3, name: Galain Ysseleg, sp: 2}\n", output);
 }
 }}}
 {{{
-!<examples.Hero> {hp: -3, name: Galain Ysseleg, sp: 2}
+!!examples.Hero {hp: -3, name: Galain Ysseleg, sp: 2}
 }}}
 
 As you can see the `JavaBean` data is sorted althabetically.
@@ -467,7 +467,7 @@ public void testRepresenter() throws IOException {
 }
 }}}
 {{{
-!<examples.Dice> {a: 3, b: 6}
+!!examples.Dice {a: 3, b: 6}
 }}}
 
 Suppose you want a '''`Dice`''' object to represented as '''`AdB`''' in YAML:

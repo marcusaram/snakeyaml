@@ -48,7 +48,7 @@ public class Representer extends SafeRepresenter {
                     }
                 }
             }
-            String tag = data.getClass().getName();
+            String tag = "tag:yaml.org,2002:" + data.getClass().getName();
             return representMapping(tag, values, null);
         }
     }

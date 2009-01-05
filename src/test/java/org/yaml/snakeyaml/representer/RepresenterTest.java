@@ -12,7 +12,7 @@ public class RepresenterTest extends TestCase {
         bean.setValid(true);
         Yaml yaml = new Yaml();
         assertEquals(
-                "!<org.yaml.snakeyaml.representer.RepresenterTest$MyBean> {name: Gnome, valid: true}\n",
+                "!!org.yaml.snakeyaml.representer.RepresenterTest$MyBean {name: Gnome, valid: true}\n",
                 yaml.dump(bean));
     }
 
@@ -40,7 +40,7 @@ public class RepresenterTest extends TestCase {
     public void testRepresenterNoConstructorAvailable() {
         MyBean2 bean = new MyBean2("Gnome", true);
         Yaml yaml = new Yaml();
-        assertEquals("!<org.yaml.snakeyaml.representer.RepresenterTest$MyBean2> {valid: true}\n",
+        assertEquals("!!org.yaml.snakeyaml.representer.RepresenterTest$MyBean2 {valid: true}\n",
                 yaml.dump(bean));
     }
 
@@ -76,7 +76,7 @@ public class RepresenterTest extends TestCase {
         MyBean3 bean = new MyBean3("Gnome", true);
         Yaml yaml = new Yaml();
         assertEquals(
-                "!<org.yaml.snakeyaml.representer.RepresenterTest$MyBean3> {name: null, valid: true}\n",
+                "!!org.yaml.snakeyaml.representer.RepresenterTest$MyBean3 {name: null, valid: true}\n",
                 yaml.dump(bean));
     }
 

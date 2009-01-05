@@ -31,9 +31,8 @@ public class YAMLDumpTest extends TestCase {
         cal.set(1982, 5 - 1, 3); // Java's months are zero-based...
 
         final TestBean toDump = new TestBean("Ola Bini", 24, cal.getTime());
-        // TODO remove the angle brackets from class name '<, >'
         assertEquals(
-                "!<org.yaml.snakeyaml.constructor.TestBean> {age: 24, born: !!timestamp '1982-05-02T22:00:00Z',\n  name: Ola Bini}\n",
+                "!!org.yaml.snakeyaml.constructor.TestBean {age: 24, born: !!timestamp '1982-05-02T22:00:00Z',\n  name: Ola Bini}\n",
                 yaml.dump(toDump));
 
     }
