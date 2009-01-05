@@ -898,6 +898,9 @@ to Java objects.
 || `!!seq`                         || `List`                      ||
 || `!!map`                         || `Map`                       ||
 
+An example of loading and dumping [http://yaml.org/spec/1.1/#id858961 Global tags] can be found  
+[http://trac-hg.assembla.com/snakeyaml/browser/src/test/java/org/yaml/snakeyaml/Example2_24Test.java here].
+
 == Collections ==
 
 Default implementations of collections are:
