@@ -11,10 +11,11 @@ import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
 
 public class CustomListExampleTest extends TestCase {
+    @SuppressWarnings("unchecked")
     public void testList() throws IOException {
         Loader loader = new Loader(new CustomConstructor());
         Yaml yaml = new Yaml(loader);
-        List data = (List) yaml.load("[1, 2, 3]");
+        List<Integer> data = (List<Integer>) yaml.load("[1, 2, 3]");
         assertTrue(data instanceof ArrayList);
     }
 

@@ -90,15 +90,15 @@ public class Example2_24Test extends TestCase {
     }
 
     private class Circle extends Entity {
-        private Map center;
+        private Map<String, Integer> center;
         private Integer radius;
 
-        public Circle(Map center, Integer radius) {
+        public Circle(Map<String, Integer> center, Integer radius) {
             this.center = center;
             this.radius = radius;
         }
 
-        public Map getCenter() {
+        public Map<String, Integer> getCenter() {
             return center;
         }
 
@@ -108,35 +108,35 @@ public class Example2_24Test extends TestCase {
     }
 
     private class Line extends Entity {
-        private Map start;
-        private Map finish;
+        private Map<String, Integer> start;
+        private Map<String, Integer> finish;
 
-        public Line(Map start, Map finish) {
+        public Line(Map<String, Integer> start, Map<String, Integer> finish) {
             this.start = start;
             this.finish = finish;
         }
 
-        public Map getStart() {
+        public Map<String, Integer> getStart() {
             return start;
         }
 
-        public Map getFinish() {
+        public Map<String, Integer> getFinish() {
             return finish;
         }
     }
 
     private class Label extends Entity {
-        private Map start;
+        private Map<String, Integer> start;
         private Integer color;
         private String text;
 
-        public Label(Map start, Integer color, String text) {
+        public Label(Map<String, Integer> start, Integer color, String text) {
             this.start = start;
             this.color = color;
             this.text = text;
         }
 
-        public Map getStart() {
+        public Map<String, Integer> getStart() {
             return start;
         }
 
