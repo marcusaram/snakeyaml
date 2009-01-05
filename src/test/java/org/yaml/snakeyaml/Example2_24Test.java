@@ -4,6 +4,7 @@
 package org.yaml.snakeyaml;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -14,6 +15,8 @@ import org.yaml.snakeyaml.constructor.Constructor;
 import org.yaml.snakeyaml.nodes.MappingNode;
 import org.yaml.snakeyaml.nodes.Node;
 import org.yaml.snakeyaml.nodes.SequenceNode;
+import org.yaml.snakeyaml.representer.Represent;
+import org.yaml.snakeyaml.representer.Representer;
 
 /**
  * Test Example 2.24 from the YAML specification
@@ -73,6 +76,75 @@ public class Example2_24Test extends TestCase {
         }
     }
 
+    class MyRepresenter extends Representer {
+        public MyRepresenter() {
+            this.representers.put(Shape.class, new RepresentShape());
+            this.representers.put(Circle.class, new RepresentCircle());
+            this.representers.put(Line.class, new RepresentLine());
+            this.representers.put(Label.class, new RepresentLabel());
+            this.representers.put(HexInteger.class, new RepresentHex());
+        }
+
+        private class RepresentShape implements Represent {
+            public Node representData(Object data) {
+                Shape shape = (Shape) data;
+                List<Entity> value = shape.getEntities();
+                return representSequence("!shape", value, Boolean.FALSE);
+            }
+        }
+
+        private class RepresentCircle implements Represent {
+            public Node representData(Object data) {
+                Circle circle = (Circle) data;
+                Map<String, Object> map = new HashMap<String, Object>();
+                map.put("center", circle.getCenter());
+                map.put("radius", circle.getRadius());
+                return representMapping("!circle", map, Boolean.FALSE);
+            }
+        }
+
+        private class RepresentLine implements Represent {
+            public Node representData(Object data) {
+                Line line = (Line) data;
+                Map<String, Object> map = new HashMap<String, Object>();
+                map.put("start", line.getStart());
+                map.put("finish", line.getFinish());
+                return representMapping("!line", map, Boolean.FALSE);
+            }
+        }
+
+        private class RepresentLabel implements Represent {
+            public Node representData(Object data) {
+                Label label = (Label) data;
+                Map<String, Object> map = new HashMap<String, Object>();
+                map.put("start", label.getStart());
+                map.put("color", new HexInteger(label.getColor()));
+                map.put("text", label.getText());
+                return representMapping("!label", map, Boolean.FALSE);
+            }
+        }
+
+        private class RepresentHex implements Represent {
+            public Node representData(Object data) {
+                HexInteger hex = (HexInteger) data;
+                return representScalar("tag:yaml.org,2002:int", "0x"
+                        + Integer.toHexString(hex.getColor()).toUpperCase(), null);
+            }
+        }
+    }
+
+    private class HexInteger {
+        private Integer color;
+
+        public HexInteger(Integer color) {
+            this.color = color;
+        }
+
+        public Integer getColor() {
+            return color;
+        }
+    }
+
     private class Shape {
         private List<Entity> entities;
 
@@ -86,7 +158,6 @@ public class Example2_24Test extends TestCase {
     }
 
     private class Entity {
-
     }
 
     private class Circle extends Entity {
@@ -154,7 +225,10 @@ public class Example2_24Test extends TestCase {
         Yaml yaml = new Yaml(loader);
         Shape shape = (Shape) yaml.load(Util.getLocalResource("specification/example2_24.yaml"));
         assertNotNull(shape);
-        // YamlDocument document = new YamlDocument("example2_24.yaml", true,
-        // new MyConstructor());
+        Dumper dumper = new Dumper(new MyRepresenter(), new DumperOptions());
+        yaml = new Yaml(dumper);
+        String output = yaml.dump(shape);
+        String etalon = Util.getLocalResource("specification/example2_24_dumped.yaml");
+        assertEquals(etalon, output);
     }
 }

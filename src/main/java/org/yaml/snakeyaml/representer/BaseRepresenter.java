@@ -90,7 +90,7 @@ public class BaseRepresenter {
                     Represent representer = representers.get(null);
                     node = representer.representData(data);
                 } else {
-                    throw new UnsupportedOperationException();
+                    throw new UnsupportedOperationException("Class: " + clazz);
                 }
             }
         }
@@ -111,7 +111,7 @@ public class BaseRepresenter {
         return representScalar(tag, value, null);
     }
 
-    protected Node representSequence(String tag, List<Object> sequence, Boolean flowStyle) {
+    protected Node representSequence(String tag, List<? extends Object> sequence, Boolean flowStyle) {
         List<Node> value = new LinkedList<Node>();
         SequenceNode node = new SequenceNode(tag, value, flowStyle);
         assert aliasKey != null;
@@ -134,7 +134,8 @@ public class BaseRepresenter {
         return node;
     }
 
-    protected Node representMapping(String tag, Map<Object, Object> sequence, Boolean flowStyle) {
+    protected Node representMapping(String tag, Map<? extends Object, Object> sequence,
+            Boolean flowStyle) {
         List<Node[]> value = new LinkedList<Node[]>();
         MappingNode node = new MappingNode(tag, value, flowStyle);
         assert aliasKey != null;
