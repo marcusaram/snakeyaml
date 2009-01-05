@@ -121,8 +121,9 @@ public class Chapter2_4Test extends TestCase {
 
         private class ConstructSomething implements Construct {
             public Object construct(Node node) {
+                // convert to upper case
                 String val = (String) constructScalar((ScalarNode) node);
-                return val;
+                return val.toUpperCase().replace('\n', ' ').trim();
             }
         }
     }
@@ -134,8 +135,7 @@ public class Chapter2_4Test extends TestCase {
         Map<String, Object> map = (Map<String, Object>) document.getNativeData();
         assertEquals(3, map.size());
         String special = (String) map.get("application specific tag");
-        assertEquals(
-                "The semantics of the tag\nabove may be different for\ndifferent documents.\n",
+        assertEquals("THE SEMANTICS OF THE TAG ABOVE MAY BE DIFFERENT FOR DIFFERENT DOCUMENTS.",
                 special);
     }
 
