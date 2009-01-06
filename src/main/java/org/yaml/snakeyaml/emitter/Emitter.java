@@ -91,6 +91,7 @@ public class Emitter {
     private int flowLevel;
 
     // Contexts.
+    private boolean rootContext;
     private boolean mappingContext;
     private boolean simpleKeyContext;
 
@@ -104,6 +105,7 @@ public class Emitter {
     private int column;
     private boolean whitespace;
     private boolean indention;
+    private boolean openEnded;
 
     // Formatting details.
     private Boolean canonical;
@@ -151,6 +153,9 @@ public class Emitter {
         column = 0;
         whitespace = true;
         indention = true;
+
+        // Whether the document requires an explicit document indicator
+        openEnded = false;
 
         // Formatting details.
         this.canonical = opts.isCanonical();
@@ -279,6 +284,10 @@ public class Emitter {
         public void expect() throws IOException {
             if (event instanceof DocumentStartEvent) {
                 DocumentStartEvent ev = (DocumentStartEvent) event;
+                if ((ev.getVersion() != null || ev.getTags() != null) && openEnded) {
+                    writeIndicator("...", true, false, false);
+                    writeIndent();
+                }
                 if (ev.getVersion() != null) {
                     String versionText = prepareVersion(ev.getVersion());
                     writeVersionDirective(versionText);
@@ -305,6 +314,11 @@ public class Emitter {
                 }
                 state = new ExpectDocumentRoot();
             } else if (event instanceof StreamEndEvent) {
+                // TODO fix 313 changeset
+                // if (openEnded) {
+                // writeIndicator("...", true, false, false);
+                // writeIndent();
+                // }
                 writeStreamEnd();
                 state = new ExpectNothing();
             } else {
@@ -340,6 +354,7 @@ public class Emitter {
 
     private void expectNode(boolean root, boolean sequence, boolean mapping, boolean simpleKey)
             throws IOException {
+        rootContext = root;
         mappingContext = mapping;
         simpleKeyContext = simpleKey;
         if (event instanceof AliasEvent) {
@@ -1066,6 +1081,7 @@ public class Emitter {
         this.whitespace = whitespace;
         this.indention = this.indention && indentation;
         this.column += data.length();
+        openEnded = false;
         stream.write(data);
     }
 
@@ -1259,6 +1275,9 @@ public class Emitter {
     void writeFolded(String text) throws IOException {
         String hints = determineBlockHints(text);
         writeIndicator(">" + hints, true, false, false);
+        if (hints.length() > 0 && (hints.charAt(hints.length() - 1) == '+')) {
+            openEnded = true;
+        }
         writeLineBreak(null);
         boolean leadingSpace = true;
         boolean spaces = false;
@@ -1319,8 +1338,11 @@ public class Emitter {
     }
 
     void writeLiteral(String text) throws IOException {
-        String chomp = determineBlockHints(text);
-        writeIndicator("|" + chomp, true, false, false);
+        String hints = determineBlockHints(text);
+        writeIndicator("|" + hints, true, false, false);
+        if (hints.length() > 0 && (hints.charAt(hints.length() - 1)) == '+') {
+            openEnded = true;
+        }
         writeLineBreak(null);
         boolean breaks = true;
         int start = 0, end = 0;
@@ -1363,6 +1385,9 @@ public class Emitter {
     }
 
     void writePlain(String text, boolean split) throws IOException {
+        if (rootContext) {
+            openEnded = true;
+        }
         if (text == null || "".equals(text)) {
             return;
         }
