@@ -3,6 +3,7 @@ package org.pyyaml;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -19,6 +20,7 @@ import org.yaml.snakeyaml.events.ScalarEvent;
 import org.yaml.snakeyaml.parser.Parser;
 import org.yaml.snakeyaml.parser.ParserImpl;
 import org.yaml.snakeyaml.reader.Reader;
+import org.yaml.snakeyaml.reader.UnicodeReader;
 import org.yaml.snakeyaml.scanner.Scanner;
 import org.yaml.snakeyaml.scanner.ScannerImpl;
 
@@ -36,7 +38,7 @@ public class PyEmitterTest extends PyImportTest {
             // }
             try {
                 List<Event> events = new LinkedList<Event>();
-                Reader reader = new Reader(new FileInputStream(file));
+                Reader reader = new Reader(new UnicodeReader(new FileInputStream(file)));
                 Scanner scanner = new ScannerImpl(reader);
                 Parser parser = new ParserImpl(scanner);
                 while (parser.peekEvent() != null) {

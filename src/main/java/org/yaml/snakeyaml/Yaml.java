@@ -4,6 +4,7 @@
 package org.yaml.snakeyaml;
 
 import java.io.InputStream;
+import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.ArrayList;
@@ -11,6 +12,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import org.yaml.snakeyaml.reader.UnicodeReader;
 import org.yaml.snakeyaml.resolver.Resolver;
 
 /**
@@ -105,7 +107,7 @@ public class Yaml {
      * @return parsed object
      */
     public Object load(String yaml) {
-        return loader.load(yaml);
+        return loader.load(new StringReader(yaml));
     }
 
     /**
@@ -113,11 +115,36 @@ public class Yaml {
      * Java object.
      * 
      * @param io
-     *            - data to load from (BOM is respected and ignored)
+     *            - data to load from (BOM is respected and removed)
      * @return parsed object
      */
     public Object load(InputStream io) {
+        return loader.load(new UnicodeReader(io));
+    }
+
+    /**
+     * Parse the first YAML document in a stream and produce the corresponding
+     * Java object.
+     * 
+     * @param io
+     *            - data to load from (BOM must not be present)
+     * @return parsed object
+     */
+    public Object load(java.io.Reader io) {
         return loader.load(io);
+    }
+
+    /**
+     * Parse all YAML documents in a String and produce corresponding Java
+     * objects.
+     * 
+     * @param yaml
+     *            - YAML data to load from (BOM must not be present)
+     * @return an iterator over the parsed Java objects in this String in proper
+     *         sequence
+     */
+    public Iterable<Object> loadAll(java.io.Reader yaml) {
+        return loader.loadAll(yaml);
     }
 
     /**
@@ -130,7 +157,7 @@ public class Yaml {
      *         sequence
      */
     public Iterable<Object> loadAll(String yaml) {
-        return loader.loadAll(yaml);
+        return loadAll(new StringReader(yaml));
     }
 
     /**
@@ -143,7 +170,7 @@ public class Yaml {
      *         sequence
      */
     public Iterable<Object> loadAll(InputStream yaml) {
-        return loader.loadAll(yaml);
+        return loadAll(new UnicodeReader(yaml));
     }
 
     /**

@@ -4,7 +4,6 @@
 package org.yaml.snakeyaml.reader;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -26,31 +25,27 @@ public class Reader {
     private final static String LINEBR = "\n\u0085\u2028\u2029";
 
     private String name;
-    private InputStream stream;
+    private java.io.Reader stream;
     private int pointer = 0;
     private boolean eof = true;
     private StringBuffer buffer;
     private int index = 0;
     private int line = 0;
     private int column = 0;
-    private Charset encoding;
 
     public Reader(String stream) {
         this.name = "<string>";
         this.buffer = new StringBuffer();
         checkPrintable(stream);
         this.buffer.append(stream);
-        this.encoding = null;
         this.stream = null;
         this.eof = true;
     }
 
-    public Reader(InputStream stream) {
-        this.name = "<stream>";
+    public Reader(java.io.Reader reader) {
+        this.name = "<reader>";
         this.buffer = new StringBuffer();
-        UnicodeInputStream unicodeStream = new UnicodeInputStream(stream, "UTF-8");
-        this.encoding = Charset.forName(unicodeStream.getEncoding());
-        this.stream = unicodeStream;
+        this.stream = reader;
         this.eof = false;
     }
 
@@ -58,17 +53,17 @@ public class Reader {
         final Matcher em = NON_PRINTABLE.matcher(data);
         if (em.find()) {
             int position = this.index + this.buffer.length() - this.pointer + em.start();
-            throw new ReaderException(this.name, position, em.group().charAt(0),
+            throw new ReaderException(name, position, em.group().charAt(0),
                     " special characters are not allowed");
         }
     }
 
     public Mark getMark() {
         if (this.stream == null) {
-            return new Mark(this.name, this.index, this.line, this.column, this.buffer.toString(),
+            return new Mark(name, this.index, this.line, this.column, this.buffer.toString(),
                     this.pointer);
         } else {
-            return new Mark(this.name, this.index, this.line, this.column, null, 0);
+            return new Mark(name, this.index, this.line, this.column, null, 0);
         }
     }
 
@@ -140,7 +135,7 @@ public class Reader {
         while (this.buffer.length() < length) {
             String rawData = "";
             if (!this.eof) {
-                byte[] data = new byte[1024];
+                char[] data = new char[1024];
                 int converted = -2;
                 try {
                     converted = this.stream.read(data);
@@ -150,7 +145,7 @@ public class Reader {
                 if (converted == -1) {
                     this.eof = true;
                 } else {
-                    rawData = new String(data, 0, converted, this.encoding);
+                    rawData = new String(data, 0, converted);
                 }
             }
             checkPrintable(rawData);
@@ -167,7 +162,11 @@ public class Reader {
     }
 
     public Charset getEncoding() {
-        return encoding;
+        if (this.stream instanceof UnicodeReader) {
+            return Charset.forName(((UnicodeReader) this.stream).getEncoding());
+        } else {
+            throw new UnsupportedOperationException();
+        }
     }
 
     public int getIndex() {

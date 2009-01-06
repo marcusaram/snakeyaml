@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.yaml.snakeyaml.reader.Reader;
+import org.yaml.snakeyaml.reader.UnicodeReader;
 import org.yaml.snakeyaml.scanner.Scanner;
 import org.yaml.snakeyaml.scanner.ScannerImpl;
 import org.yaml.snakeyaml.tokens.AliasToken;
@@ -76,7 +77,8 @@ public class PyTokensTest extends PyImportTest {
             }
             //
             List<String> tokens1 = new LinkedList<String>();
-            Reader reader = new Reader(new FileInputStream(getFileByName(dataName)));
+            Reader reader = new Reader(new UnicodeReader(new FileInputStream(
+                    getFileByName(dataName))));
             Scanner scanner = new ScannerImpl(reader);
             try {
                 while (scanner.checkToken(new ArrayList<Class>())) {
@@ -114,7 +116,7 @@ public class PyTokensTest extends PyImportTest {
         assertTrue("No test files found.", files.length > 0);
         for (File file : files) {
             List<String> tokens = new LinkedList<String>();
-            Reader reader = new Reader(new FileInputStream(file));
+            Reader reader = new Reader(new UnicodeReader(new FileInputStream(file)));
             Scanner scanner = new ScannerImpl(reader);
             try {
                 while (scanner.checkToken(new ArrayList<Class>())) {

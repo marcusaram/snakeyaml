@@ -3,7 +3,6 @@
  */
 package org.yaml.snakeyaml;
 
-import java.io.InputStream;
 import java.util.Iterator;
 
 import org.yaml.snakeyaml.composer.Composer;
@@ -31,43 +30,16 @@ public class Loader {
         this(new Constructor());
     }
 
-    public Object load(InputStream io) {
+    public Object load(java.io.Reader io) {
         Composer composer = new Composer(new ParserImpl(new ScannerImpl(new Reader(io))), resolver);
         constructor.setComposer(composer);
         return constructor.getSingleData();
     }
 
-    public Object load(String yaml) {
-        Composer composer = new Composer(new ParserImpl(new ScannerImpl(new Reader(yaml))),
-                resolver);
-        constructor.setComposer(composer);
-        return constructor.getSingleData();
-    }
-
-    public Iterable<Object> loadAll(final InputStream yaml) {
+    public Iterable<Object> loadAll(java.io.Reader yaml) {
         Composer composer = new Composer(new ParserImpl(new ScannerImpl(new Reader(yaml))),
                 resolver);
         this.constructor.setComposer(composer);
-        Iterator<Object> result = new Iterator<Object>() {
-            public boolean hasNext() {
-                return constructor.checkData();
-            }
-
-            public Object next() {
-                return constructor.getData();
-            }
-
-            public void remove() {
-                throw new UnsupportedOperationException();
-            }
-        };
-        return new YamlIterable(result);
-    }
-
-    public Iterable<Object> loadAll(final String yaml) {
-        Composer composer = new Composer(new ParserImpl(new ScannerImpl(new Reader(yaml))),
-                resolver);
-        constructor.setComposer(composer);
         Iterator<Object> result = new Iterator<Object>() {
             public boolean hasNext() {
                 return constructor.checkData();
