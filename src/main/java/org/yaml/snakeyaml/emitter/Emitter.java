@@ -872,32 +872,28 @@ public class Emitter {
         boolean lineBreaks = false;
         boolean specialCharacters = false;
 
-        // Whitespaces.
-        boolean leadingSpaces = false; // ^ space+ (non-space | $)
-        boolean leadingBreaks = false; // ^ break+ (non-space | $)
-        boolean trailingSpaces = false; // (^ | non-space) space+ $
-        boolean trailingBreaks = false; // (^ | non-space) break+ $
-        boolean inlineBreaksSpaces = false; // non-space break+ space+ non-space
-        boolean mixedBreaksSpaces = false; // anything else
+        // Important whitespace combinations.
+        boolean leadingSpace = false;
+        boolean leadingBreak = false;
+        boolean trailingSpace = false;
+        boolean trailingBreak = false;
+        boolean breakSpace = false;
+        boolean spaceBreak = false;
+
         // Check document indicators.
         if (scalar.startsWith("---") || scalar.startsWith("...")) {
             blockIndicators = true;
             flowIndicators = true;
         }
         // First character or preceded by a whitespace.
-        boolean preceededBySpace = true;
-        boolean followedBySpace = (scalar.length() == 1 || "\0 \t\r\n\u0085\u2029\u2029"
+        boolean preceededByWhitespace = true;
+        boolean followedByWhitespace = (scalar.length() == 1 || "\0 \t\r\n\u0085\u2029\u2029"
                 .indexOf(scalar.charAt(1)) != -1);
-        // The current series of whitespaces contain plain spaces.
-        boolean spaces = false;
-        // The current series of whitespaces contain line breaks.
-        boolean breaks = false;
-        // The current series of whitespaces contain a space followed by a
-        // break.
-        boolean mixed = false;
-        // The current series of whitespaces start at the beginning of the
-        // scalar.
-        boolean leading = false;
+        // The previous character is a space.
+        boolean previousSpace = false;
+
+        // The previous character is a break.
+        boolean previousBreak = false;
 
         int index = 0;
 
@@ -912,11 +908,11 @@ public class Emitter {
                 }
                 if (ch == '?' || ch == ':') {
                     flowIndicators = true;
-                    if (followedBySpace) {
+                    if (followedByWhitespace) {
                         blockIndicators = true;
                     }
                 }
-                if (ch == '-' && followedBySpace) {
+                if (ch == '-' && followedByWhitespace) {
                     flowIndicators = true;
                     blockIndicators = true;
                 }
@@ -927,11 +923,11 @@ public class Emitter {
                 }
                 if (ch == ':') {
                     flowIndicators = true;
-                    if (followedBySpace) {
+                    if (followedByWhitespace) {
                         blockIndicators = true;
                     }
                 }
-                if (ch == '#' && preceededBySpace) {
+                if (ch == '#' && preceededByWhitespace) {
                     flowIndicators = true;
                     blockIndicators = true;
                 }
@@ -948,71 +944,40 @@ public class Emitter {
                     specialCharacters = true;
                 }
             }
-            // Spaces, line breaks, and how they are mixed. State machine.
+            // Detect important whitespace combinations.
+            if (ch == ' ') {
+                if (index == 0) {
+                    leadingSpace = true;
+                }
+                if (index == scalar.length() - 1) {
+                    trailingSpace = true;
+                }
+                if (previousBreak) {
+                    breakSpace = true;
+                }
+                previousSpace = true;
+                previousBreak = false;
+            } else if ("\n\u0085\u2028\u2029".indexOf(ch) != -1) {
+                if (index == 0) {
+                    leadingBreak = true;
+                }
+                if (index == scalar.length() - 1) {
+                    trailingBreak = true;
+                }
+                if (previousSpace) {
+                    spaceBreak = true;
+                }
+                previousSpace = false;
+                previousBreak = true;
+            } else {
+                previousSpace = false;
+                previousBreak = false;
+            }
 
-            // Start or continue series of whitespaces.
-            if (" \n\u0085\u2028\u2029".indexOf(ch) != -1) {
-                if (spaces && breaks) { // break+ (space+ break+) => mixed
-                    if (ch != ' ') {
-                        mixed = true;
-                    }
-                } else if (spaces) { // (space+ break+) => mixed
-                    if (ch != ' ') {
-                        breaks = true;
-                        mixed = true;
-                    }
-                } else if (breaks) { // break+ space+
-                    if (ch == ' ') {
-                        spaces = true;
-                    }
-                } else {
-                    leading = (index == 0);
-                    if (ch == ' ') { // space+
-                        spaces = true;
-                    } else { // break+
-                        breaks = true;
-                    }
-                }
-                // Series of whitespaces ended with a non-space.
-            } else if (spaces || breaks) {
-                if (leading) {
-                    if (spaces && breaks) {
-                        mixedBreaksSpaces = true;
-                    } else if (spaces) {
-                        leadingSpaces = true;
-                    } else if (breaks) {
-                        leadingBreaks = true;
-                    }
-                } else {
-                    if (mixed) {
-                        mixedBreaksSpaces = true;
-                    } else if (spaces && breaks) {
-                        inlineBreaksSpaces = true;
-                    }
-                }
-                spaces = breaks = mixed = leading = false;
-            }
-            // Series of whitespaces reach the end.
-            if ((spaces || breaks) && (index == scalar.length() - 1)) {
-                if (spaces && breaks) {
-                    mixedBreaksSpaces = true;
-                } else if (spaces) {
-                    trailingSpaces = true;
-                    if (leading) {
-                        leadingSpaces = true;
-                    }
-                } else if (breaks) {
-                    trailingBreaks = true;
-                    if (leading) {
-                        leadingBreaks = true;
-                    }
-                }
-                spaces = breaks = mixed = leading = false;
-            }
             // Prepare for the next character.
             index++;
-            preceededBySpace = "\0 \t\r\n\u0085\u2028\u2029".indexOf(ch) != -1;
-            followedBySpace = (index + 1 >= scalar.length() || "\0 \t\r\n\u0085\u2028\u2029"
+            preceededByWhitespace = "\0 \t\r\n\u0085\u2028\u2029".indexOf(ch) != -1;
+            followedByWhitespace = (index + 1 >= scalar.length() || "\0 \t\r\n\u0085\u2028\u2029"
                     .indexOf(scalar.charAt(index + 1)) != -1);
         }
         // Let's decide what styles are allowed.
@@ -1022,24 +987,25 @@ public class Emitter {
         boolean allowDoubleQuoted = true;
         boolean allowBlock = true;
         // Leading and trailing whitespaces are bad for plain scalars.
-        if (leadingSpaces || leadingBreaks || trailingSpaces || trailingBreaks) {
+        if (leadingSpace || leadingBreak || trailingSpace || trailingBreak) {
             allowFlowPlain = allowBlockPlain = false;
         }
         // We do not permit trailing spaces for block scalars.
-        if (trailingSpaces) {
+        if (trailingSpace) {
             allowBlock = false;
         }
         // Spaces at the beginning of a new line are only acceptable for block
         // scalars.
-        if (inlineBreaksSpaces) {
+        if (breakSpace) {
             allowFlowPlain = allowBlockPlain = allowSingleQuoted = false;
         }
-        // Mixed spaces and breaks, as well as special character are only
+        // Spaces followed by breaks, as well as special character are only
         // allowed for double quoted scalars.
-        if (mixedBreaksSpaces || specialCharacters) {
+        if (spaceBreak || specialCharacters) {
             allowFlowPlain = allowBlockPlain = allowSingleQuoted = allowBlock = false;
         }
-        // We don't emit multiline plain scalars.
+        // Although the plain scalar writer supports breaks, we never emit
+        // multiline plain scalars.
         if (lineBreaks) {
             allowFlowPlain = allowBlockPlain = false;
         }
