@@ -72,7 +72,7 @@ For more details, please check [wiki:Documentation SnakeYAML Documentation].
  * Use global tags (with !!) to load/dump Java custom classes
  * Fix parsing Long.MIN_VALUE
  * when constructing integers try to create the first in the following order: 
-   Integer -> Long -> BigInteger
+   Integer -> Long -> `BigInteger`
 
 '''0.7 (2008-12-20)'''
  * improve test coverage
