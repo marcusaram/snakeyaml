@@ -5,7 +5,10 @@
 	</properties>
 	<body>
 	    <release version="0.8" date="in Mercurial" description="Development">
-	    	<action dev="py4fun" type="update">
+	    	<action dev="py4fun" type="add">
+                Add possibility to use java.io.Reader as input. BOM must be respected. (2009-01-06)
+            </action>
+            <action dev="py4fun" type="update">
                 Import Changeset 308 from PyYAML: Refactored whitespace combination 
                 detector in the scalar analyser. (2009-01-06)
             </action>
