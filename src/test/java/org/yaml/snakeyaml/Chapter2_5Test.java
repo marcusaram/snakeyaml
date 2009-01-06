@@ -17,11 +17,6 @@ import junit.framework.TestCase;
  */
 public class Chapter2_5Test extends TestCase {
 
-    public void testExample_2_27() {
-        // TODO unclear how to test "Example 2.27. Invoice"
-        // fail("Test not finished for: 'Example 2.27. Invoice'");
-    }
-
     @SuppressWarnings("unchecked")
     public void testExample_2_28() {
         YamlStream resource = new YamlStream("example2_28.yaml");
