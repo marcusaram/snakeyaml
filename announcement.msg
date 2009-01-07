@@ -1,4 +1,4 @@
-From: Andrey Somov <asomov@gmail.com>
+From: Andrey Somov <py4fun@gmail.com>
 To: yaml-core@lists.sourceforge.net
 Subject: [ANN] SnakeYAML-0.8: Import changes from PyYAML 3.08
 
@@ -47,7 +47,7 @@ emitter for Java.
 
 SnakeYAML features a complete YAML 1.1 parser.
 SnakeYAML is applicable for a broad range of tasks from complex
-configuration files to object serialization and persistance.
+configuration files to object serialization and persistence.
 
 
 Copyright
