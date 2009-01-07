@@ -113,6 +113,7 @@ public class PyEmitterTest extends PyImportTest {
         }
     }
 
+    @SuppressWarnings("unchecked")
     public void testEmitterStyles() throws IOException {
         File[] canonicalFiles = getStreamsByExtension(".canonical", false);
         assertTrue("No test files found.", canonicalFiles.length > 0);
@@ -159,10 +160,6 @@ public class PyEmitterTest extends PyImportTest {
                         // emit
                         String data = emit(styledEvents);
                         List<Event> newEvents = parse(data);
-                        System.out.println(data);
-                        System.out.println("=======================");
-                        System.out.println(events);
-                        System.out.println(newEvents);
                         assertEquals("Events must not change. File: " + file, events.size(),
                                 newEvents.size());
                         Iterator<Event> oldIter = events.iterator();
