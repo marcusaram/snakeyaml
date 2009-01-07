@@ -68,7 +68,7 @@ For more details, please check [wiki:Documentation SnakeYAML Documentation].
 == History ==
 '''0.8 (2009-01-07)'''
  * Add possibility to use java.io.Reader as input
- * import changes from [http://pyyaml.org/wiki/PyYAML#History PyYAML 3.08]
+ * import changes from [http://pyyaml.org/wiki/PyYAML#History PyYAML 3.07/3.08]
  * Use global tags (with !!) to load/dump Java custom classes
  * Fix parsing Long.MIN_VALUE
  * when constructing integers try to create the first in the following order: 
