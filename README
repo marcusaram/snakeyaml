@@ -30,12 +30,15 @@ SnakeYAML requires Java 5 or higher.
 
 == Download and Installation ==
 
-The current stable release of SnakeYAML: '''0.4'''.
+The current stable release of SnakeYAML: '''0.8'''.
 
 Download links:
 
- * '''ZIP package''': http://pyyaml.org/download/pyyaml/SnakeYAML-3.06.zip
-
+ * '''JAR package''': http://www.assembla.com/spaces/snakeyaml/documents/c7WDPe3jGr3z_nab7jnrAJ/download?filename=SnakeYAML-0.8.jar
+ * '''ZIP archive''': http://www.assembla.com/spaces/snakeyaml/documents/bHeFf83jOr3z_nab7jnrAJ/download?filename=SnakeYAML-all-0.8.zip
+ * '''source''': http://www.assembla.com/spaces/snakeyaml/trac_mercurial_tool
+ * '''generated docs''': http://snakeyaml.narod.ru/releases/v0.8/site/index.html
+ * '''project reports''': http://snakeyaml.narod.ru/releases/v0.8/site/project-reports.html
 
 == Documentation ==
 
@@ -60,10 +63,42 @@ System.out.println(output);
 name: Pushkin
 }}}
 
-For more details, please check [wiki:PyYAMLDocumentation SnakeYAML Documentation].
+For more details, please check [wiki:Documentation SnakeYAML Documentation].
 
 
 == History ==
+'''0.8 (2009-01-07)'''
+ * Add possibility to use java.io.Reader as input
+ * import changes from [http://pyyaml.org/wiki/PyYAML#History PyYAML 3.07/3.08]
+ * Use global tags (with !!) to load/dump Java custom classes
+ * Fix parsing Long.MIN_VALUE
+ * when constructing integers try to create the first in the following order: 
+   Integer -> Long -> `BigInteger`
+
+'''0.7 (2008-12-20)'''
+ * improve test coverage
+
+'''0.6 (2008-12-17)'''
+ * add more examples to the documentation
+ * Public interface is using Iterator instead of Iterable
+ * Sort names when `JavaBeans` are represented
+ * defaultFlowStyle for Dumper is configurable in `DumperOptions`
+
+'''0.5 (2008-12-12)'''
+ * Add possibility to define an implicit resolver
+ * Add possibility to define an explicit constructor
+ * Java objects can be constructed from mapping (javabean), from sequence (constructor),
+   from scalar (constructor)
+ * fix omap and pairs tags
+ * Implement possibility to define a custom List or Map implementation
+ * Implement possibility to define a custom Representer
+ * Support arrays of reference types
+ * Import latest changes from PyYAML (after 3.06 was released)
+ * Fix Node identity to avoid aliases for simple types - [1, 1]
+ * Recursive objects can be represented (but not yet constructed)
+ * Binary is represented back as String
+ * Fix: 'null' can be a key in a map
+ * Fix: 'set' type works
 
 '''0.4 (2008-11-11)'''
  * Fix a deviation with PyYAML in method scanBlockScalar().
@@ -111,21 +146,15 @@ You may discuss SnakeYAML at
 [http://groups.google.com/group/snakeyaml the mailing list].
 
 == TODO ==
-
- * low-level event-based parser and emitter API (like SAX).
- * a simple extension API for types.
- * better JavaBean support (as in [http://yamlbeans.sourceforge.net/ YamlBeans] ?)
+ * better conversion to Java classes (similar to `YamlBeans` and JYaml)
+ * import path resolver from PyYAML
  * import all the tests from PyYAML
 
 == Known bugs ==
- * Single quote is not always properly escaped when dumping
- * null cannot be a key in a Map
- * !!set tag is not yet properly supported
- * !!omap tag is not yet properly supported
+ * Recursive objects are not fully supported. Dumping works but loading does not.
 
 == Author and copyright ==
 
 The SnakeYAML is based on [http://pyyaml.org/wiki/PyYAML PyYAML] module written by [mailto:xi@resolvent.net Kirill Simonov].
-Initial port to Java is done by [http://olabini.com/contact.php Ola Bini].
 
 SnakeYAML is released under the MIT license.
