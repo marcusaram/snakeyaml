@@ -185,7 +185,7 @@ public class Emitter {
         this.style = (char) 0;
     }
 
-    public void emit(final Event event) throws IOException {
+    public void emit(Event event) throws IOException {
         this.events.offer(event);
         while (!needMoreEvents()) {
             this.event = this.events.poll();
@@ -1294,7 +1294,7 @@ public class Emitter {
                 }
             }
             if (ch != 0) {
-                breaks = ("\n\0085\u2028\u2029".indexOf(ch) != -1);
+                breaks = ("\n\u0085\u2028\u2029".indexOf(ch) != -1);
                 spaces = (ch == ' ');
             }
             end++;

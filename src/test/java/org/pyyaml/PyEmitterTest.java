@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -14,8 +15,10 @@ import org.yaml.snakeyaml.emitter.Emitter;
 import org.yaml.snakeyaml.emitter.EventsLoader;
 import org.yaml.snakeyaml.events.CollectionStartEvent;
 import org.yaml.snakeyaml.events.Event;
+import org.yaml.snakeyaml.events.MappingStartEvent;
 import org.yaml.snakeyaml.events.NodeEvent;
 import org.yaml.snakeyaml.events.ScalarEvent;
+import org.yaml.snakeyaml.events.SequenceStartEvent;
 import org.yaml.snakeyaml.parser.Parser;
 import org.yaml.snakeyaml.parser.ParserImpl;
 import org.yaml.snakeyaml.reader.Reader;
@@ -27,6 +30,17 @@ import org.yaml.snakeyaml.scanner.ScannerImpl;
  * @see imported from PyYAML
  */
 public class PyEmitterTest extends PyImportTest {
+    public void testEmitterOnData() throws IOException {
+        _testEmitter(".data", false);
+    }
+
+    public void testEmitterOnCanonicalNormally() throws IOException {
+        _testEmitter(".canonical", false);
+    }
+
+    public void testEmitterOnCanonicalCanonically() throws IOException {
+        _testEmitter(".canonical", true);
+    }
 
     private void _testEmitter(String mask, boolean canonical) throws IOException {
         File[] files = getStreamsByExtension(mask, true);
@@ -99,16 +113,111 @@ public class PyEmitterTest extends PyImportTest {
         }
     }
 
-    public void testEmitterOnData() throws IOException {
-        _testEmitter(".data", false);
+    public void testEmitterStyles() throws IOException {
+        File[] canonicalFiles = getStreamsByExtension(".canonical", false);
+        assertTrue("No test files found.", canonicalFiles.length > 0);
+        File[] dataFiles = getStreamsByExtension(".data", true);
+        assertTrue("No test files found.", dataFiles.length > 0);
+        List<File> allFiles = new LinkedList(Arrays.asList(canonicalFiles));
+        allFiles.addAll(Arrays.asList(dataFiles));
+        for (File file : allFiles) {
+            if (!file.getName().contains("spec-06-05.canonical")) {
+                continue;
+            }
+            try {
+                List<Event> events = new LinkedList<Event>();
+                Reader reader = new Reader(new UnicodeReader(new FileInputStream(file)));
+                Scanner scanner = new ScannerImpl(reader);
+                Parser parser = new ParserImpl(scanner);
+                while (parser.peekEvent() != null) {
+                    Event event = parser.getEvent();
+                    events.add(event);
+                }
+                //
+                for (Boolean flowStyle : new Boolean[] { Boolean.FALSE, Boolean.TRUE }) {
+                    for (Character style : new Character[] { '|', '>', '"', '\'', null }) {
+                        List<Event> styledEvents = new LinkedList<Event>();
+                        for (Event event : events) {
+                            if (event instanceof ScalarEvent) {
+                                ScalarEvent scalar = (ScalarEvent) event;
+                                event = new ScalarEvent(scalar.getAnchor(), scalar.getTag(), scalar
+                                        .getImplicit(), scalar.getValue(), scalar.getStartMark(),
+                                        scalar.getEndMark(), style);
+                            } else if (event instanceof SequenceStartEvent) {
+                                SequenceStartEvent seqStart = (SequenceStartEvent) event;
+                                event = new SequenceStartEvent(seqStart.getAnchor(), seqStart
+                                        .getTag(), seqStart.getImplicit(), seqStart.getStartMark(),
+                                        seqStart.getEndMark(), flowStyle);
+                            } else if (event instanceof MappingStartEvent) {
+                                MappingStartEvent mapStart = (MappingStartEvent) event;
+                                event = new MappingStartEvent(mapStart.getAnchor(), mapStart
+                                        .getTag(), mapStart.getImplicit(), mapStart.getStartMark(),
+                                        mapStart.getEndMark(), flowStyle);
+                            }
+                            styledEvents.add(event);
+                        }
+                        // emit
+                        String data = emit(styledEvents);
+                        List<Event> newEvents = parse(data);
+                        System.out.println(data);
+                        System.out.println("=======================");
+                        System.out.println(events);
+                        System.out.println(newEvents);
+                        assertEquals("Events must not change. File: " + file, events.size(),
+                                newEvents.size());
+                        Iterator<Event> oldIter = events.iterator();
+                        Iterator<Event> newIter = newEvents.iterator();
+                        while (oldIter.hasNext()) {
+                            Event event = oldIter.next();
+                            Event newEvent = newIter.next();
+                            assertEquals(event.getClass(), newEvent.getClass());
+                            if (event instanceof NodeEvent) {
+                                assertEquals(((NodeEvent) event).getAnchor(),
+                                        ((NodeEvent) newEvent).getAnchor());
+                            }
+                            if (event instanceof CollectionStartEvent) {
+                                assertEquals(((CollectionStartEvent) event).getTag(),
+                                        ((CollectionStartEvent) newEvent).getTag());
+                            }
+                            if (event instanceof ScalarEvent) {
+                                ScalarEvent scalarOld = (ScalarEvent) event;
+                                ScalarEvent scalarNew = (ScalarEvent) newEvent;
+                                boolean[] oldImplicit = scalarOld.getImplicit();
+                                boolean[] newImplicit = scalarNew.getImplicit();
+                                if (!oldImplicit[0] && !oldImplicit[1] && !newImplicit[0]
+                                        && !newImplicit[1]) {
+                                    assertEquals(scalarOld.getTag(), scalarNew.getTag());
+                                }
+                                assertEquals(scalarOld.getValue(), scalarNew.getValue());
+                            }
+                        }
+                    }
+                }
+
+            } catch (Exception e) {
+                System.out.println("Failed File: " + file);
+                // fail("Failed File: " + file + "; " + e.getMessage());
+                throw new RuntimeException(e);
+            }
+        }
     }
 
-    public void testEmitterOnCanonicalNormally() throws IOException {
-        _testEmitter(".canonical", false);
+    private String emit(List<Event> events) throws IOException {
+        StringWriter writer = new StringWriter();
+        Emitter emitter = new Emitter(writer, new DumperOptions());
+        for (Event event : events) {
+            emitter.emit(event);
+        }
+        return writer.toString();
     }
 
-    public void testEmitterOnCanonicalCanonically() throws IOException {
-        _testEmitter(".canonical", true);
+    private List<Event> parse(String data) {
+        ParserImpl parser = new ParserImpl(new ScannerImpl(new Reader(data)));
+        List<Event> newEvents = new LinkedList<Event>();
+        while (parser.peekEvent() != null) {
+            newEvents.add(parser.getEvent());
+        }
+        return newEvents;
     }
 
     @SuppressWarnings("unchecked")
