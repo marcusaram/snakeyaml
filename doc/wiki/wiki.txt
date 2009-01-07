@@ -1,0 +1,159 @@
+= SnakeYAML =
+
+'''SnakeYAML is a YAML parser and emitter for Java.'''
+
+
+== Overview ==
+
+[http://yaml.org/ YAML] is a data serialization format designed for human
+readability and interaction with scripting languages.
+
+[http://pyyaml.org/wiki/SnakeYAML SnakeYAML] is a YAML parser and emitter for
+the Java programming language. SnakeYAML tries to be as close as possible to PyYAML
+API allowing documents to be easily exchanged between Python and Java.
+
+SnakeYAML features
+
+ * a '''complete''' [http://yaml.org/spec/current.html YAML 1.1] parser.
+   In particular, SnakeYAML can parse all examples from the specification.
+ * Unicode support including UTF-8/UTF-16 input/output.
+ * high-level API for serializing and deserializing native Java objects (like DOM or pickle).
+ * support for all types from the [http://yaml.org/type/index.html YAML types repository].
+ * relatively sensible error messages.
+
+Note that SnakeYAML is still young and may have some bugs.
+
+== Requirements ==
+
+SnakeYAML requires Java 5 or higher.
+
+
+== Download and Installation ==
+
+The current stable release of SnakeYAML: '''0.7'''.
+
+Download links:
+
+ * '''JAR package''': http://www.assembla.com/spaces/snakeyaml/documents/akU3jGZSGr3Ac7ab7jnrAJ/download?filename=SnakeYAML-0.7.jar
+ * '''source''': http://www.assembla.com/spaces/snakeyaml/trac_mercurial_tool
+ * '''generated docs''': http://snakeyaml.narod.ru/releases/v0.7/site/index.html
+ * '''project reports''': http://snakeyaml.narod.ru/releases/v0.7/site/project-reports.html
+
+== Documentation ==
+
+''Loading:''
+{{{
+Yaml yaml = new Yaml();
+Object obj = yaml.load("a: 1\nb: 2\nc:\n  - aaa\n  - bbb");
+System.out.println(obj);
+
+{b=2, c=[aaa, bbb], a=1}
+}}}
+''Dumping:''
+{{{
+
+Map<String, String> map = new HashMap<String, String>();
+map.put("name", "Pushkin");
+Yaml yaml = new Yaml();
+String output = yaml.dump(map);
+System.out.println(output);
+
+--- 
+name: Pushkin
+}}}
+
+For more details, please check [wiki:Documentation SnakeYAML Documentation].
+
+
+== History ==
+'''0.8 (2009-01-07)'''
+ * Add possibility to use java.io.Reader as input
+ * import changes from [http://pyyaml.org/wiki/PyYAML#History PyYAML 3.08]
+ * Use global tags (with !!) to load/dump Java custom classes
+ * Fix parsing Long.MIN_VALUE
+ * when constructing integers try to create the first in the following order: 
+   Integer -> Long -> `BigInteger`
+
+'''0.7 (2008-12-20)'''
+ * improve test coverage
+
+'''0.6 (2008-12-17)'''
+ * add more examples to the documentation
+ * Public interface is using Iterator instead of Iterable
+ * Sort names when `JavaBeans` are represented
+ * defaultFlowStyle for Dumper is configurable in `DumperOptions`
+
+'''0.5 (2008-12-12)'''
+ * Add possibility to define an implicit resolver
+ * Add possibility to define an explicit constructor
+ * Java objects can be constructed from mapping (javabean), from sequence (constructor),
+   from scalar (constructor)
+ * fix omap and pairs tags
+ * Implement possibility to define a custom List or Map implementation
+ * Implement possibility to define a custom Representer
+ * Support arrays of reference types
+ * Import latest changes from PyYAML (after 3.06 was released)
+ * Fix Node identity to avoid aliases for simple types - [1, 1]
+ * Recursive objects can be represented (but not yet constructed)
+ * Binary is represented back as String
+ * Fix: 'null' can be a key in a map
+ * Fix: 'set' type works
+
+'''0.4 (2008-11-11)'''
+ * Fix a deviation with PyYAML in method scanBlockScalar().
+   Fix a bug in [https://jvyaml.dev.java.net/ JvYaml] that the trailing '\n' in a 
+   block scalar was removed
+ * Restore from PyYAML the way the keys are parsed. (Restored methods are
+   stalePossibleSimpleKeys() and removePossibleSimpleKey().)
+   Fix issue http://code.google.com/p/jvyamlb/issues/detail?id=6
+ * Change public interface. Rename YAML to Yaml. Remove all static methods from Yaml.
+   Factory and configuration must be injected at the constructor. 
+   Yaml loadAll() and dumpAll() methods work with Iterable instead of List.
+   This way is closer to PyYAML API
+ * Reader as in PyYAML is implemented. BOM is properly supported. Fix a known [http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=4508058 bug] in Java
+ * Fix issue: https://jvyaml.dev.java.net/issues/show_bug.cgi?id=11
+ * Respect Unicode characters.
+   Fix issue: https://jvyaml.dev.java.net/issues/show_bug.cgi?id=10
+ * Respect sign for float.
+   Fix issue: https://jvyaml.dev.java.net/issues/show_bug.cgi?id=13
+ * Binary data is represented as [http://java.sun.com/javase/6/docs/api/java/nio/ByteBuffer.html ByteBuffer]
+ * When parsed, a timestamp in the canonical form (i.e, 2001-12-15T02:59:43.1Z) is
+   interpreted as if it is in the default time zone.
+   Fix issue: https://jvyaml.dev.java.net/issues/show_bug.cgi?id=7 
+ * Restore Mark from PyYAML to show a snippet of YAML in case of invalid data
+ * Reformat the source files and provide formatter for Eclipse
+ * Mavenize the project and apply Maven standard folder structure
+ * Import [https://jvyaml.dev.java.net JvYaml] source from CVS to Mercurial
+
+
+
+
+== Development and bug reports ==
+
+You may check out the SnakeYAML source code from
+[http://hg.assembla.com/snakeyaml SnakeYAML Mercurial repository].
+
+You may also 
+[http://trac-hg.assembla.com/snakeyaml/browser browse] the SnakeYAML source code.
+
+If you find a bug in SnakeYAML, please
+[http://trac-hg.assembla.com/snakeyaml/newticket file a bug report].
+You may review open bugs through
+[http://trac-hg.assembla.com/snakeyaml/report/1 the list of open tickets].
+
+You may discuss SnakeYAML at
+[http://groups.google.com/group/snakeyaml the mailing list].
+
+== TODO ==
+ * better conversion to Java classes (similar to YamlBeans and JYaml)
+ * import path resolver from PyYAML
+ * import all the tests from PyYAML
+
+== Known bugs ==
+ * Recursive objects are not fully supported. Dumping works but loading does not.
+
+== Author and copyright ==
+
+The SnakeYAML is based on [http://pyyaml.org/wiki/PyYAML PyYAML] module written by [mailto:xi@resolvent.net Kirill Simonov].
+
+SnakeYAML is released under the MIT license.
