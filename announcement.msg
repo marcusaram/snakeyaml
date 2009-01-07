@@ -1,6 +1,6 @@
 From: Andrey Somov <asomov@gmail.com>
 To: yaml-core@lists.sourceforge.net
-Subject: [ANN] SnakeYAML-0.8: fix minor issues
+Subject: [ANN] SnakeYAML-0.8: Import changes from PyYAML 3.08
 
 ========================
  Announcing SnakeYAML-0.8
@@ -10,14 +10,18 @@ A new release of SnakeYAML is now available:
 
     http://trac-hg.assembla.com/snakeyaml/
 
-This release fixes minor bugs.
+This release imports changes from PyYAML 3.08 as well as some minor improvements.
 
 
 Changes
 =======
 
-* when constructing integers try to create the first in the following order:
-  Integer -> Long -> BigInteger
+ * Add possibility to use java.io.Reader as input
+ * import changes from yYAML 3.07/3.08
+ * Use global tags (with !!) to load/dump Java custom classes
+ * Fix parsing Long.MIN_VALUE
+ * when constructing integers try to create the first in the following order: 
+   Integer -> Long -> BigInteger
 
 Resources
 =========
@@ -25,7 +29,8 @@ Resources
 SnakeYAML homepage: http://trac-hg.assembla.com/snakeyaml/
 SnakeYAML documentation: http://trac-hg.assembla.com/snakeyaml/wiki/Documentation
 
-JAR package: http://pyyaml.org/download/pyyaml/SnakeYAML-3.08.zip
+JAR package: http://www.assembla.com/spaces/snakeyaml/documents/c7WDPe3jGr3z_nab7jnrAJ/download?filename=SnakeYAML-0.8.jar
+ZIP archive: http://www.assembla.com/spaces/snakeyaml/documents/bHeFf83jOr3z_nab7jnrAJ/download?filename=SnakeYAML-all-0.8.zip
 SnakeYAML Mercurial repository: http://hg.assembla.com/snakeyaml
 Submit a bug report: http://trac-hg.assembla.com/snakeyaml/newticket
 
@@ -48,7 +53,7 @@ configuration files to object serialization and persistance.
 Copyright
 =========
 
-SnakeYAML is ported from PyYAML by Andrey Somov <asomov@gmail.com>.
+SnakeYAML is ported from PyYAML by Andrey Somov <py4fun@gmail.com>.
 
 SnakeYAML is released under the MIT license.
 
