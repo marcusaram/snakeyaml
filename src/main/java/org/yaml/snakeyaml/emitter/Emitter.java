@@ -1125,8 +1125,7 @@ public class Emitter {
                         writeLineBreak(null);
                     }
                     String data = text.substring(start, end);
-                    for (int i = 0; i < data.length(); i++) {
-                        char br = data.charAt(i);
+                    for (char br : data.toCharArray()) {
                         if (br == '\n') {
                             writeLineBreak(null);
                         } else {
@@ -1261,8 +1260,7 @@ public class Emitter {
                     }
                     leadingSpace = (ch == ' ');
                     String data = text.substring(start, end);
-                    for (int i = 0; i < data.length(); i++) {
-                        char br = data.charAt(i);
+                    for (char br : data.toCharArray()) {
                         if (br == '\n') {
                             writeLineBreak(null);
                         } else {
@@ -1320,8 +1318,7 @@ public class Emitter {
             if (breaks) {
                 if (ch == 0 || "\n\u0085\u2028\u2029".indexOf(ch) == -1) {
                     String data = text.substring(start, end);
-                    for (int i = 0; i < data.length(); i++) {
-                        char br = data.charAt(i);
+                    for (char br : data.toCharArray()) {
                         if (br == '\n') {
                             writeLineBreak(null);
                         } else {
@@ -1391,8 +1388,7 @@ public class Emitter {
                         writeLineBreak(null);
                     }
                     String data = text.substring(start, end);
-                    for (int i = 0; i < data.length(); i++) {
-                        char br = data.charAt(i);
+                    for (char br : data.toCharArray()) {
                         if (br == '\n') {
                             writeLineBreak(null);
                         } else {
