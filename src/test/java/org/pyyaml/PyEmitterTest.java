@@ -23,8 +23,6 @@ import org.yaml.snakeyaml.parser.Parser;
 import org.yaml.snakeyaml.parser.ParserImpl;
 import org.yaml.snakeyaml.reader.Reader;
 import org.yaml.snakeyaml.reader.UnicodeReader;
-import org.yaml.snakeyaml.scanner.Scanner;
-import org.yaml.snakeyaml.scanner.ScannerImpl;
 
 /**
  * @see imported from PyYAML
@@ -52,8 +50,7 @@ public class PyEmitterTest extends PyImportTest {
             try {
                 List<Event> events = new LinkedList<Event>();
                 Reader reader = new Reader(new UnicodeReader(new FileInputStream(file)));
-                Scanner scanner = new ScannerImpl(reader);
-                Parser parser = new ParserImpl(scanner);
+                Parser parser = new ParserImpl(reader);
                 while (parser.peekEvent() != null) {
                     Event event = parser.getEvent();
                     events.add(event);
@@ -70,8 +67,7 @@ public class PyEmitterTest extends PyImportTest {
                 String data = stream.toString();
                 List<Event> newEvents = new LinkedList<Event>();
                 reader = new Reader(data);
-                scanner = new ScannerImpl(reader);
-                parser = new ParserImpl(scanner);
+                parser = new ParserImpl(reader);
                 while (parser.peekEvent() != null) {
                     Event event = parser.getEvent();
                     newEvents.add(event);
@@ -128,8 +124,7 @@ public class PyEmitterTest extends PyImportTest {
             try {
                 List<Event> events = new LinkedList<Event>();
                 Reader reader = new Reader(new UnicodeReader(new FileInputStream(file)));
-                Scanner scanner = new ScannerImpl(reader);
-                Parser parser = new ParserImpl(scanner);
+                Parser parser = new ParserImpl(reader);
                 while (parser.peekEvent() != null) {
                     Event event = parser.getEvent();
                     events.add(event);
@@ -209,7 +204,7 @@ public class PyEmitterTest extends PyImportTest {
     }
 
     private List<Event> parse(String data) {
-        ParserImpl parser = new ParserImpl(new ScannerImpl(new Reader(data)));
+        ParserImpl parser = new ParserImpl(new Reader(data));
         List<Event> newEvents = new LinkedList<Event>();
         while (parser.peekEvent() != null) {
             newEvents.add(parser.getEvent());
@@ -240,8 +235,7 @@ public class PyEmitterTest extends PyImportTest {
                 String data = stream.toString();
                 List<Event> newEvents = new LinkedList<Event>();
                 Reader reader = new Reader(data);
-                Scanner scanner = new ScannerImpl(reader);
-                Parser parser = new ParserImpl(scanner);
+                Parser parser = new ParserImpl(reader);
                 while (parser.peekEvent() != null) {
                     Event event = parser.getEvent();
                     newEvents.add(event);

@@ -8,8 +8,6 @@ import org.yaml.snakeyaml.parser.Parser;
 import org.yaml.snakeyaml.parser.ParserImpl;
 import org.yaml.snakeyaml.reader.Reader;
 import org.yaml.snakeyaml.resolver.Resolver;
-import org.yaml.snakeyaml.scanner.Scanner;
-import org.yaml.snakeyaml.scanner.ScannerImpl;
 
 public class ComposerImplTest extends TestCase {
 
@@ -27,12 +25,10 @@ public class ComposerImplTest extends TestCase {
 
     private Node compose(String data) {
         Reader reader = new Reader(data);
-        Scanner scanner = new ScannerImpl(reader);
-        Parser parser = new ParserImpl(scanner);
+        Parser parser = new ParserImpl(reader);
         Resolver resolver = new Resolver();
         Composer composer = new Composer(parser, resolver);
         Node node = composer.getSingleNode();
         return node;
     }
-
 }

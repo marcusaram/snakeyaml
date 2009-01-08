@@ -11,7 +11,6 @@ import org.yaml.snakeyaml.constructor.Constructor;
 import org.yaml.snakeyaml.parser.ParserImpl;
 import org.yaml.snakeyaml.reader.Reader;
 import org.yaml.snakeyaml.resolver.Resolver;
-import org.yaml.snakeyaml.scanner.ScannerImpl;
 
 /**
  * @see <a href="http://pyyaml.org/wiki/PyYAML">PyYAML</a> for more information
@@ -31,14 +30,13 @@ public class Loader {
     }
 
     public Object load(java.io.Reader io) {
-        Composer composer = new Composer(new ParserImpl(new ScannerImpl(new Reader(io))), resolver);
+        Composer composer = new Composer(new ParserImpl(new Reader(io)), resolver);
         constructor.setComposer(composer);
         return constructor.getSingleData();
     }
 
     public Iterable<Object> loadAll(java.io.Reader yaml) {
-        Composer composer = new Composer(new ParserImpl(new ScannerImpl(new Reader(yaml))),
-                resolver);
+        Composer composer = new Composer(new ParserImpl(new Reader(yaml)), resolver);
         this.constructor.setComposer(composer);
         Iterator<Object> result = new Iterator<Object>() {
             public boolean hasNext() {
