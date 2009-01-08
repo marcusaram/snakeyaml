@@ -16,14 +16,12 @@ public interface Scanner {
     /**
      * Check if the next token is one of the given types.
      */
-    @SuppressWarnings("unchecked")
-    boolean checkToken(final List<Class> choices);
+    boolean checkToken(List<Class<? extends Token>> choices);
 
     /**
      * Convenience method to avoid List creation
      */
-    @SuppressWarnings("unchecked")
-    boolean checkToken(Class choice);
+    boolean checkToken(Class<? extends Token> choice);
 
     /**
      * Return the next token, but do not delete if from the queue.

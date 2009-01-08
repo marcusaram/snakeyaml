@@ -81,7 +81,7 @@ public class PyTokensTest extends PyImportTest {
                     getFileByName(dataName))));
             Scanner scanner = new ScannerImpl(reader);
             try {
-                while (scanner.checkToken(new ArrayList<Class>())) {
+                while (scanner.checkToken(new ArrayList<Class<? extends Token>>())) {
                     Token token = scanner.getToken();
                     if (!(token instanceof StreamStartToken || token instanceof StreamEndToken)) {
                         String replacement = replaces.get(token.getClass());
@@ -110,7 +110,6 @@ public class PyTokensTest extends PyImportTest {
         }
     }
 
-    @SuppressWarnings("unchecked")
     public void testScanner() throws FileNotFoundException {
         File[] files = getStreamsByExtension(".data", true);
         assertTrue("No test files found.", files.length > 0);
@@ -119,7 +118,7 @@ public class PyTokensTest extends PyImportTest {
             Reader reader = new Reader(new UnicodeReader(new FileInputStream(file)));
             Scanner scanner = new ScannerImpl(reader);
             try {
-                while (scanner.checkToken(new ArrayList<Class>())) {
+                while (scanner.checkToken(new ArrayList<Class<? extends Token>>())) {
                     Token token = scanner.getToken();
                     tokens.add(token.getClass().getName());
                 }
