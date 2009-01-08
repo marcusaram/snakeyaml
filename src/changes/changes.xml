@@ -5,7 +5,10 @@
 	</properties>
 	<body>
 	    <release version="0.9" date="in Mercurial" description="Development">
-	    	<action dev="py4fun" type="fix">
+	    	<action dev="py4fun" type="update">
+                Create ScannerIml only in ParserImpl (2009-01-08)
+            </action>
+            <action dev="py4fun" type="fix">
                 Import changeset 312 from PyYAML. Fix a bug in Emitter when writing folded scalars (2009-01-07)
             </action>
         </release>

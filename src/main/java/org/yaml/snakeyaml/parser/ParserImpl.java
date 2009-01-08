@@ -23,6 +23,7 @@ import org.yaml.snakeyaml.events.SequenceStartEvent;
 import org.yaml.snakeyaml.events.StreamEndEvent;
 import org.yaml.snakeyaml.events.StreamStartEvent;
 import org.yaml.snakeyaml.scanner.Scanner;
+import org.yaml.snakeyaml.scanner.ScannerImpl;
 import org.yaml.snakeyaml.tokens.AliasToken;
 import org.yaml.snakeyaml.tokens.AnchorToken;
 import org.yaml.snakeyaml.tokens.BlockEndToken;
@@ -125,8 +126,8 @@ public class ParserImpl implements Parser {
     private LinkedList<Mark> marks;
     private Production state;
 
-    public ParserImpl(Scanner scanner) {
-        this.scanner = scanner;
+    public ParserImpl(org.yaml.snakeyaml.reader.Reader reader) {
+        this.scanner = new ScannerImpl(reader);
         currentEvent = null;
         yamlVersion = null;
         tagHandles = new HashMap<String, String>();

@@ -11,8 +11,6 @@ import org.yaml.snakeyaml.parser.Parser;
 import org.yaml.snakeyaml.parser.ParserImpl;
 import org.yaml.snakeyaml.reader.Reader;
 import org.yaml.snakeyaml.resolver.Resolver;
-import org.yaml.snakeyaml.scanner.Scanner;
-import org.yaml.snakeyaml.scanner.ScannerImpl;
 
 public class ConstructorMappingTest extends TestCase {
 
@@ -38,8 +36,7 @@ public class ConstructorMappingTest extends TestCase {
 
     private Object construct(Constructor constructor, String data) {
         Reader reader = new Reader(data);
-        Scanner scanner = new ScannerImpl(reader);
-        Parser parser = new ParserImpl(scanner);
+        Parser parser = new ParserImpl(reader);
         Resolver resolver = new Resolver();
         Composer composer = new Composer(parser, resolver);
         constructor.setComposer(composer);
