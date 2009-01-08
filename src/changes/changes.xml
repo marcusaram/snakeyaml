@@ -6,6 +6,9 @@
 	<body>
 	    <release version="0.9" date="in Mercurial" description="Development">
 	    	<action dev="py4fun" type="update">
+                Use Java Generics in the Scanner interface (2009-01-08)
+            </action>
+            <action dev="py4fun" type="update">
                 Create ScannerIml only in ParserImpl (2009-01-08)
             </action>
             <action dev="py4fun" type="fix">

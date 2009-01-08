@@ -204,10 +204,9 @@ public class ParserImpl implements Parser {
     }
 
     private class ParseImplicitDocumentStart implements Production {
-        @SuppressWarnings("unchecked")
         public Event produce() {
             // Parse an implicit document.
-            List<Class> choices = new ArrayList<Class>();
+            List<Class<? extends Token>> choices = new ArrayList<Class<? extends Token>>();
             choices.add(DirectiveToken.class);
             choices.add(DocumentStartToken.class);
             choices.add(StreamEndToken.class);
@@ -295,9 +294,8 @@ public class ParserImpl implements Parser {
     }
 
     private class ParseDocumentContent implements Production {
-        @SuppressWarnings("unchecked")
         public Event produce() {
-            List<Class> choices = new ArrayList<Class>();
+            List<Class<? extends Token>> choices = new ArrayList<Class<? extends Token>>();
             choices.add(DirectiveToken.class);
             choices.add(DocumentStartToken.class);
             choices.add(DocumentEndToken.class);
@@ -529,11 +527,10 @@ public class ParserImpl implements Parser {
     }
 
     private class ParseBlockSequenceEntry implements Production {
-        @SuppressWarnings("unchecked")
         public Event produce() {
             if (scanner.checkToken(BlockEntryToken.class)) {
                 BlockEntryToken token = (BlockEntryToken) scanner.getToken();
-                List<Class> choices = new ArrayList<Class>();
+                List<Class<? extends Token>> choices = new ArrayList<Class<? extends Token>>();
                 choices.add(BlockEntryToken.class);
                 choices.add(BlockEndToken.class);
                 if (!scanner.checkToken(choices)) {
@@ -561,11 +558,10 @@ public class ParserImpl implements Parser {
     // indentless_sequence ::= (BLOCK-ENTRY block_node?)+
 
     private class ParseIndentlessSequenceEntry implements Production {
-        @SuppressWarnings("unchecked")
         public Event produce() {
             if (scanner.checkToken(BlockEntryToken.class)) {
                 Token token = scanner.getToken();
-                List<Class> choices = new ArrayList<Class>();
+                List<Class<? extends Token>> choices = new ArrayList<Class<? extends Token>>();
                 choices.add(BlockEntryToken.class);
                 choices.add(KeyToken.class);
                 choices.add(ValueToken.class);
@@ -594,11 +590,10 @@ public class ParserImpl implements Parser {
     }
 
     private class ParseBlockMappingKey implements Production {
-        @SuppressWarnings("unchecked")
         public Event produce() {
             if (scanner.checkToken(KeyToken.class)) {
                 Token token = scanner.getToken();
-                List<Class> choices = new ArrayList<Class>();
+                List<Class<? extends Token>> choices = new ArrayList<Class<? extends Token>>();
                 choices.add(KeyToken.class);
                 choices.add(ValueToken.class);
                 choices.add(BlockEndToken.class);
@@ -625,11 +620,10 @@ public class ParserImpl implements Parser {
     }
 
     private class ParseBlockMappingValue implements Production {
-        @SuppressWarnings("unchecked")
         public Event produce() {
             if (scanner.checkToken(ValueToken.class)) {
                 Token token = scanner.getToken();
-                List<Class> choices = new ArrayList<Class>();
+                List<Class<? extends Token>> choices = new ArrayList<Class<? extends Token>>();
                 choices.add(KeyToken.class);
                 choices.add(ValueToken.class);
                 choices.add(BlockEndToken.class);
@@ -707,10 +701,9 @@ public class ParserImpl implements Parser {
     }
 
     private class ParseFlowSequenceEntryMappingKey implements Production {
-        @SuppressWarnings("unchecked")
         public Event produce() {
             Token token = scanner.getToken();
-            List<Class> choices = new ArrayList<Class>();
+            List<Class<? extends Token>> choices = new ArrayList<Class<? extends Token>>();
             choices.add(ValueToken.class);
             choices.add(FlowEntryToken.class);
             choices.add(FlowSequenceEndToken.class);
@@ -725,11 +718,10 @@ public class ParserImpl implements Parser {
     }
 
     private class ParseFlowSequenceEntryMappingValue implements Production {
-        @SuppressWarnings("unchecked")
         public Event produce() {
             if (scanner.checkToken(ValueToken.class)) {
                 Token token = scanner.getToken();
-                List<Class> choices = new ArrayList<Class>();
+                List<Class<? extends Token>> choices = new ArrayList<Class<? extends Token>>();
                 choices.add(FlowEntryToken.class);
                 choices.add(FlowSequenceEndToken.class);
                 if (!scanner.checkToken(choices)) {
@@ -779,7 +771,6 @@ public class ParserImpl implements Parser {
             this.first = first;
         }
 
-        @SuppressWarnings("unchecked")
         public Event produce() {
             if (!scanner.checkToken(FlowMappingEndToken.class)) {
                 if (!first) {
@@ -794,7 +785,7 @@ public class ParserImpl implements Parser {
                 }
                 if (scanner.checkToken(KeyToken.class)) {
                     Token token = scanner.getToken();
-                    List<Class> choices = new ArrayList<Class>();
+                    List<Class<? extends Token>> choices = new ArrayList<Class<? extends Token>>();
                     choices.add(ValueToken.class);
                     choices.add(FlowEntryToken.class);
                     choices.add(FlowMappingEndToken.class);
@@ -819,11 +810,10 @@ public class ParserImpl implements Parser {
     }
 
     private class ParseFlowMappingValue implements Production {
-        @SuppressWarnings("unchecked")
         public Event produce() {
             if (scanner.checkToken(ValueToken.class)) {
                 Token token = scanner.getToken();
-                List<Class> choices = new ArrayList<Class>();
+                List<Class<? extends Token>> choices = new ArrayList<Class<? extends Token>>();
                 choices.add(FlowEntryToken.class);
                 choices.add(FlowMappingEndToken.class);
                 if (!scanner.checkToken(choices)) {

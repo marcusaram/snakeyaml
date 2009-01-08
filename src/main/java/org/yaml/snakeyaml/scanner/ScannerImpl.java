@@ -173,8 +173,7 @@ public class ScannerImpl implements Scanner {
     /**
      * Check if the next token is one of the given types.
      */
-    @SuppressWarnings("unchecked")
-    public boolean checkToken(final List<Class> choices) {
+    public boolean checkToken(List<Class<? extends Token>> choices) {
         while (needMoreTokens()) {
             fetchMoreTokens();
         }
@@ -182,8 +181,8 @@ public class ScannerImpl implements Scanner {
             if (choices.size() == 0) {
                 return true;
             }
-            final Token first = this.tokens.get(0);
-            for (Class<Token> class1 : choices) {
+            Token first = this.tokens.get(0);
+            for (Class<? extends Token> class1 : choices) {
                 if (class1.isInstance(first)) {
                     return true;
                 }
@@ -195,9 +194,8 @@ public class ScannerImpl implements Scanner {
     /**
      * Check if the next token is one of the given types.
      */
-    @SuppressWarnings("unchecked")
-    public boolean checkToken(Class choice) {
-        List<Class> list = new ArrayList<Class>();
+    public boolean checkToken(Class<? extends Token> choice) {
+        List<Class<? extends Token>> list = new ArrayList<Class<? extends Token>>();
         list.add(choice);
         return checkToken(list);
     }
