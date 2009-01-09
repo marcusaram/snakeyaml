@@ -160,11 +160,6 @@ public class BeanConstructor extends Constructor {
                 Object value = constructObject(valueNode);
                 // TODO Class propertyElementType =
                 // config.propertyToElementType.get(property);
-                System.out.println("Class: " + nextClass);
-                System.out.println("Object: " + object);
-                System.out.println("Value: " + value);
-                System.out.println("property: " + property);
-                System.out.println("value's class: " + value.getClass());
                 property.set(object, value);
             } catch (Exception e) {
                 throw new YAMLException(e);
