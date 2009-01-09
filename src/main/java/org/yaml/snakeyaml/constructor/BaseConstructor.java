@@ -61,7 +61,7 @@ public class BaseConstructor {
         return null;
     }
 
-    private Object constructDocument(Node node) {
+    protected Object constructDocument(Node node) {
         Object data = constructObject(node);
         constructedObjects.clear();
         recursiveObjects.clear();

@@ -34,5 +34,113 @@ public class BeanConstructorTest extends TestCase {
         assertEquals('#', result.getCharPrimitive());
         assertEquals(new BigInteger("1234567890123456789012345678901234567890"), result
                 .getBigInteger());
+        assertEquals(new Float(2), result.getFloatClass());
+        assertEquals(new Float(3.1416), result.getFloatPrimitive());
+        assertEquals(new Double(4), result.getDoubleClass());
+        assertEquals(new Double(11200), result.getDoublePrimitive());
+        assertEquals(1199836800000L, result.getDate().getTime());
+    }
+
+    public void testNoClassConstructor() throws IOException {
+        try {
+            new Loader(new BeanConstructor(null));
+            fail("Class must be provided.");
+        } catch (Exception e) {
+            assertEquals("Root class must be provided.", e.getMessage());
+        }
+    }
+
+    public void testCharacter() throws IOException {
+        Loader loader = new Loader(new BeanConstructor(TestBean1.class));
+        Yaml yaml = new Yaml(loader);
+        String document = "charClass: id";
+        try {
+            yaml.load(document);
+            fail("Only one char must be allowed.");
+        } catch (Exception e) {
+            assertTrue(e.getMessage(), e.getMessage().contains(
+                    "Invalid node Character: 'id'; length: 2"));
+        }
+        document = "charClass: #";
+        try {
+            yaml.load(document);
+            fail("Only one char must be allowed.");
+        } catch (Exception e) {
+            assertTrue(e.getMessage(), e.getMessage().contains(
+                    "Invalid node Character: ''; length: 0"));
+        }
+        document = "charClass: ''";
+        try {
+            yaml.load(document);
+            fail("Only one char must be allowed.");
+        } catch (Exception e) {
+            assertTrue(e.getMessage(), e.getMessage().contains(
+                    "Invalid node Character: ''; length: 0"));
+        }
+        document = "charClass:\n";
+        try {
+            yaml.load(document);
+            fail("Only one char must be allowed.");
+        } catch (Exception e) {
+            assertTrue(e.getMessage(), e.getMessage().contains(
+                    "Invalid node Character: ''; length: 0"));
+        }
+
+    }
+
+    public void testNoEmptyConstructor() throws IOException {
+        Loader loader = new Loader(new BeanConstructor(TestBean2.class));
+        Yaml yaml = new Yaml(loader);
+        String document = "text: qwerty";
+        try {
+            yaml.load(document);
+            fail("No empty constructor available");
+        } catch (Exception e) {
+            assertTrue(e.getMessage(), e.getMessage().contains("InstantiationException"));
+        }
+    }
+
+    private class TestBean2 {
+        private String text;
+
+        public TestBean2(String text) {
+            this.text = text;
+        }
+
+        public String getText() {
+            return text;
+        }
+
+        public void setText(String text) {
+            this.text = text;
+        }
+    }
+
+    public void testPrivateMethod() throws IOException {
+        Loader loader = new Loader(new BeanConstructor(TestBean3.class));
+        Yaml yaml = new Yaml(loader);
+        String document = "text: qwerty";
+        try {
+            yaml.load(document);
+            fail("Private method cannot be called.");
+        } catch (Exception e) {
+            assertTrue(e.getMessage(), e.getMessage().contains("InstantiationException"));
+        }
+    }
+
+    private class TestBean3 {
+        private String text;
+
+        public TestBean3() {
+            setText("123");
+        }
+
+        public String getText() {
+            return text;
+        }
+
+        private void setText(String text) {
+            this.text = text;
+        }
     }
 }
