@@ -1,6 +1,7 @@
 package org.yaml.snakeyaml.constructor;
 
 import java.io.IOException;
+import java.math.BigInteger;
 
 import junit.framework.TestCase;
 
@@ -27,5 +28,11 @@ public class BeanConstructorTest extends TestCase {
         assertEquals("13", result.getId());
         assertEquals(new Long(11111111111L), result.getLongClass());
         assertEquals(9999999999L, result.getLongPrimitive());
+        assertEquals(Boolean.TRUE, result.getBooleanClass());
+        assertTrue(result.isBooleanPrimitive());
+        assertEquals(new Character('2'), result.getCharClass());
+        assertEquals('#', result.getCharPrimitive());
+        assertEquals(new BigInteger("1234567890123456789012345678901234567890"), result
+                .getBigInteger());
     }
 }

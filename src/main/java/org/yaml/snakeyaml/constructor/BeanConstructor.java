@@ -68,7 +68,8 @@ public class BeanConstructor extends Constructor {
                 Construct charContructor = yamlConstructors.get("tag:yaml.org,2002:str");
                 String ch = (String) charContructor.construct((ScalarNode) node);
                 if (ch.length() != 1) {
-                    throw new YAMLException("Invalid node Character: " + ch);
+                    throw new YAMLException("Invalid node Character: '" + ch + "'; length: "
+                            + ch.length());
                 }
                 result = new Character(ch.charAt(0));
             } else if (c == Date.class) {

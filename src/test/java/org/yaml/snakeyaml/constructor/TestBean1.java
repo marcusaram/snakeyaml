@@ -3,6 +3,8 @@
  */
 package org.yaml.snakeyaml.constructor;
 
+import java.math.BigInteger;
+
 public class TestBean1 {
     private String text;
     private String id;
@@ -14,6 +16,11 @@ public class TestBean1 {
     private int intPrimitive;
     private Long longClass;
     private long longPrimitive;
+    private Boolean booleanClass;
+    private boolean booleanPrimitive;
+    private Character charClass;
+    private char charPrimitive;
+    private BigInteger bigInteger;
 
     public String getText() {
         return text;
@@ -93,5 +100,45 @@ public class TestBean1 {
 
     public void setLongPrimitive(long longPrimitive) {
         this.longPrimitive = longPrimitive;
+    }
+
+    public Boolean getBooleanClass() {
+        return booleanClass;
+    }
+
+    public void setBooleanClass(Boolean booleanClass) {
+        this.booleanClass = booleanClass;
+    }
+
+    public boolean isBooleanPrimitive() {
+        return booleanPrimitive;
+    }
+
+    public void setBooleanPrimitive(boolean booleanPrimitive) {
+        this.booleanPrimitive = booleanPrimitive;
+    }
+
+    public Character getCharClass() {
+        return charClass;
+    }
+
+    public void setCharClass(Character charClass) {
+        this.charClass = charClass;
+    }
+
+    public char getCharPrimitive() {
+        return charPrimitive;
+    }
+
+    public void setCharPrimitive(char charPrimitive) {
+        this.charPrimitive = charPrimitive;
+    }
+
+    public BigInteger getBigInteger() {
+        return bigInteger;
+    }
+
+    public void setBigInteger(BigInteger bigInteger) {
+        this.bigInteger = bigInteger;
     }
 }
