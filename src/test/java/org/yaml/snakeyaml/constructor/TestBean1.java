@@ -4,6 +4,7 @@
 package org.yaml.snakeyaml.constructor;
 
 import java.math.BigInteger;
+import java.util.Date;
 
 public class TestBean1 {
     private String text;
@@ -21,6 +22,11 @@ public class TestBean1 {
     private Character charClass;
     private char charPrimitive;
     private BigInteger bigInteger;
+    private Float floatClass;
+    private float floatPrimitive;
+    private Double doubleClass;
+    private double doublePrimitive;
+    private Date date;
 
     public String getText() {
         return text;
@@ -140,5 +146,45 @@ public class TestBean1 {
 
     public void setBigInteger(BigInteger bigInteger) {
         this.bigInteger = bigInteger;
+    }
+
+    public Float getFloatClass() {
+        return floatClass;
+    }
+
+    public void setFloatClass(Float floatClass) {
+        this.floatClass = floatClass;
+    }
+
+    public float getFloatPrimitive() {
+        return floatPrimitive;
+    }
+
+    public void setFloatPrimitive(float floatPrimitive) {
+        this.floatPrimitive = floatPrimitive;
+    }
+
+    public Double getDoubleClass() {
+        return doubleClass;
+    }
+
+    public void setDoubleClass(Double doubleClass) {
+        this.doubleClass = doubleClass;
+    }
+
+    public double getDoublePrimitive() {
+        return doublePrimitive;
+    }
+
+    public void setDoublePrimitive(double doublePrimitive) {
+        this.doublePrimitive = doublePrimitive;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 }

@@ -29,13 +29,21 @@ import org.yaml.snakeyaml.nodes.SequenceNode;
 public class BeanConstructor extends Constructor {
     protected Map<Class<? extends Object>, Construct> classConstructors = new HashMap<Class<? extends Object>, Construct>();
 
-    protected Class<? extends Object> nextClass;
+    private Class<? extends Object> rootClass;
+    private Class<? extends Object> nextClass;
 
     public BeanConstructor(Class<? extends Object> theRoot) {
         if (theRoot == null) {
             throw new NullPointerException("Root class must be provided.");
         }
-        nextClass = theRoot;
+        rootClass = theRoot;
+
+    }
+
+    @Override
+    protected Object constructDocument(Node node) {
+        nextClass = rootClass;
+        return super.constructDocument(node);
     }
 
     @Override
