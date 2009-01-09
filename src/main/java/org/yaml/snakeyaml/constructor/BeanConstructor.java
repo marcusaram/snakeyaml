@@ -110,8 +110,15 @@ public class BeanConstructor extends Constructor {
                 throw new YAMLException("Unsupported class: " + c);
             }
         } else {
-            // TODO call constructor with scalar content as the only argument
-            result = constructScalar(node);
+            try {
+                // get value by BaseConstructor
+                Object value = super.callConstructor(node);
+                java.lang.reflect.Constructor<? extends Object> javaConstructor = c
+                        .getConstructor(value.getClass());
+                result = javaConstructor.newInstance(value);
+            } catch (Exception e) {
+                throw new YAMLException(e);
+            }
         }
         return result;
     }
