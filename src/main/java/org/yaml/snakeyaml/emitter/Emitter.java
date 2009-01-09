@@ -40,7 +40,7 @@ import org.yaml.snakeyaml.events.StreamStartEvent;
  * mapping ::= MAPPING-START (node node)* MAPPING-END
  * </pre>
  * 
- * @see <a href="http://pyyaml.org/wiki/PyYAML">PyYAML< /a> for more information
+ * @see <a href="http://pyyaml.org/wiki/PyYAML">PyYAML</a> for more information
  */
 public class Emitter {
     private static final Map<Character, String> ESCAPE_REPLACEMENTS = new HashMap<Character, String>();
