@@ -39,6 +39,7 @@ public class BeanConstructorTest extends TestCase {
         assertEquals(new Double(4), result.getDoubleClass());
         assertEquals(new Double(11200), result.getDoublePrimitive());
         assertEquals(1199836800000L, result.getDate().getTime());
+        assertEquals("public", result.publicField);
     }
 
     public void testNoClassConstructor() throws IOException {
@@ -141,6 +142,31 @@ public class BeanConstructorTest extends TestCase {
 
         private void setText(String text) {
             this.text = text;
+        }
+    }
+
+    public void testKeyNotScalar() throws IOException {
+        Loader loader = new Loader(new BeanConstructor(TestBean1.class));
+        Yaml yaml = new Yaml(loader);
+        String document = "[1, 2]: qwerty";
+        try {
+            yaml.load(document);
+            fail("Keys must be scalars.");
+        } catch (Exception e) {
+            assertTrue(e.getMessage(), e.getMessage().contains("Keys must be scalars but found"));
+        }
+    }
+
+    public void testInvalidKey() throws IOException {
+        Loader loader = new Loader(new BeanConstructor(TestBean1.class));
+        Yaml yaml = new Yaml(loader);
+        String document = "something: qwerty";
+        try {
+            yaml.load(document);
+            fail("Non-existing property must fail.");
+        } catch (Exception e) {
+            assertTrue(e.getMessage(), e.getMessage().contains(
+                    "Unable to find property 'something'"));
         }
     }
 }

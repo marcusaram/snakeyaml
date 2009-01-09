@@ -144,27 +144,23 @@ public class BeanConstructor extends Constructor {
             Node valueNode = tuple[1];
             nextClass = String.class;// keys can only be Strings
             Object key = constructObject(keyNode);
-            if (key != null && key instanceof String) {
-                try {
-                    Property property = getProperty(beanClass, (String) key);
-                    if (property == null)
-                        throw new YAMLException("Unable to find property '" + key + "' on class: "
-                                + beanClass.getName());
-                    nextClass = property.getType();
-                    Object value = constructObject(valueNode);
-                    // TODO Class propertyElementType =
-                    // config.propertyToElementType.get(property);
-                    System.out.println("Class: " + nextClass);
-                    System.out.println("Object: " + object);
-                    System.out.println("Value: " + value);
-                    System.out.println("property: " + property);
-                    System.out.println("value's class: " + value.getClass());
-                    property.set(object, value);
-                } catch (Exception e) {
-                    throw new YAMLException(e);
-                }
-            } else {
-                throw new YAMLException("Invalid key name: " + key);
+            try {
+                Property property = getProperty(beanClass, (String) key);
+                if (property == null)
+                    throw new YAMLException("Unable to find property '" + key + "' on class: "
+                            + beanClass.getName());
+                nextClass = property.getType();
+                Object value = constructObject(valueNode);
+                // TODO Class propertyElementType =
+                // config.propertyToElementType.get(property);
+                System.out.println("Class: " + nextClass);
+                System.out.println("Object: " + object);
+                System.out.println("Value: " + value);
+                System.out.println("property: " + property);
+                System.out.println("value's class: " + value.getClass());
+                property.set(object, value);
+            } catch (Exception e) {
+                throw new YAMLException(e);
             }
         }
         return object;
