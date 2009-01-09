@@ -1,0 +1,12 @@
+# TestBean1
+byteClass: 1
+bytePrimitive: -3
+shortClass: +0
+shortPrimitive: -015 # octal
+integer: 5
+intPrimitive: 17
+text: the text
+id: 13
+longClass: 11111111111
+longPrimitive: 9999999999
+
