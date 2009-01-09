@@ -182,4 +182,14 @@ public class BeanConstructorTest extends TestCase {
                     "Unable to find property 'staticInteger'"));
         }
     }
+
+    public void testScalarContructor() throws IOException {
+        Loader loader = new Loader(new BeanConstructor(Parent1.class));
+        Yaml yaml = new Yaml(loader);
+        String document = "id: 123\nchild: 25";
+        Parent1 parent = (Parent1) yaml.load(document);
+        assertEquals("123", parent.getId());
+        Child1 child = parent.getChild();
+        assertEquals(new Integer(25), child.getCode());
+    }
 }
