@@ -5,6 +5,7 @@ import java.math.BigInteger;
 
 import junit.framework.TestCase;
 
+import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Loader;
 import org.yaml.snakeyaml.Util;
 import org.yaml.snakeyaml.Yaml;
@@ -40,6 +41,16 @@ public class BeanConstructorTest extends TestCase {
         assertEquals(new Double(11200), result.getDoublePrimitive());
         assertEquals(1199836800000L, result.getDate().getTime());
         assertEquals("public", result.publicField);
+        //
+        DumperOptions options = new DumperOptions();
+        options.setDefaultFlowStyle(Boolean.FALSE);
+        Yaml yamlToDump = new Yaml(options);
+        String output = yamlToDump.dump(result);
+        System.out.println(output);
+        TestBean1 result2 = (TestBean1) yaml.load(output);
+        assertNotNull(result2);
+        // TODO TestBean1 result3 = (TestBean1) new Yaml().load(output);
+        // assertNotNull(result3);
     }
 
     public void testNoClassConstructor() throws IOException {
