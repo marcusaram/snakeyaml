@@ -27,6 +27,7 @@ public class TestBean1 {
     private Double doubleClass;
     private double doublePrimitive;
     private Date date;
+    public String publicField;
 
     public String getText() {
         return text;

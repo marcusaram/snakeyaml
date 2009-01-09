@@ -19,4 +19,5 @@ floatPrimitive: 3.1416
 doubleClass: 4.0
 doublePrimitive: +1.12e4
 date: 2008-01-09
+publicField: public
 
