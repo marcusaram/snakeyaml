@@ -28,6 +28,7 @@ class SafeRepresenter extends BaseRepresenter {
         this.nullRepresenter = new RepresentNull();
         this.representers.put(String.class, new RepresentString());
         this.representers.put(Boolean.class, new RepresentBoolean());
+        this.representers.put(Character.class, new RepresentString());
         this.multiRepresenters.put(Number.class, new RepresentNumber());
         this.multiRepresenters.put(List.class, new RepresentList());
         this.multiRepresenters.put(Map.class, new RepresentMap());
