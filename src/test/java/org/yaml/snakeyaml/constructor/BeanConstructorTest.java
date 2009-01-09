@@ -169,4 +169,17 @@ public class BeanConstructorTest extends TestCase {
                     "Unable to find property 'something'"));
         }
     }
+
+    public void testStaticField() throws IOException {
+        Loader loader = new Loader(new BeanConstructor(TestBean1.class));
+        Yaml yaml = new Yaml(loader);
+        String document = "staticInteger: 123";
+        try {
+            yaml.load(document);
+            fail("Staic variables must not be used.");
+        } catch (Exception e) {
+            assertTrue(e.getMessage(), e.getMessage().contains(
+                    "Unable to find property 'staticInteger'"));
+        }
+    }
 }
