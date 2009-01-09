@@ -5,9 +5,9 @@ package org.yaml.snakeyaml.constructor;
 
 abstract class Property implements Comparable<Property> {
     private final String name;
-    private final Class type;
+    private final Class<? extends Object> type;
 
-    public Property(String name, Class type) {
+    public Property(String name, Class<? extends Object> type) {
         this.name = name;
         this.type = type;
     }
@@ -41,7 +41,7 @@ abstract class Property implements Comparable<Property> {
         return true;
     }
 
-    public Class getType() {
+    public Class<? extends Object> getType() {
         return type;
     }
 
