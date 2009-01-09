@@ -77,6 +77,13 @@ public class BaseConstructor {
                     .getStartMark());
         }
         recursiveObjects.put(node, null);
+        Object data = callConstructor(node);
+        constructedObjects.put(node, data);
+        recursiveObjects.remove(node);
+        return data;
+    }
+
+    protected Object callConstructor(Node node) {
         Object data;
         Construct constructor = yamlConstructors.get(node.getTag());
         if (constructor == null) {
@@ -95,8 +102,6 @@ public class BaseConstructor {
         } else {
             data = constructor.construct(node);
         }
-        constructedObjects.put(node, data);
-        recursiveObjects.remove(node);
         return data;
     }
 
