@@ -7,13 +7,13 @@ import java.util.Iterator;
 
 import org.yaml.snakeyaml.composer.Composer;
 import org.yaml.snakeyaml.constructor.BaseConstructor;
-import org.yaml.snakeyaml.constructor.BeanConstructor;
+import org.yaml.snakeyaml.constructor.Constructor;
 import org.yaml.snakeyaml.parser.ParserImpl;
 import org.yaml.snakeyaml.reader.Reader;
 import org.yaml.snakeyaml.resolver.Resolver;
 
 /**
- * @see <a href="http://pyyaml.org/wiki/PyYAML">PyYAML</a> for more information
+ * @see <a href="http://pyyaml.org/wiki/PyYAML">PyYAML< /a> for more information
  */
 public class Loader {
     protected BaseConstructor constructor;
@@ -26,7 +26,7 @@ public class Loader {
     }
 
     public Loader() {
-        this(new BeanConstructor());
+        this(new Constructor());
     }
 
     public Object load(java.io.Reader io) {
