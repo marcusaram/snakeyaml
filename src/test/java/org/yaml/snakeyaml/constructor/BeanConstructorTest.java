@@ -13,7 +13,7 @@ import org.yaml.snakeyaml.Yaml;
 public class BeanConstructorTest extends TestCase {
 
     public void testPrimitivesConstructor() throws IOException {
-        Loader loader = new Loader(new BeanConstructor(TestBean1.class));
+        Loader loader = new Loader(new Constructor(TestBean1.class));
         Yaml yaml = new Yaml(loader);
         String document = Util.getLocalResource("constructor/test-primitives1.yaml");
         System.out.println(document);
@@ -49,13 +49,13 @@ public class BeanConstructorTest extends TestCase {
         System.out.println(output);
         TestBean1 result2 = (TestBean1) yaml.load(output);
         assertNotNull(result2);
-        // TestBean1 result3 = (TestBean1) new Yaml().load(output);
-        // assertNotNull(result3);
+        TestBean1 result3 = (TestBean1) new Yaml().load(output);
+        assertNotNull(result3);
     }
 
     public void testNoClassConstructor() throws IOException {
         try {
-            new Loader(new BeanConstructor(null));
+            new Loader(new Constructor(null));
             fail("Class must be provided.");
         } catch (Exception e) {
             assertEquals("Root class must be provided.", e.getMessage());
@@ -63,7 +63,7 @@ public class BeanConstructorTest extends TestCase {
     }
 
     public void testCharacter() throws IOException {
-        Loader loader = new Loader(new BeanConstructor(TestBean1.class));
+        Loader loader = new Loader(new Constructor(TestBean1.class));
         Yaml yaml = new Yaml(loader);
         String document = "charClass: id";
         try {
@@ -101,7 +101,7 @@ public class BeanConstructorTest extends TestCase {
     }
 
     public void testNoEmptyConstructor() throws IOException {
-        Loader loader = new Loader(new BeanConstructor(TestBean2.class));
+        Loader loader = new Loader(new Constructor(TestBean2.class));
         Yaml yaml = new Yaml(loader);
         String document = "text: qwerty";
         try {
@@ -129,7 +129,7 @@ public class BeanConstructorTest extends TestCase {
     }
 
     public void testPrivateMethod() throws IOException {
-        Loader loader = new Loader(new BeanConstructor(TestBean3.class));
+        Loader loader = new Loader(new Constructor(TestBean3.class));
         Yaml yaml = new Yaml(loader);
         String document = "text: qwerty";
         try {
@@ -157,7 +157,7 @@ public class BeanConstructorTest extends TestCase {
     }
 
     public void testKeyNotScalar() throws IOException {
-        Loader loader = new Loader(new BeanConstructor(TestBean1.class));
+        Loader loader = new Loader(new Constructor(TestBean1.class));
         Yaml yaml = new Yaml(loader);
         String document = "[1, 2]: qwerty";
         try {
@@ -169,7 +169,7 @@ public class BeanConstructorTest extends TestCase {
     }
 
     public void testInvalidKey() throws IOException {
-        Loader loader = new Loader(new BeanConstructor(TestBean1.class));
+        Loader loader = new Loader(new Constructor(TestBean1.class));
         Yaml yaml = new Yaml(loader);
         String document = "something: qwerty";
         try {
@@ -182,7 +182,7 @@ public class BeanConstructorTest extends TestCase {
     }
 
     public void testStaticField() throws IOException {
-        Loader loader = new Loader(new BeanConstructor(TestBean1.class));
+        Loader loader = new Loader(new Constructor(TestBean1.class));
         Yaml yaml = new Yaml(loader);
         String document = "staticInteger: 123";
         try {
@@ -195,7 +195,7 @@ public class BeanConstructorTest extends TestCase {
     }
 
     public void testScalarContructor() throws IOException {
-        Loader loader = new Loader(new BeanConstructor(Parent1.class));
+        Loader loader = new Loader(new Constructor(Parent1.class));
         Yaml yaml = new Yaml(loader);
         String document = "id: 123\nchild: 25";
         Parent1 parent = (Parent1) yaml.load(document);
