@@ -13,7 +13,7 @@ import org.yaml.snakeyaml.nodes.ScalarNode;
 import org.yaml.snakeyaml.nodes.SequenceNode;
 
 /**
- * @see <a href="http://pyyaml.org/wiki/PyYAML">PyYAML</a> for more information
+ * @see <a href="http://pyyaml.org/wiki/PyYAML">PyYAML< /a> for more information
  */
 public class Constructor extends SafeConstructor {
 
@@ -23,7 +23,7 @@ public class Constructor extends SafeConstructor {
 
     private class ConstuctYamlObject implements Construct {
         @SuppressWarnings("unchecked")
-        public Object construct(Node node) {
+        public <T> T construct(Class<T> clazz, Node node) {
             Object result = null;
             String pref = node.getTag().substring("tag:yaml.org,2002:".length());
             try {
@@ -74,7 +74,7 @@ public class Constructor extends SafeConstructor {
                 throw new ConstructorException(null, null, "Can't construct a java object for "
                         + node.getTag() + "; exception=" + e.getMessage(), node.getStartMark());
             }
-            return result;
+            return (T) result;
         }
     }
 

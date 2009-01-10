@@ -49,7 +49,7 @@ public class BeanConstructorTest extends TestCase {
         System.out.println(output);
         TestBean1 result2 = (TestBean1) yaml.load(output);
         assertNotNull(result2);
-        // TODO TestBean1 result3 = (TestBean1) new Yaml().load(output);
+        // TestBean1 result3 = (TestBean1) new Yaml().load(output);
         // assertNotNull(result3);
     }
 

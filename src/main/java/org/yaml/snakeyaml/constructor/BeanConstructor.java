@@ -24,57 +24,55 @@ import org.yaml.snakeyaml.nodes.SequenceNode;
 /**
  * Create an instance when the root Java class is provided
  * 
- * @see <a href="http://pyyaml.org/wiki/PyYAML">PyYAML</a> for more information
+ * @see <a href="http://pyyaml.org/wiki/PyYAML">PyYAML< /a> for more information
  */
 public class BeanConstructor extends Constructor {
     protected Map<Class<? extends Object>, Construct> classConstructors = new HashMap<Class<? extends Object>, Construct>();
 
-    private Class<? extends Object> rootClass;
-    private Class<? extends Object> nextClass;
+    public BeanConstructor() {
+        this(Object.class);
+    }
 
     public BeanConstructor(Class<? extends Object> theRoot) {
         if (theRoot == null) {
             throw new NullPointerException("Root class must be provided.");
         }
         rootClass = theRoot;
-
     }
 
+    @SuppressWarnings("unchecked")
     @Override
-    protected Object constructDocument(Node node) {
-        nextClass = rootClass;
-        return super.constructDocument(node);
-    }
-
-    @Override
-    protected Object callConstructor(Node node) {
+    protected <T> T callConstructor(Class<T> clazz, Node node) {
+        if (Object.class.equals(clazz)) {
+            return super.callConstructor(clazz, node);
+        } 
         Object result;
         if (node instanceof ScalarNode) {
-            result = constructScalarNode((ScalarNode) node);
+            result = constructScalarNode(clazz, (ScalarNode) node);
         } else if (node instanceof SequenceNode) {
             result = constructSequenceNode((SequenceNode) node);
         } else {
-            result = constructMappingNode((MappingNode) node);
+            result = constructMappingNode(clazz, (MappingNode) node);
         }
-        return result;
+        return (T) result;
     }
 
-    private Object constructScalarNode(ScalarNode node) {
-        Class<? extends Object> c = nextClass;
-        nextClass = Object.class;
+    @SuppressWarnings("unchecked")
+    private <T> T constructScalarNode(Class<T> clazz, ScalarNode node) {
+        Class<? extends Object> c = clazz;
         Object result;
         if (c.isPrimitive() || c == String.class || Number.class.isAssignableFrom(c)
                 || c == Boolean.class || c == Date.class || c == Character.class
                 || c == BigInteger.class) {
             if (c == String.class) {
                 Construct stringContructor = yamlConstructors.get("tag:yaml.org,2002:str");
-                result = stringContructor.construct((ScalarNode) node);
+                result = stringContructor.construct(Object.class, (ScalarNode) node);
             } else if (c == Boolean.class || c == Boolean.TYPE) {
                 Construct boolContructor = yamlConstructors.get("tag:yaml.org,2002:bool");
-                result = boolContructor.construct((ScalarNode) node);
+                result = boolContructor.construct(Object.class, (ScalarNode) node);
             } else if (c == Character.class || c == Character.TYPE) {
                 Construct charContructor = yamlConstructors.get("tag:yaml.org,2002:str");
-                String ch = (String) charContructor.construct((ScalarNode) node);
+                String ch = (String) charContructor.construct(Object.class, (ScalarNode) node);
                 if (ch.length() != 1) {
                     throw new YAMLException("Invalid node Character: '" + ch + "'; length: "
                             + ch.length());
@@ -82,17 +80,17 @@ public class BeanConstructor extends Constructor {
                 result = new Character(ch.charAt(0));
             } else if (c == Date.class) {
                 Construct dateContructor = yamlConstructors.get("tag:yaml.org,2002:timestamp");
-                result = dateContructor.construct((ScalarNode) node);
+                result = dateContructor.construct(Object.class, (ScalarNode) node);
             } else if (c == Float.class || c == Double.class || c == Float.TYPE || c == Double.TYPE) {
                 Construct doubleContructor = yamlConstructors.get("tag:yaml.org,2002:float");
-                result = doubleContructor.construct(node);
+                result = doubleContructor.construct(Object.class, node);
                 if (c == Float.class || c == Float.TYPE) {
                     result = new Float((Double) result);
                 }
             } else if (Number.class.isAssignableFrom(c) || c == Byte.TYPE || c == Short.TYPE
                     || c == Integer.TYPE || c == Long.TYPE) {
                 Construct intContructor = yamlConstructors.get("tag:yaml.org,2002:int");
-                result = intContructor.construct(node);
+                result = intContructor.construct(Object.class, node);
                 if (c == Byte.class || c == Byte.TYPE) {
                     result = new Byte(result.toString());
                 } else if (c == Short.class || c == Short.TYPE) {
@@ -112,7 +110,7 @@ public class BeanConstructor extends Constructor {
         } else {
             try {
                 // get value by BaseConstructor
-                Object value = super.callConstructor(node);
+                Object value = super.callConstructor(Object.class, node);
                 java.lang.reflect.Constructor<? extends Object> javaConstructor = c
                         .getConstructor(value.getClass());
                 result = javaConstructor.newInstance(value);
@@ -120,7 +118,7 @@ public class BeanConstructor extends Constructor {
                 throw new YAMLException(e);
             }
         }
-        return result;
+        return (T) result;
     }
 
     private Object constructSequenceNode(SequenceNode node) {
@@ -128,9 +126,9 @@ public class BeanConstructor extends Constructor {
         return null;
     }
 
-    private Object constructMappingNode(MappingNode node) {
-        Class<? extends Object> beanClass = nextClass;
-        nextClass = Object.class;
+    @SuppressWarnings("unchecked")
+    private <T> T constructMappingNode(Class<T> clazz, MappingNode node) {
+        Class<? extends Object> beanClass = clazz;
         Object object;
         try {
             object = beanClass.newInstance();
@@ -149,15 +147,14 @@ public class BeanConstructor extends Constructor {
                 throw new YAMLException("Keys must be scalars but found: " + tuple[0]);
             }
             Node valueNode = tuple[1];
-            nextClass = String.class;// keys can only be Strings
-            Object key = constructObject(keyNode);
+            // keys can only be Strings
+            Object key = constructObject(String.class, keyNode);
             try {
                 Property property = getProperty(beanClass, (String) key);
                 if (property == null)
                     throw new YAMLException("Unable to find property '" + key + "' on class: "
                             + beanClass.getName());
-                nextClass = property.getType();
-                Object value = constructObject(valueNode);
+                Object value = constructObject(property.getType(), valueNode);
                 // TODO Class propertyElementType =
                 // config.propertyToElementType.get(property);
                 property.set(object, value);
@@ -165,7 +162,7 @@ public class BeanConstructor extends Constructor {
                 throw new YAMLException(e);
             }
         }
-        return object;
+        return (T) object;
     }
 
     protected Property getProperty(Class<? extends Object> type, String name)

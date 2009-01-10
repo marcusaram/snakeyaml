@@ -7,7 +7,7 @@ import java.util.Iterator;
 
 import org.yaml.snakeyaml.composer.Composer;
 import org.yaml.snakeyaml.constructor.BaseConstructor;
-import org.yaml.snakeyaml.constructor.Constructor;
+import org.yaml.snakeyaml.constructor.BeanConstructor;
 import org.yaml.snakeyaml.parser.ParserImpl;
 import org.yaml.snakeyaml.reader.Reader;
 import org.yaml.snakeyaml.resolver.Resolver;
@@ -26,7 +26,7 @@ public class Loader {
     }
 
     public Loader() {
-        this(new Constructor());
+        this(new BeanConstructor());
     }
 
     public Object load(java.io.Reader io) {
