@@ -88,9 +88,10 @@ public class ResolverTest extends TestCase {
         }
 
         private class ConstuctPhone implements Construct {
-            public Object construct(Node node) {
+            @SuppressWarnings("unchecked")
+            public <T> T construct(Class<T> clazz, Node node) {
                 String val = (String) constructScalar((ScalarNode) node);
-                return new Phone(val);
+                return (T) new Phone(val);
             }
         }
     }

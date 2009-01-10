@@ -30,7 +30,7 @@ public class EventConstructor extends Constructor {
     private class ConstructEvent implements Construct {
 
         @SuppressWarnings("unchecked")
-        public Object construct(Node node) {
+        public <T> T construct(Class<T> clazz, Node node) {
             Map mapping;
             if (node instanceof ScalarNode) {
                 mapping = new HashMap();
@@ -97,7 +97,7 @@ public class EventConstructor extends Constructor {
             } else {
                 throw new UnsupportedOperationException();
             }
-            return value;
+            return (T) value;
         }
     }
 }

@@ -18,7 +18,7 @@ import org.yaml.snakeyaml.nodes.ScalarNode;
 import org.yaml.snakeyaml.nodes.SequenceNode;
 
 /**
- * @see <a href="http://pyyaml.org/wiki/PyYAML">PyYAML</a> for more information
+ * @see <a href="http://pyyaml.org/wiki/PyYAML">PyYAML< /a> for more information
  */
 public class BaseConstructor {
     protected Map<String, Construct> yamlConstructors = new HashMap<String, Construct>();
@@ -27,6 +27,8 @@ public class BaseConstructor {
     private Map<Node, Object> constructedObjects;
     private Map<Node, Object> recursiveObjects;
 
+    protected Class<? extends Object> rootClass;
+
     /*
      * because Java does not have generators 'deep' is dropped. Multi
      * constructors are not supported.
@@ -34,6 +36,7 @@ public class BaseConstructor {
     public BaseConstructor() {
         constructedObjects = new HashMap<Node, Object>();
         recursiveObjects = new HashMap<Node, Object>();
+        rootClass = Object.class;
     }
 
     public void setComposer(Composer composer) {
@@ -49,60 +52,69 @@ public class BaseConstructor {
         // Construct and return the next document.
         composer.checkNode();
         Node node = composer.getNode();
-        return constructDocument(node);
+        return constructDocument(rootClass, node);
     }
 
     public Object getSingleData() {
         // Ensure that the stream contains a single document and construct it
         Node node = composer.getSingleNode();
         if (node != null) {
-            return constructDocument(node);
+            return constructDocument(rootClass, node);
         }
         return null;
     }
 
-    protected Object constructDocument(Node node) {
-        Object data = constructObject(node);
+    @SuppressWarnings("unchecked")
+    private <T> T constructDocument(Class<T> clazz, Node node) {
+        Object data = constructObject(clazz, node);
         constructedObjects.clear();
         recursiveObjects.clear();
-        return data;
+        return (T) data;
     }
 
-    protected Object constructObject(Node node) {
+    @SuppressWarnings("unchecked")
+    protected <T> T constructObject(Class<T> clazz, Node node) {
         if (constructedObjects.containsKey(node)) {
-            return constructedObjects.get(node);
+            return (T) constructedObjects.get(node);
         }
         if (recursiveObjects.containsKey(node)) {
             throw new ConstructorException(null, null, "found unconstructable recursive node", node
                     .getStartMark());
         }
         recursiveObjects.put(node, null);
-        Object data = callConstructor(node);
+        Object data = callConstructor(clazz, node);
         constructedObjects.put(node, data);
         recursiveObjects.remove(node);
-        return data;
+        return (T) data;
     }
 
-    protected Object callConstructor(Node node) {
-        Object data;
-        Construct constructor = yamlConstructors.get(node.getTag());
-        if (constructor == null) {
-            if (yamlConstructors.containsKey(null)) {
-                constructor = yamlConstructors.get(null);
-                data = constructor.construct(node);
-            } else if (node instanceof ScalarNode) {
-                data = constructScalar((ScalarNode) node);
-            } else if (node instanceof SequenceNode) {
-                data = constructSequence((SequenceNode) node);
-            } else if (node instanceof MappingNode) {
-                data = constructMapping((MappingNode) node);
+    @SuppressWarnings("unchecked")
+    protected <T> T callConstructor(Class<T> clazz, Node node) {
+        Object data = null;
+        Construct constructor = null;
+        if (Object.class.equals(clazz)) {// TODO do we need to check it ?
+            constructor = yamlConstructors.get(node.getTag());
+            if (constructor == null) {
+                if (yamlConstructors.containsKey(null)) {
+                    constructor = yamlConstructors.get(null);
+                    data = constructor.construct(clazz, node);
+                } else if (node instanceof ScalarNode) {
+                    data = constructScalar((ScalarNode) node);
+                } else if (node instanceof SequenceNode) {
+                    data = constructSequence((SequenceNode) node);
+                } else if (node instanceof MappingNode) {
+                    data = constructMapping((MappingNode) node);
+                } else {
+                    throw new YAMLException("Unknown node: " + node);
+                }
             } else {
-                throw new YAMLException("Unknown node: " + node);
+                data = constructor.construct(clazz, node);
             }
         } else {
-            data = constructor.construct(node);
+            throw new YAMLException("BeanConstructor must be used when class is known for node: "
+                    + node);
         }
-        return data;
+        return (T) data;
     }
 
     protected Object constructScalar(ScalarNode node) {
@@ -118,7 +130,7 @@ public class BaseConstructor {
         List<Object> result = createDefaultList(nodeValue.size());
         for (Iterator<Node> iter = nodeValue.iterator(); iter.hasNext();) {
             Node child = iter.next();
-            result.add(constructObject(child));
+            result.add(constructObject(Object.class, child));
         }
         return result;
     }
@@ -135,7 +147,7 @@ public class BaseConstructor {
             Node[] tuple = iter.next();
             Node keyNode = tuple[0];
             Node valueNode = tuple[1];
-            Object key = constructObject(keyNode);
+            Object key = constructObject(Object.class, keyNode);
             if (key != null) {
                 try {
                     key.hashCode();// check circular dependencies
@@ -145,7 +157,7 @@ public class BaseConstructor {
                             .getStartMark());
                 }
             }
-            Object value = constructObject(valueNode);
+            Object value = constructObject(Object.class, valueNode);
             mapping.put(key, value);
         }
         return mapping;
@@ -156,8 +168,8 @@ public class BaseConstructor {
         List<Node[]> nodeValue = (List<Node[]>) node.getValue();
         for (Iterator<Node[]> iter = nodeValue.iterator(); iter.hasNext();) {
             Node[] tuple = iter.next();
-            Object key = constructObject(tuple[0]);
-            Object value = constructObject(tuple[1]);
+            Object key = constructObject(Object.class, tuple[0]);
+            Object value = constructObject(Object.class, tuple[1]);
             pairs.add(new Object[] { key, value });
         }
         return pairs;

@@ -23,7 +23,7 @@ import org.yaml.snakeyaml.nodes.SequenceNode;
 import org.yaml.snakeyaml.util.Base64Coder;
 
 /**
- * @see <a href="http://pyyaml.org/wiki/PyYAML">PyYAML</a> for more information
+ * @see <a href="http://pyyaml.org/wiki/PyYAML">PyYAML< /a> for more information
  */
 public class SafeConstructor extends BaseConstructor {
 
@@ -99,7 +99,7 @@ public class SafeConstructor extends BaseConstructor {
     }
 
     private class ConstuctYamlNull implements Construct {
-        public Object construct(Node node) {
+        public <T> T construct(Class<T> clazz, Node node) {
             constructScalar((ScalarNode) node);
             return null;
         }
@@ -116,14 +116,16 @@ public class SafeConstructor extends BaseConstructor {
     }
 
     private class ConstuctYamlBool implements Construct {
-        public Object construct(Node node) {
+        @SuppressWarnings("unchecked")
+        public <T> T construct(Class<T> clazz, Node node) {
             String val = (String) constructScalar((ScalarNode) node);
-            return BOOL_VALUES.get(val.toLowerCase());
+            return (T) BOOL_VALUES.get(val.toLowerCase());
         }
     }
 
     private class ConstuctYamlInt implements Construct {
-        public Object construct(Node node) {
+        @SuppressWarnings("unchecked")
+        public <T> T construct(Class<T> clazz, Node node) {
             String value = constructScalar((ScalarNode) node).toString().replaceAll("_", "");
             int sign = +1;
             char first = value.charAt(0);
@@ -135,7 +137,7 @@ public class SafeConstructor extends BaseConstructor {
             }
             int base = 10;
             if (value.equals("0")) {
-                return new Integer(0);
+                return (T) new Integer(0);
             } else if (value.startsWith("0b")) {
                 value = value.substring(2);
                 base = 2;
@@ -153,11 +155,11 @@ public class SafeConstructor extends BaseConstructor {
                     val += (Long.parseLong(digits[(j - i) - 1]) * bes);
                     bes *= 60;
                 }
-                return createNumber(sign, String.valueOf(val), 10);
+                return (T) createNumber(sign, String.valueOf(val), 10);
             } else {
-                return createNumber(sign, value, 10);
+                return (T) createNumber(sign, value, 10);
             }
-            return createNumber(sign, value, base);
+            return (T) createNumber(sign, value, base);
         }
     }
 
@@ -181,7 +183,8 @@ public class SafeConstructor extends BaseConstructor {
     }
 
     private class ConstuctYamlFloat implements Construct {
-        public Object construct(Node node) {
+        @SuppressWarnings("unchecked")
+        public <T> T construct(Class<T> clazz, Node node) {
             String value = constructScalar((ScalarNode) node).toString().replaceAll("_", "");
             int sign = +1;
             char first = value.charAt(0);
@@ -193,9 +196,10 @@ public class SafeConstructor extends BaseConstructor {
             }
             final String valLower = value.toLowerCase();
             if (valLower.equals(".inf")) {
-                return sign == -1 ? Double.NEGATIVE_INFINITY : Double.POSITIVE_INFINITY;
+                return (T) new Double(sign == -1 ? Double.NEGATIVE_INFINITY
+                        : Double.POSITIVE_INFINITY);
             } else if (valLower.equals(".nan")) {
-                return Double.NaN;
+                return (T) new Double(Double.NaN);
             } else if (value.indexOf(':') != -1) {
                 final String[] digits = value.split(":");
                 int bes = 1;
@@ -204,11 +208,11 @@ public class SafeConstructor extends BaseConstructor {
                     val += (Double.parseDouble(digits[(j - i) - 1]) * bes);
                     bes *= 60;
                 }
-                return new Double(sign * val);
+                return (T) new Double(sign * val);
             } else {
                 try {
                     Double d = Double.valueOf(value);
-                    return new Double(d.doubleValue() * sign);
+                    return (T) new Double(d.doubleValue() * sign);
                 } catch (NumberFormatException e) {
                     throw new YAMLException("Invalid number: '" + value + "'; in node " + node);
                 }
@@ -217,11 +221,12 @@ public class SafeConstructor extends BaseConstructor {
     }
 
     private class ConstuctYamlBinary implements Construct {
-        public Object construct(Node node) {
+        @SuppressWarnings("unchecked")
+        public <T> T construct(Class<T> clazz, Node node) {
             char[] decoded = Base64Coder.decode(constructScalar((ScalarNode) node).toString()
                     .toCharArray());
             String value = new String(decoded);
-            return value;
+            return (T) value;
         }
     }
 
@@ -231,7 +236,8 @@ public class SafeConstructor extends BaseConstructor {
             .compile("^([0-9][0-9][0-9][0-9])-([0-9][0-9]?)-([0-9][0-9]?)$");
 
     private class ConstuctYamlTimestamp implements Construct {
-        public Object construct(Node node) {
+        @SuppressWarnings("unchecked")
+        public <T> T construct(Class<T> clazz, Node node) {
             Matcher match = YMD_REGEXP.matcher((String) node.getValue());
             if (match.matches()) {
                 String year_s = match.group(1);
@@ -243,7 +249,7 @@ public class SafeConstructor extends BaseConstructor {
                 // Java's months are zero-based...
                 cal.set(Calendar.MONTH, Integer.parseInt(month_s) - 1); // x
                 cal.set(Calendar.DAY_OF_MONTH, Integer.parseInt(day_s));
-                return cal.getTime();
+                return (T) cal.getTime();
             } else {
                 match = TIMESTAMP_REGEXP.matcher((String) node.getValue());
                 if (!match.matches()) {
@@ -293,13 +299,14 @@ public class SafeConstructor extends BaseConstructor {
                 } else {
                     cal.setTimeZone(TimeZone.getTimeZone("UTC"));
                 }
-                return cal.getTime();
+                return (T) cal.getTime();
             }
         }
     }
 
     private class ConstuctYamlOmap implements Construct {
-        public Object construct(Node node) {
+        @SuppressWarnings("unchecked")
+        public <T> T construct(Class<T> clazz, Node node) {
             // Note: we do not check for duplicate keys, because it's too
             // CPU-expensive.
             Map<Object, Object> omap = new LinkedHashMap<Object, Object>();
@@ -323,17 +330,18 @@ public class SafeConstructor extends BaseConstructor {
                 }
                 Node keyNode = mnode.getValue().get(0)[0];
                 Node valueNode = mnode.getValue().get(0)[1];
-                Object key = constructObject(keyNode);
-                Object value = constructObject(valueNode);
+                Object key = constructObject(Object.class, keyNode);
+                Object value = constructObject(Object.class, valueNode);
                 omap.put(key, value);
             }
-            return omap;
+            return (T) omap;
         }
     }
 
     // Note: the same code as `construct_yaml_omap`.
     private class ConstuctYamlPairs implements Construct {
-        public Object construct(Node node) {
+        @SuppressWarnings("unchecked")
+        public <T> T construct(Class<T> clazz, Node node) {
             // Note: we do not check for duplicate keys, because it's too
             // CPU-expensive.
             List<Object[]> pairs = new LinkedList<Object[]>();
@@ -356,42 +364,46 @@ public class SafeConstructor extends BaseConstructor {
                 }
                 Node keyNode = mnode.getValue().get(0)[0];
                 Node valueNode = mnode.getValue().get(0)[1];
-                Object key = constructObject(keyNode);
-                Object value = constructObject(valueNode);
+                Object key = constructObject(Object.class, keyNode);
+                Object value = constructObject(Object.class, valueNode);
                 pairs.add(new Object[] { key, value });
             }
-            return pairs;
+            return (T) pairs;
         }
     }
 
     private class ConstuctYamlSet implements Construct {
-        public Object construct(Node node) {
+        @SuppressWarnings("unchecked")
+        public <T> T construct(Class<T> clazz, Node node) {
             Map<Object, Object> value = constructMapping((MappingNode) node);
-            return value.keySet();
+            return (T) value.keySet();
         }
     }
 
     private class ConstuctYamlStr implements Construct {
-        public Object construct(Node node) {
+        @SuppressWarnings("unchecked")
+        public <T> T construct(Class<T> clazz, Node node) {
             String value = (String) constructScalar((ScalarNode) node);
-            return value;
+            return (T) value;
         }
     }
 
     private class ConstuctYamlSeq implements Construct {
-        public Object construct(Node node) {
-            return constructSequence((SequenceNode) node);
+        @SuppressWarnings("unchecked")
+        public <T> T construct(Class<T> clazz, Node node) {
+            return (T) constructSequence((SequenceNode) node);
         }
     }
 
     private class ConstuctYamlMap implements Construct {
-        public Object construct(Node node) {
-            return constructMapping((MappingNode) node);
+        @SuppressWarnings("unchecked")
+        public <T> T construct(Class<T> clazz, Node node) {
+            return (T) constructMapping((MappingNode) node);
         }
     }
 
     private class ConstuctUndefined implements Construct {
-        public Object construct(Node node) {
+        public <T> T construct(Class<T> clazz, Node node) {
             throw new ConstructorException(null, null,
                     "could not determine a constructor for the tag " + node.getTag(), node
                             .getStartMark());

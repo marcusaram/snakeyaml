@@ -35,43 +35,43 @@ public class Example2_24Test extends TestCase {
 
         private class ConstructShape implements Construct {
             @SuppressWarnings("unchecked")
-            public Object construct(Node node) {
+            public <T> T construct(Class<T> clazz, Node node) {
                 SequenceNode snode = (SequenceNode) node;
                 List<Entity> values = (List<Entity>) constructSequence(snode);
                 Shape shape = new Shape(values);
-                return shape;
+                return (T) shape;
             }
         }
 
         private class ConstructCircle implements Construct {
             @SuppressWarnings("unchecked")
-            public Object construct(Node node) {
+            public <T> T construct(Class<T> clazz, Node node) {
                 MappingNode mnode = (MappingNode) node;
                 Map values = (Map) constructMapping(mnode);
                 Circle circle = new Circle((Map) values.get("center"), (Integer) values
                         .get("radius"));
-                return circle;
+                return (T) circle;
             }
         }
 
         private class ConstructLine implements Construct {
             @SuppressWarnings("unchecked")
-            public Object construct(Node node) {
+            public <T> T construct(Class<T> clazz, Node node) {
                 MappingNode mnode = (MappingNode) node;
                 Map values = (Map) constructMapping(mnode);
                 Line line = new Line((Map) values.get("start"), (Map) values.get("finish"));
-                return line;
+                return (T) line;
             }
         }
 
         private class ConstructLabel implements Construct {
             @SuppressWarnings("unchecked")
-            public Object construct(Node node) {
+            public <T> T construct(Class<T> clazz, Node node) {
                 MappingNode mnode = (MappingNode) node;
                 Map values = (Map) constructMapping(mnode);
                 Label label = new Label((Map) values.get("start"), (Integer) values.get("color"),
                         (String) values.get("text"));
-                return label;
+                return (T) label;
             }
         }
     }

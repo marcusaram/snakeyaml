@@ -71,9 +71,10 @@ public class RepresentTest extends TestCase {
         }
 
         private class ConstuctDice implements Construct {
-            public Object construct(Node node) {
+            @SuppressWarnings("unchecked")
+            public <T> T construct(Class<T> clazz, Node node) {
                 String val = (String) constructScalar((ScalarNode) node);
-                return new CustomBean(val.substring(0, 1), Integer.parseInt(val.substring(2)));
+                return (T) new CustomBean(val.substring(0, 1), Integer.parseInt(val.substring(2)));
             }
         }
     }
