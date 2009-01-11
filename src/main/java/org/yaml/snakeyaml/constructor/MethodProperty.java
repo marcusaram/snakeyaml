@@ -9,7 +9,7 @@ class MethodProperty extends Property {
     private final PropertyDescriptor property;
 
     public MethodProperty(PropertyDescriptor property) {
-        super(property.getName(), property.getPropertyType());
+        super(property.getPropertyType());
         this.property = property;
     }
 

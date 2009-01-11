@@ -9,7 +9,7 @@ class FieldProperty extends Property {
     private final Field field;
 
     public FieldProperty(Field field) {
-        super(field.getName(), field.getType());
+        super(field.getType());
         this.field = field;
     }
 

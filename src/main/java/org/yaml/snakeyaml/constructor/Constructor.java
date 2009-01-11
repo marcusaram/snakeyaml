@@ -204,10 +204,6 @@ public class Constructor extends SafeConstructor {
 
     protected Property getProperty(Class<? extends Object> type, String name)
             throws IntrospectionException {
-        if (type == null)
-            throw new IllegalArgumentException("type cannot be null.");
-        if (name == null || name.length() == 0)
-            throw new IllegalArgumentException("name cannot be null or empty.");
         for (PropertyDescriptor property : Introspector.getBeanInfo(type).getPropertyDescriptors()) {
             if (property.getName().equals(name)) {
                 if (property.getReadMethod() != null && property.getWriteMethod() != null)
