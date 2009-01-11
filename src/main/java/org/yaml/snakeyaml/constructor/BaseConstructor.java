@@ -92,27 +92,22 @@ public class BaseConstructor {
     protected <T> T callConstructor(Class<T> clazz, Node node) {
         Object data = null;
         Construct constructor = null;
-        if (Object.class.equals(clazz)) {// TODO do we need to check it ?
-            constructor = yamlConstructors.get(node.getTag());
-            if (constructor == null) {
-                if (yamlConstructors.containsKey(null)) {
-                    constructor = yamlConstructors.get(null);
-                    data = constructor.construct(clazz, node);
-                } else if (node instanceof ScalarNode) {
-                    data = constructScalar((ScalarNode) node);
-                } else if (node instanceof SequenceNode) {
-                    data = constructSequence((SequenceNode) node);
-                } else if (node instanceof MappingNode) {
-                    data = constructMapping((MappingNode) node);
-                } else {
-                    throw new YAMLException("Unknown node: " + node);
-                }
-            } else {
+        constructor = yamlConstructors.get(node.getTag());
+        if (constructor == null) {
+            if (yamlConstructors.containsKey(null)) {
+                constructor = yamlConstructors.get(null);
                 data = constructor.construct(clazz, node);
+            } else if (node instanceof ScalarNode) {
+                data = constructScalar((ScalarNode) node);
+            } else if (node instanceof SequenceNode) {
+                data = constructSequence((SequenceNode) node);
+            } else if (node instanceof MappingNode) {
+                data = constructMapping((MappingNode) node);
+            } else {
+                throw new YAMLException("Unknown node: " + node);
             }
         } else {
-            throw new YAMLException("BeanConstructor must be used when class is known for node: "
-                    + node);
+            data = constructor.construct(clazz, node);
         }
         return (T) data;
     }
@@ -162,16 +157,15 @@ public class BaseConstructor {
         }
         return mapping;
     }
-
-    protected List<Object[]> constructPairs(MappingNode node) {
-        List<Object[]> pairs = new LinkedList<Object[]>();
-        List<Node[]> nodeValue = (List<Node[]>) node.getValue();
-        for (Iterator<Node[]> iter = nodeValue.iterator(); iter.hasNext();) {
-            Node[] tuple = iter.next();
-            Object key = constructObject(Object.class, tuple[0]);
-            Object value = constructObject(Object.class, tuple[1]);
-            pairs.add(new Object[] { key, value });
-        }
-        return pairs;
-    }
+    // TODO protected List<Object[]> constructPairs(MappingNode node) {
+    // List<Object[]> pairs = new LinkedList<Object[]>();
+    // List<Node[]> nodeValue = (List<Node[]>) node.getValue();
+    // for (Iterator<Node[]> iter = nodeValue.iterator(); iter.hasNext();) {
+    // Node[] tuple = iter.next();
+    // Object key = constructObject(Object.class, tuple[0]);
+    // Object value = constructObject(Object.class, tuple[1]);
+    // pairs.add(new Object[] { key, value });
+    // }
+    // return pairs;
+    // }
 }
