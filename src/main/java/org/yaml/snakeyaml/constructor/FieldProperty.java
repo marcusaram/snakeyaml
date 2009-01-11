@@ -16,8 +16,4 @@ class FieldProperty extends Property {
     public void set(Object object, Object value) throws Exception {
         field.set(object, value);
     }
-
-    public Object get(Object object) throws Exception {
-        return field.get(object);
-    }
 }

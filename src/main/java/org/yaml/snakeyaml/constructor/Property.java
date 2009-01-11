@@ -15,6 +15,4 @@ abstract class Property {
     }
 
     abstract public void set(Object object, Object value) throws Exception;
-
-    abstract public Object get(Object object) throws Exception;
 }

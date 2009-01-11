@@ -16,8 +16,4 @@ class MethodProperty extends Property {
     public void set(Object object, Object value) throws Exception {
         property.getWriteMethod().invoke(object, value);
     }
-
-    public Object get(Object object) throws Exception {
-        return property.getReadMethod().invoke(object);
-    }
 }

@@ -66,7 +66,6 @@ public class Constructor extends SafeConstructor {
                     Object value = constructScalar(snode);
                     java.lang.reflect.Constructor javaConstructor = cl.getConstructor(value
                             .getClass());
-                    // TODO which way to leave ?
                     result = javaConstructor.newInstance(value);
                 }
             } catch (Exception e) {
