@@ -95,12 +95,14 @@ public class CanonicalScanner implements Scanner {
 
     private void scan() {
         this.tokens.push(new StreamStartToken(null, null));
-        while (true) {
+        boolean stop = false;
+        while (!stop) {
             findToken();
             char ch = data.charAt(index);
             switch (ch) {
             case '\0':
                 tokens.push(new StreamEndToken(null, null));
+                stop = true;
                 break;
 
             case '%':
@@ -169,6 +171,7 @@ public class CanonicalScanner implements Scanner {
                 throw new CanonicalException("invalid token");
             }
         }
+        scanned = true;
     }
 
     private Token scanDirective() {
@@ -235,7 +238,7 @@ public class CanonicalScanner implements Scanner {
                 if (ch == '\n') {
                     ignoreSpaces = true;
                 } else if (QUOTE_CODES.keySet().contains(ch)) {
-                    int length = QUOTE_CODES.get(chunks);
+                    int length = QUOTE_CODES.get(ch);
                     int code = Integer.parseInt(data.substring(index, index + length), 16);
                     chunks.append(String.valueOf(code));
                     index += length;
@@ -267,7 +270,7 @@ public class CanonicalScanner implements Scanner {
 
     private void findToken() {
         boolean found = false;
-        while (found) {
+        while (!found) {
             while (" \t".indexOf(data.charAt(index)) != -1) {
                 index++;
             }
