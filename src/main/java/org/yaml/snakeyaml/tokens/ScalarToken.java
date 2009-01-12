@@ -13,13 +13,11 @@ public class ScalarToken extends Token {
     private boolean plain;
     private char style;
 
-    public ScalarToken(final String value, final Mark startMark, final Mark endMark,
-            final boolean plain) {
+    public ScalarToken(String value, Mark startMark, Mark endMark, boolean plain) {
         this(value, plain, startMark, endMark, (char) 0);
     }
 
-    public ScalarToken(final String value, final boolean plain, final Mark startMark,
-            final Mark endMark, final char style) {
+    public ScalarToken(String value, boolean plain, Mark startMark, Mark endMark, char style) {
         super(startMark, endMark);
         this.value = value;
         this.plain = plain;

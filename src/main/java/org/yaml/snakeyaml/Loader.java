@@ -17,7 +17,7 @@ import org.yaml.snakeyaml.resolver.Resolver;
  */
 public class Loader {
     protected BaseConstructor constructor;
-    private Resolver resolver;
+    protected Resolver resolver;
 
     public Loader(BaseConstructor constructor) {
         super();
