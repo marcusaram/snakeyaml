@@ -14,7 +14,7 @@ public class CanonicalLoader extends Loader {
             int ch = yaml.read();
             StringBuffer buffer = new StringBuffer();
             while (ch != -1) {
-                buffer.append(ch);
+                buffer.append((char) ch);
                 ch = yaml.read();
             }
             Composer composer = new Composer(new CanonicalParser(buffer.toString()), resolver);
@@ -30,7 +30,7 @@ public class CanonicalLoader extends Loader {
             int ch = yaml.read();
             StringBuffer buffer = new StringBuffer();
             while (ch != -1) {
-                buffer.append(ch);
+                buffer.append((char) ch);
                 ch = yaml.read();
             }
             Composer composer = new Composer(new CanonicalParser(buffer.toString()), resolver);
