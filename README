@@ -70,7 +70,7 @@ For more details, please check [wiki:Documentation SnakeYAML Documentation].
 == History ==
 '''0.9 (2009-01-12)'''
  * Minor changes
- * Add possibility to define a root class for Loader
+ * Add possibility [http://trac-hg.assembla.com/snakeyaml/wiki/Documentation#Providingthetopleveltype to provide] the top level type
  * Fix a bug in Emitter when writing folded scalars
    
 '''0.8 (2009-01-07)'''

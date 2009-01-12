@@ -233,7 +233,7 @@ Note if you want to limit objects to standard Java objects like List or Long you
 Loader loader = new Loader(new SafeConstructor());
 Yaml yaml = new Yaml(loader);
 }}}
-
+==== Providing the top level type ====
 It is possible to load a YAML document without any explicit tags. For instance, to load this document
 (example 2.27 from the [http://yaml.org/spec/1.1/#id859060 YAML specification])
 {{{
@@ -266,7 +266,7 @@ comments:
     Backup contact is Nancy
     Billsmer @ 338-4338.
 }}}
-into Invoice, Person, Address, Product instances the root class
+into Invoice, Person, Address, Product instances the top level class in the object hierarchy
 [http://trac-hg.assembla.com/snakeyaml/browser/src/test/java/org/yaml/snakeyaml/Example2_27Test.java must be provided]:
 {{{
 Loader loader = new Loader(new Constructor(Invoice.class));
