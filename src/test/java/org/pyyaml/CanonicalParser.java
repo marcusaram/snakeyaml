@@ -47,7 +47,7 @@ public class CanonicalParser implements Parser {
     // stream: STREAM-START document* STREAM-END
     private void parseStream() {
         scanner.getToken(StreamStartToken.class);
-        events.push(new StreamStartEvent(null, null));
+        events.add(new StreamStartEvent(null, null));
         while (!scanner.checkToken(StreamEndToken.class)) {
             List<Class<? extends Token>> list = new ArrayList<Class<? extends Token>>();
             list.add(DirectiveToken.class);
@@ -59,7 +59,7 @@ public class CanonicalParser implements Parser {
             }
         }
         scanner.getToken(StreamEndToken.class);
-        events.push(new StreamEndEvent(null, null));
+        events.add(new StreamEndEvent(null, null));
     }
 
     // document: DIRECTIVE? DOCUMENT-START node
@@ -68,16 +68,16 @@ public class CanonicalParser implements Parser {
             scanner.getToken(DirectiveToken.class);
         }
         scanner.getToken(DocumentStartToken.class);
-        events.push(new DocumentStartEvent(null, null, true, new Integer[] { 1, 1 }, null));
+        events.add(new DocumentStartEvent(null, null, true, new Integer[] { 1, 1 }, null));
         parseNode();
-        events.push(new DocumentEndEvent(null, null, true));
+        events.add(new DocumentEndEvent(null, null, true));
     }
 
     // node: ALIAS | ANCHOR? TAG? (SCALAR|sequence|mapping)
     private void parseNode() {
         if (scanner.checkToken(AliasToken.class)) {
             AliasToken token = (AliasToken) scanner.getToken();
-            events.push(new AliasEvent(token.getValue(), null, null));
+            events.add(new AliasEvent(token.getValue(), null, null));
         } else {
             String anchor = null;
             if (scanner.checkToken(AnchorToken.class)) {
@@ -91,13 +91,13 @@ public class CanonicalParser implements Parser {
             }
             if (scanner.checkToken(ScalarToken.class)) {
                 ScalarToken token = (ScalarToken) scanner.getToken();
-                events.push(new ScalarEvent(anchor, tag, new boolean[] { false, false }, token
+                events.add(new ScalarEvent(anchor, tag, new boolean[] { false, false }, token
                         .getValue(), null, null, null));
             } else if (scanner.checkToken(FlowSequenceStartToken.class)) {
-                events.push(new SequenceStartEvent(anchor, tag, false, null, null, null));
+                events.add(new SequenceStartEvent(anchor, tag, false, null, null, null));
                 parseSequence();
             } else if (scanner.checkToken(FlowMappingStartToken.class)) {
-                events.push(new MappingStartEvent(anchor, tag, false, null, null, null));
+                events.add(new MappingStartEvent(anchor, tag, false, null, null, null));
                 parseMapping();
             } else {
                 throw new CanonicalException("SCALAR, '[', or '{' is expected, got "
@@ -119,7 +119,7 @@ public class CanonicalParser implements Parser {
             }
         }
         scanner.getToken(FlowSequenceEndToken.class);
-        events.push(new SequenceEndEvent(null, null));
+        events.add(new SequenceEndEvent(null, null));
     }
 
     // mapping: MAPPING-START (map_entry (ENTRY map_entry)*)? ENTRY? MAPPING-END
@@ -135,7 +135,7 @@ public class CanonicalParser implements Parser {
             }
         }
         scanner.getToken(FlowMappingEndToken.class);
-        events.push(new MappingEndEvent(null, null));
+        events.add(new MappingEndEvent(null, null));
     }
 
     // map_entry: KEY node VALUE node
