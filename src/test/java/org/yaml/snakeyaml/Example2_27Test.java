@@ -23,6 +23,8 @@ public class Example2_27Test extends TestCase {
         Invoice invoice = (Invoice) yaml.load(Util
                 .getLocalResource("specification/example2_27.yaml"));
         assertNotNull(invoice);
+        Person billTo = invoice.billTo;
+        assertEquals("Dumars", billTo.family);
         Dumper dumper = new Dumper(new DumperOptions());
         yaml = new Yaml(dumper);
         String output = yaml.dump(invoice);

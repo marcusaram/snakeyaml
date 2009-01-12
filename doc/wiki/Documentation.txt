@@ -234,6 +234,49 @@ Loader loader = new Loader(new SafeConstructor());
 Yaml yaml = new Yaml(loader);
 }}}
 
+It is possible to load a YAML document without any explicit tags. For instance, to load this document
+(example 2.27 from the [http://yaml.org/spec/1.1/#id859060 YAML specification])
+{{{
+invoice: 34843
+date   : 2001-01-23
+billTo: &id001
+    given  : Chris
+    family : Dumars
+    address:
+        lines: |
+            458 Walkman Dr.
+            Suite #292
+        city    : Royal Oak
+        state   : MI
+        postal  : 48046
+shipTo: *id001
+product:
+    - sku         : BL394D
+      quantity    : 4
+      description : Basketball
+      price       : 450.00
+    - sku         : BL4438H
+      quantity    : 1
+      description : Super Hoop
+      price       : 2392.00
+tax  : 251.42
+total: 4443.52
+comments:
+    Late afternoon is best.
+    Backup contact is Nancy
+    Billsmer @ 338-4338.
+}}}
+into Invoice, Person, Address, Product instances the root class
+[http://trac-hg.assembla.com/snakeyaml/browser/src/test/java/org/yaml/snakeyaml/Example2_27Test.java must be provided]:
+{{{
+Loader loader = new Loader(new Constructor(Invoice.class));
+Yaml yaml = new Yaml(loader);
+}}}
+SnakeYAML is using Reflection API to find out the class for all the properties (setters and public fields) on Invoice.
+Unfortunately because of erasure it is not possible to identify classes for type safe collections.
+
+PENDING: support for type-safe collection is coming soon...
+
 === Dumping YAML ===
 
 The '''`Yaml.dump(Object data)`''' function accepts a Java object and produces a YAML document.
