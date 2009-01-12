@@ -16,7 +16,7 @@ Changes
 =======
 
  * Minor changes
- * Add possibility to define a root class for Loader
+ * Add possibility to provide the top level type
  * Fix a bug in Emitter when writing folded scalars
 
 Resources
