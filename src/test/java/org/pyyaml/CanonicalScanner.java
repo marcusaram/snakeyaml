@@ -94,77 +94,77 @@ public class CanonicalScanner implements Scanner {
     }
 
     private void scan() {
-        this.tokens.push(new StreamStartToken(null, null));
+        this.tokens.add(new StreamStartToken(null, null));
         boolean stop = false;
         while (!stop) {
             findToken();
             char ch = data.charAt(index);
             switch (ch) {
             case '\0':
-                tokens.push(new StreamEndToken(null, null));
+                tokens.add(new StreamEndToken(null, null));
                 stop = true;
                 break;
 
             case '%':
-                tokens.push(scanDirective());
+                tokens.add(scanDirective());
                 break;
 
             case '-':
                 if ("---".equals(data.substring(index, index + 3))) {
                     index += 3;
-                    tokens.push(new DocumentStartToken(null, null));
+                    tokens.add(new DocumentStartToken(null, null));
                 }
                 break;
 
             case '[':
                 index++;
-                tokens.push(new FlowSequenceStartToken(null, null));
+                tokens.add(new FlowSequenceStartToken(null, null));
                 break;
 
             case '{':
                 index++;
-                tokens.push(new FlowMappingStartToken(null, null));
+                tokens.add(new FlowMappingStartToken(null, null));
                 break;
 
             case ']':
                 index++;
-                tokens.push(new FlowSequenceEndToken(null, null));
+                tokens.add(new FlowSequenceEndToken(null, null));
                 break;
 
             case '}':
                 index++;
-                tokens.push(new FlowMappingEndToken(null, null));
+                tokens.add(new FlowMappingEndToken(null, null));
                 break;
 
             case '?':
                 index++;
-                tokens.push(new KeyToken(null, null));
+                tokens.add(new KeyToken(null, null));
                 break;
 
             case ':':
                 index++;
-                tokens.push(new ValueToken(null, null));
+                tokens.add(new ValueToken(null, null));
                 break;
 
             case ',':
                 index++;
-                tokens.push(new FlowEntryToken(null, null));
+                tokens.add(new FlowEntryToken(null, null));
                 break;
 
             case '*':
-                tokens.push(scanAlias());
+                tokens.add(scanAlias());
                 break;
 
             case '&':
-                tokens.push(scanAlias());
+                tokens.add(scanAlias());
                 break;
 
             case '!':
-                tokens.push(scanTag());
+                tokens.add(scanTag());
                 break;
 
             case '"':
-                tokens.push(scanScalar());
+                tokens.add(scanScalar());
                 break;
 
             default:
