@@ -1,7 +1,7 @@
 --- !<tag:clarkevans.com,2002:invoice>
 invoice: 34843
 date   : 2001-01-23
-bill-to: &id001
+billTo: &id001
     given  : Chris
     family : Dumars
     address:
@@ -11,7 +11,7 @@ bill-to: &id001
         city    : Royal Oak
         state   : MI
         postal  : 48046
-ship-to: *id001
+shipTo: *id001
 product:
     - sku         : BL394D
       quantity    : 4

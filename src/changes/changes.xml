@@ -6,6 +6,9 @@
 	<body>
 	    <release version="0.9" date="2008-01-12" description="Add possibility to define a root class for Loader">
 	    	<action dev="py4fun" type="add">
+                Finish 2.27 example from the specification (2009-01-12)
+            </action>
+            <action dev="py4fun" type="add">
                 Add possibility to define a root class for Loader (2009-01-11)
             </action>
             <action dev="py4fun" type="update">
