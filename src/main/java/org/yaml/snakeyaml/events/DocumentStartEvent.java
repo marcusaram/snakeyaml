@@ -15,8 +15,8 @@ public class DocumentStartEvent extends Event {
     private Integer[] version;
     private Map<String, String> tags;
 
-    public DocumentStartEvent(Mark startMark, Mark endMark, boolean explicit,
-            final Integer[] version, Map<String, String> tags) {
+    public DocumentStartEvent(Mark startMark, Mark endMark, boolean explicit, Integer[] version,
+            Map<String, String> tags) {
         super(startMark, endMark);
         this.explicit = explicit;
         this.version = version;

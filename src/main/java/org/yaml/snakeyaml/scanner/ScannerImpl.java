@@ -81,8 +81,8 @@ public class ScannerImpl implements Scanner {
     private final static String FULL_LINEBR = "\r\n\u0085\u2028\u2029";
     private final static String ALPHA = "abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ-_";
     private final static Pattern NOT_HEXA = Pattern.compile("[^0-9A-Fa-f]");
-    private final static Map<Character, String> ESCAPE_REPLACEMENTS = new HashMap<Character, String>();
-    private final static Map<Character, Integer> ESCAPE_CODES = new HashMap<Character, Integer>();
+    public final static Map<Character, String> ESCAPE_REPLACEMENTS = new HashMap<Character, String>();
+    public final static Map<Character, Integer> ESCAPE_CODES = new HashMap<Character, Integer>();
 
     static {
         ESCAPE_REPLACEMENTS.put(new Character('0'), "\0");
