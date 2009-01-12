@@ -30,15 +30,16 @@ SnakeYAML requires Java 5 or higher.
 
 == Download and Installation ==
 
-The current stable release of SnakeYAML: '''0.8'''.
+The current stable release of SnakeYAML: '''0.9'''.
 
 Download links:
 
- * '''JAR package''': http://www.assembla.com/spaces/snakeyaml/documents/c7WDPe3jGr3z_nab7jnrAJ/download?filename=SnakeYAML-0.8.jar
- * '''ZIP archive''': http://www.assembla.com/spaces/snakeyaml/documents/bHeFf83jOr3z_nab7jnrAJ/download?filename=SnakeYAML-all-0.8.zip
+ * '''JAR package''': http://www.assembla.com/spaces/snakeyaml/documents/aIj9Sm4iCr3Barab7jnrAJ/download?filename=SnakeYAML-0.9.jar
+ * '''ZIP archive''': http://www.assembla.com/spaces/snakeyaml/documents/bqunWq4jKr3z4cab7jnrAJ/download?filename=SnakeYAML-all-0.9.zip
  * '''source''': http://www.assembla.com/spaces/snakeyaml/trac_mercurial_tool
- * '''generated docs''': http://snakeyaml.narod.ru/releases/v0.8/site/index.html
- * '''project reports''': http://snakeyaml.narod.ru/releases/v0.8/site/project-reports.html
+ * '''changes''': http://snakeyaml.narod.ru/releases/v0.9/site/changes-report.html
+ * '''generated docs''': http://snakeyaml.narod.ru/releases/v0.9/site/index.html
+ * '''project reports''': http://snakeyaml.narod.ru/releases/v0.9/site/project-reports.html
 
 == Documentation ==
 
@@ -67,6 +68,11 @@ For more details, please check [wiki:Documentation SnakeYAML Documentation].
 
 
 == History ==
+'''0.9 (2009-01-12)'''
+ * Minor changes
+ * Add possibility to define a root class for Loader
+ * Fix a bug in Emitter when writing folded scalars
+   
 '''0.8 (2009-01-07)'''
  * Add possibility to use java.io.Reader as input
  * import changes from [http://pyyaml.org/wiki/PyYAML#History PyYAML 3.07/3.08]
@@ -146,7 +152,8 @@ You may discuss SnakeYAML at
 [http://groups.google.com/group/snakeyaml the mailing list].
 
 == TODO ==
- * better conversion to Java classes (similar to `YamlBeans` and JYaml)
+ * better support for collections as properties when loading Java classes (similar to `YamlBeans`)
+ * better support public fields when dumping Java classes
  * import path resolver from PyYAML
  * import all the tests from PyYAML
 
