@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.yaml.snakeyaml.error.Mark;
 import org.yaml.snakeyaml.scanner.Scanner;
 import org.yaml.snakeyaml.scanner.ScannerImpl;
 import org.yaml.snakeyaml.tokens.AliasToken;
@@ -34,12 +35,14 @@ public class CanonicalScanner implements Scanner {
     private int index;
     public LinkedList<Token> tokens;
     private boolean scanned;
+    private Mark mark;
 
     public CanonicalScanner(String data) {
         this.data = data + "\0";
         this.index = 0;
         this.tokens = new LinkedList<Token>();
         this.scanned = false;
+        this.mark = new Mark("test", 0, 0, 0, data, 0);
     }
 
     public boolean checkToken(List<Class<? extends Token>> choices) {
@@ -94,14 +97,14 @@ public class CanonicalScanner implements Scanner {
     }
 
     private void scan() {
-        this.tokens.add(new StreamStartToken(null, null));
+        this.tokens.add(new StreamStartToken(mark, mark));
         boolean stop = false;
         while (!stop) {
             findToken();
             char ch = data.charAt(index);
             switch (ch) {
             case '\0':
-                tokens.add(new StreamEndToken(null, null));
+                tokens.add(new StreamEndToken(mark, mark));
                 stop = true;
                 break;
 
@@ -112,43 +115,43 @@ public class CanonicalScanner implements Scanner {
             case '-':
                 if ("---".equals(data.substring(index, index + 3))) {
                     index += 3;
-                    tokens.add(new DocumentStartToken(null, null));
+                    tokens.add(new DocumentStartToken(mark, mark));
                 }
                 break;
 
             case '[':
                 index++;
-                tokens.add(new FlowSequenceStartToken(null, null));
+                tokens.add(new FlowSequenceStartToken(mark, mark));
                 break;
 
             case '{':
                 index++;
-                tokens.add(new FlowMappingStartToken(null, null));
+                tokens.add(new FlowMappingStartToken(mark, mark));
                 break;
 
             case ']':
                 index++;
-                tokens.add(new FlowSequenceEndToken(null, null));
+                tokens.add(new FlowSequenceEndToken(mark, mark));
                 break;
 
             case '}':
                 index++;
-                tokens.add(new FlowMappingEndToken(null, null));
+                tokens.add(new FlowMappingEndToken(mark, mark));
                 break;
 
             case '?':
                 index++;
-                tokens.add(new KeyToken(null, null));
+                tokens.add(new KeyToken(mark, mark));
                 break;
 
             case ':':
                 index++;
-                tokens.add(new ValueToken(null, null));
+                tokens.add(new ValueToken(mark, mark));
                 break;
 
             case ',':
                 index++;
-                tokens.add(new FlowEntryToken(null, null));
+                tokens.add(new FlowEntryToken(mark, mark));
                 break;
 
             case '*':
@@ -182,7 +185,7 @@ public class CanonicalScanner implements Scanner {
             List<Integer> implicit = new ArrayList<Integer>(2);
             implicit.add(new Integer(1));
             implicit.add(new Integer(1));
-            return new DirectiveToken("YAML", implicit, null, null);
+            return new DirectiveToken("YAML", implicit, mark, mark);
         } else {
             throw new CanonicalException("invalid directive");
         }
@@ -197,9 +200,9 @@ public class CanonicalScanner implements Scanner {
         String value = data.substring(start, index);
         Token token;
         if (data.charAt(index) == '*') {
-            token = new AliasToken(value, null, null);
+            token = new AliasToken(value, mark, mark);
         } else {
-            token = new AnchorToken(value, null, null);
+            token = new AnchorToken(value, mark, mark);
         }
         return token;
     }
@@ -220,7 +223,7 @@ public class CanonicalScanner implements Scanner {
         } else {
             value = "!" + value;
         }
-        return new TagToken(new String[] { "", value }, null, null);
+        return new TagToken(new String[] { "", value }, mark, mark);
     }
 
     private Token scanScalar() {
@@ -265,7 +268,7 @@ public class CanonicalScanner implements Scanner {
         }
         chunks.append(data.substring(start, index));
         index++;
-        return new ScalarToken(chunks.toString(), null, null, false);
+        return new ScalarToken(chunks.toString(), mark, mark, false);
     }
 
     private void findToken() {
