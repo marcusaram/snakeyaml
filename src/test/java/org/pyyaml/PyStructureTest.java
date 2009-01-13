@@ -11,7 +11,11 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.yaml.snakeyaml.Loader;
+import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.composer.Composer;
+import org.yaml.snakeyaml.constructor.Construct;
+import org.yaml.snakeyaml.constructor.Constructor;
 import org.yaml.snakeyaml.events.AliasEvent;
 import org.yaml.snakeyaml.events.CollectionStartEvent;
 import org.yaml.snakeyaml.events.Event;
@@ -183,5 +187,101 @@ public class PyStructureTest extends PyImportTest {
             documents.add(composer.getNode());
         }
         return documents;
+    }
+
+    class MyLoader extends Loader {
+        public MyLoader() {
+            super(new MyConstructor());
+        }
+    }
+
+    class CanonicalLoader extends Loader {
+        public CanonicalLoader() {
+            super(new MyConstructor());
+        }
+
+        @Override
+        public Iterable<Object> loadAll(java.io.Reader yaml) {
+            Reader reader = new Reader(yaml);
+            StringBuffer buffer = new StringBuffer();
+            while (reader.peek() != '\0') {
+                buffer.append(reader.peek());
+                reader.forward();
+            }
+            CanonicalParser parser = new CanonicalParser(buffer.toString());
+            Composer composer = new Composer(parser, resolver);
+            this.constructor.setComposer(composer);
+            Iterator<Object> result = new Iterator<Object>() {
+                public boolean hasNext() {
+                    return constructor.checkData();
+                }
+
+                public Object next() {
+                    return constructor.getData();
+                }
+
+                public void remove() {
+                    throw new UnsupportedOperationException();
+                }
+            };
+            return new YamlIterable(result);
+        }
+
+        private class YamlIterable implements Iterable<Object> {
+            private Iterator<Object> iterator;
+
+            public YamlIterable(Iterator<Object> iterator) {
+                this.iterator = iterator;
+            }
+
+            public Iterator<Object> iterator() {
+                return iterator;
+            }
+
+        }
+
+    }
+
+    private class MyConstructor extends Constructor {
+        public MyConstructor() {
+            this.yamlConstructors.put(null, new ConstructUndefined());
+        }
+
+        private class ConstructUndefined implements Construct {
+            @SuppressWarnings("unchecked")
+            public <T> T construct(Class<T> clazz, Node node) {
+                return (T) constructScalar((ScalarNode) node);
+            }
+        }
+    }
+
+    public void testConstructor() throws IOException {
+        File[] canonicalFiles = getStreamsByExtension(".canonical", false);
+        assertTrue("No test files found.", canonicalFiles.length > 0);
+        File[] files = getStreamsByExtension(".data", true);
+        assertTrue("No test files found.", files.length > 0);
+        int index = 0;
+        Yaml myYaml = new Yaml(new MyLoader());
+        Yaml canonicalYaml = new Yaml(new CanonicalLoader());
+        for (File file : files) {
+            try {
+                Iterable<Object> documents1 = myYaml.loadAll(new FileInputStream(file));
+                File canonical = canonicalFiles[index++];
+                Iterable<Object> documents2 = canonicalYaml.loadAll(new FileInputStream(canonical));
+                Iterator<Object> iter2 = documents2.iterator();
+                for (Object object1 : documents1) {
+                    Object object2 = iter2.next();
+                    if (object2 != null) {
+                        assertFalse(System.identityHashCode(object1) == System
+                                .identityHashCode(object2));
+                    }
+                    assertEquals("" + object1, object1, object2);
+                }
+            } catch (Exception e) {
+                System.out.println("Failed File: " + file);
+                // fail("Failed File: " + file + "; " + e.getMessage());
+                throw new RuntimeException(e);
+            }
+        }
     }
 }
