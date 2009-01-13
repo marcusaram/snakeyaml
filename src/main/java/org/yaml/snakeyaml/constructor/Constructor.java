@@ -10,8 +10,10 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.math.BigInteger;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.yaml.snakeyaml.error.YAMLException;
 import org.yaml.snakeyaml.nodes.MappingNode;
@@ -23,6 +25,7 @@ import org.yaml.snakeyaml.nodes.SequenceNode;
  * @see <a href="http://pyyaml.org/wiki/PyYAML">PyYAML< /a> for more information
  */
 public class Constructor extends SafeConstructor {
+    private Map<String, Class<? extends Object>> classTags;
 
     public Constructor() {
         this(Object.class);
@@ -34,18 +37,29 @@ public class Constructor extends SafeConstructor {
         }
         this.yamlConstructors.put(null, new ConstuctYamlObject());
         rootClass = theRoot;
+        classTags = new HashMap<String, Class<? extends Object>>();
+    }
+
+    public boolean addClassTag(String tag, Class<? extends Object> clazz) {
+        return classTags.put(tag, clazz) == null;
     }
 
     private class ConstuctYamlObject implements Construct {
         @SuppressWarnings("unchecked")
         public <T> T construct(Class<T> clazz, Node node) {
             Object result = null;
-            if (node.getTag().length() < "tag:yaml.org,2002:".length()) {
-                throw new YAMLException("Unknown tag: " + node.getTag());
-            }
-            String pref = node.getTag().substring("tag:yaml.org,2002:".length());
+            Class<? extends Object> customTag = classTags.get(node.getTag());
             try {
-                Class cl = Class.forName(pref);
+                Class cl;
+                if (customTag == null) {
+                    if (node.getTag().length() < "tag:yaml.org,2002:".length()) {
+                        throw new YAMLException("Unknown tag: " + node.getTag());
+                    }
+                    String name = node.getTag().substring("tag:yaml.org,2002:".length());
+                    cl = Class.forName(name);
+                } else {
+                    cl = customTag;
+                }
                 if (node instanceof MappingNode) {
                     MappingNode mnode = (MappingNode) node;
 

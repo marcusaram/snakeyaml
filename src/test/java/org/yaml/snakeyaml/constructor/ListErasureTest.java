@@ -11,6 +11,7 @@ import junit.framework.TestCase;
 
 import org.yaml.snakeyaml.Dumper;
 import org.yaml.snakeyaml.DumperOptions;
+import org.yaml.snakeyaml.Loader;
 import org.yaml.snakeyaml.Util;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.error.YAMLException;
@@ -56,8 +57,20 @@ public class ListErasureTest extends TestCase {
             yaml.load(Util.getLocalResource("constructor/car-without-tags.yaml"));
             fail("Must fail because of unknown tag: !car");
         } catch (YAMLException e) {
-            assertEquals("Unknown tag: !car", e.getMessage());
+            assertTrue(e.getMessage().contains("Unknown tag: !car"));
         }
 
+    }
+
+    public void testLoadClassTag() throws IOException {
+        Constructor constructor = new Constructor();
+        constructor.addClassTag("!car", Car.class);
+        Loader loader = new Loader(constructor);
+        Yaml yaml = new Yaml(loader);
+        Car car = (Car) yaml.load(Util.getLocalResource("constructor/car-without-tags.yaml"));
+        assertEquals("12-XP-F4", car.getPlate());
+        List<Wheel> wheels = car.getWheels();
+        assertNotNull(wheels);
+        assertEquals(5, wheels.size());
     }
 }
