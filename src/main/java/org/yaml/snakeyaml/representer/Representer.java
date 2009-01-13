@@ -23,7 +23,7 @@ public class Representer extends SafeRepresenter {
     }
 
     public Representer() {
-        super(null, null);
+        this(null, null);
     }
 
     public boolean addClassTag(Class<? extends Object> clazz, String tag) {

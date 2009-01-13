@@ -4,10 +4,8 @@
 package org.yaml.snakeyaml.constructor;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 import junit.framework.TestCase;
 
@@ -16,8 +14,6 @@ import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Util;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.error.YAMLException;
-import org.yaml.snakeyaml.nodes.Node;
-import org.yaml.snakeyaml.representer.Represent;
 import org.yaml.snakeyaml.representer.Representer;
 
 public class ListErasureTest extends TestCase {
@@ -45,8 +41,9 @@ public class ListErasureTest extends TestCase {
             wheels.add(wheel);
         }
         car.setWheels(wheels);
-        Representer representer = new MyRepresenter();
+        Representer representer = new Representer();
         representer.addClassTag(Car.class, "!car");
+        representer.addClassTag(Wheel.class, "tag:yaml.org,2002:map");
         Dumper dumper = new Dumper(representer, new DumperOptions());
         Yaml yaml = new Yaml(dumper);
         String output = yaml.dump(car);
@@ -60,31 +57,6 @@ public class ListErasureTest extends TestCase {
             fail("Must fail because of unknown tag: !car");
         } catch (YAMLException e) {
             assertEquals("Unknown tag: !car", e.getMessage());
-        }
-
-    }
-
-    private class MyRepresenter extends Representer {
-        Represent defaultRepresenter;
-
-        public MyRepresenter() {
-            super(null, Boolean.FALSE);
-            defaultRepresenter = this.representers.get(null);
-            this.representers.put(null, new RepresentCar());
-        }
-
-        private class RepresentCar implements Represent {
-            @SuppressWarnings("unchecked")
-            public Node representData(Object data) {
-                if (data instanceof Wheel) {
-                    Wheel wheel = (Wheel) data;
-                    Map values = new HashMap();
-                    values.put("id", wheel.getId());
-                    return representMapping("tag:yaml.org,2002:map", values, null);
-                } else {
-                    return defaultRepresenter.representData(data);
-                }
-            }
         }
 
     }
