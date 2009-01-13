@@ -1,3 +1,6 @@
+/*
+ * See LICENSE file in distribution for copyright and licensing information.
+ */
 package org.pyyaml;
 
 import java.util.ArrayList;
@@ -185,7 +188,11 @@ public class CanonicalParser implements Parser {
         if (!parsed) {
             parse();
         }
-        return events.pollFirst();
+        if (events.isEmpty()) {
+            return null;
+        } else {
+            return events.get(0);
+        }
     }
 
 }

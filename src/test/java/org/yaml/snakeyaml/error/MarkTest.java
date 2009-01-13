@@ -1,8 +1,9 @@
+/*
+ * See LICENSE file in distribution for copyright and licensing information.
+ */
 package org.yaml.snakeyaml.error;
 
 import junit.framework.TestCase;
-
-import org.yaml.snakeyaml.error.Mark;
 
 public class MarkTest extends TestCase {
 

@@ -1,3 +1,6 @@
+/*
+ * See LICENSE file in distribution for copyright and licensing information.
+ */
 package org.pyyaml;
 
 import org.yaml.snakeyaml.error.Mark;

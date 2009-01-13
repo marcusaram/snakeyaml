@@ -1,5 +1,8 @@
 package org.yaml.snakeyaml.constructor;
 
+/*
+ * See LICENSE file in distribution for copyright and licensing information.
+ */
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;

@@ -1,3 +1,6 @@
+/*
+ * See LICENSE file in distribution for copyright and licensing information.
+ */
 package org.pyyaml;
 
 import java.io.File;
@@ -19,7 +22,6 @@ public class PyCanonicalTest extends PyImportTest {
         File[] files = getStreamsByExtension(".canonical");
         assertTrue("No test files found.", files.length > 0);
         for (int i = 0; i < files.length; i++) {
-            System.out.println("Try: " + files[i]);
             List<Token> tokens = canonicalScan(new FileInputStream(files[i]));
             assertFalse(tokens.isEmpty());
         }
@@ -35,7 +37,6 @@ public class PyCanonicalTest extends PyImportTest {
         CanonicalScanner scanner = new CanonicalScanner(buffer.toString());
         List<Token> result = new LinkedList<Token>();
         while (scanner.peekToken() != null) {
-            // System.out.println("added: " + scanner.peekToken());
             result.add(scanner.getToken());
         }
         return result;
@@ -45,11 +46,8 @@ public class PyCanonicalTest extends PyImportTest {
         File[] files = getStreamsByExtension(".canonical");
         assertTrue("No test files found.", files.length > 0);
         for (int i = 0; i < files.length; i++) {
-            System.out.println("Try111: " + files[i]);
             List<Event> tokens = canonicalParse(new FileInputStream(files[i]));
-
             assertFalse(tokens.isEmpty());
-            break;
         }
     }
 
@@ -63,7 +61,6 @@ public class PyCanonicalTest extends PyImportTest {
         CanonicalParser parser = new CanonicalParser(buffer.toString());
         List<Event> result = new LinkedList<Event>();
         while (parser.peekEvent() != null) {
-            System.out.println("added: " + parser.peekEvent());
             result.add(parser.getEvent());
         }
         return result;
