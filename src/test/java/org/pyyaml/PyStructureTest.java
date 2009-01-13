@@ -72,4 +72,22 @@ public class PyStructureTest extends PyImportTest {
         }
     }
 
+    public void testParserOnCanonical() throws IOException {
+        File[] canonicalFiles = getStreamsByExtension(".canonical", false);
+        assertTrue("No test files found.", canonicalFiles.length > 0);
+        for (File file : canonicalFiles) {
+            try {
+                List<Event> events1 = parse(new FileInputStream(file));
+                assertFalse(events1.isEmpty());
+                List<Event> events2 = canonicalParse(new FileInputStream(file));
+                assertFalse(events2.isEmpty());
+                compareEvents(events1, events2, true);
+            } catch (Exception e) {
+                System.out.println("Failed File: " + file);
+                // fail("Failed File: " + file + "; " + e.getMessage());
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
 }
