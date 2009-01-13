@@ -453,6 +453,49 @@ public void testDumperOptionsCanonical() {
 - !!int "4"
 }}}
 
+=== Shortcuts ===
+
+There is a way to define local tags for custom classes.
+{{{
+!!org.yaml.snakeyaml.constructor.Car
+plate: 12-XP-F4
+wheels:
+- !!org.yaml.snakeyaml.constructor.Wheel {id: 1}
+- !!org.yaml.snakeyaml.constructor.Wheel {id: 2}
+- !!org.yaml.snakeyaml.constructor.Wheel {id: 3}
+- !!org.yaml.snakeyaml.constructor.Wheel {id: 4}
+- !!org.yaml.snakeyaml.constructor.Wheel {id: 5}
+}}}
+To eliminate long names while dumping Yaml 
+[http://trac-hg.assembla.com/snakeyaml/browser/src/test/java/org/yaml/snakeyaml/constructor/ClassTagsTest.java should be configured] 
+to use shortcuts:
+{{{
+Representer representer = new Representer();
+representer.addClassTag(Car.class, "!car");
+representer.addClassTag(Wheel.class, "tag:yaml.org,2002:map");
+Dumper dumper = new Dumper(representer, new DumperOptions());
+Yaml yaml = new Yaml(dumper);
+String output = yaml.dump(car);
+}}}      
+This is the resulting output:
+{{{
+!car
+plate: 12-XP-F4
+wheels:
+- {id: 1}
+- {id: 2}
+- {id: 3}
+- {id: 4}
+- {id: 5}
+}}}
+Loader can be configured in a similar way:
+{{{
+Constructor constructor = new Constructor();
+constructor.addClassTag("!car", Car.class);
+Loader loader = new Loader(constructor);
+Yaml yaml = new Yaml(loader);
+}}}
+
 === Constructors, representers, resolvers ===
 
 You may define your own application-specific tags. (the example's source is 
@@ -979,8 +1022,3 @@ block: {
    interpreted as '''{ 1 : 2 }'''.~~~
 
 
-== Notes ==
-
-To do and long-term goals:
- * better `JavaBeans` support
- * import path resolver from PyYAML

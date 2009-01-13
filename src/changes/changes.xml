@@ -4,7 +4,7 @@
 		<author email="py4fun@gmail.com">Andrey Somov</author>
 	</properties>
 	<body>
-	    <release version="0.91" date="in Mercurial" description="Development">
+	    <release version="0.91" date="2008-01-14" description="Support shortcut tags for custom classes">
 	    	<action dev="py4fun" type="add">
                 Add possibility to define shortcut tags for custom classes while loading (2009-01-13)
             </action>
