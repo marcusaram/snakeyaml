@@ -17,7 +17,7 @@ import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.error.YAMLException;
 import org.yaml.snakeyaml.representer.Representer;
 
-public class ListErasureTest extends TestCase {
+public class ClassTagsTest extends TestCase {
 
     public void testDefaultRepresenter() throws IOException {
         Car car = new Car();
