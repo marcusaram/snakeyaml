@@ -6,6 +6,10 @@
 	<body>
 	    <release version="0.91" date="in Mercurial" description="Development">
 	    	<action dev="py4fun" type="add">
+                Construct List as a JavaBean property. But due to erasure only standard Java
+                classes created (2009-01-13)
+            </action>
+            <action dev="py4fun" type="add">
                 Import PyStructureTest from PyYAML (2009-01-13)
             </action>
             <action dev="py4fun" type="add">
