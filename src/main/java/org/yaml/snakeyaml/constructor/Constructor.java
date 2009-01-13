@@ -86,7 +86,7 @@ public class Constructor extends SafeConstructor {
         if (node instanceof ScalarNode) {
             result = constructScalarNode(clazz, (ScalarNode) node);
         } else if (node instanceof SequenceNode) {
-            result = constructSequenceNode((SequenceNode) node);
+            result = constructSequenceNode(clazz, (SequenceNode) node);
         } else {
             result = constructMappingNode(clazz, (MappingNode) node);
         }
@@ -157,9 +157,26 @@ public class Constructor extends SafeConstructor {
         return (T) result;
     }
 
-    private Object constructSequenceNode(SequenceNode node) {
-        // TODO Auto-generated method stub
-        return null;
+    @SuppressWarnings("unchecked")
+    private <T> T constructSequenceNode(Class<T> clazz, SequenceNode node) {
+        List<Object> result;
+        if (clazz.isInterface()) {
+            result = createDefaultList(node.getValue().size());
+        } else {
+            try {
+                java.lang.reflect.Constructor javaConstructor = clazz.getConstructor();
+                result = (List<Object>) javaConstructor.newInstance();
+            } catch (Exception e) {
+                throw new YAMLException(e);
+            }
+        }
+        List<Node> nodeValue = (List<Node>) node.getValue();
+        for (Iterator<Node> iter = nodeValue.iterator(); iter.hasNext();) {
+            Node valueNode = iter.next();
+            Object value = constructObject(Object.class, valueNode);
+            result.add(value);
+        }
+        return (T) result;
     }
 
     @SuppressWarnings("unchecked")
@@ -191,8 +208,6 @@ public class Constructor extends SafeConstructor {
                     throw new YAMLException("Unable to find property '" + key + "' on class: "
                             + beanClass.getName());
                 Object value = constructObject(property.getType(), valueNode);
-                // TODO Class propertyElementType =
-                // config.propertyToElementType.get(property);
                 property.set(object, value);
             } catch (Exception e) {
                 throw new YAMLException(e);
