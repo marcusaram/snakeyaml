@@ -51,13 +51,7 @@ public class PyEmitterTest extends PyImportTest {
             // continue;
             // }
             try {
-                List<Event> events = new LinkedList<Event>();
-                Reader reader = new Reader(new UnicodeReader(new FileInputStream(file)));
-                Parser parser = new ParserImpl(reader);
-                while (parser.peekEvent() != null) {
-                    Event event = parser.getEvent();
-                    events.add(event);
-                }
+                List<Event> events = parse(new FileInputStream(file));
                 //
                 StringWriter stream = new StringWriter();
                 DumperOptions options = new DumperOptions();
@@ -69,8 +63,8 @@ public class PyEmitterTest extends PyImportTest {
                 //
                 String data = stream.toString();
                 List<Event> newEvents = new LinkedList<Event>();
-                reader = new Reader(data);
-                parser = new ParserImpl(reader);
+                Reader reader = new Reader(data);
+                Parser parser = new ParserImpl(reader);
                 while (parser.peekEvent() != null) {
                     Event event = parser.getEvent();
                     newEvents.add(event);
@@ -121,9 +115,6 @@ public class PyEmitterTest extends PyImportTest {
         List<File> allFiles = new LinkedList(Arrays.asList(canonicalFiles));
         allFiles.addAll(Arrays.asList(dataFiles));
         for (File file : allFiles) {
-            if (!file.getName().contains("spec-06-05.canonical")) {
-                continue;
-            }
             try {
                 List<Event> events = new LinkedList<Event>();
                 Reader reader = new Reader(new UnicodeReader(new FileInputStream(file)));

@@ -50,19 +50,4 @@ public class PyCanonicalTest extends PyImportTest {
             assertFalse(tokens.isEmpty());
         }
     }
-
-    private List<Event> canonicalParse(InputStream input) throws IOException {
-        int ch = input.read();
-        StringBuffer buffer = new StringBuffer();
-        while (ch != -1) {
-            buffer.append((char) ch);
-            ch = input.read();
-        }
-        CanonicalParser parser = new CanonicalParser(buffer.toString());
-        List<Event> result = new LinkedList<Event>();
-        while (parser.peekEvent() != null) {
-            result.add(parser.getEvent());
-        }
-        return result;
-    }
 }

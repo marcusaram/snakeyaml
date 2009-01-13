@@ -7,12 +7,19 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.LinkedList;
+import java.util.List;
 
 import junit.framework.TestCase;
 
 import org.yaml.snakeyaml.Loader;
 import org.yaml.snakeyaml.Util;
 import org.yaml.snakeyaml.Yaml;
+import org.yaml.snakeyaml.events.Event;
+import org.yaml.snakeyaml.parser.Parser;
+import org.yaml.snakeyaml.parser.ParserImpl;
+import org.yaml.snakeyaml.reader.Reader;
+import org.yaml.snakeyaml.reader.UnicodeReader;
 
 public abstract class PyImportTest extends TestCase {
     public static final String PATH = "pyyaml";
@@ -71,6 +78,31 @@ public abstract class PyImportTest extends TestCase {
         assertTrue("Folder not found: " + file.getAbsolutePath(), file.exists());
         assertTrue(file.isFile());
         return file;
+    }
+
+    protected List<Event> canonicalParse(InputStream input2) throws IOException {
+        Reader reader = new Reader(new UnicodeReader(input2));
+        StringBuffer buffer = new StringBuffer();
+        while (reader.peek() != '\0') {
+            buffer.append(reader.peek());
+            reader.forward();
+        }
+        CanonicalParser parser = new CanonicalParser(buffer.toString());
+        List<Event> result = new LinkedList<Event>();
+        while (parser.peekEvent() != null) {
+            result.add(parser.getEvent());
+        }
+        return result;
+    }
+
+    protected List<Event> parse(InputStream input) throws IOException {
+        Reader reader = new Reader(new UnicodeReader(input));
+        Parser parser = new ParserImpl(reader);
+        List<Event> result = new LinkedList<Event>();
+        while (parser.peekEvent() != null) {
+            result.add(parser.getEvent());
+        }
+        return result;
     }
 
     private class PyFilenameFilter implements FilenameFilter {
