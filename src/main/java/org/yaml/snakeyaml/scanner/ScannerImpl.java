@@ -89,7 +89,6 @@ public class ScannerImpl implements Scanner {
         ESCAPE_REPLACEMENTS.put(new Character('a'), "\u0007");
         ESCAPE_REPLACEMENTS.put(new Character('b'), "\u0008");
         ESCAPE_REPLACEMENTS.put(new Character('t'), "\u0009");
-        ESCAPE_REPLACEMENTS.put(new Character('\t'), "\u0009");
         ESCAPE_REPLACEMENTS.put(new Character('n'), "\n");
         ESCAPE_REPLACEMENTS.put(new Character('v'), "\u000B");
         ESCAPE_REPLACEMENTS.put(new Character('f'), "\u000C");

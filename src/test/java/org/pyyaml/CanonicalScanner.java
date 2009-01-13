@@ -252,7 +252,7 @@ public class CanonicalScanner implements Scanner {
                 } else if (QUOTE_CODES.keySet().contains(ch)) {
                     int length = QUOTE_CODES.get(ch);
                     int code = Integer.parseInt(data.substring(index, index + length), 16);
-                    chunks.append(String.valueOf(code));
+                    chunks.append(String.valueOf((char) code));
                     index += length;
                 } else {
                     if (!QUOTE_REPLACES.keySet().contains(ch)) {
