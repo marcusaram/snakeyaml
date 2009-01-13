@@ -15,6 +15,7 @@ import org.yaml.snakeyaml.Dumper;
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Util;
 import org.yaml.snakeyaml.Yaml;
+import org.yaml.snakeyaml.error.YAMLException;
 import org.yaml.snakeyaml.nodes.Node;
 import org.yaml.snakeyaml.representer.Represent;
 import org.yaml.snakeyaml.representer.Representer;
@@ -32,21 +33,35 @@ public class ListErasureTest extends TestCase {
         }
         car.setWheels(wheels);
         assertEquals(Util.getLocalResource("constructor/car-with-tags.yaml"), new Yaml().dump(car));
-        Dumper dumper = new Dumper(new MyRepresenter(), new DumperOptions());
+    }
+
+    public void testDumpClassTag() throws IOException {
+        Car car = new Car();
+        car.setPlate("12-XP-F4");
+        List<Wheel> wheels = new LinkedList<Wheel>();
+        for (int i = 1; i < 6; i++) {
+            Wheel wheel = new Wheel();
+            wheel.setId(i);
+            wheels.add(wheel);
+        }
+        car.setWheels(wheels);
+        Representer representer = new MyRepresenter();
+        representer.addClassTag(Car.class, "!car");
+        Dumper dumper = new Dumper(representer, new DumperOptions());
         Yaml yaml = new Yaml(dumper);
         String output = yaml.dump(car);
         assertEquals(Util.getLocalResource("constructor/car-without-tags.yaml"), output);
-        Car car2 = (Car) yaml.load(output);
-        assertNotNull(car2);
-        assertEquals("12-XP-F4", car2.getPlate());
-        List<Wheel> wheels2 = car2.getWheels();
-        assertNotNull(wheels2);
-        assertEquals(5, wheels2.size());
-        // for (Wheel wheel : wheels2) {
-        // System.out.println(wheel);
-        // assertTrue(wheel.getId() > 0);
-        // assertTrue(wheel.getId() < 6);
-        // }
+    }
+
+    public void testLoadUnknounClassTag() throws IOException {
+        try {
+            Yaml yaml = new Yaml();
+            yaml.load(Util.getLocalResource("constructor/car-without-tags.yaml"));
+            fail("Must fail because of unknown tag: !car");
+        } catch (YAMLException e) {
+            assertEquals("Unknown tag: !car", e.getMessage());
+        }
+
     }
 
     private class MyRepresenter extends Representer {

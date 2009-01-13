@@ -40,15 +40,18 @@ public class Constructor extends SafeConstructor {
         @SuppressWarnings("unchecked")
         public <T> T construct(Class<T> clazz, Node node) {
             Object result = null;
+            if (node.getTag().length() < "tag:yaml.org,2002:".length()) {
+                throw new YAMLException("Unknown tag: " + node.getTag());
+            }
             String pref = node.getTag().substring("tag:yaml.org,2002:".length());
             try {
+                Class cl = Class.forName(pref);
                 if (node instanceof MappingNode) {
                     MappingNode mnode = (MappingNode) node;
-                    Class cl = Class.forName(pref);
+
                     result = constructMappingNode(cl, mnode);
                 } else if (node instanceof SequenceNode) {
                     SequenceNode snode = (SequenceNode) node;
-                    Class cl = Class.forName(pref);
                     List<Object> values = (List<Object>) constructSequence(snode);
                     Class[] parameterTypes = new Class[values.size()];
                     int index = 0;
@@ -62,7 +65,6 @@ public class Constructor extends SafeConstructor {
                     result = javaConstructor.newInstance(initargs);
                 } else {
                     ScalarNode snode = (ScalarNode) node;
-                    Class cl = Class.forName(pref);
                     Object value = constructScalar(snode);
                     java.lang.reflect.Constructor javaConstructor = cl.getConstructor(value
                             .getClass());

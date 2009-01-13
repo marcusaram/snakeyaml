@@ -4,6 +4,7 @@
 package org.yaml.snakeyaml.representer;
 
 import java.lang.reflect.Method;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -13,13 +14,20 @@ import org.yaml.snakeyaml.nodes.Node;
  * @see <a href="http://pyyaml.org/wiki/PyYAML">PyYAML</a> for more information
  */
 public class Representer extends SafeRepresenter {
+    private Map<Class<? extends Object>, String> classTags;
+
     public Representer(Character default_style, Boolean default_flow_style) {
         super(default_style, default_flow_style);
+        classTags = new HashMap<Class<? extends Object>, String>();
         this.representers.put(null, new RepresentJavaBean());
     }
 
     public Representer() {
         super(null, null);
+    }
+
+    public boolean addClassTag(Class<? extends Object> clazz, String tag) {
+        return classTags.put(clazz, tag) == null;
     }
 
     private class RepresentJavaBean implements Represent {
@@ -48,7 +56,13 @@ public class Representer extends SafeRepresenter {
                     }
                 }
             }
-            String tag = "tag:yaml.org,2002:" + data.getClass().getName();
+            String tag;
+            String customTag = classTags.get(data.getClass());
+            if (customTag == null) {
+                tag = "tag:yaml.org,2002:" + data.getClass().getName();
+            } else {
+                tag = customTag;
+            }
             return representMapping(tag, values, null);
         }
     }
