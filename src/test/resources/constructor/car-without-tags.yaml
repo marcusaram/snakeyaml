@@ -1,4 +1,4 @@
-!!org.yaml.snakeyaml.constructor.Car
+!car
 plate: 12-XP-F4
 wheels:
 - id: 1
