@@ -1,5 +1,8 @@
 package org.yaml.snakeyaml.constructor;
 
+/*
+ * See LICENSE file in distribution for copyright and licensing information.
+ */
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.TreeMap;

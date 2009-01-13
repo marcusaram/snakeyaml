@@ -1,3 +1,6 @@
+/*
+ * See LICENSE file in distribution for copyright and licensing information.
+ */
 package org.pyyaml;
 
 import java.util.ArrayList;
@@ -192,6 +195,12 @@ public class CanonicalScanner implements Scanner {
     }
 
     private Token scanAlias() {
+        boolean isTokenClassAlias;
+        if (data.charAt(index) == '*') {
+            isTokenClassAlias = true;
+        } else {
+            isTokenClassAlias = false;
+        }
         index++;
         int start = index;
         while (", \n\0".indexOf(data.charAt(index)) == -1) {
@@ -199,7 +208,7 @@ public class CanonicalScanner implements Scanner {
         }
         String value = data.substring(start, index);
         Token token;
-        if (data.charAt(index) == '*') {
+        if (isTokenClassAlias) {
             token = new AliasToken(value, mark, mark);
         } else {
             token = new AnchorToken(value, mark, mark);
