@@ -77,7 +77,7 @@ public class Composer {
         return document;
     }
 
-    public Node composeDocument() {
+    private Node composeDocument() {
         // Drop the DOCUMENT-START event.
         parser.getEvent();
         // Compose the root node.
@@ -88,7 +88,7 @@ public class Composer {
         return node;
     }
 
-    public Node composeNode(final Node parent, final Object index) {
+    private Node composeNode(final Node parent, final Object index) {
         if (parser.checkEvent(AliasEvent.class)) {
             AliasEvent event = (AliasEvent) parser.getEvent();
             String anchor = event.getAnchor();
