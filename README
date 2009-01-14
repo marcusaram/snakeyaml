@@ -161,6 +161,7 @@ You may discuss SnakeYAML at
 
 == Author and copyright ==
 
-The SnakeYAML is based on [http://pyyaml.org/wiki/PyYAML PyYAML] module written by [mailto:xi@resolvent.net Kirill Simonov].
+The SnakeYAML is developed by Andrey Somov and it is based on [http://pyyaml.org/wiki/PyYAML PyYAML] 
+module written by [mailto:xi@resolvent.net Kirill Simonov].
 
 SnakeYAML is released under the MIT license.

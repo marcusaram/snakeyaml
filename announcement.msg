@@ -50,6 +50,6 @@ configuration files to object serialization and persistence.
 Copyright
 =========
 
-SnakeYAML is ported from PyYAML by Andrey Somov <py4fun@gmail.com>.
+SnakeYAML is developed by Andrey Somov <py4fun@gmail.com>.
 
 SnakeYAML is released under the MIT license.
