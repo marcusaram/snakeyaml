@@ -66,18 +66,21 @@ public class PyStructureTest extends PyImportTest {
     }
 
     public void testParser() throws IOException {
-        File[] canonicalFiles = getStreamsByExtension(".canonical", false);
-        assertTrue("No test files found.", canonicalFiles.length > 0);
         File[] files = getStreamsByExtension(".data", true);
         assertTrue("No test files found.", files.length > 0);
-        int index = 0;
         for (File file : files) {
+            if (!file.getName().contains("scan-line-b")) {
+                continue;
+            }
             try {
                 List<Event> events1 = parse(new FileInputStream(file));
                 assertFalse(events1.isEmpty());
-                File canonical = canonicalFiles[index++];
+                int index = file.getAbsolutePath().lastIndexOf('.');
+                String canonicalName = file.getAbsolutePath().substring(0, index) + ".canonical";
+                File canonical = new File(canonicalName);
                 List<Event> events2 = canonicalParse(new FileInputStream(canonical));
                 assertFalse(events2.isEmpty());
+                System.out.println("try:" + file);
                 compareEvents(events1, events2, false);
             } catch (Exception e) {
                 System.out.println("Failed File: " + file);
@@ -139,15 +142,14 @@ public class PyStructureTest extends PyImportTest {
     }
 
     public void testComposer() throws IOException {
-        File[] canonicalFiles = getStreamsByExtension(".canonical", false);
-        assertTrue("No test files found.", canonicalFiles.length > 0);
         File[] files = getStreamsByExtension(".data", true);
         assertTrue("No test files found.", files.length > 0);
-        int index = 0;
         for (File file : files) {
             try {
                 List<Node> events1 = compose_all(new FileInputStream(file));
-                File canonical = canonicalFiles[index++];
+                int index = file.getAbsolutePath().lastIndexOf('.');
+                String canonicalName = file.getAbsolutePath().substring(0, index) + ".canonical";
+                File canonical = new File(canonicalName);
                 List<Node> events2 = canonical_compose_all(new FileInputStream(canonical));
                 assertEquals(events1.size(), events2.size());
                 Iterator<Node> iter1 = events1.iterator();
@@ -256,17 +258,16 @@ public class PyStructureTest extends PyImportTest {
     }
 
     public void testConstructor() throws IOException {
-        File[] canonicalFiles = getStreamsByExtension(".canonical", false);
-        assertTrue("No test files found.", canonicalFiles.length > 0);
         File[] files = getStreamsByExtension(".data", true);
         assertTrue("No test files found.", files.length > 0);
-        int index = 0;
         Yaml myYaml = new Yaml(new MyLoader());
         Yaml canonicalYaml = new Yaml(new CanonicalLoader());
         for (File file : files) {
             try {
                 Iterable<Object> documents1 = myYaml.loadAll(new FileInputStream(file));
-                File canonical = canonicalFiles[index++];
+                int index = file.getAbsolutePath().lastIndexOf('.');
+                String canonicalName = file.getAbsolutePath().substring(0, index) + ".canonical";
+                File canonical = new File(canonicalName);
                 Iterable<Object> documents2 = canonicalYaml.loadAll(new FileInputStream(canonical));
                 Iterator<Object> iter2 = documents2.iterator();
                 for (Object object1 : documents1) {
