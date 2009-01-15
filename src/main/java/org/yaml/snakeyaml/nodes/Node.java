@@ -13,7 +13,7 @@ public abstract class Node {
     protected Object value;
     private Mark startMark;
     protected Mark endMark;
-    protected Class<? extends Object> type;
+    private Class<? extends Object> type;
 
     public Node(String tag, Object value, Mark startMark, Mark endMark) {
         setTag(tag);

@@ -236,13 +236,27 @@ public class Constructor extends SafeConstructor {
             Node valueNode = tuple[1];
             // keys can only be Strings
             keyNode.setType(String.class);
-            Object key = constructObject(keyNode);
+            String key = (String) constructObject(keyNode);
             try {
-                Property property = getProperty(beanClass, (String) key);
+                Property property = getProperty(beanClass, key);
                 if (property == null)
                     throw new YAMLException("Unable to find property '" + key + "' on class: "
                             + beanClass.getName());
                 valueNode.setType(property.getType());
+                // TODO
+                ClassDescription memberDescription = classDefinitions.get(beanClass);
+                if (memberDescription != null) {
+                    if (valueNode instanceof SequenceNode) {
+                        SequenceNode snode = (SequenceNode) valueNode;
+                        Class<? extends Object> memberType = memberDescription
+                                .getListPropertyType(key);
+                        if (memberType != null) {
+                            snode.setListType(memberType);
+                        }
+                    } else {
+                        // TODO check for map
+                    }
+                }
                 Object value = constructObject(valueNode);
                 property.set(object, value);
             } catch (Exception e) {

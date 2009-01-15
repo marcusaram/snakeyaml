@@ -11,4 +11,23 @@ public class Wheel {
         this.id = id;
     }
 
+    @Override
+    public String toString() {
+        return "Wheel id=" + id;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Wheel) {
+            Wheel wheel = (Wheel) obj;
+            return id == wheel.getId();
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public int hashCode() {
+        return new Integer(id).hashCode();
+    }
 }
