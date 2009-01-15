@@ -29,10 +29,6 @@ public class BaseConstructor {
 
     protected Class<? extends Object> rootClass;
 
-    /*
-     * because Java does not have generators 'deep' is dropped. Multi
-     * constructors are not supported.
-     */
     public BaseConstructor() {
         constructedObjects = new HashMap<Node, Object>();
         recursiveObjects = new HashMap<Node, Object>();
@@ -52,51 +48,50 @@ public class BaseConstructor {
         // Construct and return the next document.
         composer.checkNode();
         Node node = composer.getNode();
-        return constructDocument(rootClass, node);
+        node.setType(rootClass);
+        return constructDocument(node);
     }
 
     public Object getSingleData() {
         // Ensure that the stream contains a single document and construct it
         Node node = composer.getSingleNode();
         if (node != null) {
-            return constructDocument(rootClass, node);
+            node.setType(rootClass);
+            return constructDocument(node);
         }
         return null;
     }
 
-    @SuppressWarnings("unchecked")
-    private <T> T constructDocument(Class<T> clazz, Node node) {
-        Object data = constructObject(clazz, node);
+    private Object constructDocument(Node node) {
+        Object data = constructObject(node);
         constructedObjects.clear();
         recursiveObjects.clear();
-        return (T) data;
+        return data;
     }
 
-    @SuppressWarnings("unchecked")
-    protected <T> T constructObject(Class<T> clazz, Node node) {
+    protected Object constructObject(Node node) {
         if (constructedObjects.containsKey(node)) {
-            return (T) constructedObjects.get(node);
+            return constructedObjects.get(node);
         }
         if (recursiveObjects.containsKey(node)) {
             throw new ConstructorException(null, null, "found unconstructable recursive node", node
                     .getStartMark());
         }
         recursiveObjects.put(node, null);
-        Object data = callConstructor(clazz, node);
+        Object data = callConstructor(node);
         constructedObjects.put(node, data);
         recursiveObjects.remove(node);
-        return (T) data;
+        return data;
     }
 
-    @SuppressWarnings("unchecked")
-    protected <T> T callConstructor(Class<T> clazz, Node node) {
+    protected Object callConstructor(Node node) {
         Object data = null;
         Construct constructor = null;
         constructor = yamlConstructors.get(node.getTag());
         if (constructor == null) {
             if (yamlConstructors.containsKey(null)) {
                 constructor = yamlConstructors.get(null);
-                data = constructor.construct(clazz, node);
+                data = constructor.construct(node);
             } else if (node instanceof ScalarNode) {
                 data = constructScalar((ScalarNode) node);
             } else if (node instanceof SequenceNode) {
@@ -107,9 +102,9 @@ public class BaseConstructor {
                 throw new YAMLException("Unknown node: " + node);
             }
         } else {
-            data = constructor.construct(clazz, node);
+            data = constructor.construct(node);
         }
-        return (T) data;
+        return data;
     }
 
     protected Object constructScalar(ScalarNode node) {
@@ -125,7 +120,7 @@ public class BaseConstructor {
         List<Object> result = createDefaultList(nodeValue.size());
         for (Iterator<Node> iter = nodeValue.iterator(); iter.hasNext();) {
             Node child = iter.next();
-            result.add(constructObject(Object.class, child));
+            result.add(constructObject(child));
         }
         return result;
     }
@@ -142,7 +137,7 @@ public class BaseConstructor {
             Node[] tuple = iter.next();
             Node keyNode = tuple[0];
             Node valueNode = tuple[1];
-            Object key = constructObject(Object.class, keyNode);
+            Object key = constructObject(keyNode);
             if (key != null) {
                 try {
                     key.hashCode();// check circular dependencies
@@ -152,7 +147,7 @@ public class BaseConstructor {
                             .getStartMark());
                 }
             }
-            Object value = constructObject(Object.class, valueNode);
+            Object value = constructObject(valueNode);
             mapping.put(key, value);
         }
         return mapping;

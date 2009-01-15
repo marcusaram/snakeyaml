@@ -67,7 +67,7 @@ public class Constructor extends SafeConstructor {
 
     private class ConstuctYamlObject implements Construct {
         @SuppressWarnings("unchecked")
-        public <T> T construct(Class<T> clazz, Node node) {
+        public Object construct(Node node) {
             Object result = null;
             Class<? extends Object> customTag = classTags.get(node.getTag());
             try {
@@ -83,7 +83,8 @@ public class Constructor extends SafeConstructor {
                 }
                 if (node instanceof MappingNode) {
                     MappingNode mnode = (MappingNode) node;
-                    result = constructMappingNode(cl, mnode);
+                    mnode.setType(cl);
+                    result = constructMappingNode(mnode);
                 } else if (node instanceof SequenceNode) {
                     SequenceNode snode = (SequenceNode) node;
                     List<Object> values = (List<Object>) constructSequence(snode);
@@ -108,43 +109,41 @@ public class Constructor extends SafeConstructor {
                 throw new ConstructorException(null, null, "Can't construct a java object for "
                         + node.getTag() + "; exception=" + e.getMessage(), node.getStartMark());
             }
-            return (T) result;
+            return result;
         }
     }
 
-    @SuppressWarnings("unchecked")
     @Override
-    protected <T> T callConstructor(Class<T> clazz, Node node) {
-        if (Object.class.equals(clazz)) {
-            return super.callConstructor(clazz, node);
+    protected Object callConstructor(Node node) {
+        if (Object.class.equals(node.getType())) {
+            return super.callConstructor(node);
         }
         Object result;
         if (node instanceof ScalarNode) {
-            result = constructScalarNode(clazz, (ScalarNode) node);
+            result = constructScalarNode((ScalarNode) node);
         } else if (node instanceof SequenceNode) {
-            result = constructSequenceNode(clazz, (SequenceNode) node);
+            result = constructSequenceNode((SequenceNode) node);
         } else {
-            result = constructMappingNode(clazz, (MappingNode) node);
+            result = constructMappingNode((MappingNode) node);
         }
-        return (T) result;
+        return result;
     }
 
-    @SuppressWarnings("unchecked")
-    private <T> T constructScalarNode(Class<T> clazz, ScalarNode node) {
-        Class<? extends Object> c = clazz;
+    private Object constructScalarNode(ScalarNode node) {
+        Class<? extends Object> c = node.getType();
         Object result;
         if (c.isPrimitive() || c == String.class || Number.class.isAssignableFrom(c)
                 || c == Boolean.class || c == Date.class || c == Character.class
                 || c == BigInteger.class) {
             if (c == String.class) {
                 Construct stringContructor = yamlConstructors.get("tag:yaml.org,2002:str");
-                result = stringContructor.construct(Object.class, (ScalarNode) node);
+                result = stringContructor.construct((ScalarNode) node);
             } else if (c == Boolean.class || c == Boolean.TYPE) {
                 Construct boolContructor = yamlConstructors.get("tag:yaml.org,2002:bool");
-                result = boolContructor.construct(Object.class, (ScalarNode) node);
+                result = boolContructor.construct((ScalarNode) node);
             } else if (c == Character.class || c == Character.TYPE) {
                 Construct charContructor = yamlConstructors.get("tag:yaml.org,2002:str");
-                String ch = (String) charContructor.construct(Object.class, (ScalarNode) node);
+                String ch = (String) charContructor.construct((ScalarNode) node);
                 if (ch.length() != 1) {
                     throw new YAMLException("Invalid node Character: '" + ch + "'; length: "
                             + ch.length());
@@ -152,17 +151,17 @@ public class Constructor extends SafeConstructor {
                 result = new Character(ch.charAt(0));
             } else if (c == Date.class) {
                 Construct dateContructor = yamlConstructors.get("tag:yaml.org,2002:timestamp");
-                result = dateContructor.construct(Object.class, (ScalarNode) node);
+                result = dateContructor.construct((ScalarNode) node);
             } else if (c == Float.class || c == Double.class || c == Float.TYPE || c == Double.TYPE) {
                 Construct doubleContructor = yamlConstructors.get("tag:yaml.org,2002:float");
-                result = doubleContructor.construct(Object.class, node);
+                result = doubleContructor.construct(node);
                 if (c == Float.class || c == Float.TYPE) {
                     result = new Float((Double) result);
                 }
             } else if (Number.class.isAssignableFrom(c) || c == Byte.TYPE || c == Short.TYPE
                     || c == Integer.TYPE || c == Long.TYPE) {
                 Construct intContructor = yamlConstructors.get("tag:yaml.org,2002:int");
-                result = intContructor.construct(Object.class, node);
+                result = intContructor.construct(node);
                 if (c == Byte.class || c == Byte.TYPE) {
                     result = new Byte(result.toString());
                 } else if (c == Short.class || c == Short.TYPE) {
@@ -182,7 +181,7 @@ public class Constructor extends SafeConstructor {
         } else {
             try {
                 // get value by BaseConstructor
-                Object value = super.callConstructor(Object.class, node);
+                Object value = super.callConstructor(node);
                 java.lang.reflect.Constructor<? extends Object> javaConstructor = c
                         .getConstructor(value.getClass());
                 result = javaConstructor.newInstance(value);
@@ -190,17 +189,17 @@ public class Constructor extends SafeConstructor {
                 throw new YAMLException(e);
             }
         }
-        return (T) result;
+        return result;
     }
 
     @SuppressWarnings("unchecked")
-    private <T> T constructSequenceNode(Class<T> clazz, SequenceNode node) {
+    private Object constructSequenceNode(SequenceNode node) {
         List<Object> result;
-        if (clazz.isInterface()) {
+        if (node.getType().isInterface()) {
             result = createDefaultList(node.getValue().size());
         } else {
             try {
-                java.lang.reflect.Constructor javaConstructor = clazz.getConstructor();
+                java.lang.reflect.Constructor javaConstructor = node.getType().getConstructor();
                 result = (List<Object>) javaConstructor.newInstance();
             } catch (Exception e) {
                 throw new YAMLException(e);
@@ -209,15 +208,14 @@ public class Constructor extends SafeConstructor {
         List<Node> nodeValue = (List<Node>) node.getValue();
         for (Iterator<Node> iter = nodeValue.iterator(); iter.hasNext();) {
             Node valueNode = iter.next();
-            Object value = constructObject(Object.class, valueNode);
+            Object value = constructObject(valueNode);
             result.add(value);
         }
-        return (T) result;
+        return result;
     }
 
-    @SuppressWarnings("unchecked")
-    private <T> T constructMappingNode(Class<T> clazz, MappingNode node) {
-        Class<? extends Object> beanClass = clazz;
+    private Object constructMappingNode(MappingNode node) {
+        Class<? extends Object> beanClass = node.getType();
         Object object;
         try {
             object = beanClass.newInstance();
@@ -237,19 +235,21 @@ public class Constructor extends SafeConstructor {
             }
             Node valueNode = tuple[1];
             // keys can only be Strings
-            Object key = constructObject(String.class, keyNode);
+            keyNode.setType(String.class);
+            Object key = constructObject(keyNode);
             try {
                 Property property = getProperty(beanClass, (String) key);
                 if (property == null)
                     throw new YAMLException("Unable to find property '" + key + "' on class: "
                             + beanClass.getName());
-                Object value = constructObject(property.getType(), valueNode);
+                valueNode.setType(property.getType());
+                Object value = constructObject(valueNode);
                 property.set(object, value);
             } catch (Exception e) {
                 throw new YAMLException(e);
             }
         }
-        return (T) object;
+        return object;
     }
 
     protected Property getProperty(Class<? extends Object> type, String name)

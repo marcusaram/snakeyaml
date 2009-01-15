@@ -120,11 +120,10 @@ public class Chapter2_4Test extends TestCase {
         }
 
         private class ConstructSomething implements Construct {
-            @SuppressWarnings("unchecked")
-            public <T> T construct(Class<T> clazz, Node node) {
+            public Object construct(Node node) {
                 // convert to upper case
                 String val = (String) constructScalar((ScalarNode) node);
-                return (T) val.toUpperCase().replace('\n', ' ').trim();
+                return val.toUpperCase().replace('\n', ' ').trim();
             }
         }
     }
