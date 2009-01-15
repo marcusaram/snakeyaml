@@ -4,8 +4,13 @@
 		<author email="py4fun@gmail.com">Andrey Somov</author>
 	</properties>
 	<body>
-	    <release version="0.91" date="2008-01-14" description="Support shortcut tags for custom classes">
-	    	<action dev="py4fun" type="add">
+	    <release version="0.92" date="in Mercurial" description="Development">
+	    	<action dev="py4fun" type="update">
+                Refactor: rename addClassTag() to putClassTag() (2009-01-15)
+            </action>
+        </release>
+        <release version="0.91" date="2008-01-14" description="Support shortcut tags for custom classes">
+            <action dev="py4fun" type="add">
                 Add possibility to define shortcut tags for custom classes while loading (2009-01-13)
             </action>
             <action dev="py4fun" type="add">
