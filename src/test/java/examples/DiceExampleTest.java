@@ -60,13 +60,12 @@ public class DiceExampleTest extends TestCase {
         }
 
         private class ConstructDice implements Construct {
-            @SuppressWarnings("unchecked")
-            public <T> T construct(Class<T> clazz, Node node) {
+            public Object construct(Node node) {
                 String val = (String) constructScalar((ScalarNode) node);
                 int position = val.indexOf('d');
                 Integer a = Integer.parseInt(val.substring(0, position));
                 Integer b = Integer.parseInt(val.substring(position + 1));
-                return (T) new Dice(a, b);
+                return new Dice(a, b);
             }
         }
     }

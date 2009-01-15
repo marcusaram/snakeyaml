@@ -13,6 +13,7 @@ public abstract class Node {
     protected Object value;
     private Mark startMark;
     protected Mark endMark;
+    protected Class<? extends Object> type;
 
     public Node(String tag, Object value, Mark startMark, Mark endMark) {
         setTag(tag);
@@ -22,6 +23,7 @@ public abstract class Node {
         this.value = value;
         this.startMark = startMark;
         this.endMark = endMark;
+        this.type = Object.class;
     }
 
     public String getTag() {
@@ -62,5 +64,13 @@ public abstract class Node {
     @Override
     public final boolean equals(Object obj) {
         return super.equals(obj);
+    }
+
+    public Class<? extends Object> getType() {
+        return type;
+    }
+
+    public void setType(Class<? extends Object> type) {
+        this.type = type;
     }
 }

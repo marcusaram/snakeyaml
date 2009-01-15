@@ -250,9 +250,8 @@ public class PyStructureTest extends PyImportTest {
         }
 
         private class ConstructUndefined implements Construct {
-            @SuppressWarnings("unchecked")
-            public <T> T construct(Class<T> clazz, Node node) {
-                return (T) constructScalar((ScalarNode) node);
+            public Object construct(Node node) {
+                return constructScalar((ScalarNode) node);
             }
         }
     }
