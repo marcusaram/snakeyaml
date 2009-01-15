@@ -43,8 +43,8 @@ public class ClassTagsTest extends TestCase {
         }
         car.setWheels(wheels);
         Representer representer = new Representer();
-        representer.addClassTag(Car.class, "!car");
-        representer.addClassTag(Wheel.class, "tag:yaml.org,2002:map");
+        representer.putClassTag(Car.class, "!car");
+        representer.putClassTag(Wheel.class, "tag:yaml.org,2002:map");
         Dumper dumper = new Dumper(representer, new DumperOptions());
         Yaml yaml = new Yaml(dumper);
         String output = yaml.dump(car);
@@ -64,7 +64,7 @@ public class ClassTagsTest extends TestCase {
 
     public void testLoadClassTag() throws IOException {
         Constructor constructor = new Constructor();
-        constructor.addClassTag("!car", Car.class);
+        constructor.putClassTag("!car", Car.class);
         Loader loader = new Loader(constructor);
         Yaml yaml = new Yaml(loader);
         Car car = (Car) yaml.load(Util.getLocalResource("constructor/car-without-tags.yaml"));

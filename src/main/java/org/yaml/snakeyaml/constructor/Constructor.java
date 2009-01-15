@@ -40,7 +40,7 @@ public class Constructor extends SafeConstructor {
         classTags = new HashMap<String, Class<? extends Object>>();
     }
 
-    public boolean addClassTag(String tag, Class<? extends Object> clazz) {
+    public boolean putClassTag(String tag, Class<? extends Object> clazz) {
         return classTags.put(tag, clazz) == null;
     }
 

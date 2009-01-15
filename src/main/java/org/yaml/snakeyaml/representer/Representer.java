@@ -26,7 +26,7 @@ public class Representer extends SafeRepresenter {
         this(null, null);
     }
 
-    public boolean addClassTag(Class<? extends Object> clazz, String tag) {
+    public boolean putClassTag(Class<? extends Object> clazz, String tag) {
         return classTags.put(clazz, tag) == null;
     }
 
