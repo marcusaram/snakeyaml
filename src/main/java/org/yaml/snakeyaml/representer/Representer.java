@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
+import org.yaml.snakeyaml.ClassDescription;
 import org.yaml.snakeyaml.nodes.Node;
 
 /**
@@ -15,10 +16,12 @@ import org.yaml.snakeyaml.nodes.Node;
  */
 public class Representer extends SafeRepresenter {
     private Map<Class<? extends Object>, String> classTags;
+    private Map<Class<? extends Object>, ClassDescription> classDefinitions;
 
     public Representer(Character default_style, Boolean default_flow_style) {
         super(default_style, default_flow_style);
         classTags = new HashMap<Class<? extends Object>, String>();
+        classDefinitions = new HashMap<Class<? extends Object>, ClassDescription>();
         this.representers.put(null, new RepresentJavaBean());
     }
 
@@ -26,8 +29,23 @@ public class Representer extends SafeRepresenter {
         this(null, null);
     }
 
-    public boolean putClassTag(Class<? extends Object> clazz, String tag) {
-        return classTags.put(clazz, tag) == null;
+    /**
+     * Make YAML aware how to represent a custom Class. If there is no root
+     * Class assigned in constructor then the 'root' property of this definition
+     * is respected.
+     * 
+     * @param definition
+     *            to be added to the Constructor
+     * @return the previous value associated with <tt>definition</tt>, or
+     *         <tt>null</tt> if there was no mapping for <tt>definition</tt>.
+     */
+    public ClassDescription addClassDefinition(ClassDescription definition) {
+        if (definition == null) {
+            throw new NullPointerException("ClassDescription is required.");
+        }
+        String tag = definition.getTag();
+        classTags.put(definition.getClazz(), tag);
+        return classDefinitions.put(definition.getClazz(), definition);
     }
 
     private class RepresentJavaBean implements Represent {

@@ -15,6 +15,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.yaml.snakeyaml.ClassDescription;
 import org.yaml.snakeyaml.error.YAMLException;
 import org.yaml.snakeyaml.nodes.MappingNode;
 import org.yaml.snakeyaml.nodes.Node;
@@ -26,6 +27,7 @@ import org.yaml.snakeyaml.nodes.SequenceNode;
  */
 public class Constructor extends SafeConstructor {
     private Map<String, Class<? extends Object>> classTags;
+    private Map<Class<? extends Object>, ClassDescription> classDefinitions;
 
     public Constructor() {
         this(Object.class);
@@ -38,10 +40,29 @@ public class Constructor extends SafeConstructor {
         this.yamlConstructors.put(null, new ConstuctYamlObject());
         rootClass = theRoot;
         classTags = new HashMap<String, Class<? extends Object>>();
+        classDefinitions = new HashMap<Class<? extends Object>, ClassDescription>();
     }
 
-    public boolean putClassTag(String tag, Class<? extends Object> clazz) {
-        return classTags.put(tag, clazz) == null;
+    /**
+     * Make YAML aware how to parse a custom Class. If there is no root Class
+     * assigned in constructor then the 'root' property of this definition is
+     * respected.
+     * 
+     * @param definition
+     *            to be added to the Constructor
+     * @return the previous value associated with <tt>definition</tt>, or
+     *         <tt>null</tt> if there was no mapping for <tt>definition</tt>.
+     */
+    public ClassDescription addClassDefinition(ClassDescription definition) {
+        if (definition == null) {
+            throw new NullPointerException("ClassDescription is required.");
+        }
+        if (rootClass == Object.class && definition.isRoot()) {
+            rootClass = definition.getClazz();
+        }
+        String tag = definition.getTag();
+        classTags.put(tag, definition.getClazz());
+        return classDefinitions.put(definition.getClazz(), definition);
     }
 
     private class ConstuctYamlObject implements Construct {
@@ -62,7 +83,6 @@ public class Constructor extends SafeConstructor {
                 }
                 if (node instanceof MappingNode) {
                     MappingNode mnode = (MappingNode) node;
-
                     result = constructMappingNode(cl, mnode);
                 } else if (node instanceof SequenceNode) {
                     SequenceNode snode = (SequenceNode) node;

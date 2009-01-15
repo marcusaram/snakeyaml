@@ -9,6 +9,7 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
+import org.yaml.snakeyaml.ClassDescription;
 import org.yaml.snakeyaml.Dumper;
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Loader;
@@ -43,8 +44,8 @@ public class ClassTagsTest extends TestCase {
         }
         car.setWheels(wheels);
         Representer representer = new Representer();
-        representer.putClassTag(Car.class, "!car");
-        representer.putClassTag(Wheel.class, "tag:yaml.org,2002:map");
+        representer.addClassDefinition(new ClassDescription(Car.class, "!car"));
+        representer.addClassDefinition(new ClassDescription(Wheel.class, "tag:yaml.org,2002:map"));
         Dumper dumper = new Dumper(representer, new DumperOptions());
         Yaml yaml = new Yaml(dumper);
         String output = yaml.dump(car);
@@ -64,10 +65,35 @@ public class ClassTagsTest extends TestCase {
 
     public void testLoadClassTag() throws IOException {
         Constructor constructor = new Constructor();
-        constructor.putClassTag("!car", Car.class);
+        constructor.addClassDefinition(new ClassDescription(Car.class, "!car"));
         Loader loader = new Loader(constructor);
         Yaml yaml = new Yaml(loader);
         Car car = (Car) yaml.load(Util.getLocalResource("constructor/car-without-tags.yaml"));
+        assertEquals("12-XP-F4", car.getPlate());
+        List<Wheel> wheels = car.getWheels();
+        assertNotNull(wheels);
+        assertEquals(5, wheels.size());
+    }
+
+    public void testNullDescription() throws IOException {
+        Constructor constructor = new Constructor();
+        try {
+            constructor.addClassDefinition(null);
+            fail("Description is required.");
+        } catch (Exception e) {
+            assertEquals("ClassDescription is required.", e.getMessage());
+        }
+    }
+
+    public void testLoadClassNoRoot() throws IOException {
+        Constructor constructor = new Constructor();
+        ClassDescription carDescription = new ClassDescription(Car.class);
+        carDescription.setTag("!car");
+        carDescription.setRoot(true);
+        constructor.addClassDefinition(carDescription);
+        Loader loader = new Loader(constructor);
+        Yaml yaml = new Yaml(loader);
+        Car car = (Car) yaml.load(Util.getLocalResource("constructor/car-no-root-class.yaml"));
         assertEquals("12-XP-F4", car.getPlate());
         List<Wheel> wheels = car.getWheels();
         assertNotNull(wheels);
