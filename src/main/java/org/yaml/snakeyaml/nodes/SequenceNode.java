@@ -12,14 +12,16 @@ import org.yaml.snakeyaml.error.Mark;
  */
 public class SequenceNode extends CollectionNode {
     public static final String id = "sequence";
+    private Class<? extends Object> listType;
 
     public SequenceNode(String tag, List<Node> value, Mark startMark, Mark endMark,
             Boolean flowStyle) {
         super(tag, value, startMark, endMark, flowStyle);
+        listType = Object.class;
     }
 
     public SequenceNode(String tag, List<Node> value, Boolean flowStyle) {
-        super(tag, value, null, null, flowStyle);
+        this(tag, value, null, null, flowStyle);
     }
 
     @Override
@@ -29,6 +31,18 @@ public class SequenceNode extends CollectionNode {
 
     @SuppressWarnings("unchecked")
     public List<Node> getValue() {
-        return (List<Node>) super.getValue();
+        List<Node> value = (List<Node>) super.getValue();
+        for (Node node : value) {
+            node.setType(listType);
+        }
+        return value;
+    }
+
+    public Class<? extends Object> getListType() {
+        return listType;
+    }
+
+    public void setListType(Class<? extends Object> listType) {
+        this.listType = listType;
     }
 }

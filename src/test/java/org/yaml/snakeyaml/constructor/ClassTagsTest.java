@@ -88,7 +88,6 @@ public class ClassTagsTest extends TestCase {
     public void testLoadClassNoRoot() throws IOException {
         Constructor constructor = new Constructor();
         ClassDescription carDescription = new ClassDescription(Car.class);
-        carDescription.setTag("!car");
         carDescription.setRoot(true);
         constructor.addClassDefinition(carDescription);
         Loader loader = new Loader(constructor);

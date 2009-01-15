@@ -5,7 +5,10 @@
 	</properties>
 	<body>
 	    <release version="0.92" date="in Mercurial" description="Development">
-	    	<action dev="py4fun" type="update">
+	    	<action dev="py4fun" type="add">
+                Implement type safe List as a property of custom Java class (2009-01-15)
+            </action>
+            <action dev="py4fun" type="update">
                 Construct interface does not use generics. The type information is set
                 to the Node (2009-01-15)
             </action>
