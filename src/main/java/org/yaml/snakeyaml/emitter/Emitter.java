@@ -233,7 +233,7 @@ public class Emitter {
     }
 
     private void increaseIndent(boolean flow, boolean indentless) {
-        indents.push(indent);
+        indents.addFirst(indent);
         if (indent == null) {
             if (flow) {
                 indent = bestIndent;
@@ -345,7 +345,7 @@ public class Emitter {
 
     private class ExpectDocumentRoot implements EmitterState {
         public void expect() throws IOException {
-            states.push(new ExpectDocumentEnd());
+            states.addFirst(new ExpectDocumentEnd());
             expectNode(true, false, false, false);
         }
     }
@@ -419,7 +419,7 @@ public class Emitter {
                 if (canonical || column > bestWidth) {
                     writeIndent();
                 }
-                states.push(new ExpectFlowSequenceItem());
+                states.addFirst(new ExpectFlowSequenceItem());
                 expectNode(false, true, false, false);
             }
         }
@@ -441,7 +441,7 @@ public class Emitter {
                 if (canonical || column > bestWidth) {
                     writeIndent();
                 }
-                states.push(new ExpectFlowSequenceItem());
+                states.addFirst(new ExpectFlowSequenceItem());
                 expectNode(false, true, false, false);
             }
         }
@@ -468,11 +468,11 @@ public class Emitter {
                     writeIndent();
                 }
                 if (!canonical && checkSimpleKey()) {
-                    states.push(new ExpectFlowMappingSimpleValue());
+                    states.addFirst(new ExpectFlowMappingSimpleValue());
                     expectNode(false, false, true, true);
                 } else {
                     writeIndicator("?", true, false, false);
-                    states.push(new ExpectFlowMappingValue());
+                    states.addFirst(new ExpectFlowMappingValue());
                     expectNode(false, false, true, false);
                 }
             }
@@ -496,11 +496,11 @@ public class Emitter {
                     writeIndent();
                 }
                 if (!canonical && checkSimpleKey()) {
-                    states.push(new ExpectFlowMappingSimpleValue());
+                    states.addFirst(new ExpectFlowMappingSimpleValue());
                     expectNode(false, false, true, true);
                 } else {
                     writeIndicator("?", true, false, false);
-                    states.push(new ExpectFlowMappingValue());
+                    states.addFirst(new ExpectFlowMappingValue());
                     expectNode(false, false, true, false);
                 }
             }
@@ -510,7 +510,7 @@ public class Emitter {
     private class ExpectFlowMappingSimpleValue implements EmitterState {
         public void expect() throws IOException {
             writeIndicator(":", false, false, false);
-            states.push(new ExpectFlowMappingKey());
+            states.addFirst(new ExpectFlowMappingKey());
             expectNode(false, false, true, false);
         }
     }
@@ -521,7 +521,7 @@ public class Emitter {
                 writeIndent();
             }
             writeIndicator(":", true, false, false);
-            states.push(new ExpectFlowMappingKey());
+            states.addFirst(new ExpectFlowMappingKey());
             expectNode(false, false, true, false);
         }
     }
@@ -554,7 +554,7 @@ public class Emitter {
             } else {
                 writeIndent();
                 writeIndicator("-", true, false, true);
-                states.push(new ExpectBlockSequenceItem(false));
+                states.addFirst(new ExpectBlockSequenceItem(false));
                 expectNode(false, true, false, false);
             }
         }
@@ -586,11 +586,11 @@ public class Emitter {
             } else {
                 writeIndent();
                 if (checkSimpleKey()) {
-                    states.push(new ExpectBlockMappingSimpleValue());
+                    states.addFirst(new ExpectBlockMappingSimpleValue());
                     expectNode(false, false, true, true);
                 } else {
                     writeIndicator("?", true, false, true);
-                    states.push(new ExpectBlockMappingValue());
+                    states.addFirst(new ExpectBlockMappingValue());
                     expectNode(false, false, true, false);
                 }
             }
@@ -600,7 +600,7 @@ public class Emitter {
     private class ExpectBlockMappingSimpleValue implements EmitterState {
         public void expect() throws IOException {
             writeIndicator(":", false, false, false);
-            states.push(new ExpectBlockMappingKey(false));
+            states.addFirst(new ExpectBlockMappingKey(false));
             expectNode(false, false, true, false);
         }
     }
@@ -609,7 +609,7 @@ public class Emitter {
         public void expect() throws IOException {
             writeIndent();
             writeIndicator(":", true, false, true);
-            states.push(new ExpectBlockMappingKey(false));
+            states.addFirst(new ExpectBlockMappingKey(false));
             expectNode(false, false, true, false);
         }
     }
