@@ -44,8 +44,8 @@ public class Representer extends SafeRepresenter {
             throw new NullPointerException("ClassDescription is required.");
         }
         String tag = definition.getTag();
-        classTags.put(definition.getClazz(), tag);
-        return classDefinitions.put(definition.getClazz(), definition);
+        classTags.put(definition.getType(), tag);
+        return classDefinitions.put(definition.getType(), definition);
     }
 
     private class RepresentJavaBean implements Represent {

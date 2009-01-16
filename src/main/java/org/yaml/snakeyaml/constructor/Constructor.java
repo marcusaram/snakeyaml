@@ -58,11 +58,11 @@ public class Constructor extends SafeConstructor {
             throw new NullPointerException("TypeDescription is required.");
         }
         if (rootType == Object.class && definition.isRoot()) {
-            rootType = definition.getClazz();
+            rootType = definition.getType();
         }
         String tag = definition.getTag();
-        typeTags.put(tag, definition.getClazz());
-        return typeDefinitions.put(definition.getClazz(), definition);
+        typeTags.put(tag, definition.getType());
+        return typeDefinitions.put(definition.getType(), definition);
     }
 
     private class ConstuctYamlObject implements Construct {
