@@ -122,9 +122,13 @@ public class Constructor extends SafeConstructor {
         if (node instanceof ScalarNode) {
             result = constructScalarNode((ScalarNode) node);
         } else if (node instanceof SequenceNode) {
-            result = constructSequenceNode((SequenceNode) node);
+            result = constructSequence((SequenceNode) node);
         } else {
-            result = constructMappingNode((MappingNode) node);
+            if (Map.class.isAssignableFrom(node.getType())) {
+                result = super.constructMapping((MappingNode) node);
+            } else {
+                result = constructMappingNode((MappingNode) node);
+            }
         }
         return result;
     }
@@ -192,33 +196,17 @@ public class Constructor extends SafeConstructor {
         return result;
     }
 
-    @SuppressWarnings("unchecked")
-    private Object constructSequenceNode(SequenceNode node) {
-        List<Object> result;
-        if (node.getType().isInterface()) {
-            result = createDefaultList(node.getValue().size());
-        } else {
-            try {
-                java.lang.reflect.Constructor javaConstructor = node.getType().getConstructor();
-                result = (List<Object>) javaConstructor.newInstance();
-            } catch (Exception e) {
-                throw new YAMLException(e);
-            }
-        }
-        List<Node> nodeValue = (List<Node>) node.getValue();
-        for (Iterator<Node> iter = nodeValue.iterator(); iter.hasNext();) {
-            Node valueNode = iter.next();
-            Object value = constructObject(valueNode);
-            result.add(value);
-        }
-        return result;
-    }
-
+    /**
+     * Construct JavaBean. If type safe collections are used please look at
+     * <code>ClassDescription</code>.
+     * 
+     * @param node
+     *            - node where the keys are property names (they can only be
+     *            <code>String</code>s) and values are objects to be created
+     * @return constructed JavaBean
+     */
     private Object constructMappingNode(MappingNode node) {
         Class<? extends Object> beanClass = node.getType();
-        if (beanClass.isInterface()) {
-            return super.constructMapping(node);
-        }
         Object object;
         try {
             object = beanClass.newInstance();
