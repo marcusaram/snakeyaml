@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
-import org.yaml.snakeyaml.ClassDescription;
+import org.yaml.snakeyaml.TypeDescription;
 import org.yaml.snakeyaml.nodes.Node;
 
 /**
@@ -16,12 +16,12 @@ import org.yaml.snakeyaml.nodes.Node;
  */
 public class Representer extends SafeRepresenter {
     private Map<Class<? extends Object>, String> classTags;
-    private Map<Class<? extends Object>, ClassDescription> classDefinitions;
+    private Map<Class<? extends Object>, TypeDescription> classDefinitions;
 
     public Representer(Character default_style, Boolean default_flow_style) {
         super(default_style, default_flow_style);
         classTags = new HashMap<Class<? extends Object>, String>();
-        classDefinitions = new HashMap<Class<? extends Object>, ClassDescription>();
+        classDefinitions = new HashMap<Class<? extends Object>, TypeDescription>();
         this.representers.put(null, new RepresentJavaBean());
     }
 
@@ -39,7 +39,7 @@ public class Representer extends SafeRepresenter {
      * @return the previous value associated with <tt>definition</tt>, or
      *         <tt>null</tt> if there was no mapping for <tt>definition</tt>.
      */
-    public ClassDescription addClassDefinition(ClassDescription definition) {
+    public TypeDescription addClassDefinition(TypeDescription definition) {
         if (definition == null) {
             throw new NullPointerException("ClassDescription is required.");
         }

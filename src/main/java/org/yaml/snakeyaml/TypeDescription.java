@@ -3,7 +3,7 @@ package org.yaml.snakeyaml;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ClassDescription {
+public class TypeDescription {
     private Class<? extends Object> clazz;
     private String tag;
     private boolean root;
@@ -11,7 +11,7 @@ public class ClassDescription {
     private Map<String, Class<? extends Object>> keyProperties;
     private Map<String, Class<? extends Object>> valueProperties;
 
-    public ClassDescription(Class<? extends Object> clazz, String tag) {
+    public TypeDescription(Class<? extends Object> clazz, String tag) {
         this.clazz = clazz;
         this.tag = tag;
         listProperties = new HashMap<String, Class<? extends Object>>();
@@ -19,7 +19,7 @@ public class ClassDescription {
         valueProperties = new HashMap<String, Class<? extends Object>>();
     }
 
-    public ClassDescription(Class<? extends Object> clazz) {
+    public TypeDescription(Class<? extends Object> clazz) {
         this(clazz, null);
     }
 
