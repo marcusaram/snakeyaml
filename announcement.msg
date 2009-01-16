@@ -17,6 +17,7 @@ Changes
 =======
 
  * Implement type safe List and Map as a property of a custom Java class
+ * remove Java 6 dependencies
 
 Resources
 =========
