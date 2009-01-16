@@ -280,7 +280,7 @@ class information between <> is only available at compile time.
 
 === Type safe collections ===
 
-I order to parse a collection which contains custom Java classes Yaml has to be provided with additional information.
+In order to parse a collection which contains custom Java classes Yaml has to be provided with additional information.
 [http://trac-hg.assembla.com/snakeyaml/browser/src/main/java/org/yaml/snakeyaml/TypeDescription.java TypeDescription] 
 serves the goal to collect more information and use it while loading/dumping.
 
