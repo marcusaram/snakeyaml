@@ -71,6 +71,7 @@ For more details, please check [wiki:Documentation SnakeYAML Documentation].
 '''1.0rc1 (2009-01-16)'''
  * Implement [http://trac-hg.assembla.com/snakeyaml/wiki/Documentation#Typesafecollections type safe List and Map] 
  as a property of a custom Java class
+ * remove Java 6 dependencies
  
 '''0.91 (2009-01-14)'''
  * Support [http://trac-hg.assembla.com/snakeyaml/wiki/Documentation#Shortcuts shortcut tags] for custom classes
