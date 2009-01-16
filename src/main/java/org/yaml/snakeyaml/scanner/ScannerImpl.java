@@ -478,7 +478,7 @@ public class ScannerImpl implements Scanner {
      */
     private boolean addIndent(final int column) {
         if (this.indent < column) {
-            this.indents.push(this.indent);
+            this.indents.addFirst(this.indent);
             this.indent = column;
             return true;
         }
