@@ -68,7 +68,10 @@ For more details, please check [wiki:Documentation SnakeYAML Documentation].
 
 
 == History ==
-'''0.91 (2009-01-14)'''
+'''1.0rc1 (2009-01-16)'''
+ * Implement type safe List and Map as a property of a custom Java class
+ 
+ '''0.91 (2009-01-14)'''
  * Support [http://trac-hg.assembla.com/snakeyaml/wiki/Documentation#Shortcuts shortcut tags] for custom classes
  * Import canonical scanner and parser from PyYAML
  
@@ -153,8 +156,7 @@ You may discuss SnakeYAML at
 [http://groups.google.com/group/snakeyaml the mailing list].
 
 == TODO ==
- * better support for collections as properties when loading Java classes (similar to `YamlBeans`)
- * better support public fields when dumping Java classes
+ * better support public fields when dumping Java classes (are they used at all ?)
 
 == Known bugs ==
  * Recursive objects are not fully supported. Dumping works but loading does not.
