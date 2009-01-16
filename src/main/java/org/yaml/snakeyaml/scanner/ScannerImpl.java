@@ -468,7 +468,7 @@ public class ScannerImpl implements Scanner {
         // In block context, we may need to issue the BLOCK-END tokens.
         while (this.indent > col) {
             Mark mark = reader.getMark();
-            this.indent = this.indents.pop();
+            this.indent = this.indents.removeFirst();
             this.tokens.add(new BlockEndToken(mark, mark));
         }
     }
