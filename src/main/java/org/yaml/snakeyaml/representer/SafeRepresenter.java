@@ -3,8 +3,8 @@
  */
 package org.yaml.snakeyaml.representer;
 
+import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
-import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
@@ -15,6 +15,7 @@ import java.util.Set;
 import java.util.TimeZone;
 import java.util.regex.Pattern;
 
+import org.yaml.snakeyaml.error.YAMLException;
 import org.yaml.snakeyaml.nodes.Node;
 import org.yaml.snakeyaml.util.Base64Coder;
 
@@ -66,10 +67,15 @@ class SafeRepresenter extends BaseRepresenter {
             String value = data.toString();
             if (BINARY_PATTERN.matcher(value).find()) {
                 tag = "tag:yaml.org,2002:binary";
-                Charset charset = Charset.forName("ISO-8859-1");
-                char[] binary = Base64Coder.encode(value.getBytes(charset));
-                value = String.valueOf(binary);
-                style = '|';
+                char[] binary;
+                try {
+                    binary = Base64Coder.encode(value.getBytes("ISO-8859-1"));
+                    value = String.valueOf(binary);
+                    style = '|';
+                } catch (UnsupportedEncodingException e) {
+                    throw new YAMLException(e);
+                }
+
             }
             return representScalar(tag, value, style);
         }
