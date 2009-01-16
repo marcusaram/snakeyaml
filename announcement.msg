@@ -25,8 +25,8 @@ Resources
 SnakeYAML homepage: http://trac-hg.assembla.com/snakeyaml/
 SnakeYAML documentation: http://trac-hg.assembla.com/snakeyaml/wiki/Documentation
 
-JAR package: http://www.assembla.com/spaces/snakeyaml/documents/dUI1Qg4-er3zVvab7jnrAJ/download?filename=SnakeYAML-1.0rc1.jar
-ZIP archive: http://www.assembla.com/spaces/snakeyaml/documents/cRXSwE4-mr3AJiab7jnrAJ/download?filename=SnakeYAML-all-1.0rc1.zip
+JAR package: http://www.assembla.com/spaces/snakeyaml/documents/a9YO-i4-8r3y3Rab7jnrAJ/download?filename=SnakeYAML-1.0rc1.jar
+ZIP archive: http://www.assembla.com/spaces/snakeyaml/documents/cf5zfU4-8r3z36ab7jnrAJ/download?filename=SnakeYAML-all-1.0rc1.zip
 Changes: http://snakeyaml.narod.ru/releases/v1.0rc1/site/changes-report.html
 SnakeYAML Mercurial repository: http://hg.assembla.com/snakeyaml
 Submit a bug report: http://trac-hg.assembla.com/snakeyaml/newticket
