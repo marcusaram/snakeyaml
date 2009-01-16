@@ -1,3 +1,6 @@
+/*
+ * See LICENSE file in distribution for copyright and licensing information.
+ */
 package org.yaml.snakeyaml.constructor;
 
 import java.util.List;
@@ -21,5 +24,4 @@ public class Car {
     public void setWheels(List<Wheel> wheels) {
         this.wheels = wheels;
     }
-
 }
