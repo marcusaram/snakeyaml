@@ -185,7 +185,7 @@ public class Constructor extends SafeConstructor {
             }
         } else {
             try {
-                // TODO ??? return value ??? get value by BaseConstructor
+                // get value by BaseConstructor
                 Object value = super.callConstructor(node);
                 java.lang.reflect.Constructor<? extends Object> javaConstructor = type
                         .getConstructor(value.getClass());
