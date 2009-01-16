@@ -281,7 +281,104 @@ class information between <> is only available at compile time.
 === Type safe collections ===
 
 I order to parse a collection which contains custom Java classes Yaml has to be provided with additional information.
-[ TypeDescription] 
+[http://trac-hg.assembla.com/snakeyaml/browser/src/main/java/org/yaml/snakeyaml/TypeDescription.java TypeDescription] 
+serves the goal to collect more information and use it while loading/dumping.
+
+Let's say we have this document:
+{{{
+plate: 12-XP-F4
+wheels:
+- {id: 1}
+- {id: 2}
+- {id: 3}
+- {id: 4}
+- {id: 5}
+}}}
+and we would like to load this class
+{{{
+public class Car {
+    private String plate;
+    private List<Wheel> wheels;
+
+    public String getPlate() {
+        return plate;
+    }
+
+    public void setPlate(String plate) {
+        this.plate = plate;
+    }
+
+    public List<Wheel> getWheels() {
+        return wheels;
+    }
+
+    public void setWheels(List<Wheel> wheels) {
+        this.wheels = wheels;
+    }
+}
+}}}
+where 'wheels' property is a List of Wheel. In order to load Car (and create List<Wheel>)
+TypeDescription must be provided:
+{{{
+Constructor constructor = new Constructor(Car.class);
+TypeDescription carDescription = new TypeDescription(Car.class);
+carDescription.putListPropertyType("wheels", Wheel.class);
+constructor.addTypeDefinition(carDescription);
+Loader loader = new Loader(constructor);
+Yaml yaml = new Yaml(loader);
+}}}
+The full example can be found 
+[http://trac-hg.assembla.com/snakeyaml/browser/src/test/java/org/yaml/snakeyaml/constructor/TypeSafeCollectionsTest.java here].
+
+A similar approach works for Maps. Please note that both keys and values of the Map can be of any type:
+{{{
+plate: 00-FF-Q2
+wheels:
+  ? {brand: Pirelli, id: 1}
+  : 2008-01-16
+  ? {brand: Dunkel, id: 2}
+  : 2002-12-24
+  ? {brand: Pirelli, id: 3}
+  : 2008-01-16
+  ? {brand: Pirelli, id: 4}
+  : 2008-01-16
+  ? {brand: Pirelli, id: 5}
+  : 2008-01-16
+}}}
+The class to be loaded:
+{{{
+public class MyCar {
+    private String plate;
+    private Map<MyWheel, Date> wheels;
+
+    public String getPlate() {
+        return plate;
+    }
+
+    public void setPlate(String plate) {
+        this.plate = plate;
+    }
+
+    public Map<MyWheel, Date> getWheels() {
+        return wheels;
+    }
+
+    public void setWheels(Map<MyWheel, Date> wheels) {
+        this.wheels = wheels;
+    }
+}
+}}}
+The [http://trac-hg.assembla.com/snakeyaml/browser/src/test/java/org/yaml/snakeyaml/constructor/TypeSafeCollectionsTest.java code]:
+{{{
+Constructor constructor = new Constructor(MyCar.class);
+TypeDescription carDescription = new TypeDescription(MyCar.class);
+carDescription.putMapPropertyType("wheels", MyWheel.class, Object.class);
+constructor.addTypeDefinition(carDescription);
+Loader loader = new Loader(constructor);
+Yaml yaml = new Yaml(loader);
+MyCar car = (MyCar) yaml.load(<see above>);
+}}}
+
 
 PENDING: support for type-safe collection is coming soon...
 

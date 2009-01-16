@@ -1,5 +1,8 @@
 package org.yaml.snakeyaml.constructor;
 
+/*
+ * See LICENSE file in distribution for copyright and licensing information.
+ */
 public class MyWheel {
     private int id;
     private String brand;
@@ -43,5 +46,4 @@ public class MyWheel {
     public void setBrand(String brand) {
         this.brand = brand;
     }
-
 }
