@@ -69,9 +69,10 @@ For more details, please check [wiki:Documentation SnakeYAML Documentation].
 
 == History ==
 '''1.0rc1 (2009-01-16)'''
- * Implement type safe List and Map as a property of a custom Java class
+ * Implement [http://trac-hg.assembla.com/snakeyaml/wiki/Documentation#Typesafecollections type safe List and Map] 
+ as a property of a custom Java class
  
- '''0.91 (2009-01-14)'''
+'''0.91 (2009-01-14)'''
  * Support [http://trac-hg.assembla.com/snakeyaml/wiki/Documentation#Shortcuts shortcut tags] for custom classes
  * Import canonical scanner and parser from PyYAML
  
