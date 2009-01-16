@@ -389,14 +389,14 @@ public class Emitter {
             throw new EmitterException("anchor is not specified for alias");
         }
         processAnchor("*");
-        state = states.pop();
+        state = states.removeFirst();
     }
 
     private void expectScalar() throws IOException {
         increaseIndent(true, false);
         processScalar();
-        indent = indents.pop();
-        state = states.pop();
+        indent = indents.removeFirst();
+        state = states.removeFirst();
     }
 
     // Flow sequence handlers.
@@ -411,10 +411,10 @@ public class Emitter {
     private class ExpectFirstFlowSequenceItem implements EmitterState {
         public void expect() throws IOException {
             if (event instanceof SequenceEndEvent) {
-                indent = indents.pop();
+                indent = indents.removeFirst();
                 flowLevel--;
                 writeIndicator("]", false, false, false);
-                state = states.pop();
+                state = states.removeFirst();
             } else {
                 if (canonical || column > bestWidth) {
                     writeIndent();
@@ -428,14 +428,14 @@ public class Emitter {
     private class ExpectFlowSequenceItem implements EmitterState {
         public void expect() throws IOException {
             if (event instanceof SequenceEndEvent) {
-                indent = indents.pop();
+                indent = indents.removeFirst();
                 flowLevel--;
                 if (canonical) {
                     writeIndicator(",", false, false, false);
                     writeIndent();
                 }
                 writeIndicator("]", false, false, false);
-                state = states.pop();
+                state = states.removeFirst();
             } else {
                 writeIndicator(",", false, false, false);
                 if (canonical || column > bestWidth) {
@@ -459,10 +459,10 @@ public class Emitter {
     private class ExpectFirstFlowMappingKey implements EmitterState {
         public void expect() throws IOException {
             if (event instanceof MappingEndEvent) {
-                indent = indents.pop();
+                indent = indents.removeFirst();
                 flowLevel--;
                 writeIndicator("}", false, false, false);
-                state = states.pop();
+                state = states.removeFirst();
             } else {
                 if (canonical || column > bestWidth) {
                     writeIndent();
@@ -482,14 +482,14 @@ public class Emitter {
     private class ExpectFlowMappingKey implements EmitterState {
         public void expect() throws IOException {
             if (event instanceof MappingEndEvent) {
-                indent = indents.pop();
+                indent = indents.removeFirst();
                 flowLevel--;
                 if (canonical) {
                     writeIndicator(",", false, false, false);
                     writeIndent();
                 }
                 writeIndicator("}", false, false, false);
-                state = states.pop();
+                state = states.removeFirst();
             } else {
                 writeIndicator(",", false, false, false);
                 if (canonical || column > bestWidth) {
@@ -549,8 +549,8 @@ public class Emitter {
 
         public void expect() throws IOException {
             if (!this.first && event instanceof SequenceEndEvent) {
-                indent = indents.pop();
-                state = states.pop();
+                indent = indents.removeFirst();
+                state = states.removeFirst();
             } else {
                 writeIndent();
                 writeIndicator("-", true, false, true);
@@ -581,8 +581,8 @@ public class Emitter {
 
         public void expect() throws IOException {
             if (!this.first && event instanceof MappingEndEvent) {
-                indent = indents.pop();
-                state = states.pop();
+                indent = indents.removeFirst();
+                state = states.removeFirst();
             } else {
                 writeIndent();
                 if (checkSimpleKey()) {
