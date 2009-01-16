@@ -233,7 +233,9 @@ Note if you want to limit objects to standard Java objects like List or Long you
 Loader loader = new Loader(new SafeConstructor());
 Yaml yaml = new Yaml(loader);
 }}}
+
 ==== Providing the top level type ====
+
 It is possible to load a YAML document without any explicit tags. For instance, to load this document
 (example 2.27 from the [http://yaml.org/spec/1.1/#id859060 YAML specification])
 {{{
@@ -273,7 +275,13 @@ Loader loader = new Loader(new Constructor(Invoice.class));
 Yaml yaml = new Yaml(loader);
 }}}
 SnakeYAML is using Reflection API to find out the class for all the properties (setters and public fields) on Invoice.
-Unfortunately because of erasure it is not possible to identify classes for type safe collections.
+Unfortunately because of erasure it is not possible to identify classes for type safe collections at runtime. The
+class information between <> is only available at compile time.
+
+=== Type safe collections ===
+
+I order to parse a collection which contains custom Java classes Yaml has to be provided with additional information.
+[ TypeDescription] 
 
 PENDING: support for type-safe collection is coming soon...
 
