@@ -38,7 +38,7 @@ public class ScannerImplTest extends TestCase {
         etalonTokens.add(new BlockEndToken(dummy, dummy));
         etalonTokens.add(new StreamEndToken(dummy, dummy));
         while (scanner.checkToken(new ArrayList())) {
-            assertEquals(etalonTokens.pop(), scanner.getToken());
+            assertEquals(etalonTokens.removeFirst(), scanner.getToken());
             // System.out.println(scanner.getToken());
         }
         assertFalse("Must contain no more tokens: " + scanner.getToken(), scanner

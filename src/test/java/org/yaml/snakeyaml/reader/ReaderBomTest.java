@@ -30,7 +30,7 @@ public class ReaderBomTest extends TestCase {
     }
 
     public void testNoBom() throws IOException {
-        byte[] data = "test".getBytes(Charset.forName("UTF-8"));
+        byte[] data = "test".getBytes("UTF-8");
         ByteArrayInputStream input = new ByteArrayInputStream(data);
         Reader reader = new Reader(new UnicodeReader(input));
         assertEquals('t', reader.peek());

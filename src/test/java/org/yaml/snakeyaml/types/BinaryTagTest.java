@@ -4,7 +4,6 @@
 package org.yaml.snakeyaml.types;
 
 import java.io.IOException;
-import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -37,8 +36,7 @@ public class BinaryTagTest extends AbstractTest {
     public void testBinaryOut() throws IOException {
         byte[] data = "GIF89\tbi\u0003\u0000nary\n\u001Fimage\n".getBytes("ISO-8859-1");
         Map<String, String> map = new HashMap<String, String>();
-        Charset cs = Charset.forName("ISO-8859-1");
-        String value = new String(data, cs);
+        String value = new String(data, "ISO-8859-1");
         map.put("canonical", value);
         String output = dump(map);
         assertEquals("canonical: !!binary |-\n  R0lGODkJYmkDAG5hcnkKH2ltYWdlCg==\n", output);

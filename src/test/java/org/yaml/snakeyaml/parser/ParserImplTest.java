@@ -46,7 +46,7 @@ public class ParserImplTest extends TestCase {
             if (etalonEvents.isEmpty()) {
                 fail("unexpected event: " + event);
             }
-            assertEquals(etalonEvents.pop(), event);
+            assertEquals(etalonEvents.removeFirst(), event);
             // System.out.println(event);
         }
         assertFalse("Must contain no more events: " + parser.getEvent(), parser
@@ -79,7 +79,7 @@ public class ParserImplTest extends TestCase {
             if (etalonEvents.isEmpty()) {
                 fail("unexpected event: " + event);
             }
-            assertEquals(etalonEvents.pop(), event);
+            assertEquals(etalonEvents.removeFirst(), event);
             // System.out.println(event);
         }
         assertFalse("Must contain no more events: " + parser.getEvent(), parser
