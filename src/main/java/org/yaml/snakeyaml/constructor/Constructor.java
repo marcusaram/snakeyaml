@@ -216,6 +216,9 @@ public class Constructor extends SafeConstructor {
 
     private Object constructMappingNode(MappingNode node) {
         Class<? extends Object> beanClass = node.getType();
+        if (beanClass.isInterface()) {
+            return super.constructMapping(node);
+        }
         Object object;
         try {
             object = beanClass.newInstance();
@@ -243,7 +246,6 @@ public class Constructor extends SafeConstructor {
                     throw new YAMLException("Unable to find property '" + key + "' on class: "
                             + beanClass.getName());
                 valueNode.setType(property.getType());
-                // TODO
                 ClassDescription memberDescription = classDefinitions.get(beanClass);
                 if (memberDescription != null) {
                     if (valueNode instanceof SequenceNode) {
@@ -253,8 +255,13 @@ public class Constructor extends SafeConstructor {
                         if (memberType != null) {
                             snode.setListType(memberType);
                         }
-                    } else {
-                        // TODO check for map
+                    } else if (valueNode instanceof MappingNode) {
+                        MappingNode mnode = (MappingNode) valueNode;
+                        Class<? extends Object> keyType = memberDescription.getMapKeyType(key);
+                        if (keyType != null) {
+                            mnode.setKeyType(keyType);
+                            mnode.setValueType(memberDescription.getMapValueType(key));
+                        }
                     }
                 }
                 Object value = constructObject(valueNode);

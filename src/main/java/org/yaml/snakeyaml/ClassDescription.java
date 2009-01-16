@@ -8,11 +8,15 @@ public class ClassDescription {
     private String tag;
     private boolean root;
     private Map<String, Class<? extends Object>> listProperties;
+    private Map<String, Class<? extends Object>> keyProperties;
+    private Map<String, Class<? extends Object>> valueProperties;
 
     public ClassDescription(Class<? extends Object> clazz, String tag) {
         this.clazz = clazz;
         this.tag = tag;
         listProperties = new HashMap<String, Class<? extends Object>>();
+        keyProperties = new HashMap<String, Class<? extends Object>>();
+        valueProperties = new HashMap<String, Class<? extends Object>>();
     }
 
     public ClassDescription(Class<? extends Object> clazz) {
@@ -45,5 +49,19 @@ public class ClassDescription {
 
     public Class<? extends Object> getListPropertyType(String property) {
         return listProperties.get(property);
+    }
+
+    public void putMapPropertyType(String property, Class<? extends Object> key,
+            Class<? extends Object> value) {
+        keyProperties.put(property, key);
+        valueProperties.put(property, value);
+    }
+
+    public Class<? extends Object> getMapKeyType(String property) {
+        return keyProperties.get(property);
+    }
+
+    public Class<? extends Object> getMapValueType(String property) {
+        return valueProperties.get(property);
     }
 }
