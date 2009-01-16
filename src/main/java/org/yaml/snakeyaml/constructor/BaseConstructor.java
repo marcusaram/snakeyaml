@@ -27,12 +27,12 @@ public class BaseConstructor {
     private Map<Node, Object> constructedObjects;
     private Map<Node, Object> recursiveObjects;
 
-    protected Class<? extends Object> rootClass;
+    protected Class<? extends Object> rootType;
 
     public BaseConstructor() {
         constructedObjects = new HashMap<Node, Object>();
         recursiveObjects = new HashMap<Node, Object>();
-        rootClass = Object.class;
+        rootType = Object.class;
     }
 
     public void setComposer(Composer composer) {
@@ -48,7 +48,7 @@ public class BaseConstructor {
         // Construct and return the next document.
         composer.checkNode();
         Node node = composer.getNode();
-        node.setType(rootClass);
+        node.setType(rootType);
         return constructDocument(node);
     }
 
@@ -56,7 +56,7 @@ public class BaseConstructor {
         // Ensure that the stream contains a single document and construct it
         Node node = composer.getSingleNode();
         if (node != null) {
-            node.setType(rootClass);
+            node.setType(rootType);
             return constructDocument(node);
         }
         return null;

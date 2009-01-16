@@ -15,7 +15,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.yaml.snakeyaml.ClassDescription;
+import org.yaml.snakeyaml.TypeDescription;
 import org.yaml.snakeyaml.error.YAMLException;
 import org.yaml.snakeyaml.nodes.MappingNode;
 import org.yaml.snakeyaml.nodes.Node;
@@ -26,8 +26,8 @@ import org.yaml.snakeyaml.nodes.SequenceNode;
  * @see <a href="http://pyyaml.org/wiki/PyYAML">PyYAML< /a> for more information
  */
 public class Constructor extends SafeConstructor {
-    private Map<String, Class<? extends Object>> classTags;
-    private Map<Class<? extends Object>, ClassDescription> classDefinitions;
+    private Map<String, Class<? extends Object>> typeTags;
+    private Map<Class<? extends Object>, TypeDescription> typeDefinitions;
 
     public Constructor() {
         this(Object.class);
@@ -35,12 +35,12 @@ public class Constructor extends SafeConstructor {
 
     public Constructor(Class<? extends Object> theRoot) {
         if (theRoot == null) {
-            throw new NullPointerException("Root class must be provided.");
+            throw new NullPointerException("Root type must be provided.");
         }
         this.yamlConstructors.put(null, new ConstuctYamlObject());
-        rootClass = theRoot;
-        classTags = new HashMap<String, Class<? extends Object>>();
-        classDefinitions = new HashMap<Class<? extends Object>, ClassDescription>();
+        rootType = theRoot;
+        typeTags = new HashMap<String, Class<? extends Object>>();
+        typeDefinitions = new HashMap<Class<? extends Object>, TypeDescription>();
     }
 
     /**
@@ -53,23 +53,23 @@ public class Constructor extends SafeConstructor {
      * @return the previous value associated with <tt>definition</tt>, or
      *         <tt>null</tt> if there was no mapping for <tt>definition</tt>.
      */
-    public ClassDescription addClassDefinition(ClassDescription definition) {
+    public TypeDescription addTypeDefinition(TypeDescription definition) {
         if (definition == null) {
-            throw new NullPointerException("ClassDescription is required.");
+            throw new NullPointerException("TypeDescription is required.");
         }
-        if (rootClass == Object.class && definition.isRoot()) {
-            rootClass = definition.getClazz();
+        if (rootType == Object.class && definition.isRoot()) {
+            rootType = definition.getClazz();
         }
         String tag = definition.getTag();
-        classTags.put(tag, definition.getClazz());
-        return classDefinitions.put(definition.getClazz(), definition);
+        typeTags.put(tag, definition.getClazz());
+        return typeDefinitions.put(definition.getClazz(), definition);
     }
 
     private class ConstuctYamlObject implements Construct {
         @SuppressWarnings("unchecked")
         public Object construct(Node node) {
             Object result = null;
-            Class<? extends Object> customTag = classTags.get(node.getTag());
+            Class<? extends Object> customTag = typeTags.get(node.getTag());
             try {
                 Class cl;
                 if (customTag == null) {
@@ -134,18 +134,18 @@ public class Constructor extends SafeConstructor {
     }
 
     private Object constructScalarNode(ScalarNode node) {
-        Class<? extends Object> c = node.getType();
+        Class<? extends Object> type = node.getType();
         Object result;
-        if (c.isPrimitive() || c == String.class || Number.class.isAssignableFrom(c)
-                || c == Boolean.class || c == Date.class || c == Character.class
-                || c == BigInteger.class) {
-            if (c == String.class) {
+        if (type.isPrimitive() || type == String.class || Number.class.isAssignableFrom(type)
+                || type == Boolean.class || type == Date.class || type == Character.class
+                || type == BigInteger.class) {
+            if (type == String.class) {
                 Construct stringContructor = yamlConstructors.get("tag:yaml.org,2002:str");
                 result = stringContructor.construct((ScalarNode) node);
-            } else if (c == Boolean.class || c == Boolean.TYPE) {
+            } else if (type == Boolean.class || type == Boolean.TYPE) {
                 Construct boolContructor = yamlConstructors.get("tag:yaml.org,2002:bool");
                 result = boolContructor.construct((ScalarNode) node);
-            } else if (c == Character.class || c == Character.TYPE) {
+            } else if (type == Character.class || type == Character.TYPE) {
                 Construct charContructor = yamlConstructors.get("tag:yaml.org,2002:str");
                 String ch = (String) charContructor.construct((ScalarNode) node);
                 if (ch.length() != 1) {
@@ -153,40 +153,41 @@ public class Constructor extends SafeConstructor {
                             + ch.length());
                 }
                 result = new Character(ch.charAt(0));
-            } else if (c == Date.class) {
+            } else if (type == Date.class) {
                 Construct dateContructor = yamlConstructors.get("tag:yaml.org,2002:timestamp");
                 result = dateContructor.construct((ScalarNode) node);
-            } else if (c == Float.class || c == Double.class || c == Float.TYPE || c == Double.TYPE) {
+            } else if (type == Float.class || type == Double.class || type == Float.TYPE
+                    || type == Double.TYPE) {
                 Construct doubleContructor = yamlConstructors.get("tag:yaml.org,2002:float");
                 result = doubleContructor.construct(node);
-                if (c == Float.class || c == Float.TYPE) {
+                if (type == Float.class || type == Float.TYPE) {
                     result = new Float((Double) result);
                 }
-            } else if (Number.class.isAssignableFrom(c) || c == Byte.TYPE || c == Short.TYPE
-                    || c == Integer.TYPE || c == Long.TYPE) {
+            } else if (Number.class.isAssignableFrom(type) || type == Byte.TYPE
+                    || type == Short.TYPE || type == Integer.TYPE || type == Long.TYPE) {
                 Construct intContructor = yamlConstructors.get("tag:yaml.org,2002:int");
                 result = intContructor.construct(node);
-                if (c == Byte.class || c == Byte.TYPE) {
+                if (type == Byte.class || type == Byte.TYPE) {
                     result = new Byte(result.toString());
-                } else if (c == Short.class || c == Short.TYPE) {
+                } else if (type == Short.class || type == Short.TYPE) {
                     result = new Short(result.toString());
-                } else if (c == Integer.class || c == Integer.TYPE) {
+                } else if (type == Integer.class || type == Integer.TYPE) {
                     result = new Integer(result.toString());
-                } else if (c == Long.class || c == Long.TYPE) {
+                } else if (type == Long.class || type == Long.TYPE) {
                     result = new Long(result.toString());
-                } else if (c == BigInteger.class) {
+                } else if (type == BigInteger.class) {
                     result = new BigInteger(result.toString());
                 } else {
-                    throw new YAMLException("Unsupported Number class: " + c);
+                    throw new YAMLException("Unsupported Number class: " + type);
                 }
             } else {
-                throw new YAMLException("Unsupported class: " + c);
+                throw new YAMLException("Unsupported class: " + type);
             }
         } else {
             try {
-                // get value by BaseConstructor
+                // TODO ??? return value ??? get value by BaseConstructor
                 Object value = super.callConstructor(node);
-                java.lang.reflect.Constructor<? extends Object> javaConstructor = c
+                java.lang.reflect.Constructor<? extends Object> javaConstructor = type
                         .getConstructor(value.getClass());
                 result = javaConstructor.newInstance(value);
             } catch (Exception e) {
@@ -206,10 +207,10 @@ public class Constructor extends SafeConstructor {
      * @return constructed JavaBean
      */
     private Object constructMappingNode(MappingNode node) {
-        Class<? extends Object> beanClass = node.getType();
+        Class<? extends Object> beanType = node.getType();
         Object object;
         try {
-            object = beanClass.newInstance();
+            object = beanType.newInstance();
         } catch (InstantiationException e) {
             throw new YAMLException(e);
         } catch (IllegalAccessException e) {
@@ -229,12 +230,12 @@ public class Constructor extends SafeConstructor {
             keyNode.setType(String.class);
             String key = (String) constructObject(keyNode);
             try {
-                Property property = getProperty(beanClass, key);
+                Property property = getProperty(beanType, key);
                 if (property == null)
                     throw new YAMLException("Unable to find property '" + key + "' on class: "
-                            + beanClass.getName());
+                            + beanType.getName());
                 valueNode.setType(property.getType());
-                ClassDescription memberDescription = classDefinitions.get(beanClass);
+                TypeDescription memberDescription = typeDefinitions.get(beanType);
                 if (memberDescription != null) {
                     if (valueNode instanceof SequenceNode) {
                         SequenceNode snode = (SequenceNode) valueNode;

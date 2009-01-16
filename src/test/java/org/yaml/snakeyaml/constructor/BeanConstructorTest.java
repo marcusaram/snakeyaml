@@ -61,7 +61,7 @@ public class BeanConstructorTest extends TestCase {
             new Loader(new Constructor(null));
             fail("Class must be provided.");
         } catch (Exception e) {
-            assertEquals("Root class must be provided.", e.getMessage());
+            assertEquals("Root type must be provided.", e.getMessage());
         }
     }
 
