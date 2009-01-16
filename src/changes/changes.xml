@@ -6,6 +6,10 @@
 	<body>
 	    <release version="1.0rc1" date="2009-01-16" description="Construct type safe collections">
 	    	<action dev="py4fun" type="update">
+                Replace String.getBytes(Charset charset) with String.getBytes(String charsetName) because 
+                String.getBytes(Charset charset) was introduced only in Java 6 (2009-01-16)
+            </action>
+            <action dev="py4fun" type="update">
                 Replace LinkedList.pop() with removeFirst() because pop() was
                 introduced only in Java 6 (2009-01-16)
             </action>
