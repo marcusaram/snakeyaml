@@ -158,7 +158,7 @@ public class CanonicalParser implements Parser {
         if (!parsed) {
             parse();
         }
-        return events.pollFirst();
+        return events.removeFirst();
     }
 
     public boolean checkEvent(List<Class<? extends Event>> choices) {
