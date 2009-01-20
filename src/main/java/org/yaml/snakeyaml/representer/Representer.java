@@ -3,13 +3,26 @@
  */
 package org.yaml.snakeyaml.representer;
 
-import java.lang.reflect.Method;
+import java.beans.IntrospectionException;
+import java.beans.Introspector;
+import java.beans.PropertyDescriptor;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
+import java.util.Set;
+import java.util.TreeSet;
 
 import org.yaml.snakeyaml.TypeDescription;
+import org.yaml.snakeyaml.constructor.FieldProperty;
+import org.yaml.snakeyaml.constructor.MethodProperty;
+import org.yaml.snakeyaml.constructor.Property;
+import org.yaml.snakeyaml.error.YAMLException;
+import org.yaml.snakeyaml.nodes.MappingNode;
 import org.yaml.snakeyaml.nodes.Node;
+import org.yaml.snakeyaml.nodes.ScalarNode;
 
 /**
  * @see <a href="http://pyyaml.org/wiki/PyYAML">PyYAML</a> for more information
@@ -50,31 +63,11 @@ public class Representer extends SafeRepresenter {
 
     private class RepresentJavaBean implements Represent {
         public Node representData(Object data) {
-            // sort names
-            Map<String, Object> values = new TreeMap<String, Object>();
-            Method[] ems = data.getClass().getMethods();
-            for (int i = 0, j = ems.length; i < j; i++) {
-                if (ems[i].getParameterTypes().length == 0) {
-                    String name = ems[i].getName();
-                    if (name.equals("getClass")) {
-                        continue;
-                    }
-                    String pname = null;
-                    if (name.startsWith("get")) {
-                        pname = "" + Character.toLowerCase(name.charAt(3)) + name.substring(4);
-                    } else if (name.startsWith("is")) {
-                        pname = "" + Character.toLowerCase(name.charAt(2)) + name.substring(3);
-                    }
-                    if (pname != null) {
-                        try {
-                            // call getter
-                            Object value = ems[i].invoke(data, (Object[]) null);
-                            values.put(pname, value);
-                        } catch (Exception exe) {
-                            values.put(pname, null);
-                        }
-                    }
-                }
+            Set<Property> properties;
+            try {
+                properties = getProperties(data.getClass());
+            } catch (IntrospectionException e) {
+                throw new YAMLException(e);
             }
             String tag;
             String customTag = classTags.get(data.getClass());
@@ -84,8 +77,52 @@ public class Representer extends SafeRepresenter {
                 tag = customTag;
             }
             // flow style will be chosen by BaseRepresenter
-            Node node = representMapping(tag, values, null);
+            Node node = representMapping(tag, properties, data);
             return node;
         }
+    }
+
+    private Node representMapping(String tag, Set<Property> properties, Object javaBean) {
+        List<Node[]> value = new LinkedList<Node[]>();
+        MappingNode node = new MappingNode(tag, value, null);
+        representedObjects.put(aliasKey, node);
+        boolean bestStyle = true;
+        for (Property property : properties) {
+            Node nodeKey = representData(property.getName());
+            Node nodeValue = representData(property.get(javaBean));
+            if (!((nodeKey instanceof ScalarNode && ((ScalarNode) nodeKey).getStyle() == null))) {
+                bestStyle = false;
+            }
+            if (!((nodeValue instanceof ScalarNode && ((ScalarNode) nodeValue).getStyle() == null))) {
+                bestStyle = false;
+            }
+            value.add(new Node[] { nodeKey, nodeValue });
+        }
+        if (defaultFlowStyle != null) {
+            node.setFlowStyle(defaultFlowStyle);
+        } else {
+            node.setFlowStyle(bestStyle);
+        }
+        return node;
+    }
+
+    private Set<Property> getProperties(Class<? extends Object> type) throws IntrospectionException {
+        if (type == null) {
+            throw new NullPointerException("type cannot be null.");
+        }
+        Set<Property> properties = new TreeSet<Property>();
+        for (PropertyDescriptor property : Introspector.getBeanInfo(type).getPropertyDescriptors())
+            if (property.getReadMethod() != null
+                    && !property.getReadMethod().getName().equals("getClass")) {
+                properties.add(new MethodProperty(property));
+            }
+        for (Field field : type.getFields()) {
+            int modifiers = field.getModifiers();
+            if (!Modifier.isPublic(modifiers) || Modifier.isStatic(modifiers)
+                    || Modifier.isTransient(modifiers))
+                continue;
+            properties.add(new FieldProperty(field));
+        }
+        return properties;
     }
 }

@@ -3,7 +3,7 @@
  */
 package org.yaml.snakeyaml.constructor;
 
-abstract class Property {
+public abstract class Property implements Comparable<Property> {
     private final String name;
     private final Class<? extends Object> type;
 
@@ -24,5 +24,11 @@ abstract class Property {
         return getName() + " in class " + getType();
     }
 
+    public int compareTo(Property o) {
+        return name.compareTo(o.name);
+    }
+
     abstract public void set(Object object, Object value) throws Exception;
+
+    abstract public Object get(Object object);
 }

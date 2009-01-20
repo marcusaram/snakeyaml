@@ -5,15 +5,25 @@ package org.yaml.snakeyaml.constructor;
 
 import java.beans.PropertyDescriptor;
 
-class MethodProperty extends Property {
+import org.yaml.snakeyaml.error.YAMLException;
+
+public class MethodProperty extends Property {
     private final PropertyDescriptor property;
 
-    public MethodProperty(String name, PropertyDescriptor property) {
-        super(name, property.getPropertyType());
+    public MethodProperty(PropertyDescriptor property) {
+        super(property.getName(), property.getPropertyType());
         this.property = property;
     }
 
     public void set(Object object, Object value) throws Exception {
         property.getWriteMethod().invoke(object, value);
+    }
+
+    public Object get(Object object) {
+        try {
+            return property.getReadMethod().invoke(object);
+        } catch (Exception e) {
+            throw new YAMLException(e);
+        }
     }
 }

@@ -4,8 +4,13 @@
 		<author email="py4fun@gmail.com">Andrey Somov</author>
 	</properties>
 	<body>
-	    <release version="1.0rc1" date="2009-01-16" description="Construct type safe collections">
-	    	<action dev="py4fun" type="update">
+	    <release version="1.0rc2" date="in Mercurial" description="Development">
+	    	<action dev="py4fun" type="add">
+                Respect public fields in JavaBeans (2009-01-20)
+            </action>
+        </release>
+        <release version="1.0rc1" date="2009-01-16" description="Construct type safe collections">
+            <action dev="py4fun" type="update">
                 Replace String.getBytes(Charset charset) with String.getBytes(String charsetName) because 
                 String.getBytes(Charset charset) was introduced only in Java 6 (2009-01-16)
             </action>
