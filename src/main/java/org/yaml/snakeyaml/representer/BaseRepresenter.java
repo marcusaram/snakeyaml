@@ -34,6 +34,7 @@ public class BaseRepresenter {
     protected Map<Integer, Node> representedObjects = new HashMap<Integer, Node>();
     private Set<Object> objectKeeper = new HashSet<Object>();
     protected Integer aliasKey;// internal memory address
+    protected String rootTag = null;
 
     public BaseRepresenter(Character default_style, Boolean default_flow_style) {
         this.defaultStyle = default_style;

@@ -25,7 +25,7 @@ import org.yaml.snakeyaml.nodes.Node;
 import org.yaml.snakeyaml.nodes.ScalarNode;
 
 /**
- * @see <a href="http://pyyaml.org/wiki/PyYAML">PyYAML</a> for more information
+ * @see <a href="http://pyyaml.org/wiki/PyYAML">PyYAML< /a> for more information
  */
 public class Representer extends SafeRepresenter {
     private Map<Class<? extends Object>, String> classTags;
@@ -69,27 +69,43 @@ public class Representer extends SafeRepresenter {
             } catch (IntrospectionException e) {
                 throw new YAMLException(e);
             }
-            String tag;
-            String customTag = classTags.get(data.getClass());
-            if (customTag == null) {
-                tag = "tag:yaml.org,2002:" + data.getClass().getName();
-            } else {
-                tag = customTag;
-            }
-            // flow style will be chosen by BaseRepresenter
-            Node node = representMapping(tag, properties, data);
+            Node node = representMapping(properties, data);
             return node;
         }
     }
 
-    private Node representMapping(String tag, Set<Property> properties, Object javaBean) {
+    private Node representMapping(Set<Property> properties, Object javaBean) {
         List<Node[]> value = new LinkedList<Node[]>();
+        String tag;
+        String customTag = classTags.get(javaBean.getClass());
+        if (customTag == null) {
+            if (rootTag == null) {
+                tag = "tag:yaml.org,2002:" + javaBean.getClass().getName();
+            } else {
+                tag = "tag:yaml.org,2002:map";
+            }
+        } else {
+            tag = customTag;
+        }
+        if (rootTag == null) {
+            rootTag = tag;
+        }
+        // flow style will be chosen by BaseRepresenter
         MappingNode node = new MappingNode(tag, value, null);
         representedObjects.put(aliasKey, node);
         boolean bestStyle = true;
         for (Property property : properties) {
             Node nodeKey = representData(property.getName());
-            Node nodeValue = representData(property.get(javaBean));
+            Object memberValue = property.get(javaBean);
+            Node nodeValue = representData(memberValue);
+            if (nodeValue instanceof MappingNode) {
+                if (!Map.class.isAssignableFrom(memberValue.getClass())) {
+                    if (property.getType() != memberValue.getClass()) {
+                        String memberTag = "tag:yaml.org,2002:" + memberValue.getClass().getName();
+                        nodeValue.setTag(memberTag);
+                    }
+                }
+            }
             if (!((nodeKey instanceof ScalarNode && ((ScalarNode) nodeKey).getStyle() == null))) {
                 bestStyle = false;
             }
