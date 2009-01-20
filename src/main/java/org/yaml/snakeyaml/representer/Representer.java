@@ -67,7 +67,9 @@ public class Representer extends SafeRepresenter {
                     }
                     if (pname != null) {
                         try {
-                            values.put(pname, ems[i].invoke(data, (Object[]) null));
+                            // call getter
+                            Object value = ems[i].invoke(data, (Object[]) null);
+                            values.put(pname, value);
                         } catch (Exception exe) {
                             values.put(pname, null);
                         }
