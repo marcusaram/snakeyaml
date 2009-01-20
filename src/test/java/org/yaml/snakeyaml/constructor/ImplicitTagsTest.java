@@ -27,6 +27,7 @@ public class ImplicitTagsTest extends TestCase {
         map.put("id", 3);
         car.setMap(map);
         car.setPart(new Wheel(4));
+        car.setYear("2008");
         assertEquals(Util.getLocalResource("constructor/carwheel-without-tags.yaml"), new Yaml()
                 .dump(car));
     }
@@ -58,6 +59,7 @@ public class ImplicitTagsTest extends TestCase {
 
     public static class CarWithWheel {
         private String plate;
+        private String year;
         private Wheel wheel;
         private Object part;
         private Map<String, Integer> map;
@@ -92,6 +94,14 @@ public class ImplicitTagsTest extends TestCase {
 
         public void setPart(Object part) {
             this.part = part;
+        }
+
+        public String getYear() {
+            return year;
+        }
+
+        public void setYear(String year) {
+            this.year = year;
         }
     }
 }

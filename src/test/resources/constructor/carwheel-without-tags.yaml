@@ -3,3 +3,4 @@ map: {id: 3}
 part: !!org.yaml.snakeyaml.constructor.Wheel {id: 4}
 plate: 12-XP-F4
 wheel: !!org.yaml.snakeyaml.constructor.Wheel {id: 2}
+year: '2008'
