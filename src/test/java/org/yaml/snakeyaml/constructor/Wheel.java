@@ -6,6 +6,14 @@ package org.yaml.snakeyaml.constructor;
 public class Wheel {
     private int id;
 
+    public Wheel(int id) {
+        this.id = id;
+    }
+
+    public Wheel() {
+        this(0);
+    }
+
     public int getId() {
         return id;
     }

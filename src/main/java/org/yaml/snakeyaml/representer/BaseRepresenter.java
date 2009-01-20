@@ -134,15 +134,15 @@ public class BaseRepresenter {
         return node;
     }
 
-    protected Node representMapping(String tag, Map<? extends Object, Object> sequence,
+    protected Node representMapping(String tag, Map<? extends Object, Object> mapping,
             Boolean flowStyle) {
         List<Node[]> value = new LinkedList<Node[]>();
         MappingNode node = new MappingNode(tag, value, flowStyle);
         assert aliasKey != null;
         representedObjects.put(aliasKey, node);
         boolean bestStyle = true;
-        for (Object itemKey : sequence.keySet()) {
-            Object itemValue = sequence.get(itemKey);
+        for (Object itemKey : mapping.keySet()) {
+            Object itemValue = mapping.get(itemKey);
             Node nodeKey = representData(itemKey);
             Node nodeValue = representData(itemValue);
             if (!((nodeKey instanceof ScalarNode && ((ScalarNode) nodeKey).getStyle() == null))) {

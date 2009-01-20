@@ -161,8 +161,8 @@ public class Serializer {
                 }
                 this.emitter.emit(new SequenceEndEvent(null, null));
             } else { // instance of MappingNode
-                boolean implicit = (node.getTag().equals(this.resolver.resolve(MappingNode.class,
-                        null, true)));
+                String implicitTag = this.resolver.resolve(MappingNode.class, null, true);
+                boolean implicit = (node.getTag().equals(implicitTag));
                 this.emitter.emit(new MappingStartEvent(tAlias, node.getTag(), implicit, null,
                         null, ((CollectionNode) node).getFlowStyle()));
                 List<Object[]> map = (List<Object[]>) node.getValue();
