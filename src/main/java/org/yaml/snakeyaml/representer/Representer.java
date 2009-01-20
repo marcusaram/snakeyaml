@@ -81,6 +81,7 @@ public class Representer extends SafeRepresenter {
             } else {
                 tag = customTag;
             }
+            // TODO flow style must be respected (instead of simply 'null')
             return representMapping(tag, values, null);
         }
     }

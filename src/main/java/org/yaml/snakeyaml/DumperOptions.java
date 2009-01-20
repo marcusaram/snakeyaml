@@ -17,6 +17,7 @@ public class DumperOptions {
     private String lineBreak = "\n";
     private boolean expStart = false;
     private boolean expEnd = false;
+    private boolean expRoot = false;// TODO implement explicit root class
     private Integer[] version = null;
     private Map<String, String> tags = null;
 
