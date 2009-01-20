@@ -25,7 +25,6 @@ public class ArrayTagsTest extends TestCase {
             wheels[i - 1] = wheel;
         }
         car.setWheels(wheels);
-        // TODO less tags
         assertEquals(Util.getLocalResource("constructor/cararray-with-tags.yaml"), new Yaml()
                 .dump(car));
     }
