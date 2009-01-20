@@ -29,8 +29,7 @@ public class Example2_27Test extends TestCase {
         yaml = new Yaml(dumper);
         String output = yaml.dump(invoice);
         System.out.println(output);
-        // TODO String etalon =
-        // Util.getLocalResource("specification/example2_27_dumped.yaml");
-        // assertEquals(etalon, output);
+        String etalon = Util.getLocalResource("specification/example2_27_dumped.yaml");
+        assertEquals(etalon, output);
     }
 }

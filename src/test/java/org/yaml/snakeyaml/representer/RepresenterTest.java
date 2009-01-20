@@ -13,15 +13,17 @@ public class RepresenterTest extends TestCase {
         MyBean bean = new MyBean();
         bean.setName("Gnome");
         bean.setValid(true);
+        bean.setPrimitive(true);
         Yaml yaml = new Yaml();
         assertEquals(
-                "!!org.yaml.snakeyaml.representer.RepresenterTest$MyBean {name: Gnome, valid: true}\n",
+                "!!org.yaml.snakeyaml.representer.RepresenterTest$MyBean {name: Gnome, primitive: true}\n",
                 yaml.dump(bean));
     }
 
-    private class MyBean {
+    public static class MyBean {
         private String name;
         private Boolean valid;
+        private boolean primitive;
 
         public String getName() {
             return name;
@@ -38,6 +40,14 @@ public class RepresenterTest extends TestCase {
         public void setValid(Boolean valid) {
             this.valid = valid;
         }
+
+        public boolean isPrimitive() {
+            return primitive;
+        }
+
+        public void setPrimitive(boolean primitive) {
+            this.primitive = primitive;
+        }
     }
 
     public void testRepresenterNoConstructorAvailable() {
@@ -47,7 +57,7 @@ public class RepresenterTest extends TestCase {
                 yaml.dump(bean));
     }
 
-    private class MyBean2 {
+    public static class MyBean2 {
         private String name;
         private Boolean valid;
 
@@ -65,25 +75,28 @@ public class RepresenterTest extends TestCase {
             return name;
         }
 
-        public Boolean isValid() {
+        public Boolean getValid() {
             return valid;
         }
 
         @Override
         public String toString() {
-            return getName() + " " + isValid();
+            return getName() + " " + getValid();
         }
     }
 
     public void testRepresenterGetterWithException() {
         MyBean3 bean = new MyBean3("Gnome", true);
         Yaml yaml = new Yaml();
-        assertEquals(
-                "!!org.yaml.snakeyaml.representer.RepresenterTest$MyBean3 {name: null, valid: true}\n",
-                yaml.dump(bean));
+        try {
+            yaml.dump(bean);
+            fail("Exception must be reported");
+        } catch (Exception e) {
+            assertTrue(true);
+        }
     }
 
-    private class MyBean3 {
+    public static class MyBean3 {
         private String name;
         private Boolean valid;
 

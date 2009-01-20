@@ -30,10 +30,10 @@ public class BaseRepresenter {
     @SuppressWarnings("unchecked")
     protected Map<Class, Represent> multiRepresenters = new HashMap<Class, Represent>();
     private Character defaultStyle;
-    private Boolean defaultFlowStyle;
+    protected Boolean defaultFlowStyle;
     protected Map<Integer, Node> representedObjects = new HashMap<Integer, Node>();
     private Set<Object> objectKeeper = new HashSet<Object>();
-    private Integer aliasKey;// internal memory address
+    protected Integer aliasKey;// internal memory address
 
     public BaseRepresenter(Character default_style, Boolean default_flow_style) {
         this.defaultStyle = default_style;
@@ -48,7 +48,7 @@ public class BaseRepresenter {
     }
 
     @SuppressWarnings("unchecked")
-    private Node representData(Object data) {
+    protected Node representData(Object data) {
         aliasKey = System.identityHashCode(data);// take memory address
         if (!ignoreAliases(data)) {
             // check for identity
