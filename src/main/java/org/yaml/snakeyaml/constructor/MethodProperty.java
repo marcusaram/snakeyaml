@@ -8,8 +8,8 @@ import java.beans.PropertyDescriptor;
 class MethodProperty extends Property {
     private final PropertyDescriptor property;
 
-    public MethodProperty(PropertyDescriptor property) {
-        super(property.getPropertyType());
+    public MethodProperty(String name, PropertyDescriptor property) {
+        super(name, property.getPropertyType());
         this.property = property;
     }
 

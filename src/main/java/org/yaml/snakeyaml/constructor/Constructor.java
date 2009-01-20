@@ -267,7 +267,7 @@ public class Constructor extends SafeConstructor {
         for (PropertyDescriptor property : Introspector.getBeanInfo(type).getPropertyDescriptors()) {
             if (property.getName().equals(name)) {
                 if (property.getReadMethod() != null && property.getWriteMethod() != null)
-                    return new MethodProperty(property);
+                    return new MethodProperty(name, property);
                 break;
             }
         }
@@ -277,7 +277,7 @@ public class Constructor extends SafeConstructor {
                     || Modifier.isTransient(modifiers))
                 continue;
             if (field.getName().equals(name))
-                return new FieldProperty(field);
+                return new FieldProperty(name, field);
         }
         return null;
     }

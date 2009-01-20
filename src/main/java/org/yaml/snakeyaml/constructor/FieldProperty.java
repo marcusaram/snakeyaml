@@ -8,8 +8,8 @@ import java.lang.reflect.Field;
 class FieldProperty extends Property {
     private final Field field;
 
-    public FieldProperty(Field field) {
-        super(field.getType());
+    public FieldProperty(String name, Field field) {
+        super(name, field.getType());
         this.field = field;
     }
 
