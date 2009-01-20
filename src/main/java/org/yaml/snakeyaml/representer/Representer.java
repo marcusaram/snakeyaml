@@ -49,9 +49,9 @@ public class Representer extends SafeRepresenter {
     }
 
     private class RepresentJavaBean implements Represent {
-        @SuppressWarnings("unchecked")
         public Node representData(Object data) {
-            Map values = new TreeMap();// sort names
+            // sort names
+            Map<String, Object> values = new TreeMap<String, Object>();
             Method[] ems = data.getClass().getMethods();
             for (int i = 0, j = ems.length; i < j; i++) {
                 if (ems[i].getParameterTypes().length == 0) {
@@ -82,8 +82,8 @@ public class Representer extends SafeRepresenter {
                 tag = customTag;
             }
             // flow style will be chosen by BaseRepresenter
-            return representMapping(tag, values, null);
+            Node node = representMapping(tag, values, null);
+            return node;
         }
     }
-
 }
