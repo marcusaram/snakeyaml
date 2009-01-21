@@ -6,6 +6,10 @@
 	<body>
 	    <release version="1.0rc2" date="2008-01-21" description="Improve JavaBeans support">
 	    	<action dev="py4fun" type="fix">
+                Provide possibility to define/eliminate the root tag for JavaBeans. Avoiding global tags
+                helps to exchange YAML documents with other languages (2009-01-21)
+            </action>
+            <action dev="py4fun" type="fix">
                 Arrays as JavaBens properties are properly supported (2009-01-21)
             </action>
             <action dev="py4fun" type="update">
