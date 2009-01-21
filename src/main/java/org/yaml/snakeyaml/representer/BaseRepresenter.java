@@ -22,7 +22,7 @@ public class BaseRepresenter {
     @SuppressWarnings("unchecked")
     protected Map<Class, Represent> representers = new HashMap<Class, Represent>();
     /**
-     * in Java 'null' is not a type. So we have keep the null representer
+     * in Java 'null' is not a type. So we have to keep the null representer
      * separately otherwise it will coincide with the default representer which
      * is stored with the key null.
      */
