@@ -11,10 +11,10 @@ import java.util.Map;
 
 import junit.framework.TestCase;
 
-import org.yaml.snakeyaml.TypeDescription;
 import org.yaml.snakeyaml.Dumper;
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Loader;
+import org.yaml.snakeyaml.TypeDescription;
 import org.yaml.snakeyaml.Util;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.representer.Representer;
@@ -25,7 +25,7 @@ public class TypeSafeCollectionsTest extends TestCase {
         Constructor constructor = new Constructor(Car.class);
         TypeDescription carDescription = new TypeDescription(Car.class);
         carDescription.putListPropertyType("wheels", Wheel.class);
-        constructor.addTypeDefinition(carDescription);
+        constructor.addTypeDescription(carDescription);
         Loader loader = new Loader(constructor);
         Yaml yaml = new Yaml(loader);
         Car car = (Car) yaml.load(Util.getLocalResource("constructor/car-no-root-class.yaml"));
@@ -42,7 +42,7 @@ public class TypeSafeCollectionsTest extends TestCase {
         Constructor constructor = new Constructor(MyCar.class);
         TypeDescription carDescription = new TypeDescription(MyCar.class);
         carDescription.putMapPropertyType("wheels", MyWheel.class, Object.class);
-        constructor.addTypeDefinition(carDescription);
+        constructor.addTypeDescription(carDescription);
         Loader loader = new Loader(constructor);
         Yaml yaml = new Yaml(loader);
         MyCar car = (MyCar) yaml.load(Util
@@ -73,8 +73,7 @@ public class TypeSafeCollectionsTest extends TestCase {
         c.setPlate("00-FF-Q2");
         c.setWheels(wheels);
         Representer representer = new Representer();
-        representer
-                .addClassDefinition(new TypeDescription(MyWheel.class, "tag:yaml.org,2002:map"));
+        representer.addTypeDescription(new TypeDescription(MyWheel.class, "tag:yaml.org,2002:map"));
         Dumper dumper = new Dumper(representer, new DumperOptions());
         Yaml yaml = new Yaml(dumper);
         String output = yaml.dump(c);

@@ -56,7 +56,7 @@ public class Constructor extends SafeConstructor {
      * @return the previous value associated with <tt>definition</tt>, or
      *         <tt>null</tt> if there was no mapping for <tt>definition</tt>.
      */
-    public TypeDescription addTypeDefinition(TypeDescription definition) {
+    public TypeDescription addTypeDescription(TypeDescription definition) {
         if (definition == null) {
             throw new NullPointerException("TypeDescription is required.");
         }

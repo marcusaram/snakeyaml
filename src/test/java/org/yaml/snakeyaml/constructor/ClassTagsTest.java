@@ -44,8 +44,8 @@ public class ClassTagsTest extends TestCase {
         }
         car.setWheels(wheels);
         Representer representer = new Representer();
-        representer.addClassDefinition(new TypeDescription(Car.class, "!car"));
-        representer.addClassDefinition(new TypeDescription(Wheel.class, "tag:yaml.org,2002:map"));
+        representer.addTypeDescription(new TypeDescription(Car.class, "!car"));
+        representer.addTypeDescription(new TypeDescription(Wheel.class, "tag:yaml.org,2002:map"));
         Dumper dumper = new Dumper(representer, new DumperOptions());
         Yaml yaml = new Yaml(dumper);
         String output = yaml.dump(car);
@@ -65,7 +65,7 @@ public class ClassTagsTest extends TestCase {
 
     public void testLoadClassTag() throws IOException {
         Constructor constructor = new Constructor();
-        constructor.addTypeDefinition(new TypeDescription(Car.class, "!car"));
+        constructor.addTypeDescription(new TypeDescription(Car.class, "!car"));
         Loader loader = new Loader(constructor);
         Yaml yaml = new Yaml(loader);
         Car car = (Car) yaml.load(Util.getLocalResource("constructor/car-without-tags.yaml"));
@@ -78,7 +78,7 @@ public class ClassTagsTest extends TestCase {
     public void testNullDescription() throws IOException {
         Constructor constructor = new Constructor();
         try {
-            constructor.addTypeDefinition(null);
+            constructor.addTypeDescription(null);
             fail("Description is required.");
         } catch (Exception e) {
             assertEquals("TypeDescription is required.", e.getMessage());
@@ -89,7 +89,7 @@ public class ClassTagsTest extends TestCase {
         Constructor constructor = new Constructor();
         TypeDescription carDescription = new TypeDescription(Car.class);
         carDescription.setRoot(true);
-        constructor.addTypeDefinition(carDescription);
+        constructor.addTypeDescription(carDescription);
         Loader loader = new Loader(constructor);
         Yaml yaml = new Yaml(loader);
         Car car = (Car) yaml.load(Util.getLocalResource("constructor/car-no-root-class.yaml"));

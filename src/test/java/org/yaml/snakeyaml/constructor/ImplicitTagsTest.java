@@ -57,7 +57,7 @@ public class ImplicitTagsTest extends TestCase {
 
     public void testLoadClassTag() throws IOException {
         Constructor constructor = new Constructor();
-        constructor.addTypeDefinition(new TypeDescription(Car.class, "!car"));
+        constructor.addTypeDescription(new TypeDescription(Car.class, "!car"));
         Loader loader = new Loader(constructor);
         Yaml yaml = new Yaml(loader);
         Car car = (Car) yaml.load(Util.getLocalResource("constructor/car-without-tags.yaml"));
@@ -70,7 +70,7 @@ public class ImplicitTagsTest extends TestCase {
         assertTrue(carYaml1.startsWith("!!org.yaml.snakeyaml.constructor.Car"));
         //
         Representer representer = new Representer();
-        representer.addClassDefinition(new TypeDescription(Car.class, "!car"));
+        representer.addTypeDescription(new TypeDescription(Car.class, "!car"));
         Dumper dumper = new Dumper(representer, new DumperOptions());
         yaml = new Yaml(dumper);
         String carYaml2 = yaml.dump(car);

@@ -31,7 +31,7 @@ public class ArrayTagsTest extends TestCase {
 
     public void testLoadClassTag() throws IOException {
         Constructor constructor = new Constructor();
-        constructor.addTypeDefinition(new TypeDescription(Car.class, "!car"));
+        constructor.addTypeDescription(new TypeDescription(Car.class, "!car"));
         Loader loader = new Loader(constructor);
         Yaml yaml = new Yaml(loader);
         Car car = (Car) yaml.load(Util.getLocalResource("constructor/car-without-tags.yaml"));
@@ -44,7 +44,7 @@ public class ArrayTagsTest extends TestCase {
     public void testNullDescription() throws IOException {
         Constructor constructor = new Constructor();
         try {
-            constructor.addTypeDefinition(null);
+            constructor.addTypeDescription(null);
             fail("Description is required.");
         } catch (Exception e) {
             assertEquals("TypeDescription is required.", e.getMessage());
@@ -56,7 +56,7 @@ public class ArrayTagsTest extends TestCase {
         Constructor constructor = new Constructor();
         TypeDescription carDescription = new TypeDescription(CarWithArray.class);
         carDescription.setRoot(true);
-        constructor.addTypeDefinition(carDescription);
+        constructor.addTypeDescription(carDescription);
         Loader loader = new Loader(constructor);
         Yaml yaml = new Yaml(loader);
         CarWithArray car = (CarWithArray) yaml.load(Util

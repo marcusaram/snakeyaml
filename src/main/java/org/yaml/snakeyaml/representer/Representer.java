@@ -52,7 +52,7 @@ public class Representer extends SafeRepresenter {
      * @return the previous value associated with <tt>definition</tt>, or
      *         <tt>null</tt> if there was no mapping for <tt>definition</tt>.
      */
-    public TypeDescription addClassDefinition(TypeDescription definition) {
+    public TypeDescription addTypeDescription(TypeDescription definition) {
         if (definition == null) {
             throw new NullPointerException("ClassDescription is required.");
         }
