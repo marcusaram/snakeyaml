@@ -17,7 +17,7 @@ public class DumperOptions {
     private String lineBreak = "\n";
     private boolean expStart = false;
     private boolean expEnd = false;
-    private boolean expRoot = false;// TODO implement explicit root class
+    private String expRoot = null;
     private Integer[] version = null;
     private Map<String, String> tags = null;
 
@@ -97,6 +97,19 @@ public class DumperOptions {
 
     public Boolean isDefaultFlowStyle() {
         return defaultFlowStyle;
+    }
+
+    public String getExpRoot() {
+        return expRoot;
+    }
+
+    /**
+     * @param expRoot
+     *            - tag to be used for the root node or <code>null</code> to get
+     *            the default
+     */
+    public void setExpRoot(String expRoot) {
+        this.expRoot = expRoot;
     }
 
 }

@@ -44,6 +44,7 @@ public class Serializer {
     private Map<Node, String> anchors;
     private int lastAnchorId;
     private Boolean closed;
+    private String explicitRoot;
 
     public Serializer(Emitter emitter, Resolver resolver, DumperOptions opts) {
         this.emitter = emitter;
@@ -56,6 +57,7 @@ public class Serializer {
         this.anchors = new HashMap<Node, String>();
         this.lastAnchorId = 0;
         this.closed = null;
+        this.explicitRoot = opts.getExpRoot();
     }
 
     public void open() throws IOException {
@@ -87,6 +89,9 @@ public class Serializer {
         this.emitter.emit(new DocumentStartEvent(null, null, this.explicitStart, this.useVersion,
                 useTags));
         anchorNode(node);
+        if (explicitRoot != null) {
+            node.setTag(explicitRoot);
+        }
         serializeNode(node, null, null);
         this.emitter.emit(new DocumentEndEvent(null, null, this.explicitEnd));
         this.serializedNodes.clear();

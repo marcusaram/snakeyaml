@@ -38,6 +38,28 @@ public class ImplicitTagsTest extends TestCase {
         assertEquals(carYaml1, carYaml2);
     }
 
+    public void testNoRootTag() throws IOException {
+        CarWithWheel car1 = new CarWithWheel();
+        car1.setPlate("12-XP-F4");
+        Wheel wheel = new Wheel();
+        wheel.setId(2);
+        car1.setWheel(wheel);
+        Map<String, Integer> map = new HashMap<String, Integer>();
+        map.put("id", 3);
+        car1.setMap(map);
+        car1.setYear("2008");
+        DumperOptions options = new DumperOptions();
+        options.setExpRoot("tag:yaml.org,2002:map");
+        String carYaml1 = new Yaml(options).dump(car1);
+        assertEquals(Util.getLocalResource("constructor/car-without-root-tag.yaml"), carYaml1);
+        //
+        Constructor contructor = new Constructor(CarWithWheel.class);
+        Loader loader = new Loader(contructor);
+        CarWithWheel car2 = (CarWithWheel) new Yaml(loader).load(carYaml1);
+        String carYaml2 = new Yaml(options).dump(car2);
+        assertEquals(carYaml1, carYaml2);
+    }
+
     @SuppressWarnings("unchecked")
     public void testRootMap() throws IOException {
         Map<Object, Object> car1 = new HashMap<Object, Object>();
