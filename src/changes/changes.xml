@@ -5,7 +5,10 @@
 	</properties>
 	<body>
 	    <release version="1.0rc2" date="in Mercurial" description="Development">
-	    	<action dev="py4fun" type="update">
+	    	<action dev="py4fun" type="fix">
+                Arrays as JavaBens properties are properly supported (2009-01-21)
+            </action>
+            <action dev="py4fun" type="update">
                 Do not emit redundant tags for JavaBeans (2009-01-20)
             </action>
             <action dev="py4fun" type="add">

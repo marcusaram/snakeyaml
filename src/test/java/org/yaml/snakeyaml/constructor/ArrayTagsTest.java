@@ -51,8 +51,7 @@ public class ArrayTagsTest extends TestCase {
         }
     }
 
-    // TODO finish test
-    public void qtestLoadClassNoRoot() throws IOException {
+    public void testLoadClassNoRoot() throws IOException {
         Constructor constructor = new Constructor();
         TypeDescription carDescription = new TypeDescription(CarWithArray.class);
         carDescription.setRoot(true);
