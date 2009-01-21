@@ -25,7 +25,7 @@ import org.yaml.snakeyaml.nodes.Node;
 import org.yaml.snakeyaml.nodes.ScalarNode;
 
 /**
- * @see <a href="http://pyyaml.org/wiki/PyYAML">PyYAML< /a> for more information
+ * @see <a href="http://pyyaml.org/wiki/PyYAML">PyYAML</a> for more information
  */
 public class Representer extends SafeRepresenter {
     private Map<Class<? extends Object>, String> classTags;
