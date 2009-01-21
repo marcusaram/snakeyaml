@@ -21,7 +21,7 @@ public abstract class Property implements Comparable<Property> {
     }
 
     public String toString() {
-        return getName() + " in class " + getType();
+        return getName() + " in " + getType();
     }
 
     public int compareTo(Property o) {
