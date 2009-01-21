@@ -13,7 +13,7 @@ import org.yaml.snakeyaml.reader.Reader;
 import org.yaml.snakeyaml.resolver.Resolver;
 
 /**
- * @see <a href="http://pyyaml.org/wiki/PyYAML">PyYAML< /a> for more information
+ * @see <a href="http://pyyaml.org/wiki/PyYAML">PyYAML</a> for more information
  */
 public class Loader {
     protected BaseConstructor constructor;
