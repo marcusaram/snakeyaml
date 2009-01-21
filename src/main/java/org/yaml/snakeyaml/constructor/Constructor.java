@@ -6,6 +6,7 @@ package org.yaml.snakeyaml.constructor;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
+import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.math.BigInteger;
@@ -202,13 +203,14 @@ public class Constructor extends SafeConstructor {
 
     /**
      * Construct JavaBean. If type safe collections are used please look at
-     * <code>ClassDescription</code>.
+     * <code>TypeDescription</code>.
      * 
      * @param node
      *            - node where the keys are property names (they can only be
      *            <code>String</code>s) and values are objects to be created
      * @return constructed JavaBean
      */
+    @SuppressWarnings("unchecked")
     private Object constructMappingNode(MappingNode node) {
         Class<? extends Object> beanType = node.getType();
         Object object;
@@ -232,6 +234,7 @@ public class Constructor extends SafeConstructor {
             // keys can only be Strings
             keyNode.setType(String.class);
             String key = (String) constructObject(keyNode);
+            boolean isArray = false;
             try {
                 Property property = getProperty(beanType, key);
                 if (property == null)
@@ -246,6 +249,9 @@ public class Constructor extends SafeConstructor {
                                 .getListPropertyType(key);
                         if (memberType != null) {
                             snode.setListType(memberType);
+                        } else if (property.getType().isArray()) {
+                            isArray = true;
+                            snode.setListType(property.getType().getComponentType());
                         }
                     } else if (valueNode instanceof MappingNode) {
                         MappingNode mnode = (MappingNode) valueNode;
@@ -257,12 +263,21 @@ public class Constructor extends SafeConstructor {
                     }
                 }
                 Object value = constructObject(valueNode);
+                if (isArray) {
+                    List<Object> list = (List<Object>) value;
+                    value = list.toArray(createArray(property.getType()));
+                }
                 property.set(object, value);
             } catch (Exception e) {
                 throw new YAMLException(e);
             }
         }
         return object;
+    }
+
+    @SuppressWarnings("unchecked")
+    private <T> T[] createArray(Class<T> type) {
+        return (T[]) Array.newInstance(type.getComponentType(), 0);
     }
 
     protected Property getProperty(Class<? extends Object> type, String name)

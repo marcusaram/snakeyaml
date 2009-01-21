@@ -137,4 +137,9 @@ public class TypeDescription {
     public Class<? extends Object> getMapValueType(String property) {
         return valueProperties.get(property);
     }
+
+    @Override
+    public String toString() {
+        return "TypeDescription for " + getType() + " (tag='" + getTag() + "')";
+    }
 }
