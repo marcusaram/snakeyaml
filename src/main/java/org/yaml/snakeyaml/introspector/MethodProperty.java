@@ -1,7 +1,7 @@
 /*
  * See LICENSE file in distribution for copyright and licensing information.
  */
-package org.yaml.snakeyaml.constructor;
+package org.yaml.snakeyaml.introspector;
 
 import java.beans.PropertyDescriptor;
 

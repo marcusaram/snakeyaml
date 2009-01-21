@@ -16,10 +16,10 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import org.yaml.snakeyaml.TypeDescription;
-import org.yaml.snakeyaml.constructor.FieldProperty;
-import org.yaml.snakeyaml.constructor.MethodProperty;
-import org.yaml.snakeyaml.constructor.Property;
 import org.yaml.snakeyaml.error.YAMLException;
+import org.yaml.snakeyaml.introspector.FieldProperty;
+import org.yaml.snakeyaml.introspector.MethodProperty;
+import org.yaml.snakeyaml.introspector.Property;
 import org.yaml.snakeyaml.nodes.MappingNode;
 import org.yaml.snakeyaml.nodes.Node;
 import org.yaml.snakeyaml.nodes.ScalarNode;
