@@ -643,8 +643,8 @@ Note thet the 'part' property still has a global tag but the 'wheel' property do
 The example for the above `JavaBean` can be found 
 [http://trac-hg.assembla.com/snakeyaml/browser/src/test/java/org/yaml/snakeyaml/constructor/ImplicitTagsTest.java here]
 
-If it nessesary to massage/skip the root global tag for the `JavaBean` it can be specified 
-via `DumperOptions`.
+If it nessesary to massage/skip the root global tag for the `JavaBean` it 
+can be specified via `DumperOptions`.setExpRoot(String tag).
 
 === Shortcuts ===
 
