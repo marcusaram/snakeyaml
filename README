@@ -68,8 +68,11 @@ For more details, please check [wiki:Documentation SnakeYAML Documentation].
 
 
 == History ==
-'''1.0rc2 (2009-01-21)'''
- * Improve JavaBeans support
+'''1.0rc2 (2009-01-22)'''
+ * Provide possibility to define/eliminate the root tag for JavaBeans
+ * Arrays as JavaBens properties are properly supported
+ * Do not emit redundant tags for JavaBeans
+ * Respect public fields in JavaBeans
 
 '''1.0rc1 (2009-01-16)'''
  * Implement [http://trac-hg.assembla.com/snakeyaml/wiki/Documentation#Typesafecollections type safe List and Map] 

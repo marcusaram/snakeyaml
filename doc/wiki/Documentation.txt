@@ -556,6 +556,96 @@ public void testDumperOptionsCanonical() {
 - !!int "4"
 }}}
 
+=== `JavaBeans` ===
+
+The spec says - "One of the main goals of the `JavaBeans` architecture is to provide a platform neutral component
+architecture."
+
+Avoiding global tags significantly improves ability to exchange the YAML documents between different
+platforms and languages.
+
+If the custom Java class conforms to the `JavaBean` specification it can be loaded and dumped
+without any extra code. For instance this `JavaBean`
+{{{
+public class CarWithWheel {
+    private String plate;
+    private String year;
+    private Wheel wheel;
+    private Object part;
+    private Map<String, Integer> map;
+
+    public String getPlate() {
+        return plate;
+    }
+
+    public void setPlate(String plate) {
+        this.plate = plate;
+    }
+
+    public Wheel getWheel() {
+        return wheel;
+    }
+
+    public void setWheel(Wheel wheel) {
+        this.wheel = wheel;
+    }
+
+    public Map<String, Integer> getMap() {
+        return map;
+    }
+
+    public void setMap(Map<String, Integer> map) {
+        this.map = map;
+    }
+
+    public Object getPart() {
+        return part;
+    }
+
+    public void setPart(Object part) {
+        this.part = part;
+    }
+
+    public String getYear() {
+        return year;
+    }
+
+    public void setYear(String year) {
+        this.year = year;
+    }
+}
+}}}
+{{{
+CarWithWheel car1 = new CarWithWheel();
+car1.setPlate("12-XP-F4");
+Wheel wheel = new Wheel();
+wheel.setId(2);
+car1.setWheel(wheel);
+Map<String, Integer> map = new HashMap<String, Integer>();
+map.put("id", 3);
+car1.setMap(map);
+car1.setPart(new Wheel(4));
+car1.setYear("2008");
+String output = new Yaml().dump(car1);
+}}}
+will be dumped as
+{{{
+!!package.CarWithWheel
+map: {id: 3}
+part: !!org.yaml.snakeyaml.constructor.Wheel {id: 4}
+plate: 12-XP-F4
+wheel: {id: 2}
+year: '2008'
+}}}
+Note thet the 'part' property still has a global tag but the 'wheel' property does not
+(because the wheel's runtime class is the same as it is defined in the `CarWithWheel` class).
+
+The example for the above `JavaBean` can be found 
+[http://trac-hg.assembla.com/snakeyaml/browser/src/test/java/org/yaml/snakeyaml/constructor/ImplicitTagsTest.java here]
+
+If it nessesary to massage/skip the root global tag for the `JavaBean` it can be specified 
+via `DumperOptions`.
+
 === Shortcuts ===
 
 There is a way to define local tags for custom classes.
