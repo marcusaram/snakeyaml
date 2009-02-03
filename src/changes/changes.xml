@@ -4,8 +4,14 @@
 		<author email="py4fun@gmail.com">Andrey Somov</author>
 	</properties>
 	<body>
-	    <release version="1.0rc2" date="2008-01-22" description="Improve JavaBeans support">
-	    	<action dev="py4fun" type="add">
+	    <release version="1.0" date="in Mercurial" description="Development">
+	    	<action dev="py4fun" type="update">
+                The mailing list is renamed to snakeyaml-core to avoid a 
+                name conflict in Google AppEngine (2009-02-03)
+            </action>
+        </release>
+        <release version="1.0rc2" date="2008-01-22" description="Improve JavaBeans support">
+            <action dev="py4fun" type="add">
                 Provide possibility to define/eliminate the root tag for JavaBeans. Avoiding global tags
                 helps to exchange YAML documents with other programming languages (2009-01-21)
             </action>
