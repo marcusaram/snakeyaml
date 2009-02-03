@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>SnakeYAML</groupId>
 	<artifactId>SnakeYAML</artifactId>
-	<version>1.0rc2</version>
+	<version>1.0</version>
 	<packaging>jar</packaging>
 	<name>YAML 1.1 parser and emitter for Java</name>
 	<description>Port of PyYAML to Java 5 without any external dependencies</description>
@@ -16,7 +16,7 @@
 	<mailingLists>
 		<mailingList>
 			<name>SnakeYAML developers and users List</name>
-			<post>snakeyaml@googlegroups.com</post>
+			<post>snakeyaml-core@googlegroups.com</post>
 		</mailingList>
 	</mailingLists>
 	<scm>
