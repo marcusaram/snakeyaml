@@ -68,6 +68,10 @@ For more details, please check [wiki:Documentation SnakeYAML Documentation].
 
 
 == History ==
+
+'''1.0 (not yet released)'''
+ * The mailing list is renamed to `snakeyaml-core` to avoid a name conflict in `Google` `AppEngine`
+ 
 '''1.0rc2 (2009-01-22)'''
  * add [http://trac-hg.assembla.com/snakeyaml/wiki/Documentation#JavaBeans JavaBeans section] to the wiki
  * Provide possibility to define/eliminate the root tag for `JavaBeans`
@@ -162,7 +166,7 @@ You may review open bugs through
 [http://trac-hg.assembla.com/snakeyaml/report/1 the list of open tickets].
 
 You may discuss SnakeYAML at
-[http://groups.google.com/group/snakeyaml the mailing list].
+[http://groups.google.com/group/snakeyaml-core the mailing list].
 
 == TODO ==
  * better support public fields when dumping Java classes (are they used at all ?)
