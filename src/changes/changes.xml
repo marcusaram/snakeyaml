@@ -5,7 +5,11 @@
 	</properties>
 	<body>
 	    <release version="1.0" date="in Mercurial" description="Development">
-	    	<action dev="py4fun" type="update">
+	    	<action dev="py4fun" type="add">
+                Add a test to prove that Yaml instances are independent and can safely be used in 
+                multithreaded environment like for instance a Servlet container (2009-02-05)
+            </action>
+            <action dev="py4fun" type="update">
                 The mailing list is renamed to snakeyaml-core to avoid a 
                 name conflict in Google AppEngine (2009-02-03)
             </action>
