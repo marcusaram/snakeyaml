@@ -4,9 +4,9 @@
 package org.yaml.snakeyaml;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import junit.framework.TestCase;
 
@@ -96,7 +96,7 @@ public class Example2_24Test extends TestCase {
         private class RepresentCircle implements Represent {
             public Node representData(Object data) {
                 Circle circle = (Circle) data;
-                Map<String, Object> map = new HashMap<String, Object>();
+                Map<String, Object> map = new TreeMap<String, Object>();
                 map.put("center", circle.getCenter());
                 map.put("radius", circle.getRadius());
                 return representMapping("!circle", map, Boolean.FALSE);
@@ -106,7 +106,7 @@ public class Example2_24Test extends TestCase {
         private class RepresentLine implements Represent {
             public Node representData(Object data) {
                 Line line = (Line) data;
-                Map<String, Object> map = new HashMap<String, Object>();
+                Map<String, Object> map = new TreeMap<String, Object>();
                 map.put("start", line.getStart());
                 map.put("finish", line.getFinish());
                 return representMapping("!line", map, Boolean.FALSE);
@@ -116,7 +116,7 @@ public class Example2_24Test extends TestCase {
         private class RepresentLabel implements Represent {
             public Node representData(Object data) {
                 Label label = (Label) data;
-                Map<String, Object> map = new HashMap<String, Object>();
+                Map<String, Object> map = new TreeMap<String, Object>();
                 map.put("start", label.getStart());
                 map.put("color", new HexInteger(label.getColor()));
                 map.put("text", label.getText());
