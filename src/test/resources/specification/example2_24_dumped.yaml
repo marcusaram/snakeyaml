@@ -6,6 +6,6 @@
   finish: {x: 89, y: 102}
   start: *id001
 - !label
-  text: Pretty vector drawing.
   color: 0xFFEEBB
   start: *id001
+  text: Pretty vector drawing.
