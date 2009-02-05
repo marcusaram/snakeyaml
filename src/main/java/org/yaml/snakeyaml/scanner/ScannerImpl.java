@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -165,7 +166,7 @@ public class ScannerImpl implements Scanner {
         this.reader = reader;
         this.tokens = new LinkedList<Token>();
         this.indents = new LinkedList<Integer>();
-        this.possibleSimpleKeys = new HashMap<Integer, SimpleKey>();
+        this.possibleSimpleKeys = new LinkedHashMap<Integer, SimpleKey>();
         fetchStreamStart();// Add the STREAM-START token.
     }
 
@@ -363,9 +364,8 @@ public class ScannerImpl implements Scanner {
      * need to loop through the whole dictionary.
      */
     private int nextPossibleSimpleKey() {
-        for (final Iterator<SimpleKey> iter = this.possibleSimpleKeys.values().iterator(); iter
-                .hasNext();) {
-            final SimpleKey key = iter.next();
+        for (Iterator<SimpleKey> iter = this.possibleSimpleKeys.values().iterator(); iter.hasNext();) {
+            SimpleKey key = iter.next();
             if (key.getTokenNumber() > 0) {
                 return key.getTokenNumber();
             }
