@@ -6,6 +6,9 @@
 	<body>
 	    <release version="1.0" date="in Mercurial" description="Development">
 	    	<action dev="py4fun" type="fix">
+                Use LinkedHashMap for Emitter.tagPrefixes to respect the order (2009-02-06)
+            </action>
+            <action dev="py4fun" type="fix">
                 Use LinkedHashMap for ScannerImpl.possibleSimpleKeys to respect the key order (2009-02-05)
             </action>
             <action dev="py4fun" type="add">

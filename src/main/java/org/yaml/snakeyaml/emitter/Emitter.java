@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.Writer;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Queue;
@@ -174,7 +175,7 @@ public class Emitter {
         }
 
         // Tag prefixes.
-        this.tagPrefixes = new HashMap<String, String>();
+        this.tagPrefixes = new LinkedHashMap<String, String>();
 
         // Prepared anchor and tag.
         this.preparedAnchor = null;
@@ -292,7 +293,7 @@ public class Emitter {
                     String versionText = prepareVersion(ev.getVersion());
                     writeVersionDirective(versionText);
                 }
-                tagPrefixes = new HashMap<String, String>(DEFAULT_TAG_PREFIXES);
+                tagPrefixes = new LinkedHashMap<String, String>(DEFAULT_TAG_PREFIXES);
                 if (ev.getTags() != null) {
                     Set<String> handles = new TreeSet<String>(ev.getTags().keySet());
                     for (String handle : handles) {
