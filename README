@@ -30,7 +30,7 @@ SnakeYAML requires Java 5 or higher.
 
 == Download and Installation ==
 
-The current stable release of SnakeYAML: '''1.0rc2'''.
+The current stable release of SnakeYAML: '''1.0'''.
 
 Download links:
 
@@ -69,7 +69,8 @@ For more details, please check [wiki:Documentation SnakeYAML Documentation].
 
 == History ==
 
-'''1.0 (not yet released)'''
+'''1.0 (2009-02-06)'''
+ * Use LinkedHashMap to respect the order where it is required (ScannerImpl.java and Emitter.java)
  * The mailing list is renamed to `snakeyaml-core` to avoid a name conflict in `Google` `AppEngine`
  
 '''1.0rc2 (2009-01-22)'''
