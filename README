@@ -34,12 +34,47 @@ The current stable release of SnakeYAML: '''1.0'''.
 
 Download links:
 
- * '''JAR package''': http://www.assembla.com/spaces/snakeyaml/documents/bW3j1K6h8r3y8cab7jnrAJ/download?filename=SnakeYAML-1.0rc2.jar
- * '''ZIP archive''': http://www.assembla.com/spaces/snakeyaml/documents/a5ZkAG6ier3Aalab7jnrAJ/download?filename=SnakeYAML-all-1.0rc2.zip
  * '''source''': http://www.assembla.com/spaces/snakeyaml/trac_mercurial_tool
- * '''changes''': http://snakeyaml.narod.ru/releases/v1.0rc2/site/changes-report.html
- * '''generated docs''': http://snakeyaml.narod.ru/releases/v1.0rc2/site/index.html
- * '''project reports''': http://snakeyaml.narod.ru/releases/v1.0rc2/site/project-reports.html
+ * '''JAR package''': http://snakeyamlrepo.appspot.com/repository/SnakeYAML/SnakeYAML/1.0/SnakeYAML-1.0.jar
+ * '''ZIP archive''': http://www.assembla.com/spaces/snakeyaml/documents/a5ZkAG6ier3Aalab7jnrAJ/download?filename=SnakeYAML-all-1.0rc2.zip
+ * '''Repository''': http://snakeyamlrepo.appspot.com/
+ 
+Browse 1.0 reports:
+
+ * '''Maven generated report''': http://snakeyamlrepo.appspot.com/releases/1.0/site/index.html
+ * '''Project's report''': http://snakeyamlrepo.appspot.com/releases/1.0/site/project-reports.html
+ * '''Javadocs''': http://snakeyamlrepo.appspot.com/releases/1.0/site/apidocs/index.html
+ * '''Changes report''': http://snakeyamlrepo.appspot.com/releases/1.0/site/changes-report.html
+ * '''Maven generated report''': http://snakeyamlrepo.appspot.com/releases/1.0/site/index.html
+ * '''Test coverage report''': http://snakeyamlrepo.appspot.com/releases/1.0/site/cobertura/index.html
+
+Maven 2 configuration:
+
+Repository definition (in settings.xml) 
+{{{
+<repositories>
+  ...
+  <repository>
+    <id>snakeyaml</id>
+    <name>SnakeYAML repository</name>
+    <url>http://snakeyamlrepo.appspot.com/repository</url>
+  </repository>
+  ...
+</repositories>
+}}}
+
+Dependency definition (in pom.xml)
+{{{
+<dependencies>
+  ...
+  <dependency>
+    <groupId>SnakeYAML</groupId>
+    <artifactId>SnakeYAML</artifactId>
+    <version>1.0</version>
+  </dependency>
+  ...
+</dependencies>
+}}}
 
 == Documentation ==
 
@@ -168,9 +203,6 @@ You may review open bugs through
 
 You may discuss SnakeYAML at
 [http://groups.google.com/group/snakeyaml-core the mailing list].
-
-== TODO ==
- * better support public fields when dumping Java classes (are they used at all ?)
 
 == Known bugs ==
  * Recursive objects are not fully supported. Dumping works but loading does not.
