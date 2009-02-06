@@ -92,7 +92,7 @@ public class PyEmitterTest extends PyImportTest {
                         ScalarEvent e2 = (ScalarEvent) newEvent;
                         boolean[] implicit1 = e1.getImplicit();
                         boolean[] implicit2 = e2.getImplicit();
-                        if (!implicit1[0] && !implicit1[0] && !implicit2[0] && !implicit2[1]) {
+                        if (!implicit1[0] && !implicit1[1] && !implicit2[0] && !implicit2[1]) {
                             assertEquals(e1.getTag(), e2.getTag());
                         }
                         assertEquals(e1.getValue(), e2.getValue());
