@@ -1,23 +1,21 @@
 From: Andrey Somov <py4fun@gmail.com>
 To: yaml-core@lists.sourceforge.net
-Subject: [ANN] SnakeYAML-1.0rc1: construct type safe collections
+Subject: [ANN] SnakeYAML-1.0: final release
 
 =============================
- Announcing SnakeYAML-1.0rc1
+ Announcing SnakeYAML-1.0
 =============================
 
 A new release of SnakeYAML is now available:
 
     http://trac-hg.assembla.com/snakeyaml/
 
-This release implements type safe List and Map as a property of a custom Java class as well as some minor improvements.
-All the features for 1.0 are implemented. If no problems are reported 1.0 will be released soon.
+This release delivers minor fix for Java 5.
 
 Changes
 =======
 
- * Implement type safe List and Map as a property of a custom Java class
- * remove Java 6 dependencies
+ * Use LinkedHashMap to respect the order 
 
 Resources
 =========
@@ -25,9 +23,9 @@ Resources
 SnakeYAML homepage: http://trac-hg.assembla.com/snakeyaml/
 SnakeYAML documentation: http://trac-hg.assembla.com/snakeyaml/wiki/Documentation
 
-JAR package: http://www.assembla.com/spaces/snakeyaml/documents/a9YO-i4-8r3y3Rab7jnrAJ/download?filename=SnakeYAML-1.0rc1.jar
-ZIP archive: http://www.assembla.com/spaces/snakeyaml/documents/cf5zfU4-8r3z36ab7jnrAJ/download?filename=SnakeYAML-all-1.0rc1.zip
-Changes: http://snakeyaml.narod.ru/releases/v1.0rc1/site/changes-report.html
+JAR package: http://snakeyamlrepo.appspot.com/repository/SnakeYAML/SnakeYAML/1.0/SnakeYAML-1.0.jar
+Reports: http://snakeyamlrepo.appspot.com/
+
 SnakeYAML Mercurial repository: http://hg.assembla.com/snakeyaml
 Submit a bug report: http://trac-hg.assembla.com/snakeyaml/newticket
 
