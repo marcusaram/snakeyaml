@@ -139,4 +139,11 @@
 			</plugin>
 		</plugins>
 	</reporting>
+	<distributionManagement>
+		<repository>
+			<id>internal</id>
+			<name>Apache Archiva</name>
+			<url>http://localhost:8080/archiva/repository/internal</url>
+		</repository>
+	</distributionManagement>
 </project>
