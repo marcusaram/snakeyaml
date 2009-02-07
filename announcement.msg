@@ -10,7 +10,7 @@ A new release of SnakeYAML is now available:
 
     http://trac-hg.assembla.com/snakeyaml/
 
-This release delivers minor fix for Java 5.
+This release delivers a minor fix for Java 5.
 
 Changes
 =======
