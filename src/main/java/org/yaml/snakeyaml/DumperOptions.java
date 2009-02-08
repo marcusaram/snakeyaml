@@ -6,12 +6,13 @@ package org.yaml.snakeyaml;
 import java.util.Map;
 
 /**
- * @see <a href="http://pyyaml.org/wiki/PyYAML">PyYAML</a> for more information
+ * @see <a href="http://pyyaml.org/wiki/PyYAML">PyYAML< /a> for more information
  */
 public class DumperOptions {
     private Character defaultStyle = null;
     private Boolean defaultFlowStyle = null;
     private boolean canonical = false;
+    private boolean allowUnicode = false;
     private int indent = 2;
     private int bestWidth = 80;
     private String lineBreak = "\n";
@@ -21,11 +22,19 @@ public class DumperOptions {
     private Integer[] version = null;
     private Map<String, String> tags = null;
 
+    public boolean isAllowUnicode() {
+        return allowUnicode;
+    }
+
+    public void setAllowUnicode(boolean allowUnicode) {
+        this.allowUnicode = allowUnicode;
+    }
+
     public Character getDefaultStyle() {
         return defaultStyle;
     }
 
-    public void setDefaultStyle(char defaultStyle) {
+    public void setDefaultStyle(Character defaultStyle) {
         this.defaultStyle = defaultStyle;
     }
 
