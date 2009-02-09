@@ -63,9 +63,8 @@ public class DumperOptions {
         return this.canonical;
     }
 
-    public DumperOptions setWidth(int bestWidth) {
+    public void setWidth(int bestWidth) {
         this.bestWidth = bestWidth;
-        return this;
     }
 
     public int getWidth() {
