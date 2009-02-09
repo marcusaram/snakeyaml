@@ -5,7 +5,11 @@
 	</properties>
 	<body>
 	    <release version="1.0.1" date="in Mercurial" description="Development">
-	    	<action dev="py4fun" type="fix">
+	    	<action dev="py4fun" type="update">
+                Rename explictStart and explicitEnd to standard setters to conform with 
+                standard JavaBean naming convention (2009-02-09)
+            </action>
+            <action dev="py4fun" type="fix">
                 Add possibility to specify a line break (2009-02-09)
             </action>
         </release>

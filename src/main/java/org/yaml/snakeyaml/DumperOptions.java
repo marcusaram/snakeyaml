@@ -16,8 +16,8 @@ public class DumperOptions {
     private int indent = 2;
     private int bestWidth = 80;
     private String lineBreak = "\n";
-    private boolean expStart = false;
-    private boolean expEnd = false;
+    private boolean explicitStart = false;
+    private boolean explicitEnd = false;
     private String expRoot = null;
     private Integer[] version = null;
     private Map<String, String> tags = null;
@@ -52,24 +52,6 @@ public class DumperOptions {
 
     public Integer[] getVersion() {
         return this.version;
-    }
-
-    public DumperOptions explicitStart(final boolean expStart) {
-        this.expStart = expStart;
-        return this;
-    }
-
-    public boolean explicitStart() {
-        return this.expStart;
-    }
-
-    public DumperOptions explicitEnd(final boolean expEnd) {
-        this.expEnd = expEnd;
-        return this;
-    }
-
-    public boolean explicitEnd() {
-        return this.expEnd;
     }
 
     public DumperOptions setCanonical(boolean canonical) {
@@ -121,5 +103,21 @@ public class DumperOptions {
 
     public void setLineBreak(String lineBreak) {
         this.lineBreak = lineBreak;
+    }
+
+    public boolean isExplicitStart() {
+        return explicitStart;
+    }
+
+    public void setExplicitStart(boolean explicitStart) {
+        this.explicitStart = explicitStart;
+    }
+
+    public boolean isExplicitEnd() {
+        return explicitEnd;
+    }
+
+    public void setExplicitEnd(boolean explicitEnd) {
+        this.explicitEnd = explicitEnd;
     }
 }

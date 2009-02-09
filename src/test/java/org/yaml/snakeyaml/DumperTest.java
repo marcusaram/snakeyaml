@@ -15,8 +15,8 @@ public class DumperTest extends TestCase {
     public void testDump1() {
         DumperOptions options = new DumperOptions();
         options.setDefaultStyle('"');
-        options.explicitStart(true);
-        options.explicitEnd(true);
+        options.setExplicitStart(true);
+        options.setExplicitEnd(true);
         List<Integer> list = new LinkedList<Integer>();
         for (int i = 0; i < 3; i++) {
             list.add(i);
@@ -28,7 +28,7 @@ public class DumperTest extends TestCase {
 
     public void testDump2() {
         DumperOptions options = new DumperOptions();
-        options.explicitStart(true);
+        options.setExplicitStart(true);
         List<Integer> list = new LinkedList<Integer>();
         for (int i = 0; i < 3; i++) {
             list.add(i);

@@ -48,7 +48,7 @@ public class DumpExampleTest extends TestCase {
             docs.add(i);
         }
         DumperOptions options = new DumperOptions();
-        options.explicitStart(true);
+        options.setExplicitStart(true);
         Yaml yaml = new Yaml(options);
         System.out.println(yaml.dump(docs));
         System.out.println(yaml.dumpAll(docs.iterator()));
