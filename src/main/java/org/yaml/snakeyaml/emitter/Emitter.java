@@ -110,6 +110,7 @@ public class Emitter {
 
     // Formatting details.
     private Boolean canonical;
+    private boolean allowUnicode;
     private int bestIndent;
     private int bestWidth;
     private String bestLineBreak;
@@ -160,6 +161,7 @@ public class Emitter {
 
         // Formatting details.
         this.canonical = opts.isCanonical();
+        this.allowUnicode = opts.isAllowUnicode();
         this.bestIndent = 2;
         if ((opts.getIndent() > 1) && (opts.getIndent() < 10)) {
             this.bestIndent = opts.getIndent();
@@ -941,6 +943,9 @@ public class Emitter {
                 if ((ch == '\u0085' || ('\u00A0' <= ch && ch <= '\uD7FF') || ('\uE000' <= ch && ch <= '\uFFFD'))
                         && (ch != '\uFEFF')) {
                     // unicode is used
+                    if (!this.allowUnicode) {
+                        specialCharacters = true;
+                    }
                 } else {
                     specialCharacters = true;
                 }
