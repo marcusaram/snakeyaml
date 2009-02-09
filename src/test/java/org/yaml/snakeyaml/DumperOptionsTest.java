@@ -69,4 +69,20 @@ public class DumperOptionsTest extends TestCase {
         yaml = new Yaml(options);
         assertEquals("a: b\nc:\n- 1\n- 2\n- 3\n", yaml.dump(map));
     }
+
+    public void testCanonical() {
+        Yaml yaml = new Yaml();
+        assertEquals("123\n", yaml.dump(123));
+        //
+        DumperOptions options = new DumperOptions();
+        options = new DumperOptions();
+        options.setCanonical(true);
+        yaml = new Yaml(options);
+        assertEquals("---\n!!int \"123\"\n", yaml.dump(123));
+        //
+        options = new DumperOptions();
+        options.setCanonical(false);
+        yaml = new Yaml(options);
+        assertEquals("123\n", yaml.dump(123));
+    }
 }
