@@ -134,4 +134,25 @@ public class DumperOptionsTest extends TestCase {
         yaml = new Yaml(options);
         assertEquals("--- [1, 2, 3]\n...\n", yaml.dump(list));
     }
+
+    public void testVersion() {
+        Yaml yaml = new Yaml();
+        List<Integer> list = new LinkedList<Integer>();
+        list.add(1);
+        list.add(2);
+        list.add(3);
+        assertEquals("[1, 2, 3]\n", yaml.dump(list));
+        //
+        DumperOptions options = new DumperOptions();
+        options = new DumperOptions();
+        Integer[] version = { 1, 1 };
+        options.setVersion(version);
+        yaml = new Yaml(options);
+        assertEquals("%YAML 1.1\n--- [1, 2, 3]\n", yaml.dump(list));
+        //
+        Integer[] version0 = { 1, 0 };
+        options.setVersion(version0);
+        yaml = new Yaml(options);
+        assertEquals("%YAML 1.0\n--- [1, 2, 3]\n", yaml.dump(list));
+    }
 }
