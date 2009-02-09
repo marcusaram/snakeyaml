@@ -4,8 +4,13 @@
 		<author email="py4fun@gmail.com">Andrey Somov</author>
 	</properties>
 	<body>
-	    <release version="1.0" date="2009-02-06" description="final 1.0 release">
+	    <release version="1.0.1" date="in Mercurial" description="Development">
 	    	<action dev="py4fun" type="fix">
+                Add possibility to specify a line break (2009-02-09)
+            </action>
+        </release>
+        <release version="1.0" date="2009-02-06" description="final 1.0 release">
+            <action dev="py4fun" type="fix">
                 Use LinkedHashMap for Emitter.tagPrefixes to respect the order (2009-02-06)
             </action>
             <action dev="py4fun" type="fix">

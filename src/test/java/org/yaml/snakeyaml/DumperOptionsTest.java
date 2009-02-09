@@ -100,4 +100,19 @@ public class DumperOptionsTest extends TestCase {
         yaml = new Yaml(options);
         assertEquals("---\n!!seq [\n    !!int \"1\",\n    !!int \"2\",\n]\n", yaml.dump(list));
     }
+
+    public void testLineBreak() {
+        Yaml yaml = new Yaml();
+        List<Integer> list = new LinkedList<Integer>();
+        list.add(1);
+        list.add(2);
+        DumperOptions options = new DumperOptions();
+        options.setCanonical(true);
+        yaml = new Yaml(options);
+        assertEquals("---\n!!seq [\n  !!int \"1\",\n  !!int \"2\",\n]\n", yaml.dump(list));
+        //
+        options.setLineBreak("\r\n");
+        yaml = new Yaml(options);
+        assertEquals("---\r\n!!seq [\r\n  !!int \"1\",\r\n  !!int \"2\",\r\n]\r\n", yaml.dump(list));
+    }
 }

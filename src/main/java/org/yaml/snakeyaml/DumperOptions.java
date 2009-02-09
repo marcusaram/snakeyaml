@@ -119,4 +119,7 @@ public class DumperOptions {
         this.expRoot = expRoot;
     }
 
+    public void setLineBreak(String lineBreak) {
+        this.lineBreak = lineBreak;
+    }
 }
