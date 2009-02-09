@@ -85,4 +85,19 @@ public class DumperOptionsTest extends TestCase {
         yaml = new Yaml(options);
         assertEquals("123\n", yaml.dump(123));
     }
+
+    public void testIndent() {
+        Yaml yaml = new Yaml();
+        List<Integer> list = new LinkedList<Integer>();
+        list.add(1);
+        list.add(2);
+        DumperOptions options = new DumperOptions();
+        options.setCanonical(true);
+        yaml = new Yaml(options);
+        assertEquals("---\n!!seq [\n  !!int \"1\",\n  !!int \"2\",\n]\n", yaml.dump(list));
+        //
+        options.setIndent(4);
+        yaml = new Yaml(options);
+        assertEquals("---\n!!seq [\n    !!int \"1\",\n    !!int \"2\",\n]\n", yaml.dump(list));
+    }
 }
