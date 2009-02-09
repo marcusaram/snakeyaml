@@ -104,7 +104,7 @@ For more details, please check [wiki:Documentation SnakeYAML Documentation].
 
 == History ==
 '''1.0.1 (in Mercurial)'''
- * fix minor issues in DumperOptions
+ * fix minor issues in `DumperOptions`
  
 '''1.0 (2009-02-06)'''
  * Use `LinkedHashMap` to respect the order where it is required (`ScannerImpl`.java and Emitter.java)
