@@ -49,8 +49,8 @@ public class Serializer {
     public Serializer(Emitter emitter, Resolver resolver, DumperOptions opts) {
         this.emitter = emitter;
         this.resolver = resolver;
-        this.explicitStart = opts.explicitStart();
-        this.explicitEnd = opts.explicitEnd();
+        this.explicitStart = opts.isExplicitStart();
+        this.explicitEnd = opts.isExplicitEnd();
         this.useVersion = opts.getVersion();
         this.useTags = opts.tags();
         this.serializedNodes = new HashSet<Node>();

@@ -115,4 +115,23 @@ public class DumperOptionsTest extends TestCase {
         yaml = new Yaml(options);
         assertEquals("---\r\n!!seq [\r\n  !!int \"1\",\r\n  !!int \"2\",\r\n]\r\n", yaml.dump(list));
     }
+
+    public void testExplicitStart() {
+        Yaml yaml = new Yaml();
+        List<Integer> list = new LinkedList<Integer>();
+        list.add(1);
+        list.add(2);
+        list.add(3);
+        assertEquals("[1, 2, 3]\n", yaml.dump(list));
+        //
+        DumperOptions options = new DumperOptions();
+        options = new DumperOptions();
+        options.setExplicitStart(true);
+        yaml = new Yaml(options);
+        assertEquals("--- [1, 2, 3]\n", yaml.dump(list));
+        //
+        options.setExplicitEnd(true);
+        yaml = new Yaml(options);
+        assertEquals("--- [1, 2, 3]\n...\n", yaml.dump(list));
+    }
 }
