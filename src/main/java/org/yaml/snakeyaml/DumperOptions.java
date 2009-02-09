@@ -76,10 +76,6 @@ public class DumperOptions {
         return lineBreak;
     }
 
-    public Map<String, String> tags() {
-        return tags;
-    }
-
     public void setDefaultFlowStyle(Boolean defaultFlowStyle) {
         this.defaultFlowStyle = defaultFlowStyle;
     }
@@ -119,5 +115,13 @@ public class DumperOptions {
 
     public void setExplicitEnd(boolean explicitEnd) {
         this.explicitEnd = explicitEnd;
+    }
+
+    public Map<String, String> getTags() {
+        return tags;
+    }
+
+    public void setTags(Map<String, String> tags) {
+        this.tags = tags;
     }
 }

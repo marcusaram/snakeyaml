@@ -5,7 +5,10 @@
 	</properties>
 	<body>
 	    <release version="1.0.1" date="in Mercurial" description="Development">
-	    	<action dev="py4fun" type="update">
+	    	<action dev="py4fun" type="add">
+                Add possibility to specify tags for dumping (2009-02-09)
+            </action>
+            <action dev="py4fun" type="update">
                 Rename getExpRoot to getExplicitRoot to conform with 
                 standard JavaBean naming convention (2009-02-09)
             </action>

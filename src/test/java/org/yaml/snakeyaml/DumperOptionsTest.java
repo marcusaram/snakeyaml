@@ -155,4 +155,26 @@ public class DumperOptionsTest extends TestCase {
         yaml = new Yaml(options);
         assertEquals("%YAML 1.0\n--- [1, 2, 3]\n", yaml.dump(list));
     }
+
+    public void testTags() {
+        Yaml yaml = new Yaml();
+        List<Integer> list = new LinkedList<Integer>();
+        list.add(1);
+        list.add(2);
+        list.add(3);
+        assertEquals("[1, 2, 3]\n", yaml.dump(list));
+        //
+        DumperOptions options = new DumperOptions();
+        options = new DumperOptions();
+        Map<String, String> tags = new LinkedHashMap<String, String>();
+        tags.put("!foo!", "bar");
+        options.setTags(tags);
+        yaml = new Yaml(options);
+        assertEquals("%TAG !foo! bar\n--- [1, 2, 3]\n", yaml.dump(list));
+        //
+        options = new DumperOptions();
+        tags.put("!yaml!", "tag:yaml.org,2002:");
+        yaml = new Yaml(options);
+        assertEquals("foo\n", yaml.dump("foo"));
+    }
 }

@@ -52,7 +52,7 @@ public class Serializer {
         this.explicitStart = opts.isExplicitStart();
         this.explicitEnd = opts.isExplicitEnd();
         this.useVersion = opts.getVersion();
-        this.useTags = opts.tags();
+        this.useTags = opts.getTags();
         this.serializedNodes = new HashSet<Node>();
         this.anchors = new HashMap<Node, String>();
         this.lastAnchorId = 0;
