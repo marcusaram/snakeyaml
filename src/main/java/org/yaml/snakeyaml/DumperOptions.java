@@ -12,7 +12,7 @@ public class DumperOptions {
     private Character defaultStyle = null;
     private Boolean defaultFlowStyle = null;
     private boolean canonical = false;
-    private boolean allowUnicode = false;
+    private boolean allowUnicode = true;
     private int indent = 2;
     private int bestWidth = 80;
     private String lineBreak = "\n";

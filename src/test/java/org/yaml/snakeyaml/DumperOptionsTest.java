@@ -180,12 +180,12 @@ public class DumperOptionsTest extends TestCase {
 
     public void testAllowUnicode() {
         Yaml yaml = new Yaml();
-        assertEquals("\"\\xdcber\"\n", yaml.dump("Über"));
+        assertEquals("Über\n", yaml.dump("Über"));
         //
         DumperOptions options = new DumperOptions();
         options = new DumperOptions();
-        options.setAllowUnicode(true);
+        options.setAllowUnicode(false);
         yaml = new Yaml(options);
-        assertEquals("Über\n", yaml.dump("Über"));
+        assertEquals("\"\\xdcber\"\n", yaml.dump("Über"));
     }
 }
