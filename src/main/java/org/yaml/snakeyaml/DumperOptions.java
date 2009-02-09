@@ -38,18 +38,16 @@ public class DumperOptions {
         this.defaultStyle = defaultStyle;
     }
 
-    public DumperOptions setIndent(final int indent) {
+    public void setIndent(int indent) {
         this.indent = indent;
-        return this;
     }
 
     public int getIndent() {
         return this.indent;
     }
 
-    public DumperOptions setVersion(final Integer[] version) {
+    public void setVersion(Integer[] version) {
         this.version = version;
-        return this;
     }
 
     public Integer[] getVersion() {
