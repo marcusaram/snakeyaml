@@ -49,7 +49,7 @@ public class ImplicitTagsTest extends TestCase {
         car1.setMap(map);
         car1.setYear("2008");
         DumperOptions options = new DumperOptions();
-        options.setExpRoot("tag:yaml.org,2002:map");
+        options.setExplicitRoot("tag:yaml.org,2002:map");
         String carYaml1 = new Yaml(options).dump(car1);
         assertEquals(Util.getLocalResource("constructor/car-without-root-tag.yaml"), carYaml1);
         //

@@ -57,7 +57,7 @@ public class Serializer {
         this.anchors = new HashMap<Node, String>();
         this.lastAnchorId = 0;
         this.closed = null;
-        this.explicitRoot = opts.getExpRoot();
+        this.explicitRoot = opts.getExplicitRoot();
     }
 
     public void open() throws IOException {

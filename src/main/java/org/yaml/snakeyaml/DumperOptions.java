@@ -18,7 +18,7 @@ public class DumperOptions {
     private String lineBreak = "\n";
     private boolean explicitStart = false;
     private boolean explicitEnd = false;
-    private String expRoot = null;
+    private String explicitRoot = null;
     private Integer[] version = null;
     private Map<String, String> tags = null;
 
@@ -88,8 +88,8 @@ public class DumperOptions {
         return defaultFlowStyle;
     }
 
-    public String getExpRoot() {
-        return expRoot;
+    public String getExplicitRoot() {
+        return explicitRoot;
     }
 
     /**
@@ -97,8 +97,8 @@ public class DumperOptions {
      *            - tag to be used for the root node or <code>null</code> to get
      *            the default
      */
-    public void setExpRoot(String expRoot) {
-        this.expRoot = expRoot;
+    public void setExplicitRoot(String expRoot) {
+        this.explicitRoot = expRoot;
     }
 
     public void setLineBreak(String lineBreak) {
