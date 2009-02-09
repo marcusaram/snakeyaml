@@ -843,7 +843,7 @@ public void testImplicitResolver() throws IOException {
 {treasure: 10d20}
 }}}
 
-== Deviations from PyYAML ==
+== Deviation from PyYAML ==
 
  * SnakeYAML does not emit '...' (end of document) for simple documents
  * SnakeYAML emits Unicode (not ASCII) by default
