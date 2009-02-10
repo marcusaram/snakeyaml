@@ -384,17 +384,25 @@ public class ScannerImpl implements Scanner {
      * </pre>
      */
     private void stalePossibleSimpleKeys() {
-        // copy keys to avoid java.util.ConcurrentModificationException
-        Set<Integer> keys = new HashSet<Integer>(this.possibleSimpleKeys.keySet());
-        for (Integer level : keys) {
+        // use toRemove to avoid java.util.ConcurrentModificationException
+        Set<Integer> toRemove = null;
+        for (Integer level : this.possibleSimpleKeys.keySet()) {
             SimpleKey key = this.possibleSimpleKeys.get(level);
             if ((key.getLine() != reader.getLine()) || (reader.getIndex() - key.getIndex() > 1024)) {
                 if (key.isRequired()) {
                     throw new ScannerException("while scanning a simple key", key.getMark(),
                             "could not found expected ':'", reader.getMark());
                 } else {
-                    this.possibleSimpleKeys.remove(level);
+                    if (toRemove == null) {
+                        toRemove = new HashSet<Integer>();
+                    }
+                    toRemove.add(level);
                 }
+            }
+        }
+        if (toRemove != null) {
+            for (Integer level : toRemove) {
+                this.possibleSimpleKeys.remove(level);
             }
         }
     }

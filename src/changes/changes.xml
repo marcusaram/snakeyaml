@@ -6,6 +6,9 @@
 	<body>
 	    <release version="1.0.1" date="in Mercurial" description="Development">
 	    	<action dev="py4fun" type="update">
+                Refactor: for performance ScannerImpl.stalePossibleSimpleKeys() does not copy key Set (2009-02-10)
+            </action>
+            <action dev="py4fun" type="update">
                 By default allowUnicode=true. If it is necessary to escape Unicode use 
                 DumperOptions.setAllowUnicode(false) (2009-02-09)
             </action>
