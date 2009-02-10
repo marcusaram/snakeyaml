@@ -104,6 +104,7 @@ For more details, please check [wiki:Documentation SnakeYAML Documentation].
 
 == History ==
 '''1.0.1 (in Mercurial)'''
+ * minor performance improvement
  * fix minor issues in `DumperOptions`
  
 '''1.0 (2009-02-06)'''
