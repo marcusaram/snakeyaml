@@ -64,7 +64,7 @@ public class Emitter {
         ESCAPE_REPLACEMENTS.put(new Character('\u2029'), "P");
     }
 
-    private final static Map<String, String> DEFAULT_TAG_PREFIXES = new HashMap<String, String>();
+    private final static Map<String, String> DEFAULT_TAG_PREFIXES = new LinkedHashMap<String, String>();
     static {
         DEFAULT_TAG_PREFIXES.put("!", "!");
         DEFAULT_TAG_PREFIXES.put("tag:yaml.org,2002:", "!!");
