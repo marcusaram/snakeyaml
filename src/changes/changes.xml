@@ -4,7 +4,7 @@
 		<author email="py4fun@gmail.com">Andrey Somov</author>
 	</properties>
 	<body>
-	    <release version="1.0.1" date="in Mercurial" description="Development">
+	    <release version="1.0.1" date="2009-02-18" description="implement Enum support">
 	    	<action dev="py4fun" type="fix">
                 Enum as a JavaBean property (when the Enum class is implicitly defined) does
                 not need tags for both loading and dumping (2009-02-17)

@@ -843,6 +843,54 @@ public void testImplicitResolver() throws IOException {
 {treasure: 10d20}
 }}}
 
+== Enum ==
+SnakeYAML treats `Enum`s in a special way. (an example can be found 
+[http://trac-hg.assembla.com/snakeyaml/browser/src/test/java/org/yaml/snakeyaml/EnumTest.java here])
+
+Normally an `Enum` requires an explicit global tag:
+{{{
+public void testDumpEnum() {
+    Yaml yaml = new Yaml();
+    String output = yaml.dump(Suit.CLUBS);
+    assertEquals("!!org.yaml.snakeyaml.Suit 'CLUBS'\n", output);
+}
+
+public void testLoadEnum() {
+    Yaml yaml = new Yaml();
+    Suit suit = (Suit) yaml.load("!!org.yaml.snakeyaml.Suit 'CLUBS'");
+    assertEquals(Suit.CLUBS, suit);
+}
+}}}
+
+But if the Enum is a `JavaBean` property and the class is implicitly defined then the tags are not used:
+{{{
+public void testDumpEnumBean() {
+    DumperOptions options = new DumperOptions();
+    options.setDefaultFlowStyle(false);
+    Yaml yaml = new Yaml(options);
+    EnumBean bean = new EnumBean();
+    bean.setId(17);
+    bean.setSuit(Suit.SPADES);
+    String output = yaml.dump(bean);
+    System.out.println(output);
+}
+}}}
+{{{
+!!org.yaml.snakeyaml.EnumBean
+id: 17
+suit: SPADES
+}}}
+
+The same for loading:
+{{{
+public void testLoadEnumBean() {
+    Yaml yaml = new Yaml();
+    EnumBean bean = (EnumBean) yaml.load("!!org.yaml.snakeyaml.EnumBean\nid: 174\nsuit: CLUBS");
+    assertEquals(Suit.CLUBS, bean.getSuit());
+    assertEquals(174, bean.getId());
+}
+}}}
+
 == Deviation from PyYAML ==
 
  * SnakeYAML does not emit '...' (end of document) for simple documents
