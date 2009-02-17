@@ -105,9 +105,19 @@ public class Constructor extends SafeConstructor {
                 } else {
                     ScalarNode snode = (ScalarNode) node;
                     Object value = constructScalar(snode);
-                    java.lang.reflect.Constructor javaConstructor = cl.getConstructor(value
-                            .getClass());
-                    result = javaConstructor.newInstance(value);
+                    if (Enum.class.isAssignableFrom(cl)) {
+                        String enumValueName = (String) node.getValue();
+                        try {
+                            result = Enum.valueOf(cl, enumValueName);
+                        } catch (Exception ex) {
+                            throw new YAMLException("Unable to find enum value '" + enumValueName
+                                    + "' for enum class: " + cl.getName());
+                        }
+                    } else {
+                        java.lang.reflect.Constructor javaConstructor = cl.getConstructor(value
+                                .getClass());
+                        result = javaConstructor.newInstance(value);
+                    }
                 }
             } catch (Exception e) {
                 throw new ConstructorException(null, null, "Can't construct a java object for "
@@ -142,7 +152,7 @@ public class Constructor extends SafeConstructor {
         Object result;
         if (type.isPrimitive() || type == String.class || Number.class.isAssignableFrom(type)
                 || type == Boolean.class || type == Date.class || type == Character.class
-                || type == BigInteger.class) {
+                || type == BigInteger.class || Enum.class.isAssignableFrom(type)) {
             if (type == String.class) {
                 Construct stringContructor = yamlConstructors.get("tag:yaml.org,2002:str");
                 result = stringContructor.construct((ScalarNode) node);
@@ -184,6 +194,8 @@ public class Constructor extends SafeConstructor {
                 } else {
                     throw new YAMLException("Unsupported Number class: " + type);
                 }
+            } else if (Enum.class.isAssignableFrom(type)) {
+                result = super.callConstructor(node);
             } else {
                 throw new YAMLException("Unsupported class: " + type);
             }

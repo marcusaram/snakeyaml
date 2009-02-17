@@ -8,6 +8,9 @@
 	    	<action dev="py4fun" type="fix">
                 Enum is emitted as a scalar node (2009-02-17)
             </action>
+            <action dev="py4fun" type="fix">
+                Enum is parsed as a scalar node or as a JavaBean property (2009-02-17)
+            </action>
             <action dev="py4fun" type="update">
                 Refactor: for performance ScannerImpl.stalePossibleSimpleKeys() does not copy key Set (2009-02-10)
             </action>
