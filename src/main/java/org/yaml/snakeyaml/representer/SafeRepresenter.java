@@ -36,6 +36,7 @@ class SafeRepresenter extends BaseRepresenter {
         this.multiRepresenters.put(Set.class, new RepresentSet());
         this.multiRepresenters.put(new Object[0].getClass(), new RepresentArray());
         this.representers.put(Date.class, new RepresentDate());
+        this.multiRepresenters.put(Enum.class, new RepresentEnum());
     }
 
     protected boolean ignoreAliases(Object data) {
@@ -202,6 +203,13 @@ class SafeRepresenter extends BaseRepresenter {
             }
             buffer.append("Z");
             return representScalar("tag:yaml.org,2002:timestamp", buffer.toString(), null);
+        }
+    }
+
+    private class RepresentEnum implements Represent {
+        public Node representData(Object data) {
+            String tag = "tag:yaml.org,2002:" + data.getClass().getName();
+            return representScalar(tag, data.toString());
         }
     }
 }
