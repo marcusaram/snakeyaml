@@ -5,7 +5,10 @@
 	</properties>
 	<body>
 	    <release version="1.0.1" date="in Mercurial" description="Development">
-	    	<action dev="py4fun" type="update">
+	    	<action dev="py4fun" type="fix">
+                Enum is emitted as a scalar node (2009-02-17)
+            </action>
+            <action dev="py4fun" type="update">
                 Refactor: for performance ScannerImpl.stalePossibleSimpleKeys() does not copy key Set (2009-02-10)
             </action>
             <action dev="py4fun" type="update">
