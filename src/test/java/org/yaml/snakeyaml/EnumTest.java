@@ -60,9 +60,7 @@ public class EnumTest extends TestCase {
         bean.setId(17);
         bean.setSuit(Suit.SPADES);
         String output = yaml.dump(bean);
-        assertEquals(
-                "!!org.yaml.snakeyaml.EnumBean\nid: 17\nsuit: !!org.yaml.snakeyaml.Suit 'SPADES'\n",
-                output);
+        assertEquals("!!org.yaml.snakeyaml.EnumBean\nid: 17\nsuit: SPADES\n", output);
     }
 
     // Loading
@@ -96,8 +94,7 @@ public class EnumTest extends TestCase {
 
     public void testLoadEnumBean() {
         Yaml yaml = new Yaml();
-        EnumBean bean = (EnumBean) yaml
-                .load("!!org.yaml.snakeyaml.EnumBean\nid: 174\nsuit: !!org.yaml.snakeyaml.Suit 'CLUBS'");
+        EnumBean bean = (EnumBean) yaml.load("!!org.yaml.snakeyaml.EnumBean\nid: 174\nsuit: CLUBS");
         assertEquals(Suit.CLUBS, bean.getSuit());
         assertEquals(174, bean.getId());
     }

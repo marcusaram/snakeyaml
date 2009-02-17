@@ -6,6 +6,10 @@
 	<body>
 	    <release version="1.0.1" date="in Mercurial" description="Development">
 	    	<action dev="py4fun" type="fix">
+                Enum as a JavaBean property (when the Enum class is implicitly defined) does
+                not need tags for both loading and dumping (2009-02-17)
+            </action>
+            <action dev="py4fun" type="fix">
                 Enum is emitted as a scalar node (2009-02-17)
             </action>
             <action dev="py4fun" type="fix">

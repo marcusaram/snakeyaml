@@ -195,6 +195,8 @@ public class Constructor extends SafeConstructor {
                     throw new YAMLException("Unsupported Number class: " + type);
                 }
             } else if (Enum.class.isAssignableFrom(type)) {
+                String tag = "tag:yaml.org,2002:" + type.getName();
+                node.setTag(tag);
                 result = super.callConstructor(node);
             } else {
                 throw new YAMLException("Unsupported class: " + type);
