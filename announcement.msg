@@ -1,21 +1,23 @@
 From: Andrey Somov <py4fun@gmail.com>
 To: yaml-core@lists.sourceforge.net
-Subject: [ANN] SnakeYAML-1.0: final release
+Subject: [ANN] SnakeYAML-1.0.1: proper Enum support
 
 =============================
- Announcing SnakeYAML-1.0
+ Announcing SnakeYAML-1.0.1
 =============================
 
 A new release of SnakeYAML is now available:
 
     http://trac-hg.assembla.com/snakeyaml/
 
-This release delivers a minor fix for Java 5.
+This release delivers the proper Enum support as well as minor bug fixes.
 
 Changes
 =======
 
- * Use LinkedHashMap to respect the order 
+ * proper `Enum` support
+ * minor performance improvement
+ * fix minor issues in `DumperOptions` 
 
 Resources
 =========
@@ -23,7 +25,7 @@ Resources
 SnakeYAML homepage: http://trac-hg.assembla.com/snakeyaml/
 SnakeYAML documentation: http://trac-hg.assembla.com/snakeyaml/wiki/Documentation
 
-JAR package: http://snakeyamlrepo.appspot.com/repository/SnakeYAML/SnakeYAML/1.0/SnakeYAML-1.0.jar
+JAR package: http://snakeyamlrepo.appspot.com/repository/SnakeYAML/SnakeYAML/1.0.1/SnakeYAML-1.0.1.jar
 Reports: http://snakeyamlrepo.appspot.com/
 
 SnakeYAML Mercurial repository: http://hg.assembla.com/snakeyaml

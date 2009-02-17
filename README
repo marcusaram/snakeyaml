@@ -30,23 +30,23 @@ SnakeYAML requires Java 5 or higher.
 
 == Download and Installation ==
 
-The current stable release of SnakeYAML: '''1.0'''.
+The current stable release of SnakeYAML: '''1.0.1'''.
 
 Download links:
 
  * '''source''': http://www.assembla.com/spaces/snakeyaml/trac_mercurial_tool
- * '''JAR package''': http://snakeyamlrepo.appspot.com/repository/SnakeYAML/SnakeYAML/1.0/SnakeYAML-1.0.jar
+ * '''JAR package''': http://snakeyamlrepo.appspot.com/repository/SnakeYAML/SnakeYAML/1.0.1/SnakeYAML-1.0.1.jar
  * '''ZIP archive''': http://www.assembla.com/spaces/snakeyaml/documents/a3TK--9kGr3zD6eJe5afGb/download?filename=SnakeYAML-all-1.0.zip
  * '''Repository''': http://snakeyamlrepo.appspot.com/
  
-Browse 1.0 reports:
+Browse 1.0.1 reports:
 
- * '''Maven generated report''': http://snakeyamlrepo.appspot.com/releases/1.0/site/index.html
- * '''Project's report''': http://snakeyamlrepo.appspot.com/releases/1.0/site/project-reports.html
- * '''Javadocs''': http://snakeyamlrepo.appspot.com/releases/1.0/site/apidocs/index.html
- * '''Changes report''': http://snakeyamlrepo.appspot.com/releases/1.0/site/changes-report.html
- * '''Maven generated report''': http://snakeyamlrepo.appspot.com/releases/1.0/site/index.html
- * '''Test coverage report''': http://snakeyamlrepo.appspot.com/releases/1.0/site/cobertura/index.html
+ * '''Maven generated report''': http://snakeyamlrepo.appspot.com/releases/1.0.1/site/index.html
+ * '''Project's report''': http://snakeyamlrepo.appspot.com/releases/1.0.1/site/project-reports.html
+ * '''Javadocs''': http://snakeyamlrepo.appspot.com/releases/1.0.1/site/apidocs/index.html
+ * '''Changes report''': http://snakeyamlrepo.appspot.com/releases/1.0.1/site/changes-report.html
+ * '''Maven generated report''': http://snakeyamlrepo.appspot.com/releases/1.0.1/site/index.html
+ * '''Test coverage report''': http://snakeyamlrepo.appspot.com/releases/1.0.1/site/cobertura/index.html
 
 Maven 2 configuration:
 
@@ -70,7 +70,7 @@ Dependency definition (in pom.xml)
   <dependency>
     <groupId>SnakeYAML</groupId>
     <artifactId>SnakeYAML</artifactId>
-    <version>1.0</version>
+    <version>1.0.1</version>
   </dependency>
   ...
 </dependencies>
@@ -103,7 +103,8 @@ For more details, please check [wiki:Documentation SnakeYAML Documentation].
 
 
 == History ==
-'''1.0.1 (in Mercurial)'''
+'''1.0.1 (2009-02-18)'''
+ * proper `Enum` support
  * minor performance improvement
  * fix minor issues in `DumperOptions`
  
