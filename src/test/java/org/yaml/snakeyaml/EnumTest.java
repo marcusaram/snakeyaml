@@ -10,6 +10,8 @@ import java.util.Map;
 
 import junit.framework.TestCase;
 
+import org.yaml.snakeyaml.constructor.Constructor;
+
 public class EnumTest extends TestCase {
     // Dumping
     public void testDumpEnum() {
@@ -59,8 +61,14 @@ public class EnumTest extends TestCase {
         EnumBean bean = new EnumBean();
         bean.setId(17);
         bean.setSuit(Suit.SPADES);
+        LinkedHashMap<Suit, Integer> map = new LinkedHashMap<Suit, Integer>();
+        map.put(Suit.CLUBS, 1);
+        map.put(Suit.DIAMONDS, 2);
+        bean.setMap(map);
         String output = yaml.dump(bean);
-        assertEquals("!!org.yaml.snakeyaml.EnumBean\nid: 17\nsuit: SPADES\n", output);
+        assertEquals(
+                "!!org.yaml.snakeyaml.EnumBean\nid: 17\nmap:\n  !!org.yaml.snakeyaml.Suit 'CLUBS': 1\n  !!org.yaml.snakeyaml.Suit 'DIAMONDS': 2\nsuit: SPADES\n",
+                output);
     }
 
     // Loading
@@ -94,8 +102,33 @@ public class EnumTest extends TestCase {
 
     public void testLoadEnumBean() {
         Yaml yaml = new Yaml();
-        EnumBean bean = (EnumBean) yaml.load("!!org.yaml.snakeyaml.EnumBean\nid: 174\nsuit: CLUBS");
+        EnumBean bean = (EnumBean) yaml
+                .load("!!org.yaml.snakeyaml.EnumBean\nid: 174\nmap:\n  !!org.yaml.snakeyaml.Suit 'CLUBS': 1\n  !!org.yaml.snakeyaml.Suit 'DIAMONDS': 2\nsuit: CLUBS");
+
+        LinkedHashMap<Suit, Integer> map = new LinkedHashMap<Suit, Integer>();
+        map.put(Suit.CLUBS, 1);
+        map.put(Suit.DIAMONDS, 2);
+
         assertEquals(Suit.CLUBS, bean.getSuit());
         assertEquals(174, bean.getId());
+        assertEquals(map, bean.getMap());
+    }
+
+    public void testLoadEnumBean2() {
+        Constructor c = new Constructor();
+        TypeDescription td = new TypeDescription(EnumBean.class);
+        td.putMapPropertyType("map", Suit.class, Object.class);
+        c.addTypeDescription(td);
+        Yaml yaml = new Yaml(new Loader(c));
+        EnumBean bean = (EnumBean) yaml
+                .load("!!org.yaml.snakeyaml.EnumBean\nid: 174\nmap:\n  CLUBS: 1\n  DIAMONDS: 2\nsuit: CLUBS");
+
+        LinkedHashMap<Suit, Integer> map = new LinkedHashMap<Suit, Integer>();
+        map.put(Suit.CLUBS, 1);
+        map.put(Suit.DIAMONDS, 2);
+
+        assertEquals(Suit.CLUBS, bean.getSuit());
+        assertEquals(174, bean.getId());
+        assertEquals(map, bean.getMap());
     }
 }
