@@ -12,6 +12,8 @@ public class DumperOptionsTest extends TestCase {
     public void testDefaultStyle() {
         DumperOptions options = new DumperOptions();
         Yaml yaml = new Yaml(options);
+        assertEquals("abc\n", yaml.dump("abc"));
+        // string which looks like integer
         assertEquals("'123'\n", yaml.dump("123"));
         //
         options.setDefaultStyle('\"');
@@ -25,6 +27,7 @@ public class DumperOptionsTest extends TestCase {
         options.setDefaultStyle(null);
         yaml = new Yaml(options);
         assertEquals("'123'\n", yaml.dump("123"));
+        assertEquals("abc\n", yaml.dump("abc"));
     }
 
     public void testDefaultFlowStyle() {
