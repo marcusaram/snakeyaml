@@ -105,6 +105,8 @@ public class Representer extends SafeRepresenter {
                         nodeValue.setTag(memberTag);
                     }
                 }
+            } else if (memberValue != null && Enum.class.isAssignableFrom(memberValue.getClass())) {
+                nodeValue.setTag("tag:yaml.org,2002:str");
             }
             if (!((nodeKey instanceof ScalarNode && ((ScalarNode) nodeKey).getStyle() == null))) {
                 bestStyle = false;
