@@ -1,6 +1,6 @@
 From: Andrey Somov <py4fun@gmail.com>
 To: yaml-core@lists.sourceforge.net
-Subject: [ANN] SnakeYAML-1.0.1: proper Enum support
+Subject: [ANN] SnakeYAML-1.0.1: implement Enum support
 
 =============================
  Announcing SnakeYAML-1.0.1
@@ -15,9 +15,9 @@ This release delivers the proper Enum support as well as minor bug fixes.
 Changes
 =======
 
- * proper `Enum` support
+ * implement Enum support
  * minor performance improvement
- * fix minor issues in `DumperOptions` 
+ * fix minor issues in DumperOptions 
 
 Resources
 =========
