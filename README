@@ -104,7 +104,7 @@ For more details, please check [wiki:Documentation SnakeYAML Documentation].
 
 == History ==
 '''1.0.1 (2009-02-18)'''
- * proper `Enum` support (thanks to James Nissel)
+ * proper `Enum` [http://trac-hg.assembla.com/snakeyaml/wiki/Documentation#Enum support] (thanks to James Nissel)
  * minor performance improvement
  * fix minor issues in `DumperOptions`
  
