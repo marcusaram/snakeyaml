@@ -5,8 +5,8 @@
 	<artifactId>SnakeYAML</artifactId>
 	<version>1.0.1</version>
 	<packaging>jar</packaging>
-	<name>YAML 1.1 parser and emitter for Java</name>
-	<description>Port of PyYAML to Java 5 without any external dependencies</description>
+	<name>SnakeYAML</name>
+	<description>YAML 1.1 parser and emitter for Java</description>
 	<inceptionYear>2008</inceptionYear>
 	<url>http://trac-hg.assembla.com/snakeyaml/</url>
 	<issueManagement>
@@ -130,12 +130,20 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
-				<configuration>
-					<doctitle>API for ${project.name} ${project.version}</doctitle>
-					<windowtitle>API for ${project.name} ${project.version}</windowtitle>
-					<testDoctitle>Test API for ${project.name} ${project.version}</testDoctitle>
-					<testWindowtitle>Test API for ${project.name} ${project.version}</testWindowtitle>
-				</configuration>
+				<reportSets>
+					<reportSet>
+						<id>html</id>
+						<configuration>
+							<doctitle>API for ${project.name} ${project.version}</doctitle>
+							<windowtitle>API for ${project.name} ${project.version}</windowtitle>
+							<testDoctitle>Test API for ${project.name} ${project.version}</testDoctitle>
+							<testWindowtitle>Test API for ${project.name} ${project.version}</testWindowtitle>
+						</configuration>
+						<reports>
+							<report>javadoc</report>
+						</reports>
+					</reportSet>
+				</reportSets>
 			</plugin>
 		</plugins>
 	</reporting>
