@@ -3,6 +3,7 @@
  */
 package org.yaml.snakeyaml;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -38,6 +39,20 @@ public class EnumTest extends TestCase {
         String output = yaml.dump(list);
         assertEquals(
                 "- !!org.yaml.snakeyaml.Suit 'CLUBS'\n- !!org.yaml.snakeyaml.Suit 'DIAMONDS'\n- !!org.yaml.snakeyaml.Suit 'HEARTS'\n- !!org.yaml.snakeyaml.Suit 'SPADES'\n",
+                output);
+    }
+
+    public void testDumpEnumListNoAnchor() {
+        DumperOptions options = new DumperOptions();
+        options.setDefaultFlowStyle(false);
+        Yaml yaml = new Yaml(options);
+        List<Suit> list = new ArrayList<Suit>(3);
+        list.add(Suit.CLUBS);
+        list.add(Suit.DIAMONDS);
+        list.add(Suit.CLUBS);
+        String output = yaml.dump(list);
+        assertEquals(
+                "- !!org.yaml.snakeyaml.Suit 'CLUBS'\n- !!org.yaml.snakeyaml.Suit 'DIAMONDS'\n- !!org.yaml.snakeyaml.Suit 'CLUBS'\n",
                 output);
     }
 

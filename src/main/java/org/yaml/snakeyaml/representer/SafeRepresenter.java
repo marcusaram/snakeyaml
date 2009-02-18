@@ -20,7 +20,7 @@ import org.yaml.snakeyaml.nodes.Node;
 import org.yaml.snakeyaml.util.Base64Coder;
 
 /**
- * @see <a href="http://pyyaml.org/wiki/PyYAML">PyYAML</a> for more information
+ * @see <a href="http://pyyaml.org/wiki/PyYAML">PyYAML< /a> for more information
  */
 class SafeRepresenter extends BaseRepresenter {
 
@@ -50,7 +50,8 @@ class SafeRepresenter extends BaseRepresenter {
             }
         }
         return data instanceof String || data instanceof Boolean || data instanceof Integer
-                || data instanceof Long || data instanceof Float || data instanceof Double;
+                || data instanceof Long || data instanceof Float || data instanceof Double
+                || data instanceof Enum;
     }
 
     private class RepresentNull implements Represent {
