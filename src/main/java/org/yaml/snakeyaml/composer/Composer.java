@@ -21,6 +21,7 @@ import org.yaml.snakeyaml.events.StreamStartEvent;
 import org.yaml.snakeyaml.nodes.CollectionNode;
 import org.yaml.snakeyaml.nodes.MappingNode;
 import org.yaml.snakeyaml.nodes.Node;
+import org.yaml.snakeyaml.nodes.NodeId;
 import org.yaml.snakeyaml.nodes.ScalarNode;
 import org.yaml.snakeyaml.nodes.SequenceNode;
 import org.yaml.snakeyaml.parser.Parser;
@@ -125,7 +126,7 @@ public class Composer {
         ScalarEvent ev = (ScalarEvent) parser.getEvent();
         String tag = ev.getTag();
         if (tag == null || tag.equals("!")) {
-            tag = resolver.resolve(ScalarNode.class, ev.getValue(), ev.getImplicit()[0]);
+            tag = resolver.resolve(NodeId.scalar, ev.getValue(), ev.getImplicit()[0]);
         }
         Node node = new ScalarNode(tag, ev.getValue(), ev.getStartMark(), ev.getEndMark(), ev
                 .getStyle());
@@ -140,7 +141,7 @@ public class Composer {
         SequenceStartEvent startEvent = (SequenceStartEvent) parser.getEvent();
         String tag = startEvent.getTag();
         if (tag == null || tag.equals("!")) {
-            tag = resolver.resolve(SequenceNode.class, null, startEvent.getImplicit());
+            tag = resolver.resolve(NodeId.sequence, null, startEvent.getImplicit());
         }
         CollectionNode node = new SequenceNode(tag, new LinkedList<Node>(), startEvent
                 .getStartMark(), null, startEvent.getFlowStyle());
@@ -161,7 +162,7 @@ public class Composer {
         MappingStartEvent startEvent = (MappingStartEvent) parser.getEvent();
         String tag = startEvent.getTag();
         if (tag == null || tag.equals("!")) {
-            tag = resolver.resolve(MappingNode.class, null, startEvent.getImplicit());
+            tag = resolver.resolve(NodeId.mapping, null, startEvent.getImplicit());
         }
         MappingNode node = new MappingNode(tag, new LinkedList<Node[]>(),
                 startEvent.getStartMark(), null, startEvent.getFlowStyle());
