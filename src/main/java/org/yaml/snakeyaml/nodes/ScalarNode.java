@@ -9,7 +9,6 @@ import org.yaml.snakeyaml.error.Mark;
  * @see <a href="http://pyyaml.org/wiki/PyYAML">PyYAML</a> for more information
  */
 public class ScalarNode extends Node {
-    public static final String id = "scalar";
     private Character style;
 
     public ScalarNode(String tag, String value, Mark startMark, Mark endMark, Character style) {
@@ -22,7 +21,7 @@ public class ScalarNode extends Node {
     }
 
     @Override
-    public String getNodeId() {
-        return id;
+    public NodeId getNodeId() {
+        return NodeId.scalar;
     }
 }

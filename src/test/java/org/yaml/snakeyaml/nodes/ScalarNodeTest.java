@@ -13,7 +13,7 @@ public class ScalarNodeTest extends TestCase {
 
     public void testGetNodeId() {
         Node node = new ScalarNode("str", "text", null, null, '>');
-        assertEquals("scalar", node.getNodeId());
+        assertEquals(NodeId.scalar, node.getNodeId());
     }
 
     public void testToString() {

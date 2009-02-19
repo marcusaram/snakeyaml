@@ -4,6 +4,11 @@
 		<author email="py4fun@gmail.com">Andrey Somov</author>
 	</properties>
 	<body>
+	    <release version="1.0.2" date="in Mercurial" description="Development">
+            <action dev="py4fun" type="update">
+                Refactor: use Enum instead of String as NodeId (2009-02-19)
+            </action>
+        </release>
 	    <release version="1.0.1" date="2009-02-18" description="implement Enum support">
 	    	<action dev="py4fun" type="fix">
                 Do not emit anchors for Enum (2009-02-18)

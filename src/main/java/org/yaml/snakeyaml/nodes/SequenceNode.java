@@ -11,7 +11,6 @@ import org.yaml.snakeyaml.error.Mark;
  * @see <a href="http://pyyaml.org/wiki/PyYAML">PyYAML</a> for more information
  */
 public class SequenceNode extends CollectionNode {
-    public static final String id = "sequence";
     private Class<? extends Object> listType;
 
     public SequenceNode(String tag, List<Node> value, Mark startMark, Mark endMark,
@@ -25,8 +24,8 @@ public class SequenceNode extends CollectionNode {
     }
 
     @Override
-    public String getNodeId() {
-        return id;
+    public NodeId getNodeId() {
+        return NodeId.sequence;
     }
 
     @SuppressWarnings("unchecked")
