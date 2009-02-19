@@ -11,7 +11,6 @@ import org.yaml.snakeyaml.error.Mark;
  * @see <a href="http://pyyaml.org/wiki/PyYAML">PyYAML</a> for more information
  */
 public class MappingNode extends CollectionNode {
-    public static final String id = "mapping";
     private Class<? extends Object> keyType;
     private Class<? extends Object> valueType;
 
@@ -27,8 +26,8 @@ public class MappingNode extends CollectionNode {
     }
 
     @Override
-    public String getNodeId() {
-        return id;
+    public NodeId getNodeId() {
+        return NodeId.mapping;
     }
 
     @SuppressWarnings("unchecked")

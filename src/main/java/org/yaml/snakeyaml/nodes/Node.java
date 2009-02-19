@@ -45,7 +45,7 @@ public abstract class Node {
      * @see class variable 'id' in PyYAML
      * @return scalar, sequence, mapping
      */
-    public abstract String getNodeId();
+    public abstract NodeId getNodeId();
 
     public Mark getStartMark() {
         return startMark;

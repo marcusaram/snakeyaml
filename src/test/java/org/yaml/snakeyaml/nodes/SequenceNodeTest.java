@@ -11,6 +11,6 @@ public class SequenceNodeTest extends TestCase {
 
     public void testGetNodeId() {
         SequenceNode node = new SequenceNode("!foo", new ArrayList<Node>(), null, null, true);
-        assertEquals("sequence", node.getNodeId());
+        assertEquals(NodeId.sequence, node.getNodeId());
     }
 }
