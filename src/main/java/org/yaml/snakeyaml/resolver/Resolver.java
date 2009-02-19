@@ -21,8 +21,18 @@ public class Resolver {
     private static final String DEFAULT_MAPPING_TAG = "tag:yaml.org,2002:map";
 
     private Map<String, List<ResolverTuple>> yamlImplicitResolvers = new HashMap<String, List<ResolverTuple>>();
+    private boolean useRE = true;
 
     public Resolver() {
+        this(true);
+    }
+
+    /**
+     * @param useRE
+     *            - if useRE is false then all the scalars are Strings
+     */
+    public Resolver(boolean useRE) {
+        this.useRE = useRE;
         addImplicitResolver(
                 "tag:yaml.org,2002:bool",
                 Pattern
@@ -85,7 +95,7 @@ public class Resolver {
 
     public String resolve(NodeId kind, String value, boolean implicit) {
         List<ResolverTuple> resolvers = null;
-        if (kind == NodeId.scalar && implicit) {
+        if (useRE && kind == NodeId.scalar && implicit) {
             if ("".equals(value)) {
                 resolvers = yamlImplicitResolvers.get("");
             } else {
