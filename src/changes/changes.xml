@@ -4,7 +4,11 @@
 		<author email="py4fun@gmail.com">Andrey Somov</author>
 	</properties>
 	<body>
-	    <release version="1.0.2" date="in Mercurial" description="Development">
+	    <release version="1.1.0" date="in Mercurial" description="Development">
+            <action dev="py4fun" type="add">
+                Matching regular expressions for implicit types takes a lot of resources. Add possibility to switch
+                regular expressions off to increase performance. In the fast mode all the scalars become Strings (2009-02-19)
+            </action>
             <action dev="py4fun" type="update">
                 Refactor: use 'switch' with Enum instead of multiple 'if' statements to distinguish nodes (2009-02-19)
             </action>

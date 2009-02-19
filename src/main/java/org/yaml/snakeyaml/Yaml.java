@@ -42,6 +42,13 @@ public class Yaml {
         this.loader.setResolver(resolver);
     }
 
+    public Yaml(Loader loader, Dumper dumper, boolean useRE) {
+        this.loader = loader;
+        this.dumper = dumper;
+        this.resolver = new Resolver(useRE);
+        this.loader.setResolver(resolver);
+    }
+
     public Yaml() {
         this(new Loader(), new Dumper(new DumperOptions()));
     }
