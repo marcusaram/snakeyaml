@@ -24,10 +24,9 @@ import org.yaml.snakeyaml.events.SequenceStartEvent;
 import org.yaml.snakeyaml.events.StreamEndEvent;
 import org.yaml.snakeyaml.events.StreamStartEvent;
 import org.yaml.snakeyaml.nodes.CollectionNode;
-import org.yaml.snakeyaml.nodes.MappingNode;
 import org.yaml.snakeyaml.nodes.Node;
+import org.yaml.snakeyaml.nodes.NodeId;
 import org.yaml.snakeyaml.nodes.ScalarNode;
-import org.yaml.snakeyaml.nodes.SequenceNode;
 import org.yaml.snakeyaml.resolver.Resolver;
 
 /**
@@ -147,10 +146,10 @@ public class Serializer {
             // this.resolver.descendResolver(parent, index);
             switch (node.getNodeId()) {
             case scalar:
-                String detectedTag = this.resolver.resolve(ScalarNode.class, (String) node
-                        .getValue(), true);
-                String defaultTag = this.resolver.resolve(ScalarNode.class, (String) node
-                        .getValue(), false);
+                String detectedTag = this.resolver.resolve(NodeId.scalar, (String) node.getValue(),
+                        true);
+                String defaultTag = this.resolver.resolve(NodeId.scalar, (String) node.getValue(),
+                        false);
                 boolean[] implicit = new boolean[] { false, false };
                 implicit[0] = node.getTag().equals(detectedTag);
                 implicit[1] = node.getTag().equals(defaultTag);
@@ -159,7 +158,7 @@ public class Serializer {
                 this.emitter.emit(event);
                 break;
             case sequence:
-                boolean implicitS = (node.getTag().equals(this.resolver.resolve(SequenceNode.class,
+                boolean implicitS = (node.getTag().equals(this.resolver.resolve(NodeId.sequence,
                         null, true)));
                 this.emitter.emit(new SequenceStartEvent(tAlias, node.getTag(), implicitS, null,
                         null, ((CollectionNode) node).getFlowStyle()));
@@ -172,7 +171,7 @@ public class Serializer {
                 this.emitter.emit(new SequenceEndEvent(null, null));
                 break;
             default:// instance of MappingNode
-                String implicitTag = this.resolver.resolve(MappingNode.class, null, true);
+                String implicitTag = this.resolver.resolve(NodeId.mapping, null, true);
                 boolean implicitM = (node.getTag().equals(implicitTag));
                 this.emitter.emit(new MappingStartEvent(tAlias, node.getTag(), implicitM, null,
                         null, ((CollectionNode) node).getFlowStyle()));

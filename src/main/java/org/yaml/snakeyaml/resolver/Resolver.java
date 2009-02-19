@@ -10,9 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-import org.yaml.snakeyaml.nodes.Node;
-import org.yaml.snakeyaml.nodes.ScalarNode;
-import org.yaml.snakeyaml.nodes.SequenceNode;
+import org.yaml.snakeyaml.nodes.NodeId;
 
 /**
  * @see <a href="http://pyyaml.org/wiki/PyYAML">PyYAML</a> for more information
@@ -56,7 +54,7 @@ public class Resolver {
         addImplicitResolver("tag:yaml.org,2002:yaml", Pattern.compile("^(?:!|&|\\*)$"), "!&*");
     }
 
-    public void addImplicitResolver(final String tag, final Pattern regexp, final String first) {
+    public void addImplicitResolver(String tag, Pattern regexp, String first) {
         if (first == null) {
             List<ResolverTuple> curr = yamlImplicitResolvers.get(null);
             if (curr == null) {
@@ -85,10 +83,9 @@ public class Resolver {
         }
     }
 
-    public String resolve(final Class<? extends Node> kind, final String value,
-            final boolean implicit) {
+    public String resolve(NodeId kind, String value, boolean implicit) {
         List<ResolverTuple> resolvers = null;
-        if (kind.equals(ScalarNode.class) && implicit) {
+        if (kind == NodeId.scalar && implicit) {
             if ("".equals(value)) {
                 resolvers = yamlImplicitResolvers.get("");
             } else {
@@ -119,12 +116,13 @@ public class Resolver {
         // return exactPaths.get(null);
         // }
         // }
-        if (kind.equals(ScalarNode.class)) {
+        switch (kind) {
+        case scalar:
             return DEFAULT_SCALAR_TAG;
-        } else if (kind.equals(SequenceNode.class)) {
+        case sequence:
             return DEFAULT_SEQUENCE_TAG;
+        default:
+            return DEFAULT_MAPPING_TAG;
         }
-        return DEFAULT_MAPPING_TAG;
     }
-
 }
