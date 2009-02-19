@@ -23,7 +23,7 @@ public class NoRegularExpressionsTest extends TestCase {
     }
 
     @SuppressWarnings("unchecked")
-    public void testDump() {
+    public void testList() {
         String[] values = new String[] { "2", "2009-02-19", "false", "3.1416" };
         String output = yaml.dump(values);
         assertEquals("[2, 2009-02-19, false, 3.1416]\n", output);
@@ -40,6 +40,7 @@ public class NoRegularExpressionsTest extends TestCase {
     }
 
     private void check(String content) {
+        // load
         assertEquals(content, yaml.load(content));
         Class<? extends Object> clazz = new Yaml().load(content).getClass();
         assertFalse("Must not be String: " + clazz, clazz == String.class);
