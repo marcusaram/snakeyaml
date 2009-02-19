@@ -85,26 +85,29 @@ public class Constructor extends SafeConstructor {
                 } else {
                     cl = customTag;
                 }
-                if (node instanceof MappingNode) {
+                java.lang.reflect.Constructor javaConstructor;
+                switch (node.getNodeId()) {
+                case mapping:
                     MappingNode mnode = (MappingNode) node;
                     mnode.setType(cl);
                     result = constructMappingNode(mnode);
-                } else if (node instanceof SequenceNode) {
-                    SequenceNode snode = (SequenceNode) node;
-                    List<Object> values = (List<Object>) constructSequence(snode);
+                    break;
+                case sequence:
+                    SequenceNode seqNode = (SequenceNode) node;
+                    List<Object> values = (List<Object>) constructSequence(seqNode);
                     Class[] parameterTypes = new Class[values.size()];
                     int index = 0;
                     for (Object parameter : values) {
                         parameterTypes[index] = parameter.getClass();
                         index++;
                     }
-                    java.lang.reflect.Constructor javaConstructor = cl
-                            .getConstructor(parameterTypes);
+                    javaConstructor = cl.getConstructor(parameterTypes);
                     Object[] initargs = values.toArray();
                     result = javaConstructor.newInstance(initargs);
-                } else {
-                    ScalarNode snode = (ScalarNode) node;
-                    Object value = constructScalar(snode);
+                    break;
+                default:// scalar
+                    ScalarNode scaNode = (ScalarNode) node;
+                    Object value = constructScalar(scaNode);
                     if (Enum.class.isAssignableFrom(cl)) {
                         String enumValueName = (String) node.getValue();
                         try {
@@ -114,8 +117,7 @@ public class Constructor extends SafeConstructor {
                                     + "' for enum class: " + cl.getName());
                         }
                     } else {
-                        java.lang.reflect.Constructor javaConstructor = cl.getConstructor(value
-                                .getClass());
+                        javaConstructor = cl.getConstructor(value.getClass());
                         result = javaConstructor.newInstance(value);
                     }
                 }
@@ -133,11 +135,14 @@ public class Constructor extends SafeConstructor {
             return super.callConstructor(node);
         }
         Object result;
-        if (node instanceof ScalarNode) {
+        switch (node.getNodeId()) {
+        case scalar:
             result = constructScalarNode((ScalarNode) node);
-        } else if (node instanceof SequenceNode) {
+            break;
+        case sequence:
             result = constructSequence((SequenceNode) node);
-        } else {
+            break;
+        default:// mapping
             if (Map.class.isAssignableFrom(node.getType())) {
                 result = super.constructMapping((MappingNode) node);
             } else {
@@ -257,7 +262,8 @@ public class Constructor extends SafeConstructor {
                 valueNode.setType(property.getType());
                 TypeDescription memberDescription = typeDefinitions.get(beanType);
                 if (memberDescription != null) {
-                    if (valueNode instanceof SequenceNode) {
+                    switch (valueNode.getNodeId()) {
+                    case sequence:
                         SequenceNode snode = (SequenceNode) valueNode;
                         Class<? extends Object> memberType = memberDescription
                                 .getListPropertyType(key);
@@ -267,13 +273,15 @@ public class Constructor extends SafeConstructor {
                             isArray = true;
                             snode.setListType(property.getType().getComponentType());
                         }
-                    } else if (valueNode instanceof MappingNode) {
+                        break;
+                    case mapping:
                         MappingNode mnode = (MappingNode) valueNode;
                         Class<? extends Object> keyType = memberDescription.getMapKeyType(key);
                         if (keyType != null) {
                             mnode.setKeyType(keyType);
                             mnode.setValueType(memberDescription.getMapValueType(key));
                         }
+                        break;
                     }
                 }
                 Object value = constructObject(valueNode);

@@ -100,7 +100,7 @@ public class Serializer {
     }
 
     @SuppressWarnings("unchecked")
-    private void anchorNode(final Node node) {
+    private void anchorNode(Node node) {
         if (this.anchors.containsKey(node)) {
             String anchor = this.anchors.get(node);
             if (null == anchor) {
@@ -109,12 +109,14 @@ public class Serializer {
             }
         } else {
             this.anchors.put(node, null);
-            if (node instanceof SequenceNode) {
+            switch (node.getNodeId()) {
+            case sequence:
                 List<Node> list = (List<Node>) node.getValue();
                 for (Node item : list) {
                     anchorNode(item);
                 }
-            } else if (node instanceof MappingNode) {
+                break;
+            case mapping:
                 List<Object[]> map = (List<Object[]>) node.getValue();
                 for (Object[] object : map) {
                     Node key = (Node) object[0];
@@ -122,6 +124,7 @@ public class Serializer {
                     anchorNode(key);
                     anchorNode(value);
                 }
+                break;
             }
         }
     }
@@ -142,7 +145,8 @@ public class Serializer {
         } else {
             this.serializedNodes.add(node);
             // this.resolver.descendResolver(parent, index);
-            if (node instanceof ScalarNode) {
+            switch (node.getNodeId()) {
+            case scalar:
                 String detectedTag = this.resolver.resolve(ScalarNode.class, (String) node
                         .getValue(), true);
                 String defaultTag = this.resolver.resolve(ScalarNode.class, (String) node
@@ -153,10 +157,11 @@ public class Serializer {
                 ScalarEvent event = new ScalarEvent(tAlias, node.getTag(), implicit, (String) node
                         .getValue(), null, null, ((ScalarNode) node).getStyle());
                 this.emitter.emit(event);
-            } else if (node instanceof SequenceNode) {
-                boolean implicit = (node.getTag().equals(this.resolver.resolve(SequenceNode.class,
+                break;
+            case sequence:
+                boolean implicitS = (node.getTag().equals(this.resolver.resolve(SequenceNode.class,
                         null, true)));
-                this.emitter.emit(new SequenceStartEvent(tAlias, node.getTag(), implicit, null,
+                this.emitter.emit(new SequenceStartEvent(tAlias, node.getTag(), implicitS, null,
                         null, ((CollectionNode) node).getFlowStyle()));
                 int indexCounter = 0;
                 List<Node> list = (List<Node>) node.getValue();
@@ -165,10 +170,11 @@ public class Serializer {
                     indexCounter++;
                 }
                 this.emitter.emit(new SequenceEndEvent(null, null));
-            } else { // instance of MappingNode
+                break;
+            default:// instance of MappingNode
                 String implicitTag = this.resolver.resolve(MappingNode.class, null, true);
-                boolean implicit = (node.getTag().equals(implicitTag));
-                this.emitter.emit(new MappingStartEvent(tAlias, node.getTag(), implicit, null,
+                boolean implicitM = (node.getTag().equals(implicitTag));
+                this.emitter.emit(new MappingStartEvent(tAlias, node.getTag(), implicitM, null,
                         null, ((CollectionNode) node).getFlowStyle()));
                 List<Object[]> map = (List<Object[]>) node.getValue();
                 for (Object[] row : map) {

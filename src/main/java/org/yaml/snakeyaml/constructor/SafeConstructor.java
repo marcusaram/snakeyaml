@@ -52,11 +52,13 @@ public class SafeConstructor extends BaseConstructor {
             Node valueNode = nodeValue.get(index)[1];
             if (keyNode.getTag().equals("tag:yaml.org,2002:merge")) {
                 nodeValue.remove(index);
-                if (valueNode instanceof MappingNode) {
+                switch (valueNode.getNodeId()) {
+                case mapping:
                     MappingNode mn = (MappingNode) valueNode;
                     flattenMapping(mn);
                     merge.addAll(mn.getValue());
-                } else if (valueNode instanceof SequenceNode) {
+                    break;
+                case sequence:
                     List<List<Node[]>> submerge = new LinkedList<List<Node[]>>();
                     SequenceNode sn = (SequenceNode) valueNode;
                     List<Node> vals = sn.getValue();
@@ -66,15 +68,16 @@ public class SafeConstructor extends BaseConstructor {
                                     .getStartMark(), "expected a mapping for merging, but found "
                                     + subnode.getNodeId(), subnode.getStartMark());
                         }
-                        MappingNode mn = (MappingNode) subnode;
-                        flattenMapping(mn);
-                        submerge.add(mn.getValue());
+                        MappingNode mnode = (MappingNode) subnode;
+                        flattenMapping(mnode);
+                        submerge.add(mnode.getValue());
                     }
                     Collections.reverse(submerge);
                     for (List<Node[]> value : submerge) {
                         merge.addAll(value);
                     }
-                } else {
+                    break;
+                default:
                     throw new ConstructorException("while constructing a mapping", node
                             .getStartMark(),
                             "expected a mapping or list of mappings for merging, but found "
