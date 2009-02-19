@@ -5,6 +5,7 @@ package org.yaml.snakeyaml;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.EnumMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -66,6 +67,19 @@ public class EnumTest extends TestCase {
         String output = yaml.dump(map);
         assertEquals(
                 "c: !!org.yaml.snakeyaml.Suit 'CLUBS'\nd: !!org.yaml.snakeyaml.Suit 'DIAMONDS'\n",
+                output);
+    }
+
+    public void testDumpEnumMap2() {
+        DumperOptions options = new DumperOptions();
+        options.setDefaultFlowStyle(false);
+        Yaml yaml = new Yaml(options);
+        Map<Suit, Integer> map = new EnumMap<Suit, Integer>(Suit.class);
+        map.put(Suit.CLUBS, 0);
+        map.put(Suit.DIAMONDS, 123);
+        String output = yaml.dump(map);
+        assertEquals(
+                "!!org.yaml.snakeyaml.Suit 'CLUBS': 0\n!!org.yaml.snakeyaml.Suit 'DIAMONDS': 123\n",
                 output);
     }
 
