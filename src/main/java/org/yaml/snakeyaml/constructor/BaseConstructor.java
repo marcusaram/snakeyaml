@@ -92,14 +92,21 @@ public class BaseConstructor {
             if (yamlConstructors.containsKey(null)) {
                 constructor = yamlConstructors.get(null);
                 data = constructor.construct(node);
-            } else if (node instanceof ScalarNode) {
-                data = constructScalar((ScalarNode) node);
-            } else if (node instanceof SequenceNode) {
-                data = constructSequence((SequenceNode) node);
-            } else if (node instanceof MappingNode) {
-                data = constructMapping((MappingNode) node);
             } else {
-                throw new YAMLException("Unknown node: " + node);
+                switch (node.getNodeId()) {
+                case scalar:
+                    data = constructScalar((ScalarNode) node);
+                    break;
+                case sequence:
+                    data = constructSequence((SequenceNode) node);
+                    break;
+                case mapping:
+                    data = constructMapping((MappingNode) node);
+                    break;
+
+                default:
+                    throw new YAMLException("Unknown node: " + node);
+                }
             }
         } else {
             data = constructor.construct(node);

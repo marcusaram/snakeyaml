@@ -6,6 +6,9 @@
 	<body>
 	    <release version="1.0.2" date="in Mercurial" description="Development">
             <action dev="py4fun" type="update">
+                Refactor: use 'switch' with Enum instead of multiple 'if' statements to distinguish nodes (2009-02-19)
+            </action>
+            <action dev="py4fun" type="update">
                 Refactor: use Enum instead of String as NodeId (2009-02-19)
             </action>
         </release>
