@@ -42,6 +42,18 @@ public class Yaml {
         this.loader.setResolver(resolver);
     }
 
+    /**
+     * Create Yaml instance. It is safe to create a few instances and use them
+     * in different Threads.
+     * 
+     * @param loader
+     *            - Loader to parse incoming documents
+     * @param dumper
+     *            - Dumper to emit outgoing objects
+     * @param useRE
+     *            - true to support implicit types (false would make parsing and
+     *            dumping quicker)
+     */
     public Yaml(Loader loader, Dumper dumper, boolean useRE) {
         this.loader = loader;
         this.dumper = dumper;
