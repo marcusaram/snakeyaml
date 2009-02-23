@@ -20,7 +20,7 @@ public class Resolver {
     private static final String DEFAULT_SEQUENCE_TAG = "tag:yaml.org,2002:seq";
     private static final String DEFAULT_MAPPING_TAG = "tag:yaml.org,2002:map";
 
-    private Map<String, List<ResolverTuple>> yamlImplicitResolvers = new HashMap<String, List<ResolverTuple>>();
+    private Map<String, List<ResolverTuple>> yamlImplicitResolvers;
     private boolean useRE = true;
 
     public Resolver() {
@@ -33,35 +33,39 @@ public class Resolver {
      */
     public Resolver(boolean useRE) {
         this.useRE = useRE;
-        addImplicitResolver(
-                "tag:yaml.org,2002:bool",
-                Pattern
-                        .compile("^(?:yes|Yes|YES|no|No|NO|true|True|TRUE|false|False|FALSE|on|On|ON|off|Off|OFF)$"),
-                "yYnNtTfFoO");
-        addImplicitResolver(
-                "tag:yaml.org,2002:float",
-                Pattern
-                        .compile("^(?:[-+]?(?:[0-9][0-9_]*)\\.[0-9_]*(?:[eE][-+][0-9]+)?|[-+]?(?:[0-9][0-9_]*)?\\.[0-9_]+(?:[eE][-+][0-9]+)?|[-+]?[0-9][0-9_]*(?::[0-5]?[0-9])+\\.[0-9_]*|[-+]?\\.(?:inf|Inf|INF)|\\.(?:nan|NaN|NAN))$"),
-                "-+0123456789.");
-        addImplicitResolver(
-                "tag:yaml.org,2002:int",
-                Pattern
-                        .compile("^(?:[-+]?0b[0-1_]+|[-+]?0[0-7_]+|[-+]?(?:0|[1-9][0-9_]*)|[-+]?0x[0-9a-fA-F_]+|[-+]?[1-9][0-9_]*(?::[0-5]?[0-9])+)$"),
-                "-+0123456789");
-        addImplicitResolver("tag:yaml.org,2002:merge", Pattern.compile("^(?:<<)$"), "<");
-        addImplicitResolver("tag:yaml.org,2002:null", Pattern.compile("^(?:~|null|Null|NULL| )$"),
-                "~nN\0");
-        addImplicitResolver("tag:yaml.org,2002:null", Pattern.compile("^$"), null);
-        addImplicitResolver(
-                "tag:yaml.org,2002:timestamp",
-                Pattern
-                        .compile("^(?:[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]|[0-9][0-9][0-9][0-9]-[0-9][0-9]?-[0-9][0-9]?(?:[Tt]|[ \t]+)[0-9][0-9]?:[0-9][0-9]:[0-9][0-9](?:\\.[0-9]*)?(?:[ \t]*(?:Z|[-+][0-9][0-9]?(?::[0-9][0-9])?))?)$"),
-                "0123456789");
-        addImplicitResolver("tag:yaml.org,2002:value", Pattern.compile("^(?:=)$"), "=");
-        // The following implicit resolver is only for documentation purposes.
-        // It cannot work
-        // because plain scalars cannot start with '!', '&', or '*'.
-        addImplicitResolver("tag:yaml.org,2002:yaml", Pattern.compile("^(?:!|&|\\*)$"), "!&*");
+        if (useRE) {
+            yamlImplicitResolvers = new HashMap<String, List<ResolverTuple>>();
+            addImplicitResolver(
+                    "tag:yaml.org,2002:bool",
+                    Pattern
+                            .compile("^(?:yes|Yes|YES|no|No|NO|true|True|TRUE|false|False|FALSE|on|On|ON|off|Off|OFF)$"),
+                    "yYnNtTfFoO");
+            addImplicitResolver(
+                    "tag:yaml.org,2002:float",
+                    Pattern
+                            .compile("^(?:[-+]?(?:[0-9][0-9_]*)\\.[0-9_]*(?:[eE][-+][0-9]+)?|[-+]?(?:[0-9][0-9_]*)?\\.[0-9_]+(?:[eE][-+][0-9]+)?|[-+]?[0-9][0-9_]*(?::[0-5]?[0-9])+\\.[0-9_]*|[-+]?\\.(?:inf|Inf|INF)|\\.(?:nan|NaN|NAN))$"),
+                    "-+0123456789.");
+            addImplicitResolver(
+                    "tag:yaml.org,2002:int",
+                    Pattern
+                            .compile("^(?:[-+]?0b[0-1_]+|[-+]?0[0-7_]+|[-+]?(?:0|[1-9][0-9_]*)|[-+]?0x[0-9a-fA-F_]+|[-+]?[1-9][0-9_]*(?::[0-5]?[0-9])+)$"),
+                    "-+0123456789");
+            addImplicitResolver("tag:yaml.org,2002:merge", Pattern.compile("^(?:<<)$"), "<");
+            addImplicitResolver("tag:yaml.org,2002:null", Pattern
+                    .compile("^(?:~|null|Null|NULL| )$"), "~nN\0");
+            addImplicitResolver("tag:yaml.org,2002:null", Pattern.compile("^$"), null);
+            addImplicitResolver(
+                    "tag:yaml.org,2002:timestamp",
+                    Pattern
+                            .compile("^(?:[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]|[0-9][0-9][0-9][0-9]-[0-9][0-9]?-[0-9][0-9]?(?:[Tt]|[ \t]+)[0-9][0-9]?:[0-9][0-9]:[0-9][0-9](?:\\.[0-9]*)?(?:[ \t]*(?:Z|[-+][0-9][0-9]?(?::[0-9][0-9])?))?)$"),
+                    "0123456789");
+            addImplicitResolver("tag:yaml.org,2002:value", Pattern.compile("^(?:=)$"), "=");
+            // The following implicit resolver is only for documentation
+            // purposes.
+            // It cannot work
+            // because plain scalars cannot start with '!', '&', or '*'.
+            addImplicitResolver("tag:yaml.org,2002:yaml", Pattern.compile("^(?:!|&|\\*)$"), "!&*");
+        }
     }
 
     public void addImplicitResolver(String tag, Pattern regexp, String first) {
@@ -73,7 +77,7 @@ public class Resolver {
             }
             curr.add(new ResolverTuple(tag, regexp));
         } else {
-            final char[] chrs = first.toCharArray();
+            char[] chrs = first.toCharArray();
             for (int i = 0, j = chrs.length; i < j; i++) {
                 final Character theC = new Character(chrs[i]);
                 String key;
