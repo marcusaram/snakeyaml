@@ -690,7 +690,6 @@ Yaml yaml = new Yaml(loader);
 }}}
 
 === Implicit Types ===
-'''New feature: (will be in 1.1)'''
 
 Support for [http://www.yaml.org/type/ Language-Independent Scalar Types] is implemented via regilar expresions
 for each scalar which does not have an explicit tag. 
@@ -702,10 +701,13 @@ Boolean: true
 Null_value: null
 Date: 2009-02-30
 }}}
-It may take a lot of resources. It is possible (when creating a Yaml instance) to drop the implicit types
+
+'''New feature: (will be in 1.1)'''
+
+Applying regular expressions may take a lot of resources. It is possible (when creating a Yaml instance) to drop the implicit types
 and make all scalars just Strings. Then it is up to the underlying program to parse String into expected type.
 
-To see difference in the performance see [http://trac-hg.assembla.com/snakeyaml/browser/src/test/java/org/yaml/snakeyaml/StressTest.java StressTest.java].
+To see difference in the performance run [http://trac-hg.assembla.com/snakeyaml/browser/src/test/java/org/yaml/snakeyaml/StressTest.java StressTest.java].
 Run this test as a Java program (not as a JUnit test).
 
 
