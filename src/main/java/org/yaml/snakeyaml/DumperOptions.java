@@ -6,7 +6,7 @@ package org.yaml.snakeyaml;
 import java.util.Map;
 
 /**
- * @see <a href="http://pyyaml.org/wiki/PyYAML">PyYAML< /a> for more information
+ * @see <a href="http://pyyaml.org/wiki/PyYAML">PyYAML</a> for more information
  */
 public class DumperOptions {
     public enum DEFAULT_STYLE {
@@ -19,6 +19,11 @@ public class DumperOptions {
 
         public Character getChar() {
             return styleChar;
+        }
+
+        @Override
+        public String toString() {
+            return "DEFAULT_STYLE: '" + styleChar + "'";
         }
     }
 
@@ -33,6 +38,11 @@ public class DumperOptions {
 
         public Boolean getStyleBoolean() {
             return styleBoolean;
+        }
+
+        @Override
+        public String toString() {
+            return "DEFAULT_FLOW_STYLE: '" + styleBoolean + "'";
         }
     }
 
@@ -53,6 +63,14 @@ public class DumperOptions {
         return allowUnicode;
     }
 
+    /**
+     * Specify whether to emit non-ASCII printable Unicode characters (to
+     * support ASCII terminals). The default value is true.
+     * 
+     * @param allowUnicode
+     *            - if allowUnicode is false then all non-ASCII characters are
+     *            escaped
+     */
     public void setAllowUnicode(boolean allowUnicode) {
         this.allowUnicode = allowUnicode;
     }
@@ -93,6 +111,14 @@ public class DumperOptions {
         return this.canonical;
     }
 
+    /**
+     * Specify the preferred width to emit scalars. When the scalar
+     * representation takes more then the preferred with the scalar will be
+     * split into a few lines. The default is 80.
+     * 
+     * @param bestWidth
+     *            - the preferred with for scalars.
+     */
     public void setWidth(int bestWidth) {
         this.bestWidth = bestWidth;
     }
@@ -126,6 +152,14 @@ public class DumperOptions {
         this.explicitRoot = expRoot;
     }
 
+    /**
+     * Specify the line break to separate the lines. It is platform specific:
+     * Windows - "\r\n", MacOS - "\r", Linux - "\n". The default value is the
+     * one for Linux.
+     * 
+     * @param lineBreak
+     *            - String to be used as a line separator.
+     */
     public void setLineBreak(String lineBreak) {
         this.lineBreak = lineBreak;
     }
