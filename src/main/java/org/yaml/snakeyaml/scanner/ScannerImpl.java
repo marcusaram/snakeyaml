@@ -166,6 +166,7 @@ public class ScannerImpl implements Scanner {
         this.reader = reader;
         this.tokens = new LinkedList<Token>();
         this.indents = new LinkedList<Integer>();
+        // the order in possibleSimpleKeys is kept for nextPossibleSimpleKey()
         this.possibleSimpleKeys = new LinkedHashMap<Integer, SimpleKey>();
         fetchStreamStart();// Add the STREAM-START token.
     }
@@ -364,11 +365,14 @@ public class ScannerImpl implements Scanner {
      * need to loop through the whole dictionary.
      */
     private int nextPossibleSimpleKey() {
-        for (Iterator<SimpleKey> iter = this.possibleSimpleKeys.values().iterator(); iter.hasNext();) {
+        /*
+         * the implementation is not as in PyYAML. Because
+         * this.possibleSimpleKeys is ordered we can simply take the first key
+         */
+        Iterator<SimpleKey> iter = this.possibleSimpleKeys.values().iterator();
+        if (iter.hasNext()) {
             SimpleKey key = iter.next();
-            if (key.getTokenNumber() > 0) {
-                return key.getTokenNumber();
-            }
+            return key.getTokenNumber();
         }
         return -1;
     }
