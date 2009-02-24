@@ -6,6 +6,9 @@
 	<body>
 	    <release version="1.1.0" date="in Mercurial" description="Development">
             <action dev="py4fun" type="add">
+                Introduce DumperOptions.DEFAULT_STYLE enum (2009-02-24)
+            </action>
+            <action dev="py4fun" type="add">
                 Matching regular expressions for implicit types takes a lot of resources. Add possibility to switch
                 regular expressions off to increase performance. In the fast mode all the scalars become Strings (2009-02-19)
             </action>
