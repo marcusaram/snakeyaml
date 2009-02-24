@@ -40,12 +40,12 @@ public class DumperOptionsTest extends TestCase {
         //
         DumperOptions options = new DumperOptions();
         options = new DumperOptions();
-        options.setDefaultFlowStyle(true);
+        options.setDefaultFlowStyle(DumperOptions.DEFAULT_FLOW_STYLE.flow);
         yaml = new Yaml(options);
         assertEquals("[1, 2, 3]\n", yaml.dump(list));
         //
         options = new DumperOptions();
-        options.setDefaultFlowStyle(false);
+        options.setDefaultFlowStyle(DumperOptions.DEFAULT_FLOW_STYLE.block);
         yaml = new Yaml(options);
         assertEquals("- 1\n- 2\n- 3\n", yaml.dump(list));
     }
@@ -63,12 +63,12 @@ public class DumperOptionsTest extends TestCase {
         //
         DumperOptions options = new DumperOptions();
         options = new DumperOptions();
-        options.setDefaultFlowStyle(true);
+        options.setDefaultFlowStyle(DumperOptions.DEFAULT_FLOW_STYLE.flow);
         yaml = new Yaml(options);
         assertEquals("{a: b, c: [1, 2, 3]}\n", yaml.dump(map));
         //
         options = new DumperOptions();
-        options.setDefaultFlowStyle(false);
+        options.setDefaultFlowStyle(DumperOptions.DEFAULT_FLOW_STYLE.block);
         yaml = new Yaml(options);
         assertEquals("a: b\nc:\n- 1\n- 2\n- 3\n", yaml.dump(map));
     }

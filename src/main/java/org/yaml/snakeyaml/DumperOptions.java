@@ -20,10 +20,24 @@ public class DumperOptions {
         public Character getChar() {
             return styleChar;
         }
-    };
+    }
+
+    public enum DEFAULT_FLOW_STYLE {
+        flow(Boolean.TRUE), block(Boolean.FALSE), auto(null);
+
+        private Boolean styleBoolean;
+
+        private DEFAULT_FLOW_STYLE(Boolean defaultFlowStyle) {
+            styleBoolean = defaultFlowStyle;
+        }
+
+        public Boolean getStyleBoolean() {
+            return styleBoolean;
+        }
+    }
 
     private DEFAULT_STYLE defaultStyle = DEFAULT_STYLE.auto_quoted;
-    private Boolean defaultFlowStyle = null;
+    private DEFAULT_FLOW_STYLE defaultFlowStyle = DEFAULT_FLOW_STYLE.auto;
     private boolean canonical = false;
     private boolean allowUnicode = true;
     private int indent = 2;
@@ -91,11 +105,11 @@ public class DumperOptions {
         return lineBreak;
     }
 
-    public void setDefaultFlowStyle(Boolean defaultFlowStyle) {
+    public void setDefaultFlowStyle(DEFAULT_FLOW_STYLE defaultFlowStyle) {
         this.defaultFlowStyle = defaultFlowStyle;
     }
 
-    public Boolean isDefaultFlowStyle() {
+    public DEFAULT_FLOW_STYLE getDefaultFlowStyle() {
         return defaultFlowStyle;
     }
 

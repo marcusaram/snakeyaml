@@ -25,8 +25,8 @@ public class Dumper {
     }
 
     public Dumper(DumperOptions options) {
-        this(new Representer(options.getDefaultStyle().getChar(), options.isDefaultFlowStyle()),
-                options);
+        this(new Representer(options.getDefaultStyle().getChar(), options.getDefaultFlowStyle()
+                .getStyleBoolean()), options);
     }
 
     public void dump(Iterator<? extends Object> iter, Writer output, Resolver resolver) {
