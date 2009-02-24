@@ -45,7 +45,7 @@ If you want collections to be always serialized in the block style, set the para
 '''`defaultFlowStyle`''' of '''`DumperOptions`''' to '''`block`'''. For instance,
 {{{
 DumperOptions options = new DumperOptions();
-options.setDefaultFlowStyle(DumperOptions.DEFAULT_FLOW_STYLE.block);
+options.setDefaultFlowStyle(DumperOptions.DefaultFlowStyle.BLOCK);
 Yaml yaml = new Yaml(options);
 String document = "  a: 1\n  b:\n    c: 3\n    d: 4\n";
 System.out.println(yaml.dump(yaml.load(document)));
@@ -530,7 +530,7 @@ public void testDumperOptionsFlowStyle() {
         data.add(i);
     }
     DumperOptions options = new DumperOptions();
-    options.setDefaultFlowStyle(DumperOptions.DEFAULT_FLOW_STYLE.block);
+    options.setDefaultFlowStyle(DumperOptions.DefaultFlowStyle.BLOCK);
     Yaml yaml = new Yaml(options);
     String output = yaml.dump(data);
     System.out.println(output);
@@ -550,7 +550,7 @@ public void testDumperOptionsStyle() {
         data.add(i);
     }
     DumperOptions options = new DumperOptions();
-    options.setDefaultStyle(DumperOptions.DEFAULT_STYLE.double_quoted);
+    options.setDefaultStyle(DumperOptions.DefaultStyle.DOUBLE_QUOTED);
     Yaml yaml = new Yaml(options);
     String output = yaml.dump(data);
     System.out.println(output);
@@ -896,7 +896,7 @@ But if the Enum is a `JavaBean` property and the class is implicitly defined the
 {{{
 public void testDumpEnumBean() {
     DumperOptions options = new DumperOptions();
-    options.setDefaultFlowStyle(DumperOptions.DEFAULT_FLOW_STYLE.block);
+    options.setDefaultFlowStyle(DumperOptions.DefaultFlowStyle.BLOCK);
     Yaml yaml = new Yaml(options);
     EnumBean bean = new EnumBean();
     bean.setId(17);

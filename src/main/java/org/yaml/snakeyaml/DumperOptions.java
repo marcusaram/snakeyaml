@@ -9,11 +9,12 @@ import java.util.Map;
  * @see <a href="http://pyyaml.org/wiki/PyYAML">PyYAML</a> for more information
  */
 public class DumperOptions {
-    public enum DEFAULT_STYLE {
-        double_quoted(new Character('"')), single_quoted(new Character('\'')), auto_quoted(null);
+    public enum DefaultStyle {
+        DOUBLE_QUOTED(new Character('"')), SINGLE_QUOTED(new Character('\'')), LITERAL(
+                new Character('|')), FOLDED(new Character('>')), PLAIN(null);
         private Character styleChar;
 
-        private DEFAULT_STYLE(Character defaultStyle) {
+        private DefaultStyle(Character defaultStyle) {
             this.styleChar = defaultStyle;
         }
 
@@ -27,12 +28,12 @@ public class DumperOptions {
         }
     }
 
-    public enum DEFAULT_FLOW_STYLE {
-        flow(Boolean.TRUE), block(Boolean.FALSE), auto(null);
+    public enum DefaultFlowStyle {
+        FLOW(Boolean.TRUE), BLOCK(Boolean.FALSE), AUTO(null);
 
         private Boolean styleBoolean;
 
-        private DEFAULT_FLOW_STYLE(Boolean defaultFlowStyle) {
+        private DefaultFlowStyle(Boolean defaultFlowStyle) {
             styleBoolean = defaultFlowStyle;
         }
 
@@ -46,8 +47,8 @@ public class DumperOptions {
         }
     }
 
-    private DEFAULT_STYLE defaultStyle = DEFAULT_STYLE.auto_quoted;
-    private DEFAULT_FLOW_STYLE defaultFlowStyle = DEFAULT_FLOW_STYLE.auto;
+    private DefaultStyle defaultStyle = DefaultStyle.PLAIN;
+    private DefaultFlowStyle defaultFlowStyle = DefaultFlowStyle.AUTO;
     private boolean canonical = false;
     private boolean allowUnicode = true;
     private int indent = 2;
@@ -75,11 +76,17 @@ public class DumperOptions {
         this.allowUnicode = allowUnicode;
     }
 
-    public DEFAULT_STYLE getDefaultStyle() {
+    public DefaultStyle getDefaultStyle() {
         return defaultStyle;
     }
 
-    public void setDefaultStyle(DEFAULT_STYLE defaultStyle) {
+    /**
+     * Set default style for scalars. See YAML 1.1 specification, 2.3 Scalars
+     * (http://yaml.org/spec/1.1/#id858081)
+     * 
+     * @param defaultStyle
+     */
+    public void setDefaultStyle(DefaultStyle defaultStyle) {
         if (defaultStyle == null) {
             throw new NullPointerException("Use explicit DEFAULT_STYLE enum.");
         }
@@ -131,11 +138,11 @@ public class DumperOptions {
         return lineBreak;
     }
 
-    public void setDefaultFlowStyle(DEFAULT_FLOW_STYLE defaultFlowStyle) {
+    public void setDefaultFlowStyle(DefaultFlowStyle defaultFlowStyle) {
         this.defaultFlowStyle = defaultFlowStyle;
     }
 
-    public DEFAULT_FLOW_STYLE getDefaultFlowStyle() {
+    public DefaultFlowStyle getDefaultFlowStyle() {
         return defaultFlowStyle;
     }
 

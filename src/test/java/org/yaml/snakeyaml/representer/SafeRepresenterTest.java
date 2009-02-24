@@ -54,7 +54,7 @@ public class SafeRepresenterTest extends TestCase {
         list.add(new Date(1229684761000L));
         list.add(new Date(1229684760000L));
         DumperOptions options = new DumperOptions();
-        options.setDefaultFlowStyle(DumperOptions.DEFAULT_FLOW_STYLE.block);
+        options.setDefaultFlowStyle(DumperOptions.DefaultFlowStyle.BLOCK);
         Yaml yaml = new Yaml(options);
         String output = yaml.dump(list);
         assertEquals(
@@ -77,8 +77,8 @@ public class SafeRepresenterTest extends TestCase {
         map.put("name", "Ubuntu");
         map.put("age", 5);
         DumperOptions options = new DumperOptions();
-        options.setDefaultStyle(DumperOptions.DEFAULT_STYLE.double_quoted);
-        options.setDefaultFlowStyle(DumperOptions.DEFAULT_FLOW_STYLE.block);
+        options.setDefaultStyle(DumperOptions.DefaultStyle.DOUBLE_QUOTED);
+        options.setDefaultFlowStyle(DumperOptions.DefaultFlowStyle.BLOCK);
         Yaml yaml = new Yaml(options);
         String output = yaml.dump(map);
         assertTrue(output.contains("\"age\": !!int \"5\""));
@@ -95,8 +95,8 @@ public class SafeRepresenterTest extends TestCase {
         map.put("name", "Ubuntu");
         map.put("list", list);
         DumperOptions options = new DumperOptions();
-        options.setDefaultStyle(DumperOptions.DEFAULT_STYLE.single_quoted);
-        options.setDefaultFlowStyle(DumperOptions.DEFAULT_FLOW_STYLE.flow);
+        options.setDefaultStyle(DumperOptions.DefaultStyle.SINGLE_QUOTED);
+        options.setDefaultFlowStyle(DumperOptions.DefaultFlowStyle.FLOW);
         Yaml yaml = new Yaml(options);
         String output = yaml.dump(map);
         assertEquals("{'age': !!int '5', 'name': 'Ubuntu', 'list': [!!int '1', !!int '1']}\n",

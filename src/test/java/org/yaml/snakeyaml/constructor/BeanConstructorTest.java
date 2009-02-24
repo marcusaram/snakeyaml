@@ -46,7 +46,7 @@ public class BeanConstructorTest extends TestCase {
         assertEquals("public", result.publicField);
         //
         DumperOptions options = new DumperOptions();
-        options.setDefaultFlowStyle(DumperOptions.DEFAULT_FLOW_STYLE.block);
+        options.setDefaultFlowStyle(DumperOptions.DefaultFlowStyle.BLOCK);
         Yaml yamlToDump = new Yaml(options);
         String output = yamlToDump.dump(result);
         System.out.println(output);
