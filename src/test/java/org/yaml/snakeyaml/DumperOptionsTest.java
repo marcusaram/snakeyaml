@@ -16,15 +16,15 @@ public class DumperOptionsTest extends TestCase {
         // string which looks like integer
         assertEquals("'123'\n", yaml.dump("123"));
         //
-        options.setDefaultStyle(DumperOptions.DefaultStyle.DOUBLE_QUOTED);
+        options.setDefaultStyle(DumperOptions.DefaultScalarStyle.DOUBLE_QUOTED);
         yaml = new Yaml(options);
         assertEquals("\"123\"\n", yaml.dump("123"));
         //
-        options.setDefaultStyle(DumperOptions.DefaultStyle.SINGLE_QUOTED);
+        options.setDefaultStyle(DumperOptions.DefaultScalarStyle.SINGLE_QUOTED);
         yaml = new Yaml(options);
         assertEquals("'123'\n", yaml.dump("123"));
         //
-        options.setDefaultStyle(DumperOptions.DefaultStyle.PLAIN);
+        options.setDefaultStyle(DumperOptions.DefaultScalarStyle.PLAIN);
         yaml = new Yaml(options);
         assertEquals("'123'\n", yaml.dump("123"));
         assertEquals("abc\n", yaml.dump("abc"));

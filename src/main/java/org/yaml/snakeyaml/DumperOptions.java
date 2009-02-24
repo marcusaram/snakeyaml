@@ -9,12 +9,12 @@ import java.util.Map;
  * @see <a href="http://pyyaml.org/wiki/PyYAML">PyYAML</a> for more information
  */
 public class DumperOptions {
-    public enum DefaultStyle {
+    public enum DefaultScalarStyle {
         DOUBLE_QUOTED(new Character('"')), SINGLE_QUOTED(new Character('\'')), LITERAL(
                 new Character('|')), FOLDED(new Character('>')), PLAIN(null);
         private Character styleChar;
 
-        private DefaultStyle(Character defaultStyle) {
+        private DefaultScalarStyle(Character defaultStyle) {
             this.styleChar = defaultStyle;
         }
 
@@ -24,7 +24,7 @@ public class DumperOptions {
 
         @Override
         public String toString() {
-            return "DEFAULT_STYLE: '" + styleChar + "'";
+            return "Scalar style: '" + styleChar + "'";
         }
     }
 
@@ -47,7 +47,7 @@ public class DumperOptions {
         }
     }
 
-    private DefaultStyle defaultStyle = DefaultStyle.PLAIN;
+    private DefaultScalarStyle defaultStyle = DefaultScalarStyle.PLAIN;
     private DefaultFlowStyle defaultFlowStyle = DefaultFlowStyle.AUTO;
     private boolean canonical = false;
     private boolean allowUnicode = true;
@@ -76,7 +76,7 @@ public class DumperOptions {
         this.allowUnicode = allowUnicode;
     }
 
-    public DefaultStyle getDefaultStyle() {
+    public DefaultScalarStyle getDefaultStyle() {
         return defaultStyle;
     }
 
@@ -86,7 +86,7 @@ public class DumperOptions {
      * 
      * @param defaultStyle
      */
-    public void setDefaultStyle(DefaultStyle defaultStyle) {
+    public void setDefaultStyle(DefaultScalarStyle defaultStyle) {
         if (defaultStyle == null) {
             throw new NullPointerException("Use explicit DEFAULT_STYLE enum.");
         }
