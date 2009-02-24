@@ -116,7 +116,7 @@ public class DumpExampleTest extends TestCase {
             data.add(i);
         }
         DumperOptions options = new DumperOptions();
-        options.setDefaultStyle('"');
+        options.setDefaultStyle(DumperOptions.DEFAULT_STYLE.double_quoted);
         Yaml yaml = new Yaml(options);
         String output = yaml.dump(data);
         System.out.println(output);

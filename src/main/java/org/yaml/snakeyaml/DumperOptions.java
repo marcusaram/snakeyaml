@@ -9,7 +9,20 @@ import java.util.Map;
  * @see <a href="http://pyyaml.org/wiki/PyYAML">PyYAML< /a> for more information
  */
 public class DumperOptions {
-    private Character defaultStyle = null;
+    public enum DEFAULT_STYLE {
+        double_quoted(new Character('"')), single_quoted(new Character('\'')), auto_quoted(null);
+        private Character styleChar;
+
+        private DEFAULT_STYLE(Character defaultStyle) {
+            this.styleChar = defaultStyle;
+        }
+
+        public Character getChar() {
+            return styleChar;
+        }
+    };
+
+    private DEFAULT_STYLE defaultStyle = DEFAULT_STYLE.auto_quoted;
     private Boolean defaultFlowStyle = null;
     private boolean canonical = false;
     private boolean allowUnicode = true;
@@ -30,11 +43,14 @@ public class DumperOptions {
         this.allowUnicode = allowUnicode;
     }
 
-    public Character getDefaultStyle() {
+    public DEFAULT_STYLE getDefaultStyle() {
         return defaultStyle;
     }
 
-    public void setDefaultStyle(Character defaultStyle) {
+    public void setDefaultStyle(DEFAULT_STYLE defaultStyle) {
+        if (defaultStyle == null) {
+            throw new NullPointerException("Use explicit DEFAULT_STYLE enum.");
+        }
         this.defaultStyle = defaultStyle;
     }
 
@@ -123,4 +139,5 @@ public class DumperOptions {
     public void setTags(Map<String, String> tags) {
         this.tags = tags;
     }
+
 }
