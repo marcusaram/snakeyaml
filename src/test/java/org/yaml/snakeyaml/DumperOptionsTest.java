@@ -16,15 +16,15 @@ public class DumperOptionsTest extends TestCase {
         // string which looks like integer
         assertEquals("'123'\n", yaml.dump("123"));
         //
-        options.setDefaultStyle(DumperOptions.DEFAULT_STYLE.double_quoted);
+        options.setDefaultStyle(DumperOptions.DefaultStyle.DOUBLE_QUOTED);
         yaml = new Yaml(options);
         assertEquals("\"123\"\n", yaml.dump("123"));
         //
-        options.setDefaultStyle(DumperOptions.DEFAULT_STYLE.single_quoted);
+        options.setDefaultStyle(DumperOptions.DefaultStyle.SINGLE_QUOTED);
         yaml = new Yaml(options);
         assertEquals("'123'\n", yaml.dump("123"));
         //
-        options.setDefaultStyle(DumperOptions.DEFAULT_STYLE.auto_quoted);
+        options.setDefaultStyle(DumperOptions.DefaultStyle.PLAIN);
         yaml = new Yaml(options);
         assertEquals("'123'\n", yaml.dump("123"));
         assertEquals("abc\n", yaml.dump("abc"));
@@ -40,12 +40,12 @@ public class DumperOptionsTest extends TestCase {
         //
         DumperOptions options = new DumperOptions();
         options = new DumperOptions();
-        options.setDefaultFlowStyle(DumperOptions.DEFAULT_FLOW_STYLE.flow);
+        options.setDefaultFlowStyle(DumperOptions.DefaultFlowStyle.FLOW);
         yaml = new Yaml(options);
         assertEquals("[1, 2, 3]\n", yaml.dump(list));
         //
         options = new DumperOptions();
-        options.setDefaultFlowStyle(DumperOptions.DEFAULT_FLOW_STYLE.block);
+        options.setDefaultFlowStyle(DumperOptions.DefaultFlowStyle.BLOCK);
         yaml = new Yaml(options);
         assertEquals("- 1\n- 2\n- 3\n", yaml.dump(list));
     }
@@ -63,12 +63,12 @@ public class DumperOptionsTest extends TestCase {
         //
         DumperOptions options = new DumperOptions();
         options = new DumperOptions();
-        options.setDefaultFlowStyle(DumperOptions.DEFAULT_FLOW_STYLE.flow);
+        options.setDefaultFlowStyle(DumperOptions.DefaultFlowStyle.FLOW);
         yaml = new Yaml(options);
         assertEquals("{a: b, c: [1, 2, 3]}\n", yaml.dump(map));
         //
         options = new DumperOptions();
-        options.setDefaultFlowStyle(DumperOptions.DEFAULT_FLOW_STYLE.block);
+        options.setDefaultFlowStyle(DumperOptions.DefaultFlowStyle.BLOCK);
         yaml = new Yaml(options);
         assertEquals("a: b\nc:\n- 1\n- 2\n- 3\n", yaml.dump(map));
     }

@@ -14,7 +14,7 @@ public class DumperTest extends TestCase {
 
     public void testDump1() {
         DumperOptions options = new DumperOptions();
-        options.setDefaultStyle(DumperOptions.DEFAULT_STYLE.double_quoted);
+        options.setDefaultStyle(DumperOptions.DefaultStyle.DOUBLE_QUOTED);
         options.setExplicitStart(true);
         options.setExplicitEnd(true);
         List<Integer> list = new LinkedList<Integer>();
@@ -40,7 +40,7 @@ public class DumperTest extends TestCase {
 
     public void testDump3() {
         DumperOptions options = new DumperOptions();
-        options.setDefaultStyle(DumperOptions.DEFAULT_STYLE.single_quoted);
+        options.setDefaultStyle(DumperOptions.DefaultStyle.SINGLE_QUOTED);
         List<Integer> list = new LinkedList<Integer>();
         for (int i = 0; i < 3; i++) {
             list.add(i);
