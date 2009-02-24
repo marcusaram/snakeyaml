@@ -101,7 +101,7 @@ public class DumpExampleTest extends TestCase {
             data.add(i);
         }
         DumperOptions options = new DumperOptions();
-        options.setDefaultFlowStyle(Boolean.FALSE);
+        options.setDefaultFlowStyle(DumperOptions.DEFAULT_FLOW_STYLE.block);
         Yaml yaml = new Yaml(options);
         String output = yaml.dump(data);
         System.out.println(output);

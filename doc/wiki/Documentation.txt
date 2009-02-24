@@ -42,10 +42,10 @@ collections. If a collection has nested collections, it will be assigned the blo
 Otherwise it will have the flow style.
 
 If you want collections to be always serialized in the block style, set the parameter
-'''`defaultFlowStyle`''' of '''`DumperOptions`''' to '''`false`'''. For instance,
+'''`defaultFlowStyle`''' of '''`DumperOptions`''' to '''`block`'''. For instance,
 {{{
 DumperOptions options = new DumperOptions();
-options.setDefaultFlowStyle(false);
+options.setDefaultFlowStyle(DumperOptions.DEFAULT_FLOW_STYLE.block);
 Yaml yaml = new Yaml(options);
 String document = "  a: 1\n  b:\n    c: 3\n    d: 4\n";
 System.out.println(yaml.dump(yaml.load(document)));
@@ -516,17 +516,17 @@ public void testDumperOptionsCanonical() {
 ]
 }}}
 {{{
-    public void testDumperOptionsFlowStyle() {
-        List<Integer> data = new LinkedList<Integer>();
-        for (int i = 0; i < 5; i++) {
-            data.add(i);
-        }
-        DumperOptions options = new DumperOptions();
-        options.setDefaultFlowStyle(Boolean.FALSE);
-        Yaml yaml = new Yaml(options);
-        String output = yaml.dump(data);
-        System.out.println(output);
+public void testDumperOptionsFlowStyle() {
+    List<Integer> data = new LinkedList<Integer>();
+    for (int i = 0; i < 5; i++) {
+        data.add(i);
     }
+    DumperOptions options = new DumperOptions();
+    options.setDefaultFlowStyle(DumperOptions.DEFAULT_FLOW_STYLE.block);
+    Yaml yaml = new Yaml(options);
+    String output = yaml.dump(data);
+    System.out.println(output);
+}
 }}}
 {{{
 - 0
@@ -536,17 +536,17 @@ public void testDumperOptionsCanonical() {
 - 4
 }}}
 {{{
-    public void testDumperOptionsStyle() {
-        List<Integer> data = new LinkedList<Integer>();
-        for (int i = 0; i < 5; i++) {
-            data.add(i);
-        }
-        DumperOptions options = new DumperOptions();
-        options.setDefaultStyle(DumperOptions.DEFAULT_STYLE.double_quoted);
-        Yaml yaml = new Yaml(options);
-        String output = yaml.dump(data);
-        System.out.println(output);
+public void testDumperOptionsStyle() {
+    List<Integer> data = new LinkedList<Integer>();
+    for (int i = 0; i < 5; i++) {
+        data.add(i);
     }
+    DumperOptions options = new DumperOptions();
+    options.setDefaultStyle(DumperOptions.DEFAULT_STYLE.double_quoted);
+    Yaml yaml = new Yaml(options);
+    String output = yaml.dump(data);
+    System.out.println(output);
+}
 }}}
 {{{
 - !!int "0"
@@ -888,7 +888,7 @@ But if the Enum is a `JavaBean` property and the class is implicitly defined the
 {{{
 public void testDumpEnumBean() {
     DumperOptions options = new DumperOptions();
-    options.setDefaultFlowStyle(false);
+    options.setDefaultFlowStyle(DumperOptions.DEFAULT_FLOW_STYLE.block);
     Yaml yaml = new Yaml(options);
     EnumBean bean = new EnumBean();
     bean.setId(17);
