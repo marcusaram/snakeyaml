@@ -77,7 +77,7 @@ public class SafeRepresenterTest extends TestCase {
         map.put("name", "Ubuntu");
         map.put("age", 5);
         DumperOptions options = new DumperOptions();
-        options.setDefaultStyle(DumperOptions.DefaultStyle.DOUBLE_QUOTED);
+        options.setDefaultStyle(DumperOptions.DefaultScalarStyle.DOUBLE_QUOTED);
         options.setDefaultFlowStyle(DumperOptions.DefaultFlowStyle.BLOCK);
         Yaml yaml = new Yaml(options);
         String output = yaml.dump(map);
@@ -95,7 +95,7 @@ public class SafeRepresenterTest extends TestCase {
         map.put("name", "Ubuntu");
         map.put("list", list);
         DumperOptions options = new DumperOptions();
-        options.setDefaultStyle(DumperOptions.DefaultStyle.SINGLE_QUOTED);
+        options.setDefaultStyle(DumperOptions.DefaultScalarStyle.SINGLE_QUOTED);
         options.setDefaultFlowStyle(DumperOptions.DefaultFlowStyle.FLOW);
         Yaml yaml = new Yaml(options);
         String output = yaml.dump(map);
