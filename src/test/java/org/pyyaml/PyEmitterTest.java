@@ -125,14 +125,15 @@ public class PyEmitterTest extends PyImportTest {
                 }
                 //
                 for (Boolean flowStyle : new Boolean[] { Boolean.FALSE, Boolean.TRUE }) {
-                    for (Character style : new Character[] { '|', '>', '"', '\'', null }) {
+                    for (DumperOptions.DefaultScalarStyle style : DumperOptions.DefaultScalarStyle
+                            .values()) {
                         List<Event> styledEvents = new LinkedList<Event>();
                         for (Event event : events) {
                             if (event instanceof ScalarEvent) {
                                 ScalarEvent scalar = (ScalarEvent) event;
                                 event = new ScalarEvent(scalar.getAnchor(), scalar.getTag(), scalar
                                         .getImplicit(), scalar.getValue(), scalar.getStartMark(),
-                                        scalar.getEndMark(), style);
+                                        scalar.getEndMark(), style.getChar());
                             } else if (event instanceof SequenceStartEvent) {
                                 SequenceStartEvent seqStart = (SequenceStartEvent) event;
                                 event = new SequenceStartEvent(seqStart.getAnchor(), seqStart
