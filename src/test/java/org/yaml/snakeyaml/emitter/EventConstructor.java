@@ -1,8 +1,8 @@
-package org.yaml.snakeyaml.emitter;
-
 /*
  * See LICENSE file in distribution for copyright and licensing information.
  */
+package org.yaml.snakeyaml.emitter;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
