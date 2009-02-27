@@ -103,6 +103,12 @@ For more details, please check [wiki:Documentation SnakeYAML Documentation].
 
 
 == History ==
+'''1.1 (in Mercurial)'''
+ * Introduce DumperOptions.DefaultScalarStyle and DumperOptions.DefaultFlowStyle
+ * Matching regular expressions for implicit types takes a lot of resources. Add possibility to switch
+   regular expressions off to increase performance. In the fast mode all the scalars become Strings
+ * refactor Node to use Enum
+ 
 '''1.0.1 (2009-02-18)'''
  * proper `Enum` [http://trac-hg.assembla.com/snakeyaml/wiki/Documentation#Enum support] (thanks to James Nissel)
  * minor performance improvement
