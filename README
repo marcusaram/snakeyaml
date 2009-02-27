@@ -104,7 +104,7 @@ For more details, please check [wiki:Documentation SnakeYAML Documentation].
 
 == History ==
 '''1.1 (in Mercurial)'''
- * Introduce DumperOptions.DefaultScalarStyle and DumperOptions.DefaultFlowStyle
+ * Introduce `DumperOptions.DefaultScalarStyle` and `DumperOptions.DefaultFlowStyle`
  * Matching regular expressions for implicit types takes a lot of resources. Add possibility to switch
    regular expressions off to increase performance. In the fast mode all the scalars become Strings
  * refactor Node to use Enum
