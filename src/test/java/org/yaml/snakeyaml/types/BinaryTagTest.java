@@ -41,4 +41,16 @@ public class BinaryTagTest extends AbstractTest {
         String output = dump(map);
         assertEquals("canonical: !!binary |-\n  R0lGODkJYmkDAG5hcnkKH2ltYWdlCg==\n", output);
     }
+
+    public void testByteArray() throws IOException {
+        byte[] data = { 8, 14, 15, 10, 126, 32, 65, 65, 65 };
+        String value = new String(data);
+        String output = dump(value);
+        assertEquals("!!binary |-\n  CA4PCn4gQUFB\n", output);
+        String parsed = (String) load(output);
+        assertEquals(data.length, parsed.getBytes().length);
+        for (int i = 0; i < data.length; i++) {
+            assertEquals(data[i], parsed.getBytes()[i]);
+        }
+    }
 }
