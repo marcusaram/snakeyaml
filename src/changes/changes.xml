@@ -4,12 +4,12 @@
 		<author email="py4fun@gmail.com">Andrey Somov</author>
 	</properties>
 	<body>
-	    <release version="1.1.0" date="in Mercurial" description="Development">
+	    <release version="1.1" date="in Mercurial" description="Development">
             <action dev="py4fun" type="add">
-                Introduce DumperOptions.DEFAULT_FLOW_STYLE enum (2009-02-24)
+                Introduce DumperOptions.DefaultFlowStyle enum (2009-02-24)
             </action>
             <action dev="py4fun" type="add">
-                Introduce DumperOptions.DEFAULT_STYLE enum (2009-02-24)
+                Introduce DumperOptions.DefaultScalarStyle enum (2009-02-24)
             </action>
             <action dev="py4fun" type="add">
                 Matching regular expressions for implicit types takes a lot of resources. Add possibility to switch
