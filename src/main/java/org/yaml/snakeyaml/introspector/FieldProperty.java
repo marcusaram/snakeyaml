@@ -15,15 +15,18 @@ public class FieldProperty extends Property {
         this.field = field;
     }
 
+    @Override
     public void set(Object object, Object value) throws Exception {
         field.set(object, value);
     }
 
+    @Override
     public Object get(Object object) {
         try {
             return field.get(object);
         } catch (Exception e) {
-            throw new YAMLException(e);
+            throw new YAMLException("Unable to access field " + field.getName() + " on obejct "
+                    + object + " : " + e);
         }
     }
 }

@@ -82,4 +82,12 @@ public class TimestampTagTest extends AbstractTest {
         String output = dump(map);
         assertEquals("{canonical: !!timestamp '2001-11-23T20:01:42Z'}\n", output);
     }
+
+    public void testSqlDate() throws IOException {
+        java.sql.Date date = new java.sql.Date(1000000000000L);
+        Map<String, java.sql.Date> map = new HashMap<String, java.sql.Date>();
+        map.put("canonical", date);
+        String output = dump(map);
+        assertEquals("{canonical: !!timestamp '2001-09-09T01:46:40Z'}\n", output);
+    }
 }

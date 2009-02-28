@@ -20,7 +20,7 @@ import org.yaml.snakeyaml.nodes.Node;
 import org.yaml.snakeyaml.util.Base64Coder;
 
 /**
- * @see <a href="http://pyyaml.org/wiki/PyYAML">PyYAML</a> for more information
+ * @see <a href="http://pyyaml.org/wiki/PyYAML">PyYAML< /a> for more information
  */
 class SafeRepresenter extends BaseRepresenter {
 
@@ -35,10 +35,11 @@ class SafeRepresenter extends BaseRepresenter {
         this.multiRepresenters.put(Map.class, new RepresentMap());
         this.multiRepresenters.put(Set.class, new RepresentSet());
         this.multiRepresenters.put(new Object[0].getClass(), new RepresentArray());
-        this.representers.put(Date.class, new RepresentDate());
+        this.multiRepresenters.put(Date.class, new RepresentDate());
         this.multiRepresenters.put(Enum.class, new RepresentEnum());
     }
 
+    @Override
     protected boolean ignoreAliases(Object data) {
         if (data == null) {
             return true;

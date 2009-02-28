@@ -5,7 +5,10 @@
 	</properties>
 	<body>
 	    <release version="1.1" date="in Mercurial" description="Development">
-            <action dev="py4fun" type="add">
+            <action dev="py4fun" type="fix">
+                Fix ticket #4: java.sql.Date not handled. Thanks to Christophe Desguez (2009-02-28)
+            </action>
+             <action dev="py4fun" type="add">
                 Introduce DumperOptions.DefaultFlowStyle enum (2009-02-24)
             </action>
             <action dev="py4fun" type="add">
