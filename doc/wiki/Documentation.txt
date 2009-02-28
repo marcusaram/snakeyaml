@@ -1245,19 +1245,19 @@ SnakeYAML allows an application to add custom implicit tag resolvers.
 The following table describes how nodes with different tags are converted
 to Java objects.
 
-|| '''YAML tag'''                  ||   '''Java type'''           ||
-|| ''Standard YAML tags''          ||                             ||
-|| `!!null`                        || `null`                      ||
-|| `!!bool`                        || `Boolean`                   ||
-|| `!!int`                         || `Integer, Long, BigInteger` ||
-|| `!!float`                       || `Double`                    ||
-|| `!!binary`                      || `String`                    ||
-|| `!!timestamp`                   || `java.util.Date`            ||
-|| `!!omap`, `!!pairs`             || `List` of `Object[]`        ||
-|| `!!set`                         || `Set`                       ||
-|| `!!str`                         || `String`                    ||
-|| `!!seq`                         || `List`                      ||
-|| `!!map`                         || `Map`                       ||
+||      '''YAML tag'''             ||         '''Java type'''           ||
+|| ''Standard YAML tags''          ||                                   ||
+|| `!!null`                        || `null`                            ||
+|| `!!bool`                        || `Boolean`                         ||
+|| `!!int`                         || `Integer, Long, BigInteger`       ||
+|| `!!float`                       || `Double`                          ||
+|| `!!binary`                      || `String`                          ||
+|| `!!timestamp`                   || `java.util.Date`, `java.sql.Date` ||
+|| `!!omap`, `!!pairs`             || `List` of `Object[]`              ||
+|| `!!set`                         || `Set`                             ||
+|| `!!str`                         || `String`                          ||
+|| `!!seq`                         || `List`                            ||
+|| `!!map`                         || `Map`                             ||
 
 An example of loading and dumping [http://yaml.org/spec/1.1/#id858961 Global tags] can be found  
 [http://trac-hg.assembla.com/snakeyaml/browser/src/test/java/org/yaml/snakeyaml/Example2_24Test.java here].

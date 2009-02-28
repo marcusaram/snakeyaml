@@ -15,15 +15,18 @@ public class MethodProperty extends Property {
         this.property = property;
     }
 
+    @Override
     public void set(Object object, Object value) throws Exception {
         property.getWriteMethod().invoke(object, value);
     }
 
+    @Override
     public Object get(Object object) {
         try {
             return property.getReadMethod().invoke(object);
         } catch (Exception e) {
-            throw new YAMLException(e);
+            throw new YAMLException("Unable to find getter for property " + property.getName()
+                    + " on object " + object + ":" + e);
         }
     }
 }
