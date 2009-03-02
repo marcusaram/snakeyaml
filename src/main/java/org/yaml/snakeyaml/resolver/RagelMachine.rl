@@ -31,7 +31,7 @@ public class RagelMachine {
         binaryInt = "0b" [0-1_]+;
         octalInt = "0" [0-7_]+;
         decimalInt = "0" | [1-9]digit2* (":" [0-5]? digit)*;
-        hexaInt = "0x" [0-9a-fA-F_,]+;
+        hexaInt = "0x" [0-9a-fA-F_]+;
         Int = sign? (binaryInt | octalInt | decimalInt | hexaInt) %/int_tag;
         
         exp = [eE] sign digit+;
@@ -41,17 +41,17 @@ public class RagelMachine {
                      | "." ("inf" | "Inf" | "INF"))) 
                  | ("." ("nan" | "NaN" | "NAN"))) %/float_tag;
               
-        TimestampYMD = digit{4} ("-" digit{2}){2} %/timestamp_tag;
-        timestampFract = "." digit*;
-        timestampZone = [ \t]* ("Z" | (sign digit{1,2} ( ":" digit{2} )?));
-        Timestamp = digit{4} ("-" digit{1,2}){2} ([Tt] | [ \t]+) digit{1,2} ":" digit{2} ":" digit{2} timestampFract? timestampZone? %/timestamp_tag;
+        TimestampShort = digit{4} ("-" digit{2}){2} %/timestamp_tag;
+        fract = "." digit*;
+        zone = [ \t]* ("Z" | (sign digit{1,2} ( ":" digit{2} )?));
+        Timestamp = digit{4} ("-" digit{1,2}){2} ([Tt] | [ \t]+) 
+        	digit{1,2} ":" digit{2} ":" digit{2} fract? zone? %/timestamp_tag;
                  
-        Scalar = Bool | Null | Int | Float | TimestampYMD | Merge | Value | Timestamp;
+        Scalar = Bool | Null | Int | Float | TimestampShort | Merge | Value | Timestamp;
         main := Scalar;
+        write data nofinal;
     }%%
     
-    %% write data nofinal;
-
     public String scan(String scalar) {
         if (scalar == null) {
             throw new NullPointerException("Scalar must be provided.");

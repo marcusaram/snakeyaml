@@ -91,6 +91,7 @@ public class RagelMachineTest extends TestCase {
         assertEquals("tag:yaml.org,2002:float", machine.scan("-1_123.45"));
         assertEquals("tag:yaml.org,2002:float", machine.scan(".5"));
         assertEquals("tag:yaml.org,2002:float", machine.scan("1.E+1"));
+        assertNull(machine.scan("0x1,1"), machine.scan("0x1,1"));
     }
 
     public void testScanTimestamp() {
