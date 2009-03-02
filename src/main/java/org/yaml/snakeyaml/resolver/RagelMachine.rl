@@ -17,7 +17,7 @@ public class RagelMachine {
                 "on" | "On" | "ON" | "off" | "Off" | "OFF") %/bool_tag;
         Merge = "<<" %/merge_tag;
         Value = "=" %/value_tag;
-        Null  = ("~" | "null" | "Null" | "null" | "NULL" | " ") %/null_tag;
+        Null  = ("~" | "null" | "Null" | "NULL" | " ") %/null_tag;
         sign = "-" | "+";
         digit2 = digit | "_" | ",";
         binaryInt = "0b" [0-1_]+;
