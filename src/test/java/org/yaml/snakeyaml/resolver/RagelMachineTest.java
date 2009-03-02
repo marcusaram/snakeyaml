@@ -9,4 +9,13 @@ public class RagelMachineTest extends TestCase {
         assertNull(machine.scan("abc"));
     }
 
+    public void testNullPointerException() {
+        try {
+            machine.scan(null);
+            fail("null must not be accepted.");
+        } catch (NullPointerException e) {
+            assertEquals("Scalar must be provided", e.getMessage());
+        }
+    }
+
 }
