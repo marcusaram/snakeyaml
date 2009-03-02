@@ -42,8 +42,11 @@ public class RagelMachine {
                  | ("." ("nan" | "NaN" | "NAN"))) %/float_tag;
               
         TimestampYMD = digit{4} ("-" digit{2}){2} %/timestamp_tag;
+        timestampFract = "." digit*;
+        timestampZone = [ \t]* ("Z" | (sign digit{1,2} ( ":" digit{2} )?));
+        Timestamp = digit{4} ("-" digit{1,2}){2} ([Tt] | [ \t]+) digit{1,2} ":" digit{2} ":" digit{2} timestampFract? timestampZone? %/timestamp_tag;
                  
-        Scalar = Bool | Null | Int | Float | TimestampYMD | Merge | Value;
+        Scalar = Bool | Null | Int | Float | TimestampYMD | Merge | Value | Timestamp;
         main := Scalar;
     }%%
     
