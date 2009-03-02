@@ -18,4 +18,7 @@ public class RagelMachineTest extends TestCase {
         }
     }
 
+    public void testScanBoolean() {
+        assertEquals("tag:yaml.org,2002:bool", machine.scan("true"));
+    }
 }
