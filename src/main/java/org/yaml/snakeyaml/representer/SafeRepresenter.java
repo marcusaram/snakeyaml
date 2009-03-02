@@ -20,7 +20,7 @@ import org.yaml.snakeyaml.nodes.Node;
 import org.yaml.snakeyaml.util.Base64Coder;
 
 /**
- * @see <a href="http://pyyaml.org/wiki/PyYAML">PyYAML< /a> for more information
+ * @see <a href="http://pyyaml.org/wiki/PyYAML">PyYAML</a> for more information
  */
 class SafeRepresenter extends BaseRepresenter {
 
