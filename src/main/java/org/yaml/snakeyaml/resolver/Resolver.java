@@ -40,7 +40,7 @@ public class Resolver {
             for (int i = 0, j = chrs.length; i < j; i++) {
                 Character theC = new Character(chrs[i]);
                 if (theC == 0) {
-                    // special case: for null
+                    // special case: for null (try to match all the scalars)
                     theC = null;
                 }
                 List<ResolverTuple> curr = yamlImplicitResolvers.get(theC);
