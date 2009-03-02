@@ -20,11 +20,11 @@ public class Resolver {
     private static final String DEFAULT_SEQUENCE_TAG = "tag:yaml.org,2002:seq";
     private static final String DEFAULT_MAPPING_TAG = "tag:yaml.org,2002:map";
 
-    private Map<String, List<ResolverTuple>> yamlImplicitResolvers;
+    private Map<Character, List<ResolverTuple>> yamlImplicitResolvers;
     private RagelMachine ragelScanner = new RagelMachine();
 
     public Resolver() {
-        yamlImplicitResolvers = new HashMap<String, List<ResolverTuple>>();
+        yamlImplicitResolvers = new HashMap<Character, List<ResolverTuple>>();
     }
 
     public void addImplicitResolver(String tag, Pattern regexp, String first) {
@@ -38,18 +38,15 @@ public class Resolver {
         } else {
             char[] chrs = first.toCharArray();
             for (int i = 0, j = chrs.length; i < j; i++) {
-                final Character theC = new Character(chrs[i]);
-                String key;
+                Character theC = new Character(chrs[i]);
                 if (theC == 0) {
                     // special case: for null
-                    key = "";
-                } else {
-                    key = String.valueOf(theC);
+                    theC = null;
                 }
-                List<ResolverTuple> curr = yamlImplicitResolvers.get(key);
+                List<ResolverTuple> curr = yamlImplicitResolvers.get(theC);
                 if (curr == null) {
                     curr = new LinkedList<ResolverTuple>();
-                    yamlImplicitResolvers.put(key, curr);
+                    yamlImplicitResolvers.put(theC, curr);
                 }
                 curr.add(new ResolverTuple(tag, regexp));
             }
@@ -63,8 +60,7 @@ public class Resolver {
     public String resolve(NodeId kind, String value, boolean implicit) {
         if (kind == NodeId.scalar && implicit) {
             if (value.length() > 0) {
-                List<ResolverTuple> resolvers = yamlImplicitResolvers.get(String.valueOf(value
-                        .charAt(0)));
+                List<ResolverTuple> resolvers = yamlImplicitResolvers.get(value.charAt(0));
                 if (resolvers != null) {
                     for (Iterator<ResolverTuple> iter = resolvers.iterator(); iter.hasNext();) {
                         ResolverTuple v = iter.next();
