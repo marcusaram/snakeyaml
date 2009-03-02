@@ -13,7 +13,7 @@ import java.util.Map;
 public class NullTagTest extends AbstractTest {
 
     public void testNull() throws IOException {
-        assertNull(load("---\n"));
+        assertNull("Got: '" + load("---\n") + "'", load("---\n"));
         assertNull(load("---\n..."));
         assertNull(load("---\n...\n"));
         assertNull(load("\n"));
@@ -39,7 +39,7 @@ public class NullTagTest extends AbstractTest {
         assertEquals(5, parsed.size());
         assertNull(parsed.get(0));
         assertEquals("2nd entry", parsed.get(1));
-        assertNull(parsed.get(2));
+        assertNull("Got: '" + parsed.get(2) + "'", parsed.get(2));
         assertEquals("4th entry", parsed.get(3));
         assertNull(parsed.get(4));
     }

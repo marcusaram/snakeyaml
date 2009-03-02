@@ -35,13 +35,6 @@ public class Yaml {
         this(loader, new Dumper(new DumperOptions()));
     }
 
-    public Yaml(Loader loader, Dumper dumper) {
-        this.loader = loader;
-        this.dumper = dumper;
-        this.resolver = new Resolver();
-        this.loader.setResolver(resolver);
-    }
-
     /**
      * Create Yaml instance. It is safe to create a few instances and use them
      * in different Threads.
@@ -50,14 +43,11 @@ public class Yaml {
      *            - Loader to parse incoming documents
      * @param dumper
      *            - Dumper to emit outgoing objects
-     * @param useRE
-     *            - true to support implicit types (false would make parsing and
-     *            dumping quicker)
      */
-    public Yaml(Loader loader, Dumper dumper, boolean useRE) {
+    public Yaml(Loader loader, Dumper dumper) {
         this.loader = loader;
         this.dumper = dumper;
-        this.resolver = new Resolver(useRE);
+        this.resolver = new Resolver();
         this.loader.setResolver(resolver);
     }
 
