@@ -11,6 +11,7 @@ public class RagelMachine {
         action null_tag { tag = "tag:yaml.org,2002:null"; }
         action value_tag { tag = "tag:yaml.org,2002:value"; }
         action int_tag { tag = "tag:yaml.org,2002:int"; }
+        action float_tag { tag = "tag:yaml.org,2002:float"; }
         
         Bool = ("yes" | "Yes" | "YES" | "no" | "No" | "NO" | 
                 "true" | "True" | "TRUE" | "false" | "False" | "FALSE" | 
@@ -18,16 +19,23 @@ public class RagelMachine {
         Merge = "<<" %/merge_tag;
         Value = "=" %/value_tag;
         Null  = ("~" | "null" | "Null" | "NULL" | " ") %/null_tag;
+        
         sign = "-" | "+";
-        digit2 = digit | "_" | ",";
+        digit2 = digit | "_";
         binaryInt = "0b" [0-1_]+;
         octalInt = "0" [0-7_]+;
-        decimalInt = "0" |
-                     [1-9]digit2* (":" [0-5]? digit)*;
+        decimalInt = "0" | [1-9]digit2* (":" [0-5]? digit)*;
         hexaInt = "0x" [0-9a-fA-F_,]+;
         Int = sign? (binaryInt | octalInt | decimalInt | hexaInt) %/int_tag;
         
-        Scalar = Bool | Null | Int | Merge | Value;
+        exp = [eE] sign digit+;
+        Float = ((sign? ((digit+ digit2* "." digit2* exp?)
+        			 | ((digit+ digit2*)? "." digit+ digit2* exp?)
+                     | (digit+ (":" [0-5]? digit)+ "." digit*)
+                     | "." ("inf" | "Inf" | "INF"))) 
+                 | ("." ("nan" | "NaN" | "NAN"))) %/float_tag;
+                 
+        Scalar = Bool | Null | Int | Float | Merge | Value;
         main := Scalar;
     }%%
     
