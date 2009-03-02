@@ -19,7 +19,7 @@ public class StressTest extends TestCase {
     public void testPerfomance() throws IOException {
         Loader loader = new Loader(new Constructor(Invoice.class));
         Yaml yaml = new Yaml(loader);
-        int[] range = new int[] { 200, 500, 1000 };
+        int[] range = new int[] { 500, 1000 };
         process(yaml, range);
     }
 
@@ -29,7 +29,7 @@ public class StressTest extends TestCase {
             float duration = fire(yaml, r);
             summ += duration;
             System.out.println("Duration for r=" + r + " was " + duration + " ms/load.");
-            assertTrue("duration=" + duration, duration < 2);
+            assertTrue("duration=" + duration, duration < 5);
         }
         return summ;
     }
