@@ -14,7 +14,7 @@ public class RagelMachineTest extends TestCase {
             machine.scan(null);
             fail("null must not be accepted.");
         } catch (NullPointerException e) {
-            assertEquals("Scalar must be provided", e.getMessage());
+            assertEquals("Scalar must be provided.", e.getMessage());
         }
     }
 
@@ -45,6 +45,7 @@ public class RagelMachineTest extends TestCase {
         assertEquals("tag:yaml.org,2002:null", machine.scan("NULL"));
         assertEquals("tag:yaml.org,2002:null", machine.scan("~"));
         assertEquals("tag:yaml.org,2002:null", machine.scan(" "));
+        assertEquals("tag:yaml.org,2002:null", machine.scan(""));
     }
 
     public void testScanMerge() {
