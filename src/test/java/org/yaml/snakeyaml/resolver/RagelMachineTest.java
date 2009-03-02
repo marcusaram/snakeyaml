@@ -94,5 +94,9 @@ public class RagelMachineTest extends TestCase {
 
     public void testScanTimestamp() {
         assertEquals("tag:yaml.org,2002:timestamp", machine.scan("2009-02-28"));
+        assertEquals("tag:yaml.org,2002:timestamp", machine.scan("2001-12-15T02:59:43.1Z"));
+        assertEquals("tag:yaml.org,2002:timestamp", machine.scan("2001-12-14t21:59:43.10-05:00"));
+        assertEquals("tag:yaml.org,2002:timestamp", machine.scan("2001-12-14 21:59:43.10 -5"));
+        assertEquals("tag:yaml.org,2002:timestamp", machine.scan("2001-12-15 2:59:43.10"));
     }
 }
