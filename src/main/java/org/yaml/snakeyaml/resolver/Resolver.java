@@ -4,7 +4,6 @@
 package org.yaml.snakeyaml.resolver;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -60,15 +59,19 @@ public class Resolver {
     public String resolve(NodeId kind, String value, boolean implicit) {
         if (kind == NodeId.scalar && implicit) {
             if (value.length() > 0) {
-                List<ResolverTuple> resolvers = yamlImplicitResolvers.get(value.charAt(0));
-                if (resolvers != null) {
-                    for (Iterator<ResolverTuple> iter = resolvers.iterator(); iter.hasNext();) {
-                        ResolverTuple v = iter.next();
-                        String tag = v.getTag();
-                        Pattern regexp = v.getRegexp();
-                        if (regexp.matcher(value).matches()) {
-                            return tag;
-                        }
+                List<ResolverTuple> resolvers = new LinkedList<ResolverTuple>();
+                List<ResolverTuple> specific = yamlImplicitResolvers.get(value.charAt(0));
+                if (specific != null) {
+                    resolvers.addAll(specific);
+                }
+                if (yamlImplicitResolvers.containsKey(null)) {
+                    resolvers.addAll(yamlImplicitResolvers.get(null));
+                }
+                for (ResolverTuple v : resolvers) {
+                    String tag = v.getTag();
+                    Pattern regexp = v.getRegexp();
+                    if (regexp.matcher(value).matches()) {
+                        return tag;
                     }
                 }
             }

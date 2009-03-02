@@ -3,8 +3,11 @@
  */
 package org.yaml.snakeyaml.resolver;
 
+import java.awt.Point;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 import junit.framework.TestCase;
@@ -44,6 +47,21 @@ public class ResolverTest extends TestCase {
         assertEquals(phone2, parsedList.get(1));
         assertEquals(phone3, parsedList.get(2));
         assertEquals(etalonList, parsedList);
+    }
+
+    public void testAddImplicitResolver2() {
+        Dumper dumper = new Dumper(new PointRepresenter(), new DumperOptions());
+        Yaml yaml = new Yaml(dumper);
+        Pattern regexp = Pattern.compile("\\d\\d-\\d\\d-\\d\\d\\d");
+        yaml.addImplicitResolver("tag:yaml.org,2002:Phone", regexp, "\0");
+        Pattern regexp2 = Pattern.compile("x\\d_y\\d");
+        // try any scalar, and not only those which start with 'x'
+        yaml.addImplicitResolver("tag:yaml.org,2002:Point", regexp2, null);
+        Map<String, Object> map = new LinkedHashMap<String, Object>();
+        map.put("a", new Phone("12-34-567"));
+        map.put("b", new Point(1, 5));
+        String output = yaml.dump(map);
+        assertEquals("{a: 12-34-567, b: x1_y5}\n", output);
     }
 
     class Phone {
@@ -94,6 +112,29 @@ public class ResolverTest extends TestCase {
             public Object construct(Node node) {
                 String val = (String) constructScalar((ScalarNode) node);
                 return new Phone(val);
+            }
+        }
+    }
+
+    class PointRepresenter extends Representer {
+        public PointRepresenter() {
+            this.representers.put(Point.class, new RepresentPoint());
+            this.representers.put(Phone.class, new RepresentPhone());
+        }
+
+        private class RepresentPoint implements Represent {
+            public Node representData(Object data) {
+                Point phone = (Point) data;
+                String value = "x" + (int) phone.getX() + "_y" + (int) phone.getY();
+                return representScalar("tag:yaml.org,2002:Point", value);
+            }
+        }
+
+        private class RepresentPhone implements Represent {
+            public Node representData(Object data) {
+                Phone phone = (Phone) data;
+                String value = phone.getNumber();
+                return representScalar("tag:yaml.org,2002:Phone", value);
             }
         }
     }
