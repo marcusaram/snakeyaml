@@ -146,13 +146,13 @@ static final int snakeyaml_en_main = 1;
         int p = 0;
         int pe = scalar.length();
         int eof = pe;
-        byte[] data;
+        char[] data;
         if (pe == 0) {
             // NULL value
-            data = new byte[] { (byte)'~' };
+            data = new char[] { '~' };
             pe = 1;
         } else {
-            data = scalar.getBytes();
+            data = scalar.toCharArray();
         }
         
 // line 159 "RagelMachine.java"
