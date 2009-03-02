@@ -68,5 +68,27 @@ public class RagelMachineTest extends TestCase {
         assertEquals("tag:yaml.org,2002:int", machine.scan("+0"));
         assertEquals("tag:yaml.org,2002:int", machine.scan("+10"));
         assertEquals("tag:yaml.org,2002:int", machine.scan("1__000"));
+        assertEquals("tag:yaml.org,2002:int", machine.scan("24:12:34"));
+        assertEquals("tag:yaml.org,2002:int", machine.scan("240:12:34"));
+    }
+
+    public void testScanFloat() {
+        assertEquals("tag:yaml.org,2002:float", machine.scan("1.0"));
+        assertEquals("tag:yaml.org,2002:float", machine.scan("-0.0"));
+        assertEquals("tag:yaml.org,2002:float", machine.scan("+2.2310"));
+        assertEquals("tag:yaml.org,2002:float", machine.scan("1.0e+12"));
+        assertEquals("tag:yaml.org,2002:float", machine.scan("1.345e-3"));
+        assertEquals("tag:yaml.org,2002:float", machine.scan("190:20:30.15"));
+        assertEquals("tag:yaml.org,2002:float", machine.scan("-.inf"));
+        assertEquals("tag:yaml.org,2002:float", machine.scan("+.INF"));
+        assertEquals("tag:yaml.org,2002:float", machine.scan(".Inf"));
+        assertEquals("tag:yaml.org,2002:float", machine.scan(".nan"));
+        assertEquals("tag:yaml.org,2002:float", machine.scan(".NaN"));
+        assertEquals("tag:yaml.org,2002:float", machine.scan(".NAN"));
+        assertEquals("tag:yaml.org,2002:float", machine.scan("1_000.5"));
+        assertEquals("tag:yaml.org,2002:float", machine.scan("1.023_456"));
+        assertEquals("tag:yaml.org,2002:float", machine.scan("-1_123.45"));
+        assertEquals("tag:yaml.org,2002:float", machine.scan(".5"));
+        assertEquals("tag:yaml.org,2002:float", machine.scan("1.E+1"));
     }
 }
