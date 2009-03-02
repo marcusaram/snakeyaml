@@ -5,6 +5,9 @@
 	</properties>
 	<body>
 	    <release version="1.1" date="in Mercurial" description="Development">
+            <action dev="py4fun" type="fix">
+                Fix: respect implicit resolvers with 'null' as a first character. (2009-03-02)
+            </action>
             <action dev="py4fun" type="update">
                 Refactor: use Character instead of String as a key for implicit resolvers. (2009-03-02)
             </action>
