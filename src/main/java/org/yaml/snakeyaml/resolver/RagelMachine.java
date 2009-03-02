@@ -238,7 +238,7 @@ static final int snakeyaml_en_main = 1;
 
     public String scan(String scalar) {
         if (scalar == null) {
-            throw new NullPointerException("Scalar must be provided");
+            throw new NullPointerException("Scalar must be provided.");
         }
         String tag = null;
         int cs = 0;
@@ -250,16 +250,17 @@ static final int snakeyaml_en_main = 1;
             // NULL value
             data = new char[] { '~' };
             pe = 1;
+            eof = 1;
         } else {
             data = scalar.toCharArray();
         }
         
-// line 258 "RagelMachine.java"
+// line 259 "RagelMachine.java"
 	{
 	cs = snakeyaml_start;
 	}
 
-// line 263 "RagelMachine.java"
+// line 264 "RagelMachine.java"
 	{
 	int _klen;
 	int _trans = 0;
@@ -374,7 +375,7 @@ case 4:
 // line 20 "RagelMachine.rl"
 	{ tag = "tag:yaml.org,2002:timestamp"; }
 	break;
-// line 378 "RagelMachine.java"
+// line 379 "RagelMachine.java"
 		}
 	}
 	}
@@ -383,7 +384,7 @@ case 5:
 	}
 	break; }
 	}
-// line 76 "RagelMachine.rl"
+// line 77 "RagelMachine.rl"
 
 
         return tag;

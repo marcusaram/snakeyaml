@@ -54,7 +54,7 @@ public class RagelMachine {
 
     public String scan(String scalar) {
         if (scalar == null) {
-            throw new NullPointerException("Scalar must be provided");
+            throw new NullPointerException("Scalar must be provided.");
         }
         String tag = null;
         int cs = 0;
@@ -66,6 +66,7 @@ public class RagelMachine {
             // NULL value
             data = new char[] { '~' };
             pe = 1;
+            eof = 1;
         } else {
             data = scalar.toCharArray();
         }
