@@ -105,7 +105,7 @@ For more details, please check [wiki:Documentation SnakeYAML Documentation].
 == History ==
 '''1.1 (in Mercurial)'''
  * Performance: Use [http://www.complang.org/ragel/ Ragel] instead of Regular Expressions for implicit types
- * Fix ticket #4: java.sql.Date was not handled properly
+ * Fix ticket #4: java.sql.Date was not handled properly (thanks to Christophe Desguez)
  * Introduce `DumperOptions.DefaultScalarStyle` and `DumperOptions.DefaultFlowStyle`
  * minor refactoring and bug fixes
  
