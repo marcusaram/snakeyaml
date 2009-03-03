@@ -20,28 +20,18 @@ public class StressTest extends TestCase {
         Loader loader = new Loader(new Constructor(Invoice.class));
         Yaml yaml = new Yaml(loader);
         int[] range = new int[] { 500, 1000 };
-        process(yaml, range);
-    }
-
-    private float process(Yaml yaml, int[] range) {
         float summ = 0;
-        for (int r : range) {
-            float duration = fire(yaml, r);
+        for (int number : range) {
+            long time1 = System.currentTimeMillis();
+            for (int i = 0; i < number; i++) {
+                Invoice invoice = (Invoice) yaml.load(doc);
+                assertNotNull(invoice);
+            }
+            long time2 = System.currentTimeMillis();
+            float duration = (time2 - time1) / (float) number;
             summ += duration;
-            System.out.println("Duration for r=" + r + " was " + duration + " ms/load.");
+            System.out.println("Duration for r=" + number + " was " + duration + " ms/load.");
             assertTrue("duration=" + duration, duration < 5);
         }
-        return summ;
-    }
-
-    private float fire(Yaml yaml, int number) {
-        long time1 = System.currentTimeMillis();
-        for (int i = 0; i < number; i++) {
-            Invoice invoice = (Invoice) yaml.load(doc);
-            assertNotNull(invoice);
-        }
-        long time2 = System.currentTimeMillis();
-        float duration = (time2 - time1) / (float) number;
-        return duration;
     }
 }
