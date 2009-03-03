@@ -12,7 +12,6 @@ import java.lang.reflect.Modifier;
 import java.math.BigInteger;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -241,8 +240,7 @@ public class Constructor extends SafeConstructor {
             throw new YAMLException(e);
         }
         List<Node[]> nodeValue = (List<Node[]>) node.getValue();
-        for (Iterator<Node[]> iter = nodeValue.iterator(); iter.hasNext();) {
-            Node[] tuple = iter.next();
+        for (Node[] tuple : nodeValue) {
             ScalarNode keyNode;
             if (tuple[0] instanceof ScalarNode) {
                 keyNode = (ScalarNode) tuple[0];// key must be scalar
