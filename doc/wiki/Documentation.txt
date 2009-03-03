@@ -870,7 +870,7 @@ public void testLoadEnum() {
 }
 }}}
 
-But if the Enum is a `JavaBean` property and the class is implicitly defined then the tags are not used:
+But if the Enum is a `JavaBean` property (and the class is implicitly defined) then the tags are not used:
 {{{
 public void testDumpEnumBean() {
     DumperOptions options = new DumperOptions();
