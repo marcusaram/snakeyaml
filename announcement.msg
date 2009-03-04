@@ -18,7 +18,8 @@ Changes
 
  * Performance: Use Ragel instead of Regular Expressions for implicit types
  * Fix ticket #4: java.sql.Date was not handled properly
- * Introduce Enums: DumperOptions.DefaultScalarStyle and DumperOptions.DefaultFlowStyle 
+ * Introduce Enums: DumperOptions.DefaultScalarStyle and DumperOptions.DefaultFlowStyle
+ * minor bug fixes 
 
 Resources
 =========
