@@ -37,7 +37,7 @@ public class Base64Coder {
      *            an array containing the data bytes to be encoded.
      * @return A character array with the Base64 encoded data.
      */
-    public static char[] encode(final byte[] in) {
+    public static char[] encode(byte[] in) {
         int iLen = in.length;
         int oDataLen = (iLen * 4 + 2) / 3; // output length without padding
         int oLen = ((iLen + 2) / 3) * 4; // output length including padding
@@ -72,7 +72,7 @@ public class Base64Coder {
      * @throws IllegalArgumentException
      *             if the input is not valid Base64 encoded data.
      */
-    public static char[] decode(final char[] in) {
+    public static char[] decode(char[] in) {
         int iLen = in.length;
         if (iLen % 4 != 0)
             throw new YAMLException("Length of Base64 encoded input string is not a multiple of 4.");

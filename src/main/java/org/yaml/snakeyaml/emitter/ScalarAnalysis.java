@@ -16,10 +16,9 @@ class ScalarAnalysis {
     public boolean allowDoubleQuoted;
     public boolean allowBlock;
 
-    public ScalarAnalysis(final String scalar, final boolean empty, final boolean multiline,
-            final boolean allowFlowPlain, final boolean allowBlockPlain,
-            final boolean allowSingleQuoted, final boolean allowDoubleQuoted,
-            final boolean allowBlock) {
+    public ScalarAnalysis(String scalar, boolean empty, boolean multiline, boolean allowFlowPlain,
+            boolean allowBlockPlain, boolean allowSingleQuoted, boolean allowDoubleQuoted,
+            boolean allowBlock) {
         this.scalar = scalar;
         this.empty = empty;
         this.multiline = multiline;

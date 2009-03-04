@@ -246,7 +246,7 @@ public class ScannerImpl implements Scanner {
         // and decrease the current indentation level.
         unwindIndent(reader.getColumn());
         // Peek the next character.
-        final char ch = reader.peek();
+        char ch = reader.peek();
         switch (ch) {
         case '\0':
             // Is it the end of stream?
@@ -470,7 +470,7 @@ public class ScannerImpl implements Scanner {
      * }
      * </pre>
      */
-    private void unwindIndent(final int col) {
+    private void unwindIndent(int col) {
         // In the flow context, indentation is ignored. We make the scanner less
         // restrictive then specification requires.
         if (this.flowLevel != 0) {
@@ -488,7 +488,7 @@ public class ScannerImpl implements Scanner {
     /**
      * Check if we need to increase indentation.
      */
-    private boolean addIndent(final int column) {
+    private boolean addIndent(int column) {
         if (this.indent < column) {
             this.indents.addFirst(this.indent);
             this.indent = column;
@@ -552,7 +552,7 @@ public class ScannerImpl implements Scanner {
         fetchDocumentIndicator(false);
     }
 
-    private void fetchDocumentIndicator(final boolean isDocumentStart) {
+    private void fetchDocumentIndicator(boolean isDocumentStart) {
         // Set the current intendation to -1.
         unwindIndent(-1);
 
@@ -613,7 +613,7 @@ public class ScannerImpl implements Scanner {
         fetchFlowCollectionEnd(true);
     }
 
-    private void fetchFlowCollectionEnd(final boolean isMappingEnd) {
+    private void fetchFlowCollectionEnd(boolean isMappingEnd) {
         // Reset possible simple key on the current level.
         removePossibleSimpleKey();
 
@@ -801,7 +801,7 @@ public class ScannerImpl implements Scanner {
         this.allowSimpleKey = false;
 
         // Scan and add TAG.
-        final Token tok = scanTag();
+        Token tok = scanTag();
         this.tokens.add(tok);
     }
 
@@ -813,7 +813,7 @@ public class ScannerImpl implements Scanner {
         fetchBlockScalar('>');
     }
 
-    private void fetchBlockScalar(final char style) {
+    private void fetchBlockScalar(char style) {
         // A simple key may follow a block scalar.
         this.allowSimpleKey = true;
 
@@ -833,7 +833,7 @@ public class ScannerImpl implements Scanner {
         fetchFlowScalar('"');
     }
 
-    private void fetchFlowScalar(final char style) {
+    private void fetchFlowScalar(char style) {
         // A flow scalar could be a simple key.
         savePossibleSimpleKey();
 
@@ -841,7 +841,7 @@ public class ScannerImpl implements Scanner {
         this.allowSimpleKey = false;
 
         // Scan and add SCALAR.
-        final Token tok = scanFlowScalar(style);
+        Token tok = scanFlowScalar(style);
         this.tokens.add(tok);
     }
 
@@ -993,7 +993,7 @@ public class ScannerImpl implements Scanner {
         Mark startMark = reader.getMark();
         Mark endMark;
         reader.forward();
-        final String name = scanDirectiveName(startMark);
+        String name = scanDirectiveName(startMark);
         List<?> value = null;
         if (name.equals("YAML")) {
             value = scanYamlDirectiveValue(startMark);
@@ -1040,14 +1040,14 @@ public class ScannerImpl implements Scanner {
         while (reader.peek() == ' ') {
             reader.forward();
         }
-        final Integer major = scanYamlDirectiveNumber(startMark);
+        Integer major = scanYamlDirectiveNumber(startMark);
         if (reader.peek() != '.') {
             throw new ScannerException("while scanning a directive", startMark,
                     "expected a digit or '.', but found " + reader.peek() + "("
                             + ((int) reader.peek()) + ")", reader.getMark());
         }
         reader.forward();
-        final Integer minor = scanYamlDirectiveNumber(startMark);
+        Integer minor = scanYamlDirectiveNumber(startMark);
         if (NULL_BL_LINEBR.indexOf(reader.peek()) == -1) {
             throw new ScannerException("while scanning a directive", startMark,
                     "expected a digit or ' ', but found " + reader.peek() + "("
@@ -1061,7 +1061,7 @@ public class ScannerImpl implements Scanner {
 
     private Integer scanYamlDirectiveNumber(Mark startMark) {
         // See the specification for details.
-        final char ch = reader.peek();
+        char ch = reader.peek();
         if (!Character.isDigit(ch)) {
             throw new ScannerException("while scanning a directive", startMark,
                     "expected a digit, but found " + ch + "(" + ((int) ch) + ")", reader.getMark());
@@ -1144,7 +1144,7 @@ public class ScannerImpl implements Scanner {
      * Therefore we restrict aliases to numbers and ASCII letters.
      * </pre>
      */
-    private Token scanAnchor(final boolean isAnchor) {
+    private Token scanAnchor(boolean isAnchor) {
         Mark startMark = reader.getMark();
         char indicator = reader.peek();
         String name = indicator == '*' ? "alias" : "anchor";
@@ -1226,7 +1226,7 @@ public class ScannerImpl implements Scanner {
         return new TagToken(value, startMark, endMark);
     }
 
-    private Token scanBlockScalar(final char style) {
+    private Token scanBlockScalar(char style) {
         // See the specification for details.
         boolean folded;
         if (style == '>') {
@@ -1397,7 +1397,7 @@ public class ScannerImpl implements Scanner {
         return new Object[] { chunks.toString(), new Integer(maxIndent), endMark };
     }
 
-    private Object[] scanBlockScalarBreaks(final int indent) {
+    private Object[] scanBlockScalarBreaks(int indent) {
         // See the specification for details.
         StringBuffer chunks = new StringBuffer();
         Mark endMark = reader.getMark();
@@ -1424,7 +1424,7 @@ public class ScannerImpl implements Scanner {
      * that document separators are not included in scalars.
      * </pre>
      */
-    private Token scanFlowScalar(final char style) {
+    private Token scanFlowScalar(char style) {
         boolean _double;
         if (style == '"') {
             _double = true;
@@ -1660,7 +1660,7 @@ public class ScannerImpl implements Scanner {
      * tag handles. I have allowed it anyway.
      * </pre>
      */
-    private String scanTagHandle(final String name, Mark startMark) {
+    private String scanTagHandle(String name, Mark startMark) {
         char ch = reader.peek();
         if (ch != '!') {
             throw new ScannerException("while scanning a " + name, startMark,
@@ -1685,7 +1685,7 @@ public class ScannerImpl implements Scanner {
         return value;
     }
 
-    private String scanTagUri(final String name, Mark startMark) {
+    private String scanTagUri(String name, Mark startMark) {
         // See the specification for details.
         // Note: we do not check if URI is well-formed.
         StringBuffer chunks = new StringBuffer();
@@ -1714,7 +1714,7 @@ public class ScannerImpl implements Scanner {
         return chunks.toString();
     }
 
-    private String scanUriEscapes(final String name, Mark startMark) {
+    private String scanUriEscapes(String name, Mark startMark) {
         // See the specification for details.
         StringBuffer bytes = new StringBuffer();
         while (reader.peek() == '%') {

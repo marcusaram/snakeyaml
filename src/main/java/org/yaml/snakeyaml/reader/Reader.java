@@ -49,8 +49,8 @@ public class Reader {
         this.eof = false;
     }
 
-    void checkPrintable(final CharSequence data) {
-        final Matcher em = NON_PRINTABLE.matcher(data);
+    void checkPrintable(CharSequence data) {
+        Matcher em = NON_PRINTABLE.matcher(data);
         if (em.find()) {
             int position = this.index + this.buffer.length() - this.pointer + em.start();
             throw new ReaderException(name, position, em.group().charAt(0),
@@ -76,7 +76,7 @@ public class Reader {
      * 
      * @param length
      */
-    public void forward(final int length) {
+    public void forward(int length) {
         if (this.pointer + length + 1 >= this.buffer.length()) {
             update(length + 1);
         }
@@ -105,7 +105,7 @@ public class Reader {
      * @param index
      * @return
      */
-    public char peek(final int index) {
+    public char peek(int index) {
         if (this.pointer + index + 1 > this.buffer.length()) {
             update(index + 1);
         }
@@ -118,7 +118,7 @@ public class Reader {
      * @param length
      * @return
      */
-    public String prefix(final int length) {
+    public String prefix(int length) {
         if (this.pointer + length >= this.buffer.length()) {
             update(length);
         }
@@ -129,7 +129,7 @@ public class Reader {
         }
     }
 
-    private void update(final int length) {
+    private void update(int length) {
         this.buffer.delete(0, this.pointer);
         this.pointer = 0;
         while (this.buffer.length() < length) {

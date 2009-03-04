@@ -194,13 +194,13 @@ public class SafeConstructor extends BaseConstructor {
             } else if (first == '+') {
                 value = value.substring(1);
             }
-            final String valLower = value.toLowerCase();
+            String valLower = value.toLowerCase();
             if (valLower.equals(".inf")) {
                 return new Double(sign == -1 ? Double.NEGATIVE_INFINITY : Double.POSITIVE_INFINITY);
             } else if (valLower.equals(".nan")) {
                 return new Double(Double.NaN);
             } else if (value.indexOf(':') != -1) {
-                final String[] digits = value.split(":");
+                String[] digits = value.split(":");
                 int bes = 1;
                 double val = 0.0;
                 for (int i = 0, j = digits.length; i < j; i++) {
@@ -228,6 +228,7 @@ public class SafeConstructor extends BaseConstructor {
         }
     }
 
+    // TODO move RE to ConstuctYamlTimestamp
     private final static Pattern TIMESTAMP_REGEXP = Pattern
             .compile("^([0-9][0-9][0-9][0-9])-([0-9][0-9]?)-([0-9][0-9]?)(?:(?:[Tt]|[ \t]+)([0-9][0-9]?):([0-9][0-9]):([0-9][0-9])(?:\\.([0-9]*))?(?:[ \t]*(?:Z|([-+][0-9][0-9]?)(?::([0-9][0-9])?)?))?)?$");
     private final static Pattern YMD_REGEXP = Pattern
