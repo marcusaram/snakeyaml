@@ -11,7 +11,7 @@ import org.yaml.snakeyaml.scanner.ScannerImpl;
  * 
  * @see <a href="http://pyyaml.org/wiki/PyYAML">PyYAML</a> for more information
  */
-public class Mark {
+public final class Mark {
     private String name;
     private int line;
     private int column;

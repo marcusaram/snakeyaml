@@ -6,6 +6,9 @@
 	<body>
 	    <release version="1.1" date="in Mercurial" description="Development">
             <action dev="py4fun" type="update">
+                Refactor: Declare classes which are not expected to be extended as final. (2009-03-04)
+            </action>
+            <action dev="py4fun" type="update">
                 Refactor: use 'final' keyword to identify immutable fields. (2009-03-04)
             </action>
             <action dev="py4fun" type="update">

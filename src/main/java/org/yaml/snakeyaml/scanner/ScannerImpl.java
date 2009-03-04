@@ -75,7 +75,7 @@ import org.yaml.snakeyaml.tokens.ValueToken;
  * reader.forward(l=1) read the next l characters and move the pointer.
  * </pre>
  */
-public class ScannerImpl implements Scanner {
+public final class ScannerImpl implements Scanner {
     private final static String NULL_BL_LINEBR = "\0 \r\n\u0085\u2028\u2029";
     private final static String NULL_BL_T_LINEBR = "\0 \t\r\n\u0085\u2028\u2029";
     public final static String NULL_OR_LINEBR = "\0\r\n\u0085\u2028\u2029";

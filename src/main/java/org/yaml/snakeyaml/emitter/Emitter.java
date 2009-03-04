@@ -43,7 +43,7 @@ import org.yaml.snakeyaml.events.StreamStartEvent;
  * 
  * @see <a href="http://pyyaml.org/wiki/PyYAML">PyYAML</a> for more information
  */
-public class Emitter {
+public final class Emitter {
     private static final Map<Character, String> ESCAPE_REPLACEMENTS = new HashMap<Character, String>();
 
     static {
