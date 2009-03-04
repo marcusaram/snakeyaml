@@ -20,7 +20,7 @@ import org.yaml.snakeyaml.serializer.Serializer;
 
 public class BaseRepresenter {
     @SuppressWarnings("unchecked")
-    protected Map<Class, Represent> representers = new HashMap<Class, Represent>();
+    protected final Map<Class, Represent> representers = new HashMap<Class, Represent>();
     /**
      * in Java 'null' is not a type. So we have to keep the null representer
      * separately otherwise it will coincide with the default representer which
@@ -28,11 +28,11 @@ public class BaseRepresenter {
      */
     protected Represent nullRepresenter;
     @SuppressWarnings("unchecked")
-    protected Map<Class, Represent> multiRepresenters = new HashMap<Class, Represent>();
+    protected final Map<Class, Represent> multiRepresenters = new HashMap<Class, Represent>();
     private Character defaultStyle;
     protected Boolean defaultFlowStyle;
-    protected Map<Integer, Node> representedObjects = new HashMap<Integer, Node>();
-    private Set<Object> objectKeeper = new HashSet<Object>();
+    protected final Map<Integer, Node> representedObjects = new HashMap<Integer, Node>();
+    private final Set<Object> objectKeeper = new HashSet<Object>();
     protected Integer aliasKey;// internal memory address
     protected String rootTag = null;
 

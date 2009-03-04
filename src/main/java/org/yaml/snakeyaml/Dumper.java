@@ -16,8 +16,8 @@ import org.yaml.snakeyaml.serializer.Serializer;
  * @see <a href="http://pyyaml.org/wiki/PyYAML">PyYAML</a> for more information
  */
 public class Dumper {
-    private Representer representer;
-    private DumperOptions options;
+    private final Representer representer;
+    private final DumperOptions options;
 
     public Dumper(Representer representer, DumperOptions options) {
         this.representer = representer;

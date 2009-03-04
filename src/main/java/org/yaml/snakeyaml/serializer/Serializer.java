@@ -33,8 +33,8 @@ import org.yaml.snakeyaml.resolver.Resolver;
  * @see <a href="http://pyyaml.org/wiki/PyYAML">PyYAML</a> for more information
  */
 public class Serializer {
-    private Emitter emitter;
-    private Resolver resolver;
+    private final Emitter emitter;
+    private final Resolver resolver;
     private boolean explicitStart;
     private boolean explicitEnd;
     private Integer[] useVersion;

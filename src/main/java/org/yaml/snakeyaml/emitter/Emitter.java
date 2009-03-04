@@ -70,22 +70,22 @@ public class Emitter {
         DEFAULT_TAG_PREFIXES.put("tag:yaml.org,2002:", "!!");
     }
     // The stream should have the methods `write` and possibly `flush`.
-    private Writer stream;
+    private final Writer stream;
 
     // Encoding is defined by Writer (cannot be overriden by STREAM-START.)
     // private Charset encoding;
 
     // Emitter is a state machine with a stack of states to handle nested
     // structures.
-    private LinkedList<EmitterState> states;
+    private final LinkedList<EmitterState> states;
     private EmitterState state;
 
     // Current event and the event queue.
-    private Queue<Event> events;
+    private final Queue<Event> events;
     private Event event;
 
     // The current indentation level and the stack of previous indents.
-    private LinkedList<Integer> indents;
+    private final LinkedList<Integer> indents;
     private Integer indent;
 
     // Flow level.

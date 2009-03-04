@@ -31,9 +31,9 @@ import org.yaml.snakeyaml.resolver.Resolver;
  * @see <a href="http://pyyaml.org/wiki/PyYAML">PyYAML</a> for more information
  */
 public class Composer {
-    private Parser parser;
-    private Resolver resolver;
-    private Map<String, Node> anchors;
+    private final Parser parser;
+    private final Resolver resolver;
+    private final Map<String, Node> anchors;
 
     public Composer(Parser parser, Resolver resolver) {
         this.parser = parser;

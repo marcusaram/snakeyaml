@@ -10,7 +10,7 @@ import org.yaml.snakeyaml.error.Mark;
  * 
  * @see <a href="http://pyyaml.org/wiki/PyYAML">PyYAML</a> for more information
  */
-class SimpleKey {
+final class SimpleKey {
     private int tokenNumber;
     private boolean required;
     private int index;
