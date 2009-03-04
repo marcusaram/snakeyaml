@@ -14,5 +14,4 @@ public class EmitterException extends YAMLException {
     public EmitterException(String msg) {
         super(msg);
     }
-
 }

@@ -29,8 +29,8 @@ import org.yaml.snakeyaml.nodes.SequenceNode;
  * @see <a href="http://pyyaml.org/wiki/PyYAML">PyYAML</a> for more information
  */
 public class Constructor extends SafeConstructor {
-    private Map<String, Class<? extends Object>> typeTags;
-    private Map<Class<? extends Object>, TypeDescription> typeDefinitions;
+    private final Map<String, Class<? extends Object>> typeTags;
+    private final Map<Class<? extends Object>, TypeDescription> typeDefinitions;
 
     public Constructor() {
         this(Object.class);

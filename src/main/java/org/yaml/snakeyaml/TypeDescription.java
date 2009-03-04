@@ -7,8 +7,8 @@ import java.util.Map;
  * Provides additional runtime information necessary to create a custom Java
  * instance.
  */
-public class TypeDescription {
-    private Class<? extends Object> type;
+public final class TypeDescription {
+    private final Class<? extends Object> type;
     private String tag;
     private boolean root;
     private Map<String, Class<? extends Object>> listProperties;

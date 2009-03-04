@@ -107,7 +107,7 @@ public class ScannerImpl implements Scanner {
         ESCAPE_CODES.put(new Character('u'), new Integer(4));
         ESCAPE_CODES.put(new Character('U'), new Integer(8));
     }
-    private org.yaml.snakeyaml.reader.Reader reader;
+    private final org.yaml.snakeyaml.reader.Reader reader;
     // Had we reached the end of the stream?
     private boolean done = false;
 

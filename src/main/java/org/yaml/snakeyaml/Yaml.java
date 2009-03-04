@@ -19,9 +19,9 @@ import org.yaml.snakeyaml.resolver.Resolver;
  * Public YAML interface
  */
 public class Yaml {
-    private Dumper dumper;
-    private Loader loader;
-    private Resolver resolver;
+    private final Dumper dumper;
+    private final Loader loader;
+    private final Resolver resolver;
 
     public Yaml(DumperOptions options) {
         this(new Loader(), new Dumper(options));

@@ -5,7 +5,7 @@ package org.yaml.snakeyaml.resolver;
 
 import java.util.regex.Pattern;
 
-class ResolverTuple {
+final class ResolverTuple {
     private String tag;
     private Pattern regexp;
 

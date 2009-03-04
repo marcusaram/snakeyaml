@@ -20,11 +20,11 @@ import org.yaml.snakeyaml.nodes.SequenceNode;
  * @see <a href="http://pyyaml.org/wiki/PyYAML">PyYAML</a> for more information
  */
 public class BaseConstructor {
-    protected Map<String, Construct> yamlConstructors = new HashMap<String, Construct>();
+    protected final Map<String, Construct> yamlConstructors = new HashMap<String, Construct>();
 
     private Composer composer;
-    private Map<Node, Object> constructedObjects;
-    private Map<Node, Object> recursiveObjects;
+    private final Map<Node, Object> constructedObjects;
+    private final Map<Node, Object> recursiveObjects;
 
     protected Class<? extends Object> rootType;
 

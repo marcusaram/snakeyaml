@@ -16,7 +16,7 @@ import org.yaml.snakeyaml.resolver.Resolver;
  * @see <a href="http://pyyaml.org/wiki/PyYAML">PyYAML</a> for more information
  */
 public class Loader {
-    protected BaseConstructor constructor;
+    protected final BaseConstructor constructor;
     protected Resolver resolver;
 
     public Loader(BaseConstructor constructor) {

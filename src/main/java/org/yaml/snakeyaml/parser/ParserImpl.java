@@ -118,12 +118,12 @@ public class ParserImpl implements Parser {
         DEFAULT_TAGS.put("!!", "tag:yaml.org,2002:");
     }
 
-    private Scanner scanner;
+    private final Scanner scanner;
     private Event currentEvent;
     private List<Integer> yamlVersion;
     private Map<String, String> tagHandles;
-    private LinkedList<Production> states;
-    private LinkedList<Mark> marks;
+    private final LinkedList<Production> states;
+    private final LinkedList<Mark> marks;
     private Production state;
 
     public ParserImpl(org.yaml.snakeyaml.reader.Reader reader) {

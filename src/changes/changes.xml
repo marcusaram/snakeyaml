@@ -6,6 +6,9 @@
 	<body>
 	    <release version="1.1" date="in Mercurial" description="Development">
             <action dev="py4fun" type="update">
+                Refactor: use 'final' keyword to identify immutable fields. (2009-03-04)
+            </action>
+            <action dev="py4fun" type="update">
                 Refactor: do not use 'final' keyword for local variables. (2009-03-04)
             </action>
             <action dev="py4fun" type="fix">
