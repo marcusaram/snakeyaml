@@ -16,7 +16,7 @@ import org.yaml.snakeyaml.reader.UnicodeReader;
 import org.yaml.snakeyaml.resolver.Resolver;
 
 /**
- * Public YAML interface
+ * Public YAML interface. Each Thread must have its own instance.
  */
 public class Yaml {
     private final Dumper dumper;
