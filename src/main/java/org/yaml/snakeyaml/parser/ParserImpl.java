@@ -111,7 +111,7 @@ import org.yaml.snakeyaml.tokens.ValueToken;
  * 
  * @see <a href="http://pyyaml.org/wiki/PyYAML">PyYAML</a> for more information
  */
-public class ParserImpl implements Parser {
+public final class ParserImpl implements Parser {
     private static final Map<String, String> DEFAULT_TAGS = new HashMap<String, String>();
     static {
         DEFAULT_TAGS.put("!", "!");
