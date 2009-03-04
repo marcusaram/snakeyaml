@@ -9,11 +9,11 @@ package org.yaml.snakeyaml.error;
 public class YAMLException extends RuntimeException {
     private static final long serialVersionUID = -4738336175050337570L;
 
-    public YAMLException(final String message) {
+    public YAMLException(String message) {
         super(message);
     }
 
-    public YAMLException(final Throwable cause) {
+    public YAMLException(Throwable cause) {
         super(cause);
     }
 }

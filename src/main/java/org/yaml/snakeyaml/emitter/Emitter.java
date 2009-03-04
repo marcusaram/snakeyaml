@@ -779,7 +779,7 @@ public class Emitter {
 
     // Analyzers.
 
-    private String prepareVersion(final Integer[] version) {
+    private String prepareVersion(Integer[] version) {
         Integer major = version[0];
         Integer minor = version[1];
         if (major != 1) {
@@ -820,7 +820,7 @@ public class Emitter {
         return chunks.toString();
     }
 
-    private String prepareTag(final String tag) {
+    private String prepareTag(String tag) {
         if (tag == null || "".equals(tag)) {
             throw new EmitterException("tag must not be empty");
         }
@@ -864,7 +864,7 @@ public class Emitter {
         return anchor;
     }
 
-    private ScalarAnalysis analyzeScalar(final String scalar) {
+    private ScalarAnalysis analyzeScalar(String scalar) {
         // Empty scalar is a special case.
         if (scalar == null || "".equals(scalar)) {
             return new ScalarAnalysis(scalar, true, false, false, true, true, true, false);
@@ -1166,7 +1166,7 @@ public class Emitter {
         writeIndicator("'", false, false, false);
     }
 
-    private void writeDoubleQuoted(final String text, final boolean split) throws IOException {
+    private void writeDoubleQuoted(String text, boolean split) throws IOException {
         writeIndicator("\"", true, false, false);
         int start = 0;
         int end = 0;

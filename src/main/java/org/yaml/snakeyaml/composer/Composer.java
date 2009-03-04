@@ -35,7 +35,7 @@ public class Composer {
     private Resolver resolver;
     private Map<String, Node> anchors;
 
-    public Composer(final Parser parser, final Resolver resolver) {
+    public Composer(Parser parser, Resolver resolver) {
         this.parser = parser;
         this.resolver = resolver;
         this.anchors = new HashMap<String, Node>();
@@ -82,14 +82,14 @@ public class Composer {
         // Drop the DOCUMENT-START event.
         parser.getEvent();
         // Compose the root node.
-        final Node node = composeNode(null, null);
+        Node node = composeNode(null, null);
         // Drop the DOCUMENT-END event.
         parser.getEvent();
         this.anchors.clear();
         return node;
     }
 
-    private Node composeNode(final Node parent, final Object index) {
+    private Node composeNode(Node parent, Object index) {
         if (parser.checkEvent(AliasEvent.class)) {
             AliasEvent event = (AliasEvent) parser.getEvent();
             String anchor = event.getAnchor();
