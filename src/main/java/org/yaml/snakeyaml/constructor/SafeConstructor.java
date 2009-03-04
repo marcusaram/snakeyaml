@@ -228,7 +228,6 @@ public class SafeConstructor extends BaseConstructor {
         }
     }
 
-    // TODO move RE to ConstuctYamlTimestamp
     private final static Pattern TIMESTAMP_REGEXP = Pattern
             .compile("^([0-9][0-9][0-9][0-9])-([0-9][0-9]?)-([0-9][0-9]?)(?:(?:[Tt]|[ \t]+)([0-9][0-9]?):([0-9][0-9]):([0-9][0-9])(?:\\.([0-9]*))?(?:[ \t]*(?:Z|([-+][0-9][0-9]?)(?::([0-9][0-9])?)?))?)?$");
     private final static Pattern YMD_REGEXP = Pattern
