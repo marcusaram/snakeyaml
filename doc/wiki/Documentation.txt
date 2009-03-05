@@ -908,7 +908,7 @@ Only the very first instance is heavy because of static initializers for constan
 
 == Spring ==
 
-Example of Spring definition:
+Example of [http://trac-hg.assembla.com/snakeyaml/browser/src/test/resources/examples/spring.xml Spring definition]:
 (note: the scope is always 'prototype')
 {{{
 <?xml version="1.0" encoding="UTF-8"?>
