@@ -5,6 +5,10 @@
 	</properties>
 	<body>
 	    <release version="1.1" date="in Mercurial" description="Development">
+            <action dev="py4fun" type="add">
+                Better Spring support: it is now possible to create a constructor with a String
+                as the class name. (2009-03-05)
+            </action>
             <action dev="py4fun" type="update">
                 Throw an exception when the same Loader or Dumper instance is shared between
                 different Yaml instances. Because they are statefull it is not Thread-safe. (2009-03-05)
