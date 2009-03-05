@@ -46,6 +46,20 @@ public class Constructor extends SafeConstructor {
         typeDefinitions = new HashMap<Class<? extends Object>, TypeDescription>();
     }
 
+    public Constructor(String theRoot) throws ClassNotFoundException {
+        this(Class.forName(check(theRoot)));
+    }
+
+    private static final String check(String s) {
+        if (s == null) {
+            throw new NullPointerException("Root type must be provided.");
+        }
+        if (s.trim().length() == 0) {
+            throw new YAMLException("Root type must be provided.");
+        }
+        return s;
+    }
+
     /**
      * Make YAML aware how to parse a custom Class. If there is no root Class
      * assigned in constructor then the 'root' property of this definition is

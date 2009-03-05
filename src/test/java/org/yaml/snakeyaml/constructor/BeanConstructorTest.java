@@ -12,6 +12,7 @@ import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Loader;
 import org.yaml.snakeyaml.Util;
 import org.yaml.snakeyaml.Yaml;
+import org.yaml.snakeyaml.error.YAMLException;
 
 public class BeanConstructorTest extends TestCase {
 
@@ -56,11 +57,29 @@ public class BeanConstructorTest extends TestCase {
         assertNotNull(result3);
     }
 
-    public void testNoClassConstructor() throws IOException {
+    public void testNoClassConstructor() {
         try {
-            new Loader(new Constructor(null));
+            new Loader(new Constructor((Class<? extends Object>) null));
             fail("Class must be provided.");
-        } catch (Exception e) {
+        } catch (NullPointerException e) {
+            assertEquals("Root type must be provided.", e.getMessage());
+        }
+    }
+
+    public void testNoClassConstructorString() throws ClassNotFoundException {
+        try {
+            new Loader(new Constructor((String) null));
+            fail("Class must be provided.");
+        } catch (NullPointerException e) {
+            assertEquals("Root type must be provided.", e.getMessage());
+        }
+    }
+
+    public void testNoClassConstructorEmptyString() throws ClassNotFoundException {
+        try {
+            new Loader(new Constructor(" "));
+            fail("Class must be provided.");
+        } catch (YAMLException e) {
             assertEquals("Root type must be provided.", e.getMessage());
         }
     }

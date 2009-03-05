@@ -1,6 +1,6 @@
 <projectDescription>
   <name>SnakeYAML</name>
-  <comment>Port of PyYAML to Java 5 without any external dependencies</comment>
+  <comment>YAML 1.1 parser and emitter for Java</comment>
   <projects/>
   <buildSpec>
     <buildCommand>
