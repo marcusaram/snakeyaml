@@ -8,6 +8,7 @@ import java.io.IOException;
 import junit.framework.TestCase;
 
 import org.yaml.snakeyaml.constructor.Constructor;
+import org.yaml.snakeyaml.error.YAMLException;
 
 /**
  * Test that Yaml instances are independent and can be used in multiple threads.
@@ -56,6 +57,27 @@ public class ParallelTest extends TestCase {
             System.out.println("Duration of " + id + " was " + duration + " ms/load.");
             progress++;
         }
+    }
 
+    public void testSharedLoader() throws IOException {
+        Loader loader = new Loader(new Constructor(Invoice.class));
+        new Yaml(loader);
+        try {
+            new Yaml(loader);
+            fail("Loader cannot be shared.");
+        } catch (YAMLException e) {
+            assertEquals("Loader cannot be shared.", e.getMessage());
+        }
+    }
+
+    public void testSharedDumper() throws IOException {
+        Dumper dumper = new Dumper(new DumperOptions());
+        new Yaml(dumper);
+        try {
+            new Yaml(dumper);
+            fail("Dumper cannot be shared.");
+        } catch (YAMLException e) {
+            assertEquals("Dumper cannot be shared.", e.getMessage());
+        }
     }
 }

@@ -18,6 +18,7 @@ import org.yaml.snakeyaml.serializer.Serializer;
 public class Dumper {
     private final Representer representer;
     private final DumperOptions options;
+    private Yaml owner;
 
     public Dumper(Representer representer, DumperOptions options) {
         this.representer = representer;
@@ -43,6 +44,20 @@ public class Dumper {
             s.close();
         } catch (java.io.IOException e) {
             throw new YAMLException(e);
+        }
+    }
+
+    /**
+     * Because Dumper is stateful it cannot be shared
+     * 
+     * @param yaml
+     *            - Yaml instance which owns the Dumper
+     */
+    void setOwner(Yaml yaml) {
+        if (owner == null) {
+            owner = yaml;
+        } else if (owner != yaml) {
+            throw new YAMLException("Dumper cannot be shared.");
         }
     }
 }

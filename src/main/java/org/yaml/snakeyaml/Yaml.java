@@ -22,6 +22,7 @@ public class Yaml {
     private final Dumper dumper;
     private final Loader loader;
     private final Resolver resolver;
+    private String name;
 
     public Yaml(DumperOptions options) {
         this(new Loader(), new Dumper(options));
@@ -46,9 +47,12 @@ public class Yaml {
      */
     public Yaml(Loader loader, Dumper dumper) {
         this.loader = loader;
+        loader.setOwner(this);
         this.dumper = dumper;
+        dumper.setOwner(this);
         this.resolver = new Resolver();
         this.loader.setResolver(resolver);
+        this.name = "Yaml:" + System.identityHashCode(this);
     }
 
     public Yaml() {
@@ -196,5 +200,24 @@ public class Yaml {
      */
     public void addImplicitResolver(String tag, Pattern regexp, String first) {
         resolver.addImplicitResolver(tag, regexp, first);
+    }
+
+    @Override
+    public String toString() {
+        return name;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * Set a meaningful name to be shown in toString()
+     * 
+     * @param name
+     *            - human readable name
+     */
+    public void setName(String name) {
+        this.name = name;
     }
 }

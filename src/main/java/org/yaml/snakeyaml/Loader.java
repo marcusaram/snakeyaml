@@ -8,6 +8,7 @@ import java.util.Iterator;
 import org.yaml.snakeyaml.composer.Composer;
 import org.yaml.snakeyaml.constructor.BaseConstructor;
 import org.yaml.snakeyaml.constructor.Constructor;
+import org.yaml.snakeyaml.error.YAMLException;
 import org.yaml.snakeyaml.parser.ParserImpl;
 import org.yaml.snakeyaml.reader.Reader;
 import org.yaml.snakeyaml.resolver.Resolver;
@@ -18,6 +19,7 @@ import org.yaml.snakeyaml.resolver.Resolver;
 public class Loader {
     protected final BaseConstructor constructor;
     protected Resolver resolver;
+    private Yaml owner;
 
     public Loader(BaseConstructor constructor) {
         super();
@@ -69,5 +71,19 @@ public class Loader {
 
     public void setResolver(Resolver resolver) {
         this.resolver = resolver;
+    }
+
+    /**
+     * Because Loader is stateful it cannot be shared
+     * 
+     * @param yaml
+     *            - Yaml instance which owns the Loader
+     */
+    void setOwner(Yaml yaml) {
+        if (owner == null) {
+            owner = yaml;
+        } else if (owner != yaml) {
+            throw new YAMLException("Loader cannot be shared.");
+        }
     }
 }
