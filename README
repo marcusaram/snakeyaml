@@ -104,10 +104,13 @@ For more details, please check [wiki:Documentation SnakeYAML Documentation].
 
 == History ==
 '''1.1 (in Mercurial)'''
+ * Better Spring support: the root `JavaBean` class to parse can be specified as a String
  * Performance: Use [http://www.complang.org/ragel/ Ragel] instead of Regular Expressions for implicit types
  * Fix ticket #4: java.sql.Date was not handled properly (thanks to Christophe Desguez)
  * Introduce `DumperOptions.DefaultScalarStyle` and `DumperOptions.DefaultFlowStyle`
  * minor refactoring and bug fixes
+ * add [/snakeyaml/wiki/Documentation#Threading Threads] and 
+ [/snakeyaml/wiki/Documentation#Spring Spring] sections to the wiki documentation
  
 '''1.0.1 (2009-02-18)'''
  * proper `Enum` [http://trac-hg.assembla.com/snakeyaml/wiki/Documentation#Enum support] (thanks to James Nissel)

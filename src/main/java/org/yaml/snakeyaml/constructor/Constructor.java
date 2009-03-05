@@ -46,6 +46,14 @@ public class Constructor extends SafeConstructor {
         typeDefinitions = new HashMap<Class<? extends Object>, TypeDescription>();
     }
 
+    /**
+     * Create Constuctor for a class which does not have to be in the classpath
+     * or for a definition from a Spring ApplicationContext.
+     * 
+     * @param theRoot
+     *            - fully qualified class name of the root JavaBean
+     * @throws ClassNotFoundException
+     */
     public Constructor(String theRoot) throws ClassNotFoundException {
         this(Class.forName(check(theRoot)));
     }
