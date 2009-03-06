@@ -9,8 +9,8 @@ import org.yaml.snakeyaml.error.YAMLException;
 /**
  * @see <a href="http://pyyaml.org/wiki/PyYAML">PyYAML</a> for more information
  */
-public class TagToken extends Token {
-    private String[] value;
+public final class TagToken extends Token {
+    private final String[] value;
 
     public TagToken(String[] value, Mark startMark, Mark endMark) {
         super(startMark, endMark);

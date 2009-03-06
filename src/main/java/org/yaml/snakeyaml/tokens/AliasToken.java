@@ -8,8 +8,8 @@ import org.yaml.snakeyaml.error.Mark;
 /**
  * @see <a href="http://pyyaml.org/wiki/PyYAML">PyYAML</a> for more information
  */
-public class AliasToken extends Token {
-    private String value;
+public final class AliasToken extends Token {
+    private final String value;
 
     public AliasToken(String value, Mark startMark, Mark endMark) {
         super(startMark, endMark);

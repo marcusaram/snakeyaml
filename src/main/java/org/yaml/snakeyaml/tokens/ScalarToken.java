@@ -8,10 +8,10 @@ import org.yaml.snakeyaml.error.Mark;
 /**
  * @see <a href="http://pyyaml.org/wiki/PyYAML">PyYAML</a> for more information
  */
-public class ScalarToken extends Token {
-    private String value;
-    private boolean plain;
-    private char style;
+public final class ScalarToken extends Token {
+    private final String value;
+    private final boolean plain;
+    private final char style;
 
     public ScalarToken(String value, Mark startMark, Mark endMark, boolean plain) {
         this(value, plain, startMark, endMark, (char) 0);
