@@ -10,7 +10,7 @@ import org.yaml.snakeyaml.error.Mark;
  */
 public abstract class NodeEvent extends Event {
 
-    private String anchor;
+    private final String anchor;
 
     public NodeEvent(String anchor, Mark startMark, Mark endMark) {
         super(startMark, endMark);

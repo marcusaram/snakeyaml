@@ -10,10 +10,10 @@ import org.yaml.snakeyaml.error.Mark;
 /**
  * @see <a href="http://pyyaml.org/wiki/PyYAML">PyYAML</a> for more information
  */
-public class DocumentStartEvent extends Event {
-    private boolean explicit;
-    private Integer[] version;
-    private Map<String, String> tags;
+public final class DocumentStartEvent extends Event {
+    private final boolean explicit;
+    private final Integer[] version;
+    private final Map<String, String> tags;
 
     public DocumentStartEvent(Mark startMark, Mark endMark, boolean explicit, Integer[] version,
             Map<String, String> tags) {

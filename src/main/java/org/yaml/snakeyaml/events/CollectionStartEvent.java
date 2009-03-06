@@ -9,9 +9,9 @@ import org.yaml.snakeyaml.error.Mark;
  * @see <a href="http://pyyaml.org/wiki/PyYAML">PyYAML</a> for more information
  */
 public abstract class CollectionStartEvent extends NodeEvent {
-    private String tag;
-    private boolean implicit;
-    private Boolean flowStyle;
+    private final String tag;
+    private final boolean implicit;
+    private final Boolean flowStyle;
 
     public CollectionStartEvent(String anchor, String tag, boolean implicit, Mark startMark,
             Mark endMark, Boolean flowStyle) {

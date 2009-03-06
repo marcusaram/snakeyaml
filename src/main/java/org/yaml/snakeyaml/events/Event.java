@@ -9,8 +9,8 @@ import org.yaml.snakeyaml.error.Mark;
  * @see <a href="http://pyyaml.org/wiki/PyYAML">PyYAML</a> for more information
  */
 public abstract class Event {
-    private Mark startMark;
-    private Mark endMark;
+    private final Mark startMark;
+    private final Mark endMark;
 
     public Event(Mark startMark, Mark endMark) {
         this.startMark = startMark;

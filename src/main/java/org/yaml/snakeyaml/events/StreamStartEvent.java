@@ -8,7 +8,7 @@ import org.yaml.snakeyaml.error.Mark;
 /**
  * @see <a href="http://pyyaml.org/wiki/PyYAML">PyYAML</a> for more information
  */
-public class StreamStartEvent extends Event {
+public final class StreamStartEvent extends Event {
 
     public StreamStartEvent(Mark startMark, Mark endMark) {
         super(startMark, endMark);
