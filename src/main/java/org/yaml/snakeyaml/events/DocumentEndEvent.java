@@ -8,8 +8,8 @@ import org.yaml.snakeyaml.error.Mark;
 /**
  * @see <a href="http://pyyaml.org/wiki/PyYAML">PyYAML</a> for more information
  */
-public class DocumentEndEvent extends Event {
-    private boolean explicit;
+public final class DocumentEndEvent extends Event {
+    private final boolean explicit;
 
     public DocumentEndEvent(Mark startMark, Mark endMark, boolean explicit) {
         super(startMark, endMark);
