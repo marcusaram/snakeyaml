@@ -11,9 +11,9 @@ import org.yaml.snakeyaml.error.YAMLException;
 /**
  * @see <a href="http://pyyaml.org/wiki/PyYAML">PyYAML</a> for more information
  */
-public class DirectiveToken extends Token {
-    private String name;
-    private List<?> value;
+public final class DirectiveToken extends Token {
+    private final String name;
+    private final List<?> value;
 
     public DirectiveToken(String name, List<?> value, Mark startMark, Mark endMark) {
         super(startMark, endMark);

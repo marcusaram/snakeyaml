@@ -8,8 +8,8 @@ import org.yaml.snakeyaml.error.Mark;
 /**
  * @see <a href="http://pyyaml.org/wiki/PyYAML">PyYAML</a> for more information
  */
-public class AnchorToken extends Token {
-    private String value;
+public final class AnchorToken extends Token {
+    private final String value;
 
     public AnchorToken(String value, Mark startMark, Mark endMark) {
         super(startMark, endMark);

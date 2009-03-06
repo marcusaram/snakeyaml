@@ -8,7 +8,7 @@ import org.yaml.snakeyaml.error.Mark;
 /**
  * @see <a href="http://pyyaml.org/wiki/PyYAML">PyYAML</a> for more information
  */
-public class FlowSequenceEndToken extends Token {
+public final class FlowSequenceEndToken extends Token {
 
     public FlowSequenceEndToken(Mark startMark, Mark endMark) {
         super(startMark, endMark);
