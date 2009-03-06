@@ -47,7 +47,7 @@ public class Constructor extends SafeConstructor {
     }
 
     /**
-     * Create Constuctor for a class which does not have to be in the classpath
+     * Create Constructor for a class which does not have to be in the classpath
      * or for a definition from a Spring ApplicationContext.
      * 
      * @param theRoot
