@@ -24,7 +24,7 @@ public interface Scanner {
     boolean checkToken(Class<? extends Token> choice);
 
     /**
-     * Return the next token, but do not delete if from the queue.
+     * Return the next token, but do not delete it from the queue.
      */
     Token peekToken();
 

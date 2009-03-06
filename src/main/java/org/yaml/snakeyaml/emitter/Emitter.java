@@ -317,7 +317,7 @@ public final class Emitter {
                 }
                 state = new ExpectDocumentRoot();
             } else if (event instanceof StreamEndEvent) {
-                // TODO fix 313 changeset
+                // TODO fix 313 PyYAML changeset
                 // if (openEnded) {
                 // writeIndicator("...", true, false, false);
                 // writeIndent();

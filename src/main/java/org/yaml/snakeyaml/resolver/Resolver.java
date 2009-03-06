@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
 import org.yaml.snakeyaml.nodes.NodeId;
 
 /**
- * @see <a href="http://pyyaml.org/wiki/PyYAML">PyYAML< /a> for more information
+ * @see <a href="http://pyyaml.org/wiki/PyYAML">PyYAML</a> for more information
  */
 public class Resolver {
     private static final String DEFAULT_SCALAR_TAG = "tag:yaml.org,2002:str";
