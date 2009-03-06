@@ -102,16 +102,6 @@ public class Resolver {
                 }
             }
         }
-        // if (!yamlPathResolvers.isEmpty()) {
-        // final Map<? extends Node, String> exactPaths =
-        // resolverExactPaths.getFirst();
-        // if (exactPaths.containsKey(kind)) {
-        // return exactPaths.get(kind);
-        // }
-        // if (exactPaths.containsKey(null)) {
-        // return exactPaths.get(null);
-        // }
-        // }
         switch (kind) {
         case scalar:
             return DEFAULT_SCALAR_TAG;
