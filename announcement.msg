@@ -16,7 +16,7 @@ and bug fixes.
 Changes
 =======
  * Better Spring support: the root JavaBean class to parse can be specified as a String
- * Performance: Use Ragel instead of Regular Expressions for implicit types
+ * Performance: fix a bug with expanding Regular Expressions
  * Fix ticket #4: java.sql.Date was not handled properly
  * Introduce Enums: DumperOptions.DefaultScalarStyle and DumperOptions.DefaultFlowStyle
  * minor bug fixes 

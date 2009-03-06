@@ -5,6 +5,11 @@
 	</properties>
 	<body>
 	    <release version="1.1" date="in Mercurial" description="Development">
+            <action dev="py4fun" type="update">
+                Restore Regular Expressions in Resolver. Ragel gives only 5% performance increase. 
+                Fix a bug in Resolver with expanded regular expressions which caused the
+                performance problem. (2009-03-06)
+            </action>
             <action dev="py4fun" type="add">
                 Better Spring support: it is now possible to create a constructor with a String
                 as the class name. (2009-03-05)
