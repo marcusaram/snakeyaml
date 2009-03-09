@@ -221,10 +221,9 @@ public class SafeConstructor extends BaseConstructor {
 
     private class ConstuctYamlBinary implements Construct {
         public Object construct(Node node) {
-            char[] decoded = Base64Coder.decode(constructScalar((ScalarNode) node).toString()
+            byte[] decoded = Base64Coder.decode(constructScalar((ScalarNode) node).toString()
                     .toCharArray());
-            String value = new String(decoded);
-            return value;
+            return decoded;
         }
     }
 

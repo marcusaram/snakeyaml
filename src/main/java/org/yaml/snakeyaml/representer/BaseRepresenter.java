@@ -80,7 +80,7 @@ public class BaseRepresenter {
             }
             // check array of primitives
             if (clazz.getName().startsWith("[")) {
-                throw new YAMLException("Arrays of primitives are not supported.");
+                throw new YAMLException("Arrays of primitives are not fully supported.");
             }
             // check defaults
             if (multiRepresenters.containsKey(null)) {

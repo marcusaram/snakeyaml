@@ -18,19 +18,28 @@ public class BinaryTagTest extends AbstractTest {
     String content = line1 + line2 + line3 + line4;
 
     public void testBinary() throws IOException {
-        String binary = (String) getMapValue("canonical: !!binary " + content, "canonical");
-        assertTrue(binary.startsWith("GIF89"));
+        byte[] binary = (byte[]) getMapValue("canonical: !!binary " + content, "canonical");
+        assertEquals((byte) 'G', binary[0]);
+        assertEquals((byte) 'I', binary[1]);
+        assertEquals((byte) 'F', binary[2]);
+        assertEquals((byte) '8', binary[3]);
+        assertEquals((byte) '9', binary[4]);
     }
 
     public void testBinary2() throws IOException {
-        String binary = (String) load("!!binary \"MQ==\"");
-        assertEquals("1", binary);
+        byte[] binary = (byte[]) load("!!binary \"MQ==\"");
+        assertEquals(1, binary.length);
+        assertEquals((byte) '1', binary[0]);
     }
 
     public void testBinaryTag() throws IOException {
-        String binary = (String) getMapValue("canonical: !<tag:yaml.org,2002:binary> " + content,
+        byte[] binary = (byte[]) getMapValue("canonical: !<tag:yaml.org,2002:binary> " + content,
                 "canonical");
-        assertTrue(binary.startsWith("GIF89"));
+        assertEquals((byte) 'G', binary[0]);
+        assertEquals((byte) 'I', binary[1]);
+        assertEquals((byte) 'F', binary[2]);
+        assertEquals((byte) '8', binary[3]);
+        assertEquals((byte) '9', binary[4]);
     }
 
     public void testBinaryOut() throws IOException {
@@ -44,13 +53,12 @@ public class BinaryTagTest extends AbstractTest {
 
     public void testByteArray() throws IOException {
         byte[] data = { 8, 14, 15, 10, 126, 32, 65, 65, 65 };
-        String value = new String(data);
-        String output = dump(value);
+        String output = dump(data);
         assertEquals("!!binary |-\n  CA4PCn4gQUFB\n", output);
-        String parsed = (String) load(output);
-        assertEquals(data.length, parsed.getBytes().length);
+        byte[] parsed = (byte[]) load(output);
+        assertEquals(data.length, parsed.length);
         for (int i = 0; i < data.length; i++) {
-            assertEquals(data[i], parsed.getBytes()[i]);
+            assertEquals(data[i], parsed[i]);
         }
     }
 }

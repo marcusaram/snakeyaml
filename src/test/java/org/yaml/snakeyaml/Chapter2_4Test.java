@@ -107,11 +107,13 @@ public class Chapter2_4Test extends TestCase {
 
     @SuppressWarnings("unchecked")
     public void testExample_2_23_picture() throws Exception {
-        YamlDocument document = new YamlDocument("example2_23_picture.yaml");
+        YamlDocument document = new YamlDocument("example2_23_picture.yaml", false);
         Map<String, Object> map = (Map<String, Object>) document.getNativeData();
         assertEquals(1, map.size());
-        String picture = (String) map.get("picture");
-        assertTrue(picture.startsWith("GIF89"));
+        byte[] picture = (byte[]) map.get("picture");
+        assertEquals((byte) 'G', picture[0]);
+        assertEquals((byte) 'I', picture[1]);
+        assertEquals((byte) 'F', picture[2]);
     }
 
     class SomethingConstructor extends Constructor {
@@ -130,7 +132,7 @@ public class Chapter2_4Test extends TestCase {
 
     @SuppressWarnings("unchecked")
     public void testExample_2_23() throws IOException {
-        YamlDocument document = new YamlDocument("example2_23.yaml", true,
+        YamlDocument document = new YamlDocument("example2_23.yaml", false,
                 new SomethingConstructor());
         Map<String, Object> map = (Map<String, Object>) document.getNativeData();
         assertEquals(3, map.size());

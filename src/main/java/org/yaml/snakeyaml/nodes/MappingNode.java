@@ -59,4 +59,19 @@ public class MappingNode extends CollectionNode {
     public void setValueType(Class<? extends Object> valueType) {
         this.valueType = valueType;
     }
+
+    public String toString() {
+        String values;
+        StringBuffer buf = new StringBuffer();
+        for (Node[] node : getValue()) {
+            buf.append("{ key=");
+            buf.append(node[0]);
+            buf.append("; value=");
+            // to avoid overflow in case of recursive structures
+            buf.append(System.identityHashCode(node[1]));
+            buf.append(" }");
+        }
+        values = buf.toString();
+        return "<" + this.getClass().getName() + " (tag=" + getTag() + ", values=" + values + ")>";
+    }
 }

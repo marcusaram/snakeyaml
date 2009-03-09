@@ -56,7 +56,7 @@ public class Chapter2_3Test extends TestCase {
 
     @SuppressWarnings("unchecked")
     public void testExample_2_17() throws IOException {
-        YamlDocument document = new YamlDocument("example2_17.yaml");
+        YamlDocument document = new YamlDocument("example2_17.yaml", false);
         Map<String, String> map = (Map<String, String>) document.getNativeData();
         assertEquals(map.toString(), 6, map.size());
         assertEquals("Sosa did fine.\u263A", map.get("unicode"));
@@ -76,7 +76,7 @@ public class Chapter2_3Test extends TestCase {
 
     @SuppressWarnings("unchecked")
     public void testExample_2_17_control() {
-        YamlDocument document = new YamlDocument("example2_17_control.yaml");
+        YamlDocument document = new YamlDocument("example2_17_control.yaml", false);
         Map<String, String> map = (Map<String, String>) document.getNativeData();
         assertEquals("\b1998\t1999\t2000\n", map.get("control"));
     }

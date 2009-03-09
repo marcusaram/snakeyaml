@@ -72,14 +72,14 @@ public class Base64Coder {
      * @throws IllegalArgumentException
      *             if the input is not valid Base64 encoded data.
      */
-    public static char[] decode(char[] in) {
+    public static byte[] decode(char[] in) {
         int iLen = in.length;
         if (iLen % 4 != 0)
             throw new YAMLException("Length of Base64 encoded input string is not a multiple of 4.");
         while (iLen > 0 && in[iLen - 1] == '=')
             iLen--;
         int oLen = (iLen * 3) / 4;
-        char[] out = new char[oLen];
+        byte[] out = new byte[oLen];
         int ip = 0;
         int op = 0;
         while (ip < iLen) {
@@ -98,11 +98,11 @@ public class Base64Coder {
             int o0 = (b0 << 2) | (b1 >>> 4);
             int o1 = ((b1 & 0xf) << 4) | (b2 >>> 2);
             int o2 = ((b2 & 3) << 6) | b3;
-            out[op++] = (char) o0;
+            out[op++] = (byte) o0;
             if (op < oLen)
-                out[op++] = (char) o1;
+                out[op++] = (byte) o1;
             if (op < oLen)
-                out[op++] = (char) o2;
+                out[op++] = (byte) o2;
         }
         return out;
     }

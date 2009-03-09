@@ -64,7 +64,7 @@ public class SeqTagTest extends AbstractTest {
             dump(array);
             fail("Arrays of primitives are not supported.");
         } catch (RuntimeException e) {
-            assertEquals("Arrays of primitives are not supported.", e.getMessage());
+            assertEquals("Arrays of primitives are not fully supported.", e.getMessage());
         }
     }
 }
