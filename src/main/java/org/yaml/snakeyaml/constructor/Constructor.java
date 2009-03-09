@@ -231,9 +231,13 @@ public class Constructor extends SafeConstructor {
             try {
                 // get value by BaseConstructor
                 Object value = super.callConstructor(node);
-                java.lang.reflect.Constructor<? extends Object> javaConstructor = type
-                        .getConstructor(value.getClass());
-                result = javaConstructor.newInstance(value);
+                if (type.isArray()) {
+                    result = value;
+                } else {
+                    java.lang.reflect.Constructor<? extends Object> javaConstructor = type
+                            .getConstructor(value.getClass());
+                    result = javaConstructor.newInstance(value);
+                }
             } catch (Exception e) {
                 throw new YAMLException(e);
             }

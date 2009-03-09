@@ -30,6 +30,7 @@ class SafeRepresenter extends BaseRepresenter {
         this.representers.put(String.class, new RepresentString());
         this.representers.put(Boolean.class, new RepresentBoolean());
         this.representers.put(Character.class, new RepresentString());
+        this.representers.put(byte[].class, new RepresentByteArray());
         this.multiRepresenters.put(Number.class, new RepresentNumber());
         this.multiRepresenters.put(List.class, new RepresentList());
         this.multiRepresenters.put(Map.class, new RepresentMap());
@@ -212,6 +213,14 @@ class SafeRepresenter extends BaseRepresenter {
         public Node representData(Object data) {
             String tag = "tag:yaml.org,2002:" + data.getClass().getName();
             return representScalar(tag, data.toString());
+        }
+    }
+
+    private class RepresentByteArray implements Represent {
+        public Node representData(Object data) {
+            String tag = "tag:yaml.org,2002:binary";
+            char[] binary = Base64Coder.encode((byte[]) data);
+            return representScalar(tag, String.valueOf(binary), '|');
         }
     }
 }

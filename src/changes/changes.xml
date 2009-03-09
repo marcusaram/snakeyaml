@@ -6,6 +6,9 @@
 	<body>
 	    <release version="1.1" date="in Mercurial" description="Development">
             <action dev="py4fun" type="update">
+                Use byte[] for binary type. (2009-03-09)
+            </action>
+            <action dev="py4fun" type="update">
                 Restore Regular Expressions in Resolver. Ragel gives only 5% performance increase. 
                 Fix a bug in Resolver with expanded regular expressions which caused the
                 performance problem. (2009-03-06)

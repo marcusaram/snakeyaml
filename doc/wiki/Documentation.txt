@@ -59,10 +59,10 @@ b:
 You can find an example [http://trac-hg.assembla.com/snakeyaml/browser/src/test/java/examples/CollectionStyleTest.java here]
 
 === Binary Data ===
-Binary data is represented as `String`. When the binary contains only printable Unicode characters 
-a `!!str` scalar is used. If the bunary contains at least one non-printable character the `!!binary` is emitted.
+`byte[]` is represented as binary. Also when a `String` contains at least one non-printable character the 
+`!!binary` type is emitted.
 
-Binary scalar is always parsed as String. Call String.getBytes() if you need `byte[]`.
+Binary scalar is parsed as `byte[]`.
 
 An example can found [http://trac-hg.assembla.com/snakeyaml/browser/src/test/java/org/yaml/snakeyaml/types/BinaryTagTest.java here].
 
