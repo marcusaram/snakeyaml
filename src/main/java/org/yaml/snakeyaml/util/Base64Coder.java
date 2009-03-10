@@ -5,7 +5,7 @@ package org.yaml.snakeyaml.util;
 
 import org.yaml.snakeyaml.error.YAMLException;
 
-public class Base64Coder {
+public abstract class Base64Coder {
     // Mapping table from 6-bit nibbles to Base64 characters.
     private final static char[] map1 = new char[64];
     static {

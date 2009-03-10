@@ -125,9 +125,6 @@ public class Representer extends SafeRepresenter {
     }
 
     private Set<Property> getProperties(Class<? extends Object> type) throws IntrospectionException {
-        if (type == null) {
-            throw new NullPointerException("type cannot be null.");
-        }
         Set<Property> properties = new TreeSet<Property>();
         for (PropertyDescriptor property : Introspector.getBeanInfo(type).getPropertyDescriptors())
             if (property.getReadMethod() != null

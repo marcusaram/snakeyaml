@@ -18,7 +18,7 @@ import org.yaml.snakeyaml.nodes.ScalarNode;
 import org.yaml.snakeyaml.nodes.SequenceNode;
 import org.yaml.snakeyaml.serializer.Serializer;
 
-public class BaseRepresenter {
+public abstract class BaseRepresenter {
     @SuppressWarnings("unchecked")
     protected final Map<Class, Represent> representers = new HashMap<Class, Represent>();
     /**
@@ -79,7 +79,7 @@ public class BaseRepresenter {
                 }
             }
             // check array of primitives
-            if (clazz.getName().startsWith("[")) {
+            if (clazz.isArray()) {
                 throw new YAMLException("Arrays of primitives are not fully supported.");
             }
             // check defaults
@@ -87,12 +87,8 @@ public class BaseRepresenter {
                 Represent representer = multiRepresenters.get(null);
                 node = representer.representData(data);
             } else {
-                if (representers.containsKey(null)) {
-                    Represent representer = representers.get(null);
-                    node = representer.representData(data);
-                } else {
-                    throw new UnsupportedOperationException("Class: " + clazz);
-                }
+                Represent representer = representers.get(null);
+                node = representer.representData(data);
             }
         }
         return node;
@@ -103,7 +99,6 @@ public class BaseRepresenter {
             style = this.defaultStyle;
         }
         Node node = new ScalarNode(tag, value, null, null, style);
-        assert aliasKey != null;
         representedObjects.put(aliasKey, node);
         return node;
     }
@@ -115,7 +110,6 @@ public class BaseRepresenter {
     protected Node representSequence(String tag, List<? extends Object> sequence, Boolean flowStyle) {
         List<Node> value = new LinkedList<Node>();
         SequenceNode node = new SequenceNode(tag, value, flowStyle);
-        assert aliasKey != null;
         representedObjects.put(aliasKey, node);
         boolean bestStyle = true;
         for (Object item : sequence) {
@@ -139,7 +133,6 @@ public class BaseRepresenter {
             Boolean flowStyle) {
         List<Node[]> value = new LinkedList<Node[]>();
         MappingNode node = new MappingNode(tag, value, flowStyle);
-        assert aliasKey != null;
         representedObjects.put(aliasKey, node);
         boolean bestStyle = true;
         for (Object itemKey : mapping.keySet()) {
@@ -164,7 +157,5 @@ public class BaseRepresenter {
         return node;
     }
 
-    protected boolean ignoreAliases(Object data) {
-        return false;
-    }
+    protected abstract boolean ignoreAliases(Object data);
 }

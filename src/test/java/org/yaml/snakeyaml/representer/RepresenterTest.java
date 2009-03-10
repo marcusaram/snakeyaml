@@ -118,4 +118,14 @@ public class RepresenterTest extends TestCase {
             return name + " " + isValid();
         }
     }
+
+    public void testRepresenterAddNull() {
+        Representer representer = new Representer();
+        try {
+            representer.addTypeDescription(null);
+            fail("Representer must be provided.");
+        } catch (Exception e) {
+            assertTrue(true);
+        }
+    }
 }
