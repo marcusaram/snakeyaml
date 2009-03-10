@@ -162,11 +162,7 @@ public class Reader {
     }
 
     public Charset getEncoding() {
-        if (this.stream instanceof UnicodeReader) {
-            return Charset.forName(((UnicodeReader) this.stream).getEncoding());
-        } else {
-            throw new UnsupportedOperationException();
-        }
+        return Charset.forName(((UnicodeReader) this.stream).getEncoding());
     }
 
     public int getIndex() {

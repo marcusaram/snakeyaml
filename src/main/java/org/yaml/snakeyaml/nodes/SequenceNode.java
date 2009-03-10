@@ -37,10 +37,6 @@ public class SequenceNode extends CollectionNode {
         return value;
     }
 
-    public Class<? extends Object> getListType() {
-        return listType;
-    }
-
     public void setListType(Class<? extends Object> listType) {
         this.listType = listType;
     }
