@@ -5,6 +5,9 @@ package org.yaml.snakeyaml;
 
 import java.util.Map;
 
+import org.yaml.snakeyaml.emitter.Emitter;
+import org.yaml.snakeyaml.error.YAMLException;
+
 /**
  * @see <a href="http://pyyaml.org/wiki/PyYAML">PyYAML</a> for more information
  */
@@ -113,6 +116,12 @@ public class DumperOptions {
     }
 
     public void setIndent(int indent) {
+        if (indent < Emitter.MIN_INDENT) {
+            throw new YAMLException("Indent must be at least " + Emitter.MIN_INDENT);
+        }
+        if (indent > Emitter.MAX_INDENT) {
+            throw new YAMLException("Indent must be at most " + Emitter.MAX_INDENT);
+        }
         this.indent = indent;
     }
 
