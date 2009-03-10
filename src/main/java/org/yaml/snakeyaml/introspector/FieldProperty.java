@@ -25,7 +25,7 @@ public class FieldProperty extends Property {
         try {
             return field.get(object);
         } catch (Exception e) {
-            throw new YAMLException("Unable to access field " + field.getName() + " on obejct "
+            throw new YAMLException("Unable to access field " + field.getName() + " on object "
                     + object + " : " + e);
         }
     }
