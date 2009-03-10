@@ -54,8 +54,6 @@ public class UnicodeReader extends java.io.Reader {
      * read() method to initialize it.
      */
     public String getEncoding() {
-        if (internalIn2 == null)
-            return null;
         return internalIn2.getEncoding();
     }
 
