@@ -47,9 +47,9 @@ public class Yaml {
      */
     public Yaml(Loader loader, Dumper dumper) {
         this.loader = loader;
-        loader.setOwner(this);
+        loader.setAttached();
         this.dumper = dumper;
-        dumper.setOwner(this);
+        dumper.setAttached();
         this.resolver = new Resolver();
         this.loader.setResolver(resolver);
         this.name = "Yaml:" + System.identityHashCode(this);
