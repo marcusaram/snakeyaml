@@ -172,11 +172,7 @@ public final class Emitter {
         if (opts.getWidth() > this.bestIndent * 2) {
             this.bestWidth = opts.getWidth();
         }
-        this.bestLineBreak = "\n";
-        if (opts.getLineBreak().equals("\n") || opts.getLineBreak().equals("\r")
-                || opts.getLineBreak().equals("\r\n")) {
-            this.bestLineBreak = opts.getLineBreak();
-        }
+        this.bestLineBreak = opts.getLineBreak().getString();
 
         // Tag prefixes.
         this.tagPrefixes = new LinkedHashMap<String, String>();

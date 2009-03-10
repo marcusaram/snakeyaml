@@ -7,8 +7,6 @@ import java.util.Map;
 
 import junit.framework.TestCase;
 
-import org.yaml.snakeyaml.error.YAMLException;
-
 public class DumperOptionsTest extends TestCase {
 
     public void testDefaultStyle() {
@@ -130,22 +128,16 @@ public class DumperOptionsTest extends TestCase {
         yaml = new Yaml(options);
         assertEquals("---\n!!seq [\n  !!int \"1\",\n  !!int \"2\",\n]\n", yaml.dump(list));
         //
-        options.setLineBreak("\r\n");
+        options.setLineBreak(DumperOptions.LineBreak.MS);
         yaml = new Yaml(options);
-        assertEquals("---\r\n!!seq [\r\n  !!int \"1\",\r\n  !!int \"2\",\r\n]\r\n", yaml.dump(list));
+        String output = yaml.dump(list);
+        assertEquals("---\r\n!!seq [\r\n  !!int \"1\",\r\n  !!int \"2\",\r\n]\r\n", output);
         // null check
         try {
             options.setLineBreak(null);
             fail("Null must not be accepted.");
         } catch (NullPointerException e) {
             assertEquals("Specify line break.", e.getMessage());
-        }
-        // 
-        try {
-            options.setLineBreak(" ");
-            fail("Only \\x0A and \\x0D must be accepted.");
-        } catch (YAMLException e) {
-            assertEquals("Only \\x0A and \\x0D can be specified.", e.getMessage());
         }
     }
 
@@ -238,5 +230,8 @@ public class DumperOptionsTest extends TestCase {
         //
         DumperOptions.DefaultFlowStyle flowStyle = DumperOptions.DefaultFlowStyle.BLOCK;
         assertEquals("Flow style: 'false'", flowStyle.toString());
+        //
+        DumperOptions.LineBreak lb = DumperOptions.LineBreak.Linux;
+        assertEquals("Line break: Linux", lb.toString());
     }
 }
