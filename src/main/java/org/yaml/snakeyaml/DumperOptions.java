@@ -5,8 +5,6 @@ package org.yaml.snakeyaml;
 
 import java.util.Map;
 
-import org.yaml.snakeyaml.error.YAMLException;
-
 /**
  * @see <a href="http://pyyaml.org/wiki/PyYAML">PyYAML</a> for more information
  */
@@ -49,13 +47,32 @@ public class DumperOptions {
         }
     }
 
+    public enum LineBreak {
+        MS("\r\n"), Mac("\r"), Linux("\n");
+
+        private String lineBreak;
+
+        private LineBreak(String lineBreak) {
+            this.lineBreak = lineBreak;
+        }
+
+        public String getString() {
+            return lineBreak;
+        }
+
+        @Override
+        public String toString() {
+            return "Line break: " + name();
+        }
+    }
+
     private DefaultScalarStyle defaultStyle = DefaultScalarStyle.PLAIN;
     private DefaultFlowStyle defaultFlowStyle = DefaultFlowStyle.AUTO;
     private boolean canonical = false;
     private boolean allowUnicode = true;
     private int indent = 2;
     private int bestWidth = 80;
-    private String lineBreak = "\n";
+    private LineBreak lineBreak = LineBreak.Linux;
     private boolean explicitStart = false;
     private boolean explicitEnd = false;
     private String explicitRoot = null;
@@ -136,7 +153,7 @@ public class DumperOptions {
         return this.bestWidth;
     }
 
-    public String getLineBreak() {
+    public LineBreak getLineBreak() {
         return lineBreak;
     }
 
@@ -171,16 +188,10 @@ public class DumperOptions {
      * Specify the line break to separate the lines. It is platform specific:
      * Windows - "\r\n", MacOS - "\r", Linux - "\n". The default value is the
      * one for Linux.
-     * 
-     * @param lineBreak
-     *            - String to be used as a line separator.
      */
-    public void setLineBreak(String lineBreak) {
+    public void setLineBreak(LineBreak lineBreak) {
         if (lineBreak == null) {
             throw new NullPointerException("Specify line break.");
-        }
-        if (!lineBreak.matches("(\\r|\\n)+")) {
-            throw new YAMLException("Only \\x0A and \\x0D can be specified.");
         }
         this.lineBreak = lineBreak;
     }
