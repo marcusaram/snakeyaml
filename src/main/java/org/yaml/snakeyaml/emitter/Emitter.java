@@ -45,6 +45,8 @@ import org.yaml.snakeyaml.events.StreamStartEvent;
  */
 public final class Emitter {
     private static final Map<Character, String> ESCAPE_REPLACEMENTS = new HashMap<Character, String>();
+    public static final int MIN_INDENT = 1;
+    public static final int MAX_INDENT = 10;
 
     static {
         ESCAPE_REPLACEMENTS.put(new Character('\0'), "0");
@@ -163,7 +165,7 @@ public final class Emitter {
         this.canonical = opts.isCanonical();
         this.allowUnicode = opts.isAllowUnicode();
         this.bestIndent = 2;
-        if ((opts.getIndent() > 1) && (opts.getIndent() < 10)) {
+        if ((opts.getIndent() > MIN_INDENT) && (opts.getIndent() < MAX_INDENT)) {
             this.bestIndent = opts.getIndent();
         }
         this.bestWidth = 80;
