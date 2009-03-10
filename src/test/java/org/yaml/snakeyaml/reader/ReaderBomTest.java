@@ -32,7 +32,8 @@ public class ReaderBomTest extends TestCase {
     public void testNoBom() throws IOException {
         byte[] data = "test".getBytes("UTF-8");
         ByteArrayInputStream input = new ByteArrayInputStream(data);
-        Reader reader = new Reader(new UnicodeReader(input));
+        java.io.Reader r = new UnicodeReader(input);
+        Reader reader = new Reader(r);
         assertEquals('t', reader.peek());
         assertEquals(Charset.forName("UTF-8"), reader.getEncoding());
         reader.forward(1);
@@ -43,6 +44,7 @@ public class ReaderBomTest extends TestCase {
         assertEquals('t', reader.peek());
         reader.forward(1);
         assertEquals('\u0000', reader.peek());
+        r.close();
     }
 
     public void testUtf8Bom() throws IOException {
