@@ -18,7 +18,7 @@ import org.yaml.snakeyaml.serializer.Serializer;
 public class Dumper {
     private final Representer representer;
     private final DumperOptions options;
-    private Yaml owner;
+    private boolean attached = false;
 
     public Dumper(Representer representer, DumperOptions options) {
         this.representer = representer;
@@ -49,14 +49,11 @@ public class Dumper {
 
     /**
      * Because Dumper is stateful it cannot be shared
-     * 
-     * @param yaml
-     *            - Yaml instance which owns the Dumper
      */
-    void setOwner(Yaml yaml) {
-        if (owner == null) {
-            owner = yaml;
-        } else if (owner != yaml) {
+    void setAttached() {
+        if (!attached) {
+            attached = true;
+        } else {
             throw new YAMLException("Dumper cannot be shared.");
         }
     }

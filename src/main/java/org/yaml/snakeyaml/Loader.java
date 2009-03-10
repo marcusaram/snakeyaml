@@ -19,7 +19,7 @@ import org.yaml.snakeyaml.resolver.Resolver;
 public class Loader {
     protected final BaseConstructor constructor;
     protected Resolver resolver;
-    private Yaml owner;
+    private boolean attached = false;
 
     public Loader(BaseConstructor constructor) {
         super();
@@ -75,14 +75,11 @@ public class Loader {
 
     /**
      * Because Loader is stateful it cannot be shared
-     * 
-     * @param yaml
-     *            - Yaml instance which owns the Loader
      */
-    void setOwner(Yaml yaml) {
-        if (owner == null) {
-            owner = yaml;
-        } else if (owner != yaml) {
+    void setAttached() {
+        if (!attached) {
+            attached = true;
+        } else {
             throw new YAMLException("Loader cannot be shared.");
         }
     }
