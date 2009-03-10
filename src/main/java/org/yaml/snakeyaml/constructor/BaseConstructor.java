@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.yaml.snakeyaml.composer.Composer;
-import org.yaml.snakeyaml.error.YAMLException;
 import org.yaml.snakeyaml.nodes.MappingNode;
 import org.yaml.snakeyaml.nodes.Node;
 import org.yaml.snakeyaml.nodes.ScalarNode;
@@ -88,25 +87,8 @@ public class BaseConstructor {
         Construct constructor = null;
         constructor = yamlConstructors.get(node.getTag());
         if (constructor == null) {
-            if (yamlConstructors.containsKey(null)) {
-                constructor = yamlConstructors.get(null);
-                data = constructor.construct(node);
-            } else {
-                switch (node.getNodeId()) {
-                case scalar:
-                    data = constructScalar((ScalarNode) node);
-                    break;
-                case sequence:
-                    data = constructSequence((SequenceNode) node);
-                    break;
-                case mapping:
-                    data = constructMapping((MappingNode) node);
-                    break;
-
-                default:
-                    throw new YAMLException("Unknown node: " + node);
-                }
-            }
+            constructor = yamlConstructors.get(null);
+            data = constructor.construct(node);
         } else {
             data = constructor.construct(node);
         }
