@@ -37,10 +37,6 @@ public class Dumper {
             while (iter.hasNext()) {
                 representer.represent(s, iter.next());
             }
-        } catch (java.io.IOException e) {
-            throw new YAMLException(e);
-        }
-        try {
             s.close();
         } catch (java.io.IOException e) {
             throw new YAMLException(e);
