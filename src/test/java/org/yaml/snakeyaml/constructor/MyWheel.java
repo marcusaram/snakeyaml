@@ -1,8 +1,8 @@
-package org.yaml.snakeyaml.constructor;
-
 /*
  * See LICENSE file in distribution for copyright and licensing information.
  */
+package org.yaml.snakeyaml.constructor;
+
 public class MyWheel {
     private int id;
     private String brand;
