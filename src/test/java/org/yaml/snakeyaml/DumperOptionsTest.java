@@ -7,6 +7,9 @@ import java.util.Map;
 
 import junit.framework.TestCase;
 
+import org.yaml.snakeyaml.emitter.Emitter;
+import org.yaml.snakeyaml.error.YAMLException;
+
 public class DumperOptionsTest extends TestCase {
 
     public void testDefaultStyle() {
@@ -116,6 +119,29 @@ public class DumperOptionsTest extends TestCase {
         options.setIndent(4);
         yaml = new Yaml(options);
         assertEquals("---\n!!seq [\n    !!int \"1\",\n    !!int \"2\",\n]\n", yaml.dump(list));
+        //
+        try {
+            options.setIndent(0);
+            fail();
+        } catch (YAMLException e) {
+            assertTrue(true);
+        }
+        try {
+            options.setIndent(-2);
+            fail();
+        } catch (YAMLException e) {
+            assertTrue(true);
+        }
+        try {
+            options.setIndent(11);
+            fail();
+        } catch (YAMLException e) {
+            assertTrue(true);
+        }
+        //
+        assertTrue(Emitter.MIN_INDENT > 0);
+        assertTrue(Emitter.MIN_INDENT < Emitter.MAX_INDENT);
+        assertTrue(Emitter.MAX_INDENT < 20);
     }
 
     public void testLineBreak() {
