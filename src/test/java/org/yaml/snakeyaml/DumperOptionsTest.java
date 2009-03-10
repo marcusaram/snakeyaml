@@ -222,6 +222,16 @@ public class DumperOptionsTest extends TestCase {
         assertEquals("\"\\xdcber\"\n", yaml.dump("\u00DCber"));
     }
 
+    public void testSetRootTag() {
+        DumperOptions options = new DumperOptions();
+        try {
+            options.setExplicitRoot(null);
+            fail("Root tag is required.");
+        } catch (NullPointerException e) {
+            assertEquals("Root tag must be specified.", e.getMessage());
+        }
+    }
+
     public void testToString() {
         DumperOptions.DefaultScalarStyle scalarStyle = DumperOptions.DefaultScalarStyle.LITERAL;
         assertEquals("Scalar style: '|'", scalarStyle.toString());
