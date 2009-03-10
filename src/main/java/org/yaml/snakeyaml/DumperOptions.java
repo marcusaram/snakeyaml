@@ -5,6 +5,8 @@ package org.yaml.snakeyaml;
 
 import java.util.Map;
 
+import org.yaml.snakeyaml.error.YAMLException;
+
 /**
  * @see <a href="http://pyyaml.org/wiki/PyYAML">PyYAML</a> for more information
  */
@@ -43,7 +45,7 @@ public class DumperOptions {
 
         @Override
         public String toString() {
-            return "DEFAULT_FLOW_STYLE: '" + styleBoolean + "'";
+            return "Flow style: '" + styleBoolean + "'";
         }
     }
 
@@ -88,7 +90,7 @@ public class DumperOptions {
      */
     public void setDefaultStyle(DefaultScalarStyle defaultStyle) {
         if (defaultStyle == null) {
-            throw new NullPointerException("Use explicit DEFAULT_STYLE enum.");
+            throw new NullPointerException("Use DefaultScalarStyle enum.");
         }
         this.defaultStyle = defaultStyle;
     }
@@ -139,6 +141,9 @@ public class DumperOptions {
     }
 
     public void setDefaultFlowStyle(DefaultFlowStyle defaultFlowStyle) {
+        if (defaultFlowStyle == null) {
+            throw new NullPointerException("Use DefaultFlowStyle enum.");
+        }
         this.defaultFlowStyle = defaultFlowStyle;
     }
 
@@ -156,6 +161,9 @@ public class DumperOptions {
      *            the default
      */
     public void setExplicitRoot(String expRoot) {
+        if (expRoot == null) {
+            throw new NullPointerException("Root tag must be specified.");
+        }
         this.explicitRoot = expRoot;
     }
 
@@ -168,6 +176,12 @@ public class DumperOptions {
      *            - String to be used as a line separator.
      */
     public void setLineBreak(String lineBreak) {
+        if (lineBreak == null) {
+            throw new NullPointerException("Specify line break.");
+        }
+        if (!lineBreak.matches("(\\r|\\n)+")) {
+            throw new YAMLException("Only \\x0A and \\x0D can be specified.");
+        }
         this.lineBreak = lineBreak;
     }
 

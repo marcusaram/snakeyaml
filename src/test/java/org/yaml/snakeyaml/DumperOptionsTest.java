@@ -7,6 +7,8 @@ import java.util.Map;
 
 import junit.framework.TestCase;
 
+import org.yaml.snakeyaml.error.YAMLException;
+
 public class DumperOptionsTest extends TestCase {
 
     public void testDefaultStyle() {
@@ -28,6 +30,13 @@ public class DumperOptionsTest extends TestCase {
         yaml = new Yaml(options);
         assertEquals("'123'\n", yaml.dump("123"));
         assertEquals("abc\n", yaml.dump("abc"));
+        // null check
+        try {
+            options.setDefaultStyle(null);
+            fail("Null must not be accepted.");
+        } catch (NullPointerException e) {
+            assertEquals("Use DefaultScalarStyle enum.", e.getMessage());
+        }
     }
 
     public void testDefaultFlowStyle() {
@@ -48,6 +57,13 @@ public class DumperOptionsTest extends TestCase {
         options.setDefaultFlowStyle(DumperOptions.DefaultFlowStyle.BLOCK);
         yaml = new Yaml(options);
         assertEquals("- 1\n- 2\n- 3\n", yaml.dump(list));
+        // null check
+        try {
+            options.setDefaultFlowStyle(null);
+            fail("Null must not be accepted.");
+        } catch (NullPointerException e) {
+            assertEquals("Use DefaultFlowStyle enum.", e.getMessage());
+        }
     }
 
     public void testDefaultFlowStyleNested() {
@@ -117,6 +133,20 @@ public class DumperOptionsTest extends TestCase {
         options.setLineBreak("\r\n");
         yaml = new Yaml(options);
         assertEquals("---\r\n!!seq [\r\n  !!int \"1\",\r\n  !!int \"2\",\r\n]\r\n", yaml.dump(list));
+        // null check
+        try {
+            options.setLineBreak(null);
+            fail("Null must not be accepted.");
+        } catch (NullPointerException e) {
+            assertEquals("Specify line break.", e.getMessage());
+        }
+        // 
+        try {
+            options.setLineBreak(" ");
+            fail("Only \\x0A and \\x0D must be accepted.");
+        } catch (YAMLException e) {
+            assertEquals("Only \\x0A and \\x0D can be specified.", e.getMessage());
+        }
     }
 
     public void testExplicitStart() {
@@ -190,5 +220,13 @@ public class DumperOptionsTest extends TestCase {
         options.setAllowUnicode(false);
         yaml = new Yaml(options);
         assertEquals("\"\\xdcber\"\n", yaml.dump("\u00DCber"));
+    }
+
+    public void testToString() {
+        DumperOptions.DefaultScalarStyle scalarStyle = DumperOptions.DefaultScalarStyle.LITERAL;
+        assertEquals("Scalar style: '|'", scalarStyle.toString());
+        //
+        DumperOptions.DefaultFlowStyle flowStyle = DumperOptions.DefaultFlowStyle.BLOCK;
+        assertEquals("Flow style: 'false'", flowStyle.toString());
     }
 }
