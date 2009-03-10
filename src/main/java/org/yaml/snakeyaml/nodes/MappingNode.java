@@ -31,6 +31,7 @@ public class MappingNode extends CollectionNode {
     }
 
     @SuppressWarnings("unchecked")
+    @Override
     public List<Node[]> getValue() {
         List<Node[]> mapping = (List<Node[]>) super.getValue();
         for (Node[] nodes : mapping) {
@@ -44,22 +45,15 @@ public class MappingNode extends CollectionNode {
         value = merge;
     }
 
-    public Class<? extends Object> getKeyType() {
-        return keyType;
-    }
-
     public void setKeyType(Class<? extends Object> keyType) {
         this.keyType = keyType;
-    }
-
-    public Class<? extends Object> getValueType() {
-        return valueType;
     }
 
     public void setValueType(Class<? extends Object> valueType) {
         this.valueType = valueType;
     }
 
+    @Override
     public String toString() {
         String values;
         StringBuffer buf = new StringBuffer();

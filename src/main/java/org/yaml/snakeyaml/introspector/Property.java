@@ -20,8 +20,9 @@ public abstract class Property implements Comparable<Property> {
         return name;
     }
 
+    @Override
     public String toString() {
-        return getName() + " in " + getType();
+        return getName() + " of " + getType();
     }
 
     public int compareTo(Property o) {

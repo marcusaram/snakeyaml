@@ -372,7 +372,7 @@ public final class Emitter {
                 } else {
                     expectBlockSequence();
                 }
-            } else if (event instanceof MappingStartEvent) {
+            } else {// MappingStartEvent
                 if (flowLevel != 0 || canonical || ((MappingStartEvent) event).getFlowStyle()
                         || checkEmptyMapping()) {
                     expectFlowMapping();
