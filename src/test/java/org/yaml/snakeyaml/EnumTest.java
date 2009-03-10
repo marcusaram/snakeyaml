@@ -160,4 +160,16 @@ public class EnumTest extends TestCase {
         assertEquals(174, bean.getId());
         assertEquals(map, bean.getMap());
     }
+
+    public void testLoadWrongEnum() {
+        Yaml yaml = new Yaml();
+        try {
+            yaml
+                    .load("1: !!org.yaml.snakeyaml.Suit 'HEARTS'\n2: !!org.yaml.snakeyaml.Suit 'KOSYR'");
+            fail("KOSYR is not Suit");
+        } catch (Exception e) {
+            assertTrue("KOSYR must be reported", e.getMessage().contains(
+                    "Unable to find enum value 'KOSYR' for enum"));
+        }
+    }
 }

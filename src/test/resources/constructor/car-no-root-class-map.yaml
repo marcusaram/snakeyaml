@@ -10,3 +10,6 @@ wheels:
   : 2008-01-16
   ? {brand: Pirelli, id: 5}
   : 2008-01-16
+windows:
+  front: 0
+  back: 1
