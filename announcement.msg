@@ -1,6 +1,6 @@
 From: Andrey Somov <py4fun@gmail.com>
 To: yaml-core@lists.sourceforge.net
-Subject: [ANN] SnakeYAML-1.1: improve performance
+Subject: [ANN] SnakeYAML-1.1: improve performance and test coverage
 
 =============================
  Announcing SnakeYAML-1.1
@@ -19,7 +19,7 @@ Changes
  * Better Spring support: the root JavaBean class to parse can be specified as a String
  * Performance: fix a bug with expanding Regular Expressions
  * Fix ticket #4: java.sql.Date was not handled properly
- * Introduce Enums: DumperOptions.DefaultScalarStyle and DumperOptions.DefaultFlowStyle
+ * Introduce Enums in DumperOptions: DefaultScalarStyle, DefaultFlowStyle and LineBreak
  * minor bug fixes 
 
 Resources

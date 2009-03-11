@@ -902,9 +902,11 @@ public void testLoadEnumBean() {
 == Threading ==
 
 Threads must have separate Yaml instances. Instances are cheap both in terms of time to create
-and memory to occupy. Because Loader and Dumper are stateful they also cannot be shared between
+and memory to occupy. Only the very first instance is heavy because of static initializers for 
+constants and regular expressions.
+
+Because Loader and Dumper are stateful they cannot be shared between
 different Yaml instances.
-Only the very first instance is heavy because of static initializers for constants and regular expressions.
 
 == Spring ==
 
