@@ -154,7 +154,7 @@ public class DumperOptionsTest extends TestCase {
         yaml = new Yaml(options);
         assertEquals("---\n!!seq [\n  !!int \"1\",\n  !!int \"2\",\n]\n", yaml.dump(list));
         //
-        options.setLineBreak(DumperOptions.LineBreak.MS);
+        options.setLineBreak(DumperOptions.LineBreak.WIN);
         yaml = new Yaml(options);
         String output = yaml.dump(list);
         assertEquals("---\r\n!!seq [\r\n  !!int \"1\",\r\n  !!int \"2\",\r\n]\r\n", output);
@@ -257,7 +257,7 @@ public class DumperOptionsTest extends TestCase {
         DumperOptions.DefaultFlowStyle flowStyle = DumperOptions.DefaultFlowStyle.BLOCK;
         assertEquals("Flow style: 'false'", flowStyle.toString());
         //
-        DumperOptions.LineBreak lb = DumperOptions.LineBreak.Linux;
-        assertEquals("Line break: Linux", lb.toString());
+        DumperOptions.LineBreak lb = DumperOptions.LineBreak.LINUX;
+        assertEquals("Line break: LINUX", lb.toString());
     }
 }
