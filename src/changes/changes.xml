@@ -4,7 +4,7 @@
 		<author email="py4fun@gmail.com">Andrey Somov</author>
 	</properties>
 	<body>
-	    <release version="1.1" date="in Mercurial" description="Development">
+	    <release version="1.1" date="2009-03-14" description="improve performance and test coverage">
             <action dev="py4fun" type="add">
                 Introduce DumperOptions.Version enum (2009-03-13)
             </action>
@@ -31,7 +31,7 @@
                 Add possibility to set a meaningful name for Yaml instance to be shown in toString(). (2009-03-05)
             </action>
             <action dev="py4fun" type="update">
-                Refactor: Declare classes which are not expected to be extended as final. (2009-03-04)
+                Refactor: declare classes which are not expected to be extended as final. (2009-03-04)
             </action>
             <action dev="py4fun" type="update">
                 Refactor: use 'final' keyword to identify immutable fields. (2009-03-04)

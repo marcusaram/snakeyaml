@@ -109,7 +109,7 @@ For more details, please check [wiki:Documentation SnakeYAML Documentation].
  * Better Spring support: the root `JavaBean` class can be specified as a String
  * Performance: fix a bug with expanding Regular Expressions (thanks to Christophe Desguez)
  * Fix ticket #4: java.sql.Date was not handled properly (thanks to Christophe Desguez)
- * Introduce `Enums` in `DumperOptions`: `DefaultScalarStyle`, `DefaultFlowStyle` and `LineBreak`
+ * Introduce `Enums` in `DumperOptions`
  * minor refactoring and bug fixes
  * add [/snakeyaml/wiki/Documentation#Threading Threads] and 
  [/snakeyaml/wiki/Documentation#Spring Spring] sections to the wiki documentation
