@@ -69,6 +69,25 @@ public class DumperOptions {
         }
     }
 
+    public enum Version {
+        V1_0(new Integer[] { 1, 0 }), V1_1(new Integer[] { 1, 1 });
+
+        private Integer[] version;
+
+        private Version(Integer[] version) {
+            this.version = version;
+        }
+
+        public Integer[] getArray() {
+            return version;
+        }
+
+        @Override
+        public String toString() {
+            return "Version: " + version[0] + "." + version[1];
+        }
+    }
+
     private DefaultScalarStyle defaultStyle = DefaultScalarStyle.PLAIN;
     private DefaultFlowStyle defaultFlowStyle = DefaultFlowStyle.AUTO;
     private boolean canonical = false;
@@ -79,7 +98,7 @@ public class DumperOptions {
     private boolean explicitStart = false;
     private boolean explicitEnd = false;
     private String explicitRoot = null;
-    private Integer[] version = null;
+    private Version version = null;
     private Map<String, String> tags = null;
 
     public boolean isAllowUnicode() {
@@ -129,11 +148,11 @@ public class DumperOptions {
         return this.indent;
     }
 
-    public void setVersion(Integer[] version) {
+    public void setVersion(Version version) {
         this.version = version;
     }
 
-    public Integer[] getVersion() {
+    public Version getVersion() {
         return this.version;
     }
 

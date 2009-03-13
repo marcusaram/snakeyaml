@@ -50,7 +50,9 @@ public final class Serializer {
         this.resolver = resolver;
         this.explicitStart = opts.isExplicitStart();
         this.explicitEnd = opts.isExplicitEnd();
-        this.useVersion = opts.getVersion();
+        if (opts.getVersion() != null) {
+            this.useVersion = opts.getVersion().getArray();
+        }
         this.useTags = opts.getTags();
         this.serializedNodes = new HashSet<Node>();
         this.anchors = new HashMap<Node, String>();
