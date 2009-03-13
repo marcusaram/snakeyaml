@@ -6,6 +6,9 @@
 	<body>
 	    <release version="1.1" date="in Mercurial" description="Development">
             <action dev="py4fun" type="add">
+                Introduce DumperOptions.Version enum (2009-03-13)
+            </action>
+            <action dev="py4fun" type="add">
                 Introduce DumperOptions.LineBreak enum (2009-03-10)
             </action>
             <action dev="py4fun" type="update">

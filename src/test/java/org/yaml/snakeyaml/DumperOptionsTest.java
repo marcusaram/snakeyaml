@@ -196,13 +196,11 @@ public class DumperOptionsTest extends TestCase {
         //
         DumperOptions options = new DumperOptions();
         options = new DumperOptions();
-        Integer[] version = { 1, 1 };
-        options.setVersion(version);
+        options.setVersion(DumperOptions.Version.V1_1);
         yaml = new Yaml(options);
         assertEquals("%YAML 1.1\n--- [1, 2, 3]\n", yaml.dump(list));
         //
-        Integer[] version0 = { 1, 0 };
-        options.setVersion(version0);
+        options.setVersion(DumperOptions.Version.V1_0);
         yaml = new Yaml(options);
         assertEquals("%YAML 1.0\n--- [1, 2, 3]\n", yaml.dump(list));
     }
