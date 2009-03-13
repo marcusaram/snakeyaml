@@ -157,7 +157,7 @@
 		<repository>
 			<id>internal</id>
 			<name>SnakeYAML Repo</name>
-			<url>http://localhost:8080/archiva/repository/internal</url>
+			<url>http://10.3.3.26:8080/archiva/repository/internal</url>
 		</repository>
 	</distributionManagement>
 </project>
