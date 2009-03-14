@@ -6,6 +6,9 @@
 	<body>
 	    <release version="1.1" date="2009-03-14" description="improve performance and test coverage">
             <action dev="py4fun" type="add">
+                Introduce JavaBeanParser (2009-03-14)
+            </action>
+            <action dev="py4fun" type="add">
                 Introduce DumperOptions.Version enum (2009-03-13)
             </action>
             <action dev="py4fun" type="add">
