@@ -11,7 +11,10 @@ import org.yaml.snakeyaml.reader.UnicodeReader;
 import org.yaml.snakeyaml.resolver.Resolver;
 
 /**
- * Convenience utility to parse JavaBeans. All the methods are Thread safe.
+ * Convenience utility to parse JavaBeans. The returned instance is enforced to
+ * be of the same class as the provided argument. All the methods are Thread
+ * safe. When the YAML document contains a global tag with the class definition
+ * like '!!com.package.MyBean' it is ignored in favour of the runtime class.
  */
 public class JavaBeanParser {
 
@@ -61,11 +64,6 @@ public class JavaBeanParser {
     public static <T> T load(java.io.Reader io, Class<T> javabean) {
         Loader loader = createLoader(javabean);
         return (T) loader.load(io);
-    }
-
-    @Override
-    public String toString() {
-        return "JavaBeanParser";
     }
 
     private static Loader createLoader(Class<? extends Object> clazz) {
