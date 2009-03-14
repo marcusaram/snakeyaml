@@ -645,14 +645,18 @@ plate: 12-XP-F4
 wheel: {id: 2}
 year: '2008'
 }}}
-Note thet the 'part' property still has a global tag but the 'wheel' property does not
+Note that the 'part' property still has a global tag but the 'wheel' property does not
 (because the wheel's runtime class is the same as it is defined in the `CarWithWheel` class).
 
 The example for the above `JavaBean` can be found 
 [http://trac-hg.assembla.com/snakeyaml/browser/src/test/java/org/yaml/snakeyaml/constructor/ImplicitTagsTest.java here]
 
-If it nessesary to massage/skip the root global tag for the `JavaBean` it 
-can be specified via `DumperOptions`.setExpRoot(String tag).
+If it is nessesary to massage/skip the root global tag for the `JavaBean` it 
+can be specified via `DumperOptions`.setExplicitRoot(String tag).
+
+There is a utility to parse `JavaBeans` - [http://trac-hg.assembla.com/snakeyaml/browser/src/main/java/org/yaml/snakeyaml/JavaBeanParser.java JavaBeanParser].
+All the methods of this utility are stateless and can be called from different Threads. The utility eliminates
+the need to cast returned instances to the specified class.
 
 === Shortcuts ===
 
