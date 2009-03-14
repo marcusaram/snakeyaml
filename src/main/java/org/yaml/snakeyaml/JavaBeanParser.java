@@ -11,40 +11,39 @@ import org.yaml.snakeyaml.reader.UnicodeReader;
 import org.yaml.snakeyaml.resolver.Resolver;
 
 /**
- * Public YAML interface. Each Thread must have its own instance.
+ * Convenience utility to parse JavaBeans. All the methods are Thread safe.
  */
-public class GenericsYaml {
-    private String name;
+public class JavaBeanParser {
 
-    private GenericsYaml() {
-        this.name = "GenericsYaml:" + System.identityHashCode(this);
+    private JavaBeanParser() {
     }
 
     /**
-     * Parse the first YAML document in a String and produce the corresponding
-     * Java object. (Because the encoding in known BOM is not respected.)
-     * 
      * @param yaml
-     *            - YAML data to load from (BOM must not be present)
-     * @return parsed object
+     *            - YAML document
+     * @param javabean
+     *            - JavaBean class to be parsed
+     * @return parsed JavaBean
      */
     @SuppressWarnings("unchecked")
-    public static <T> T load(String yaml, Class<T> clazz) {
-        Loader loader = createLoader(clazz);
+    public static <T> T load(String yaml, Class<T> javabean) {
+        Loader loader = createLoader(javabean);
         return (T) loader.load(new StringReader(yaml));
     }
 
     /**
      * Parse the first YAML document in a stream and produce the corresponding
-     * Java object.
+     * JavaBean.
      * 
      * @param io
      *            - data to load from (BOM is respected and removed)
-     * @return parsed object
+     * @param javabean
+     *            - JavaBean class to be parsed
+     * @return parsed JavaBean
      */
     @SuppressWarnings("unchecked")
-    public static <T> T load(InputStream io, Class<T> clazz) {
-        Loader loader = createLoader(clazz);
+    public static <T> T load(InputStream io, Class<T> javabean) {
+        Loader loader = createLoader(javabean);
         return (T) loader.load(new UnicodeReader(io));
     }
 
@@ -54,17 +53,19 @@ public class GenericsYaml {
      * 
      * @param io
      *            - data to load from (BOM must not be present)
-     * @return parsed object
+     * @param javabean
+     *            - JavaBean class to be parsed
+     * @return parsed JavaBean
      */
     @SuppressWarnings("unchecked")
-    public static <T> T load(java.io.Reader io, Class<T> clazz) {
-        Loader loader = createLoader(clazz);
+    public static <T> T load(java.io.Reader io, Class<T> javabean) {
+        Loader loader = createLoader(javabean);
         return (T) loader.load(io);
     }
 
     @Override
     public String toString() {
-        return name;
+        return "JavaBeanParser";
     }
 
     private static Loader createLoader(Class<? extends Object> clazz) {
