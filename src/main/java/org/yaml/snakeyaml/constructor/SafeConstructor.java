@@ -11,6 +11,7 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -101,7 +102,18 @@ public class SafeConstructor extends BaseConstructor {
         return super.constructMapping(node);
     }
 
-    private class ConstuctYamlNull implements Construct {
+    protected void constructMapping2ndStep(MappingNode node, Map<Object, Object> mapping) {
+        flattenMapping(node);
+        super.constructMapping2ndStep(node, mapping);
+    }
+
+    @Override
+    protected void constructSet2ndStep(MappingNode node, java.util.Set<Object> set) {
+        flattenMapping(node);
+        super.constructSet2ndStep(node, set);
+    }
+
+    private class ConstuctYamlNull extends AbstractConstruct {
         public Object construct(Node node) {
             constructScalar((ScalarNode) node);
             return null;
@@ -118,14 +130,14 @@ public class SafeConstructor extends BaseConstructor {
         BOOL_VALUES.put("off", Boolean.FALSE);
     }
 
-    private class ConstuctYamlBool implements Construct {
+    private class ConstuctYamlBool extends AbstractConstruct {
         public Object construct(Node node) {
             String val = (String) constructScalar((ScalarNode) node);
             return BOOL_VALUES.get(val.toLowerCase());
         }
     }
 
-    private class ConstuctYamlInt implements Construct {
+    private class ConstuctYamlInt extends AbstractConstruct {
         public Object construct(Node node) {
             String value = constructScalar((ScalarNode) node).toString().replaceAll("_", "");
             int sign = +1;
@@ -183,7 +195,7 @@ public class SafeConstructor extends BaseConstructor {
         return result;
     }
 
-    private class ConstuctYamlFloat implements Construct {
+    private class ConstuctYamlFloat extends AbstractConstruct {
         public Object construct(Node node) {
             String value = constructScalar((ScalarNode) node).toString().replaceAll("_", "");
             int sign = +1;
@@ -219,7 +231,7 @@ public class SafeConstructor extends BaseConstructor {
         }
     }
 
-    private class ConstuctYamlBinary implements Construct {
+    private class ConstuctYamlBinary extends AbstractConstruct {
         public Object construct(Node node) {
             byte[] decoded = Base64Coder.decode(constructScalar((ScalarNode) node).toString()
                     .toCharArray());
@@ -232,7 +244,7 @@ public class SafeConstructor extends BaseConstructor {
     private final static Pattern YMD_REGEXP = Pattern
             .compile("^([0-9][0-9][0-9][0-9])-([0-9][0-9]?)-([0-9][0-9]?)$");
 
-    private class ConstuctYamlTimestamp implements Construct {
+    private class ConstuctYamlTimestamp extends AbstractConstruct {
         public Object construct(Node node) {
             Matcher match = YMD_REGEXP.matcher((String) node.getValue());
             if (match.matches()) {
@@ -300,7 +312,7 @@ public class SafeConstructor extends BaseConstructor {
         }
     }
 
-    private class ConstuctYamlOmap implements Construct {
+    private class ConstuctYamlOmap extends AbstractConstruct {
         public Object construct(Node node) {
             // Note: we do not check for duplicate keys, because it's too
             // CPU-expensive.
@@ -334,7 +346,7 @@ public class SafeConstructor extends BaseConstructor {
     }
 
     // Note: the same code as `construct_yaml_omap`.
-    private class ConstuctYamlPairs implements Construct {
+    private class ConstuctYamlPairs extends AbstractConstruct {
         public Object construct(Node node) {
             // Note: we do not check for duplicate keys, because it's too
             // CPU-expensive.
@@ -366,32 +378,76 @@ public class SafeConstructor extends BaseConstructor {
         }
     }
 
-    private class ConstuctYamlSet implements Construct {
+    private class ConstuctYamlSet extends AbstractConstruct {
         public Object construct(Node node) {
-            Map<Object, Object> value = constructMapping((MappingNode) node);
-            return value.keySet();
+            if (node.isTwoStepsConstruction()) {
+                return createDefaultMap().keySet();
+            } else {
+                return constructMapping((MappingNode) node).keySet();
+            }
+        }
+
+        @SuppressWarnings("unchecked")
+        @Override
+        public void construct2ndStep(Node node, Object object) {
+            if (node.isTwoStepsConstruction()) {
+                constructSet2ndStep((MappingNode) node, (Set<Object>) object);
+            } else {
+                throw new YAMLException("Unexpected recursive set structure. Node: " + node);
+            }
         }
     }
 
-    private class ConstuctYamlStr implements Construct {
+    private class ConstuctYamlStr extends AbstractConstruct {
         public Object construct(Node node) {
             return (String) constructScalar((ScalarNode) node);
         }
     }
 
-    private class ConstuctYamlSeq implements Construct {
+    private class ConstuctYamlSeq extends AbstractConstruct {
+        @SuppressWarnings("unchecked")
         public Object construct(Node node) {
-            return constructSequence((SequenceNode) node);
+            if (node.isTwoStepsConstruction()) {
+                List<Node> nodeValue = (List<Node>) node.getValue();
+                return createDefaultList(nodeValue.size());
+            } else {
+                // TODO is it ever called ???
+                return constructSequence((SequenceNode) node);
+            }
+        }
+
+        @SuppressWarnings("unchecked")
+        @Override
+        public void construct2ndStep(Node node, Object data) {
+            if (node.isTwoStepsConstruction()) {
+                constructSequenceStep2((SequenceNode) node, (List<Object>) data);
+            } else {
+                throw new YAMLException("Unexpected recursive sequence structure. Node: " + node);
+            }
         }
     }
 
-    private class ConstuctYamlMap implements Construct {
+    private class ConstuctYamlMap extends AbstractConstruct {
         public Object construct(Node node) {
-            return constructMapping((MappingNode) node);
+            if (node.isTwoStepsConstruction()) {
+                return createDefaultMap();
+            } else {
+                return constructMapping((MappingNode) node);
+            }
+        }
+
+        @SuppressWarnings("unchecked")
+        @Override
+        public void construct2ndStep(Node node, Object object) {
+            if (node.isTwoStepsConstruction()) {
+                constructMapping2ndStep((MappingNode) node, (Map<Object, Object>) object);
+            } else {
+                throw new YAMLException("Unexpected recursive mapping structure. Node: " + node);
+            }
         }
     }
 
-    private class ConstuctUndefined implements Construct {
+    private class ConstuctUndefined extends AbstractConstruct {
         public Object construct(Node node) {
             throw new ConstructorException(null, null,
                     "could not determine a constructor for the tag " + node.getTag(), node
