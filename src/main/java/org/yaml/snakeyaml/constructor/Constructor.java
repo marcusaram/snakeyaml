@@ -9,12 +9,12 @@ import java.beans.PropertyDescriptor;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.yaml.snakeyaml.TypeDescription;
 import org.yaml.snakeyaml.error.YAMLException;
@@ -91,7 +91,7 @@ public class Constructor extends SafeConstructor {
         return typeDefinitions.put(definition.getType(), definition);
     }
 
-    private class ConstuctYamlObject implements Construct {
+    private class ConstuctYamlObject extends AbstractConstruct {
         @SuppressWarnings("unchecked")
         public Object construct(Node node) {
             Object result = null;
@@ -112,7 +112,11 @@ public class Constructor extends SafeConstructor {
                 case mapping:
                     MappingNode mnode = (MappingNode) node;
                     mnode.setType(cl);
-                    result = constructMappingNode(mnode);
+                    if (node.isTwoStepsConstruction()) {
+                        result = createMappingNode(cl);
+                    } else {
+                        result = constructMappingNode(mnode);
+                    }
                     break;
                 case sequence:
                     SequenceNode seqNode = (SequenceNode) node;
@@ -149,6 +153,7 @@ public class Constructor extends SafeConstructor {
             }
             return result;
         }
+
     }
 
     @Override
@@ -168,10 +173,41 @@ public class Constructor extends SafeConstructor {
             if (Map.class.isAssignableFrom(node.getType())) {
                 result = super.constructMapping((MappingNode) node);
             } else {
-                result = constructMappingNode((MappingNode) node);
+                if (node.isTwoStepsConstruction()) {
+                    result = createMappingNode(node.getType());
+                } else {
+                    result = constructMappingNode((MappingNode) node);
+                }
             }
         }
         return result;
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    protected void callPostCreate(Node node, Object object) {
+        if (!node.isTwoStepsConstruction()) {
+            throw new YAMLException("Inexpected recursive structure. Node: " + node);
+        }
+        if (Object.class.equals(node.getType()) || "tag:yaml.org,2002:null".equals(node.getTag())) {
+            super.callPostCreate(node, object);
+        } else {
+            switch (node.getNodeId()) {
+            case scalar:
+                throw new YAMLException("Scalars cannot be recursive. Node: " + node);
+            case sequence:
+                constructSequenceStep2((SequenceNode) node, (List<Object>) object);
+                break;
+            default:// mapping
+                if (Map.class.isAssignableFrom(node.getType())) {
+                    constructMapping2ndStep((MappingNode) node, (Map<Object, Object>) object);
+                } else if (Set.class.isAssignableFrom(node.getType())) {
+                    constructSet2ndStep((MappingNode) node, (Set<Object>) object);
+                } else {
+                    constructMappingNode2ndStep((MappingNode) node, object, node.getType());
+                }
+            }
+        }
     }
 
     private Object constructScalarNode(ScalarNode node) {
@@ -205,20 +241,17 @@ public class Constructor extends SafeConstructor {
                         java.lang.reflect.Constructor<?> constr = type.getConstructor(long.class);
                         result = constr.newInstance(date.getTime());
                     } catch (Exception e) {
-                        throw new YAMLException("Cannot construct: '" + type + "'");
+                        result = date;
                     }
                 }
             } else if (type == Float.class || type == Double.class || type == Float.TYPE
-                    || type == Double.TYPE || type == BigDecimal.class) {
+                    || type == Double.TYPE) {
                 Construct doubleContructor = yamlConstructors.get("tag:yaml.org,2002:float");
                 result = doubleContructor.construct(node);
                 if (type == Float.class || type == Float.TYPE) {
                     result = new Float((Double) result);
-                } else if (type == BigDecimal.class) {
-                    result = new BigDecimal(((Double) result).doubleValue());
                 }
-            } else if (type == Byte.class || type == Short.class || type == Integer.class
-                    || type == Long.class || type == BigInteger.class || type == Byte.TYPE
+            } else if (Number.class.isAssignableFrom(type) || type == Byte.TYPE
                     || type == Short.TYPE || type == Integer.TYPE || type == Long.TYPE) {
                 Construct intContructor = yamlConstructors.get("tag:yaml.org,2002:int");
                 result = intContructor.construct(node);
@@ -230,9 +263,10 @@ public class Constructor extends SafeConstructor {
                     result = new Integer(result.toString());
                 } else if (type == Long.class || type == Long.TYPE) {
                     result = new Long(result.toString());
-                } else {
-                    // only BigInteger left
+                } else if (type == BigInteger.class) {
                     result = new BigInteger(result.toString());
+                } else {
+                    throw new YAMLException("Unsupported Number class: " + type);
                 }
             } else if (Enum.class.isAssignableFrom(type)) {
                 String tag = "tag:yaml.org,2002:" + type.getName();
@@ -259,6 +293,23 @@ public class Constructor extends SafeConstructor {
         return result;
     }
 
+    private Object createMappingNode(Class<?> beanType) {
+        try {
+            /**
+             * Using only default constructor. Everything else will be
+             * initialized on 2nd step. If we do here some partial
+             * initialization, how do we then track what need to be done on 2nd
+             * step? I think it is better to get only object here (to have it as
+             * reference for recursion) and do all other thing on 2nd step.
+             */
+            return beanType.newInstance();
+        } catch (InstantiationException e) {
+            throw new YAMLException(e);
+        } catch (IllegalAccessException e) {
+            throw new YAMLException(e);
+        }
+    }
+
     /**
      * Construct JavaBean. If type safe collections are used please look at
      * <code>TypeDescription</code>.
@@ -268,17 +319,14 @@ public class Constructor extends SafeConstructor {
      *            <code>String</code>s) and values are objects to be created
      * @return constructed JavaBean
      */
-    @SuppressWarnings("unchecked")
     private Object constructMappingNode(MappingNode node) {
         Class<? extends Object> beanType = node.getType();
-        Object object;
-        try {
-            object = beanType.newInstance();
-        } catch (InstantiationException e) {
-            throw new YAMLException(e);
-        } catch (IllegalAccessException e) {
-            throw new YAMLException(e);
-        }
+        return constructMappingNode2ndStep(node, createMappingNode(beanType), beanType);
+    }
+
+    @SuppressWarnings("unchecked")
+    private Object constructMappingNode2ndStep(MappingNode node, Object object,
+            Class<? extends Object> beanType) {
         List<Node[]> nodeValue = (List<Node[]>) node.getValue();
         for (Node[] tuple : nodeValue) {
             ScalarNode keyNode;
@@ -294,6 +342,9 @@ public class Constructor extends SafeConstructor {
             boolean isArray = false;
             try {
                 Property property = getProperty(beanType, key);
+                if (property == null)
+                    throw new YAMLException("Unable to find property '" + key + "' on class: "
+                            + beanType.getName());
                 valueNode.setType(property.getType());
                 TypeDescription memberDescription = typeDefinitions.get(beanType);
                 if (memberDescription != null) {
@@ -337,28 +388,23 @@ public class Constructor extends SafeConstructor {
         return (T[]) Array.newInstance(type.getComponentType(), 0);
     }
 
-    private Property getProperty(Class<? extends Object> type, String name)
+    protected Property getProperty(Class<? extends Object> type, String name)
             throws IntrospectionException {
         for (PropertyDescriptor property : Introspector.getBeanInfo(type).getPropertyDescriptors()) {
             if (property.getName().equals(name)) {
-                if (property.getWriteMethod() != null) {
+                if (property.getReadMethod() != null && property.getWriteMethod() != null)
                     return new MethodProperty(property);
-                } else {
-                    throw new YAMLException("Property '" + name + "' on JavaBean: "
-                            + type.getName() + " does not have the write method");
-                }
+                break;
             }
         }
         for (Field field : type.getFields()) {
             int modifiers = field.getModifiers();
-            if (Modifier.isStatic(modifiers) || Modifier.isTransient(modifiers)) {
+            if (!Modifier.isPublic(modifiers) || Modifier.isStatic(modifiers)
+                    || Modifier.isTransient(modifiers))
                 continue;
-            }
-            if (field.getName().equals(name)) {
+            if (field.getName().equals(name))
                 return new FieldProperty(field);
-            }
         }
-        throw new YAMLException("Unable to find property '" + name + "' on class: "
-                + type.getName());
+        return null;
     }
 }
