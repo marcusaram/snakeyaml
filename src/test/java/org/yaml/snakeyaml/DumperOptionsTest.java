@@ -24,7 +24,7 @@ import junit.framework.TestCase;
 
 import org.yaml.snakeyaml.emitter.Emitter;
 import org.yaml.snakeyaml.error.YAMLException;
-import org.yaml.snakeyaml.nodes.Tags;
+import org.yaml.snakeyaml.nodes.Tag;
 import org.yaml.snakeyaml.representer.Representer;
 
 public class DumperOptionsTest extends TestCase {
@@ -291,7 +291,7 @@ public class DumperOptionsTest extends TestCase {
         assertEquals("%TAG !foo! bar\n--- [1, 2, 3]\n", yaml.dump(list));
         //
         options = new DumperOptions();
-        tags.put("!yaml!", Tags.PREFIX);
+        tags.put("!yaml!", Tag.PREFIX);
         yaml = new Yaml(options);
         assertEquals("foo\n", yaml.dump("foo"));
     }
@@ -310,7 +310,7 @@ public class DumperOptionsTest extends TestCase {
     public void testSetRootTag() {
         DumperOptions options = new DumperOptions();
         try {
-            options.setExplicitRoot(null);
+            options.setExplicitRoot((Tag) null);
             fail("Root tag is required.");
         } catch (NullPointerException e) {
             assertEquals("Root tag must be specified.", e.getMessage());

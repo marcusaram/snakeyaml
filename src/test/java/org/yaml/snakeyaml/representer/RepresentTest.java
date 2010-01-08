@@ -25,7 +25,7 @@ import org.yaml.snakeyaml.constructor.AbstractConstruct;
 import org.yaml.snakeyaml.constructor.Constructor;
 import org.yaml.snakeyaml.nodes.Node;
 import org.yaml.snakeyaml.nodes.ScalarNode;
-import org.yaml.snakeyaml.nodes.Tags;
+import org.yaml.snakeyaml.nodes.Tag;
 
 public class RepresentTest extends TestCase {
 
@@ -75,14 +75,14 @@ public class RepresentTest extends TestCase {
             public Node representData(Object data) {
                 CustomBean coin = (CustomBean) data;
                 String value = coin.getPrefix() + "d" + coin.getSuffix();
-                return representScalar("!!Dice", value);
+                return representScalar(new Tag ("!!Dice"), value);
             }
         }
     }
 
     class MyConstructor extends Constructor {
         public MyConstructor() {
-            this.yamlConstructors.put(Tags.PREFIX + "Dice", new ConstructDice());
+            this.yamlConstructors.put(new Tag (Tag.PREFIX + "Dice"), new ConstructDice());
         }
 
         private class ConstructDice extends AbstractConstruct {
