@@ -22,7 +22,7 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 import org.yaml.snakeyaml.nodes.NodeId;
-import org.yaml.snakeyaml.nodes.Tags;
+import org.yaml.snakeyaml.nodes.Tag;
 
 /**
  * Resolver tries to detect a type by scalars's content (when the type is
@@ -61,26 +61,26 @@ public class Resolver {
     }
 
     protected void addImplicitResolvers() {
-        addImplicitResolver(Tags.BOOL, BOOL, "yYnNtTfFoO");
-        addImplicitResolver(Tags.FLOAT, FLOAT, "-+0123456789.");
-        addImplicitResolver(Tags.INT, INT, "-+0123456789");
-        addImplicitResolver(Tags.MERGE, MERGE, "<");
-        addImplicitResolver(Tags.NULL, NULL, "~nN\0");
-        addImplicitResolver(Tags.NULL, EMPTY, null);
-        addImplicitResolver(Tags.TIMESTAMP, TIMESTAMP, "0123456789");
-        addImplicitResolver(Tags.VALUE, VALUE, "=");
+        addImplicitResolver(Tag.BOOL, BOOL, "yYnNtTfFoO");
+        addImplicitResolver(Tag.FLOAT, FLOAT, "-+0123456789.");
+        addImplicitResolver(Tag.INT, INT, "-+0123456789");
+        addImplicitResolver(Tag.MERGE, MERGE, "<");
+        addImplicitResolver(Tag.NULL, NULL, "~nN\0");
+        addImplicitResolver(Tag.NULL, EMPTY, null);
+        addImplicitResolver(Tag.TIMESTAMP, TIMESTAMP, "0123456789");
+        addImplicitResolver(Tag.VALUE, VALUE, "=");
         // The following implicit resolver is only for documentation
         // purposes.
         // It cannot work
         // because plain scalars cannot start with '!', '&', or '*'.
-        addImplicitResolver(Tags.YAML, YAML, "!&*");
+        addImplicitResolver(Tag.YAML, YAML, "!&*");
     }
 
     public Resolver() {
         this(true);
     }
 
-    public void addImplicitResolver(String tag, Pattern regexp, String first) {
+    public void addImplicitResolver(Tag tag, Pattern regexp, String first) {
         if (first == null) {
             List<ResolverTuple> curr = yamlImplicitResolvers.get(null);
             if (curr == null) {
@@ -106,7 +106,7 @@ public class Resolver {
         }
     }
 
-    public String resolve(NodeId kind, String value, boolean implicit) {
+    public Tag resolve(NodeId kind, String value, boolean implicit) {
         if (kind == NodeId.scalar && implicit) {
             List<ResolverTuple> resolvers = null;
             if ("".equals(value)) {
@@ -116,7 +116,7 @@ public class Resolver {
             }
             if (resolvers != null) {
                 for (ResolverTuple v : resolvers) {
-                    String tag = v.getTag();
+                    Tag tag = v.getTag();
                     Pattern regexp = v.getRegexp();
                     if (regexp.matcher(value).matches()) {
                         return tag;
@@ -125,7 +125,7 @@ public class Resolver {
             }
             if (yamlImplicitResolvers.containsKey(null)) {
                 for (ResolverTuple v : yamlImplicitResolvers.get(null)) {
-                    String tag = v.getTag();
+                    Tag tag = v.getTag();
                     Pattern regexp = v.getRegexp();
                     if (regexp.matcher(value).matches()) {
                         return tag;
@@ -135,11 +135,11 @@ public class Resolver {
         }
         switch (kind) {
         case scalar:
-            return Tags.STR;
+            return Tag.STR;
         case sequence:
-            return Tags.SEQ;
+            return Tag.SEQ;
         default:
-            return Tags.MAP;
+            return Tag.MAP;
         }
     }
 }

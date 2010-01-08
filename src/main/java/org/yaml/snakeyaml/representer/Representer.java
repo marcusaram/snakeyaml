@@ -39,7 +39,7 @@ import org.yaml.snakeyaml.nodes.NodeId;
 import org.yaml.snakeyaml.nodes.NodeTuple;
 import org.yaml.snakeyaml.nodes.ScalarNode;
 import org.yaml.snakeyaml.nodes.SequenceNode;
-import org.yaml.snakeyaml.nodes.Tags;
+import org.yaml.snakeyaml.nodes.Tag;
 
 /**
  * Represent JavaBeans
@@ -85,9 +85,9 @@ public class Representer extends SafeRepresenter {
      */
     protected Node representJavaBean(Set<Property> properties, Object javaBean) {
         List<NodeTuple> value = new ArrayList<NodeTuple>(properties.size());
-        String tag;
-        String customTag = classTags.get(javaBean.getClass());
-        tag = customTag != null ? customTag : Tags.getGlobalTagForClass(javaBean.getClass());
+        Tag tag;
+        Tag customTag = classTags.get(javaBean.getClass());
+        tag = customTag != null ? customTag : new Tag(javaBean.getClass());
         // flow style will be chosen by BaseRepresenter
         MappingNode node = new MappingNode(tag, value, null);
         representedObjects.put(objectToRepresent, node);
@@ -111,12 +111,12 @@ public class Representer extends SafeRepresenter {
                         if (property.getType() == memberValue.getClass()) {
                             // we do not need global tag because the property
                             // Class is the same as the runtime class
-                            nodeValue.setTag(Tags.MAP);
+                            nodeValue.setTag(Tag.MAP);
                         }
                     }
                 }
             } else if (memberValue != null && Enum.class.isAssignableFrom(memberValue.getClass())) {
-                nodeValue.setTag(Tags.STR);
+                nodeValue.setTag(Tag.STR);
             }
             if (nodeValue.getNodeId() != NodeId.scalar && !hasAlias) {
                 // generic collections
@@ -162,7 +162,7 @@ public class Representer extends SafeRepresenter {
                 for (Node childNode : snode.getValue()) {
                     Object member = iter.next();
                     if (t.equals(member.getClass()) && childNode.getNodeId() == NodeId.mapping) {
-                        childNode.setTag(Tags.MAP);
+                        childNode.setTag(Tag.MAP);
                     }
                 }
             } else if (object instanceof Set) {
@@ -174,7 +174,7 @@ public class Representer extends SafeRepresenter {
                     NodeTuple tuple = iter.next();
                     if (t.equals(member.getClass())
                             && tuple.getKeyNode().getNodeId() == NodeId.mapping) {
-                        tuple.getKeyNode().setTag(Tags.MAP);
+                        tuple.getKeyNode().setTag(Tag.MAP);
                     }
                 }
             } else if (node.getNodeId() == NodeId.mapping) {
@@ -190,12 +190,12 @@ public class Representer extends SafeRepresenter {
     }
 
     private void resetTag(Class<? extends Object> type, Node node) {
-        String tag = node.getTag();
-        if (Tags.getGlobalTagForClass(type).equals(tag)) {
+        Tag tag = node.getTag();
+        if (tag.matches(type)) {
             if (Enum.class.isAssignableFrom(type)) {
-                node.setTag(Tags.STR);
+                node.setTag(Tag.STR);
             } else {
-                node.setTag(Tags.MAP);
+                node.setTag(Tag.MAP);
             }
         }
     }

@@ -32,6 +32,7 @@ import org.yaml.snakeyaml.nodes.Node;
 import org.yaml.snakeyaml.nodes.NodeTuple;
 import org.yaml.snakeyaml.nodes.ScalarNode;
 import org.yaml.snakeyaml.nodes.SequenceNode;
+import org.yaml.snakeyaml.nodes.Tag;
 import org.yaml.snakeyaml.serializer.Serializer;
 
 /**
@@ -110,7 +111,7 @@ public abstract class BaseRepresenter {
         return node;
     }
 
-    protected Node representScalar(String tag, String value, Character style) {
+    protected Node representScalar(Tag tag, String value, Character style) {
         if (style == null) {
             style = this.defaultStyle;
         }
@@ -119,11 +120,11 @@ public abstract class BaseRepresenter {
         return node;
     }
 
-    protected Node representScalar(String tag, String value) {
+    protected Node representScalar(Tag tag, String value) {
         return representScalar(tag, value, null);
     }
 
-    protected Node representSequence(String tag, List<? extends Object> sequence, Boolean flowStyle) {
+    protected Node representSequence(Tag tag, List<? extends Object> sequence, Boolean flowStyle) {
         List<Node> value = new ArrayList<Node>(sequence.size());
         SequenceNode node = new SequenceNode(tag, value, flowStyle);
         representedObjects.put(objectToRepresent, node);
@@ -145,7 +146,7 @@ public abstract class BaseRepresenter {
         return node;
     }
 
-    protected Node representMapping(String tag, Map<? extends Object, Object> mapping,
+    protected Node representMapping(Tag tag, Map<? extends Object, Object> mapping,
             Boolean flowStyle) {
         List<NodeTuple> value = new ArrayList<NodeTuple>(mapping.size());
         MappingNode node = new MappingNode(tag, value, flowStyle);

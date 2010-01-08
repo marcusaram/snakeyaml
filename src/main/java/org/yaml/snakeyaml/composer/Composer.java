@@ -37,6 +37,7 @@ import org.yaml.snakeyaml.nodes.NodeId;
 import org.yaml.snakeyaml.nodes.NodeTuple;
 import org.yaml.snakeyaml.nodes.ScalarNode;
 import org.yaml.snakeyaml.nodes.SequenceNode;
+import org.yaml.snakeyaml.nodes.Tag;
 import org.yaml.snakeyaml.parser.Parser;
 import org.yaml.snakeyaml.resolver.Resolver;
 
@@ -170,12 +171,15 @@ public class Composer {
         ScalarEvent ev = (ScalarEvent) parser.getEvent();
         String tag = ev.getTag();
         boolean resolved = false;
+        Tag nodeTag;
         if (tag == null || tag.equals("!")) {
-            tag = resolver.resolve(NodeId.scalar, ev.getValue(), ev.getImplicit().isFirst());
+            nodeTag = resolver.resolve(NodeId.scalar, ev.getValue(), ev.getImplicit().isFirst());
             resolved = true;
+        } else {
+            nodeTag = new Tag(tag);
         }
-        Node node = new ScalarNode(tag, resolved, ev.getValue(), ev.getStartMark(),
-                ev.getEndMark(), ev.getStyle());
+        Node node = new ScalarNode(nodeTag, resolved, ev.getValue(), ev.getStartMark(), ev
+                .getEndMark(), ev.getStyle());
         if (anchor != null) {
             anchors.put(anchor, node);
         }
@@ -185,12 +189,15 @@ public class Composer {
     private Node composeSequenceNode(String anchor) {
         SequenceStartEvent startEvent = (SequenceStartEvent) parser.getEvent();
         String tag = startEvent.getTag();
+        Tag nodeTag;
         boolean resolved = false;
         if (tag == null || tag.equals("!")) {
-            tag = resolver.resolve(NodeId.sequence, null, startEvent.getImplicit());
+            nodeTag = resolver.resolve(NodeId.sequence, null, startEvent.getImplicit());
             resolved = true;
+        } else {
+            nodeTag = new Tag(tag);
         }
-        SequenceNode node = new SequenceNode(tag, resolved, new ArrayList<Node>(), startEvent
+        SequenceNode node = new SequenceNode(nodeTag, resolved, new ArrayList<Node>(), startEvent
                 .getStartMark(), null, startEvent.getFlowStyle());
         if (anchor != null) {
             anchors.put(anchor, node);
@@ -208,13 +215,16 @@ public class Composer {
     private Node composeMappingNode(String anchor) {
         MappingStartEvent startEvent = (MappingStartEvent) parser.getEvent();
         String tag = startEvent.getTag();
+        Tag nodeTag;
         boolean resolved = false;
         if (tag == null || tag.equals("!")) {
-            tag = resolver.resolve(NodeId.mapping, null, startEvent.getImplicit());
+            nodeTag = resolver.resolve(NodeId.mapping, null, startEvent.getImplicit());
             resolved = true;
+        } else {
+            nodeTag = new Tag(tag);
         }
-        MappingNode node = new MappingNode(tag, resolved, new ArrayList<NodeTuple>(), startEvent
-                .getStartMark(), null, startEvent.getFlowStyle());
+        MappingNode node = new MappingNode(nodeTag, resolved, new ArrayList<NodeTuple>(),
+                startEvent.getStartMark(), null, startEvent.getFlowStyle());
         if (anchor != null) {
             anchors.put(anchor, node);
         }

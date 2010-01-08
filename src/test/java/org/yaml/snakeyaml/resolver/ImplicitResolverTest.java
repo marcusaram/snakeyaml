@@ -30,18 +30,21 @@ import org.yaml.snakeyaml.constructor.Construct;
 import org.yaml.snakeyaml.constructor.Constructor;
 import org.yaml.snakeyaml.nodes.Node;
 import org.yaml.snakeyaml.nodes.ScalarNode;
+import org.yaml.snakeyaml.nodes.Tag;
 
 /**
  * Custom implicit resolver does not apply inside JavaBean declaration <a href="http://groups.google.com/group/snakeyaml-core/browse_frm/thread/c75c35a3d9cfcaba"
  * >mailing list</a> for more information
  */
 public class ImplicitResolverTest extends TestCase {
+    private static final Tag CFG = new Tag("!cfg");
+
     public static class ConfigurationConstructor extends Constructor {
         protected Map<String, String> config = null;
 
         public ConfigurationConstructor(Map<String, String> config) {
             this.config = config;
-            this.yamlConstructors.put("!cfg", new ConfigObjectConstruct());
+            this.yamlConstructors.put(CFG, new ConfigObjectConstruct());
         }
 
         private class ConfigObjectConstruct extends AbstractConstruct {
@@ -53,7 +56,7 @@ public class ImplicitResolverTest extends TestCase {
         }
 
         protected Construct getConstructor(Node node) {
-            if ("!cfg".equals(node.getTag())) {
+            if (CFG.equals(node.getTag())) {
                 node.setUseClassConstructor(false);
             }
             return super.getConstructor(node);
@@ -83,8 +86,7 @@ public class ImplicitResolverTest extends TestCase {
         constructor.addTypeDescription(new TypeDescription(TestBean.class, "!testbean"));
         Loader loader = new Loader(constructor);
         Yaml yaml = new Yaml(loader);
-        yaml.addImplicitResolver("!cfg", Pattern.compile("\\$\\([a-zA-Z\\d\\u002E\\u005F]+\\)"),
-                "$");
+        yaml.addImplicitResolver(CFG, Pattern.compile("\\$\\([a-zA-Z\\d\\u002E\\u005F]+\\)"), "$");
         TestBean bean = (TestBean) yaml.load("!testbean {myval: !cfg $(user.home)}");
         // System.out.println(bean.toString());
         assertEquals("Explicit tag must be respected", "HOME", bean.getMyval());
