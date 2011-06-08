@@ -108,8 +108,8 @@ public class RepresenterTest extends TestCase {
         options.setAllowReadOnlyProperties(true);
         Yaml yaml = new Yaml(options);
         try {
-            yaml.dump(bean);
-            fail("Exception must be reported");
+            String str = yaml.dump(bean);
+            fail("Exception must be reported: " + str);
         } catch (Exception e) {
             assertTrue(true);
         }
